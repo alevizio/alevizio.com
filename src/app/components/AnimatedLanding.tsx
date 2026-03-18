@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import svgPaths from "../../imports/svg-ectekmh7x3";
 import AsciiRain from "./AsciiRain";
+import CompanyLogos from "./CompanyLogos";
 
 export default function AnimatedLanding() {
   return (
@@ -9,7 +10,8 @@ export default function AnimatedLanding() {
       <AsciiRain />
 
       {/* Foreground Content */}
-      <div className="relative z-10 flex flex-col gap-[140px] items-start p-[60px] md:p-[140px] max-w-[1440px]">
+      <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] max-w-[1440px] min-h-screen">
+        <div className="flex flex-col gap-[140px] items-start">
         {/* Animated Logo — draws itself then fills */}
         <div className="h-[53px] relative shrink-0 w-[80.116px]" data-name="Union">
           <svg className="absolute block w-full h-full" viewBox="0 0 80.1162 53">
@@ -58,7 +60,7 @@ export default function AnimatedLanding() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            say hola
+            let's make something meaningful →
           </motion.a>
           <motion.div
             className="flex items-center gap-4 mt-2"
@@ -98,6 +100,17 @@ export default function AnimatedLanding() {
             </a>
           </motion.div>
         </div>
+
+        </div>
+
+        {/* Companies Section — appears last with gentle fade up */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <CompanyLogos />
+        </motion.div>
       </div>
     </div>
   );
