@@ -134,7 +134,7 @@ export default function CompanyLogos() {
               ease: [0.22, 1, 0.36, 1],
             }}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-1">
               <svg
                 viewBox={company.viewBox}
                 className={`${company.height} w-auto scale-[0.55] md:scale-100 origin-left`}
@@ -150,7 +150,7 @@ export default function CompanyLogos() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="hidden md:inline-flex text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-50 hover:opacity-80 transition-opacity border border-[#1E1E1E]/20 rounded-full px-2 py-0.5 ml-1 whitespace-nowrap font-['Instrument_Sans',sans-serif]"
+                  className="text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-50 hover:opacity-80 transition-opacity whitespace-nowrap font-['Instrument_Sans',sans-serif]"
                 >
                   {company.tag.text}
                 </a>
