@@ -72,55 +72,51 @@ export default function AnimatedLanding() {
           >
             {copied ? "email copied ✓" : "let's make something meaningful →"}
           </motion.button>
-          <motion.div
-            className="flex items-center gap-7 mt-4"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <div className="flex items-center gap-7 mt-4">
             {/* LinkedIn - Pixelarticons Pro */}
-            <a href="https://www.linkedin.com/in/alevizio/" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-100 hover:opacity-60 transition-opacity">
+            <motion.a href="https://www.linkedin.com/in/alevizio/" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] hover:opacity-60 transition-opacity" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.8 }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <rect x="1" y="8" width="6" height="2"/><rect x="1" y="20" width="6" height="2"/><rect x="1" y="10" width="2" height="10"/><rect x="5" y="10" width="2" height="10"/><rect x="9" y="20" width="6" height="2"/><rect x="9" y="10" width="2" height="10"/><rect x="13" y="8" width="6" height="2"/><rect x="17" y="20" width="6" height="2"/><rect x="21" y="12" width="2" height="8"/><rect x="17" y="14" width="2" height="6"/><rect x="13" y="12" width="4" height="2"/><rect x="9" y="8" width="4" height="2"/><rect x="19" y="10" width="2" height="2"/><rect x="13" y="14" width="2" height="6"/><rect x="3" y="1" width="2" height="2"/><rect x="1" y="3" width="2" height="2"/><rect x="3" y="5" width="2" height="2"/><rect x="5" y="3" width="2" height="2"/>
               </svg>
-            </a>
+            </motion.a>
             {/* Dribbble - Custom Pixel Art */}
-            <a href="https://dribbble.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-100 hover:opacity-60 transition-opacity">
+            <motion.a href="https://dribbble.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] hover:opacity-60 transition-opacity" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.9 }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <rect x="8" y="0" width="8" height="2"/><rect x="4" y="2" width="4" height="2"/><rect x="16" y="2" width="4" height="2"/><rect x="2" y="4" width="2" height="4"/><rect x="20" y="4" width="2" height="4"/><rect x="0" y="8" width="2" height="8"/><rect x="22" y="8" width="2" height="8"/><rect x="2" y="16" width="2" height="4"/><rect x="20" y="16" width="2" height="4"/><rect x="4" y="20" width="4" height="2"/><rect x="16" y="20" width="4" height="2"/><rect x="8" y="22" width="8" height="2"/><rect x="0" y="10" width="24" height="2"/><rect x="6" y="2" width="2" height="2"/><rect x="8" y="4" width="2" height="2"/><rect x="10" y="6" width="2" height="2"/><rect x="12" y="8" width="2" height="2"/><rect x="12" y="12" width="2" height="2"/><rect x="14" y="14" width="2" height="2"/><rect x="16" y="16" width="2" height="2"/><rect x="18" y="18" width="2" height="2"/>
               </svg>
-            </a>
+            </motion.a>
             {/* GitHub - Pixelarticons Pro */}
-            <a href="https://github.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-100 hover:opacity-60 transition-opacity">
+            <motion.a href="https://github.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] hover:opacity-60 transition-opacity" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1.0 }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M5 2H9V4H7V6H5V2Z"/><path d="M5 12H3V6H5V12Z"/><path d="M7 14H5V12H7V14Z"/><path fillRule="evenodd" clipRule="evenodd" d="M9 16V14H7V16H3V14H1V16H3V18H7V22H9V18H11V16H9ZM9 16V18H7V16H9Z"/><path d="M15 4V6H9V4H15Z"/><path d="M19 6H17V4H15V2H19V6Z"/><path d="M19 12V6H21V12H19Z"/><path d="M17 14V12H19V14H17Z"/><path d="M15 16V14H17V16H15Z"/><path d="M15 18H13V16H15V18Z"/><path d="M15 18H17V22H15V18Z"/>
               </svg>
-            </a>
+            </motion.a>
             {/* Instagram - Pixelarticons Pro */}
-            <a href="https://www.instagram.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-100 hover:opacity-60 transition-opacity">
+            <motion.a href="https://www.instagram.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] hover:opacity-60 transition-opacity" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1.1 }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <rect x="6" y="2" width="12" height="2"/><rect x="6" y="20" width="12" height="2"/><rect x="2" y="6" width="2" height="12"/><rect x="20" y="6" width="2" height="12"/><rect x="16" y="6" width="2" height="2"/><rect x="18" y="4" width="2" height="2"/><rect x="18" y="18" width="2" height="2"/><rect x="4" y="4" width="2" height="2"/><rect x="4" y="18" width="2" height="2"/><rect x="10" y="8" width="4" height="2"/><rect x="8" y="10" width="2" height="4"/><rect x="10" y="14" width="4" height="2"/><rect x="14" y="10" width="2" height="4"/>
               </svg>
-            </a>
+            </motion.a>
             {/* X / Twitter - Pixelarticons Pro */}
-            <a href="https://x.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-100 hover:opacity-60 transition-opacity">
+            <motion.a href="https://x.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] hover:opacity-60 transition-opacity" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1.2 }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <rect x="2" y="4" width="6" height="2"/><rect x="4" y="6" width="2" height="2"/><rect x="6" y="8" width="2" height="2"/><rect x="8" y="10" width="2" height="2"/><rect x="10" y="12" width="2" height="2"/><rect x="12" y="14" width="2" height="2"/><rect x="14" y="16" width="2" height="2"/><rect x="16" y="18" width="5" height="2"/><rect x="8" y="6" width="2" height="2"/><rect x="10" y="8" width="2" height="2"/><rect x="12" y="10" width="2" height="2"/><rect x="14" y="8" width="2" height="2"/><rect x="4" y="18" width="2" height="2"/><rect x="16" y="6" width="2" height="2"/><rect x="6" y="16" width="2" height="2"/><rect x="18" y="4" width="2" height="2"/><rect x="8" y="14" width="2" height="2"/><rect x="14" y="12" width="2" height="2"/><rect x="16" y="14" width="2" height="2"/><rect x="18" y="16" width="2" height="2"/><rect x="20" y="18" width="2" height="2"/>
               </svg>
-            </a>
+            </motion.a>
             {/* SoundCloud - Pixelarticons Pro (music) */}
-            <a href="https://soundcloud.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-100 hover:opacity-60 transition-opacity">
+            <motion.a href="https://soundcloud.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] hover:opacity-60 transition-opacity" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1.3 }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <rect x="4" y="12" width="4" height="2"/><rect x="2" y="14" width="2" height="4"/><rect x="4" y="18" width="4" height="2"/><rect x="8" y="6" width="2" height="12"/><rect x="18" y="6" width="2" height="12"/><rect x="12" y="14" width="2" height="4"/><rect x="14" y="12" width="4" height="2"/><rect x="14" y="18" width="4" height="2"/><rect x="10" y="4" width="8" height="2"/>
               </svg>
-            </a>
-          </motion.div>
+            </motion.a>
+          </div>
         </div>
 
         </div>
 
         {/* Companies Section — appears last with gentle fade up */}
         <motion.div
+          className="mt-auto pt-[120px] md:pt-[80px]"
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
