@@ -117,7 +117,7 @@ export default function CompanyLogos() {
       >
         companies i've helped shape across product & brand
       </motion.p>
-      <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:items-center md:gap-x-20 md:gap-y-10">
+      <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:items-start md:gap-x-20 md:gap-y-10">
         {orderedCompanies.map((company, index) => (
           <motion.a
             key={company.name}
@@ -150,7 +150,7 @@ export default function CompanyLogos() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-50 hover:opacity-80 transition-opacity whitespace-nowrap font-['Instrument_Sans',sans-serif]"
+                  className="text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-50 hover:opacity-80 transition-opacity border border-[#1E1E1E]/20 rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit"
                 >
                   {company.tag.text}
                 </a>
