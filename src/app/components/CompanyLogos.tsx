@@ -116,7 +116,7 @@ export default function CompanyLogos() {
       >
         companies i've helped shape across product & brand
       </motion.p>
-      <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-x-10 gap-y-8 md:gap-x-20 md:gap-y-10">
+      <div className="flex flex-col gap-6 md:flex-row md:flex-wrap md:items-center md:gap-x-20 md:gap-y-10">
         {orderedCompanies.map((company, index) => (
           <motion.a
             key={company.name}
