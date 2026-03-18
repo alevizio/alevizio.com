@@ -68,34 +68,40 @@ export default function AnimatedLanding() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Instagram */}
+            {/* Instagram - Pixel Art */}
             <a href="https://www.instagram.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-60 hover:opacity-100 transition-opacity">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><circle cx="12" cy="12" r="5" /><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="4" y="2" width="16" height="2"/><rect x="4" y="20" width="16" height="2"/><rect x="2" y="2" width="2" height="20"/><rect x="20" y="2" width="2" height="20"/><rect x="16" y="4" width="2" height="2"/><rect x="10" y="6" width="4" height="2"/><rect x="8" y="8" width="2" height="8"/><rect x="14" y="8" width="2" height="8"/><rect x="10" y="16" width="4" height="2"/><rect x="10" y="10" width="4" height="4"/>
               </svg>
             </a>
-            {/* X / Twitter */}
+            {/* X / Twitter - Pixel Art */}
             <a href="https://x.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-60 hover:opacity-100 transition-opacity">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                <rect x="2" y="2" width="2" height="2"/><rect x="4" y="4" width="2" height="2"/><rect x="6" y="6" width="2" height="2"/><rect x="8" y="8" width="2" height="2"/><rect x="20" y="2" width="2" height="2"/><rect x="18" y="4" width="2" height="2"/><rect x="16" y="6" width="2" height="2"/><rect x="14" y="8" width="2" height="2"/><rect x="10" y="10" width="4" height="4"/><rect x="8" y="14" width="2" height="2"/><rect x="6" y="16" width="2" height="2"/><rect x="4" y="18" width="2" height="2"/><rect x="2" y="20" width="2" height="2"/><rect x="14" y="14" width="2" height="2"/><rect x="16" y="16" width="2" height="2"/><rect x="18" y="18" width="2" height="2"/><rect x="20" y="20" width="2" height="2"/>
               </svg>
             </a>
-            {/* LinkedIn */}
+            {/* LinkedIn - Pixel Art */}
             <a href="https://www.linkedin.com/in/alevizio/" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-60 hover:opacity-100 transition-opacity">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                <rect x="2" y="2" width="20" height="2"/><rect x="2" y="20" width="20" height="2"/><rect x="2" y="2" width="2" height="20"/><rect x="20" y="2" width="2" height="20"/><rect x="6" y="6" width="2" height="2"/><rect x="6" y="10" width="2" height="8"/><rect x="10" y="10" width="2" height="8"/><rect x="12" y="10" width="2" height="2"/><rect x="14" y="10" width="2" height="2"/><rect x="16" y="12" width="2" height="6"/>
               </svg>
             </a>
-            {/* Dribbble */}
+            {/* Dribbble - Pixel Art */}
             <a href="https://dribbble.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-60 hover:opacity-100 transition-opacity">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10" /><path d="M19.13 5.09C15.22 9.14 10 10.44 2.25 10.94" /><path d="M21.75 12.84c-6.62-1.41-12.14 1-16.38 6.32" /><path d="M8.56 2.75c4.37 6 6 12.38 7.44 20.12" />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="8" y="0" width="8" height="2"/><rect x="4" y="2" width="4" height="2"/><rect x="16" y="2" width="4" height="2"/><rect x="2" y="4" width="2" height="4"/><rect x="20" y="4" width="2" height="4"/><rect x="0" y="8" width="2" height="8"/><rect x="22" y="8" width="2" height="8"/><rect x="2" y="16" width="2" height="4"/><rect x="20" y="16" width="2" height="4"/><rect x="4" y="20" width="4" height="2"/><rect x="16" y="20" width="4" height="2"/><rect x="8" y="22" width="8" height="2"/><rect x="0" y="10" width="24" height="2"/><rect x="6" y="2" width="2" height="2"/><rect x="8" y="4" width="2" height="2"/><rect x="10" y="6" width="2" height="2"/><rect x="12" y="8" width="2" height="2"/><rect x="12" y="12" width="2" height="2"/><rect x="14" y="14" width="2" height="2"/><rect x="16" y="16" width="2" height="2"/><rect x="18" y="18" width="2" height="2"/>
               </svg>
             </a>
-            {/* SoundCloud */}
+            {/* SoundCloud - Pixel Art */}
             <a href="https://soundcloud.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-60 hover:opacity-100 transition-opacity">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M11.56 8.87V17h8.76c1.85-.13 3.32-1.57 3.32-3.35 0-1.85-1.56-3.34-3.46-3.34-.47 0-.91.1-1.32.27C18.4 7.87 15.95 6 13.07 6c-.52 0-1.03.07-1.51.21v.02zm-1.75.66V17h.93V9.16a5.3 5.3 0 0 0-.93.37m-1.68 1.12V17h.93v-5.96c-.27.2-.53.42-.77.67l-.16.15v-.21zm-1.69 2.23V17h.94v-3.72c-.13.35-.23.71-.28 1.09l-.66-.49zm-1.68.55V17h.93v-3.17l-.93-.4zm-1.69.83V17h.94v-2.33c-.22.1-.44.22-.66.36l-.28.23zM1 14.24V17h.93v-2.44L1 14.24z" />
+                <rect x="10" y="4" width="4" height="2"/><rect x="8" y="6" width="2" height="2"/><rect x="14" y="6" width="4" height="2"/><rect x="6" y="8" width="2" height="2"/><rect x="18" y="8" width="2" height="2"/><rect x="4" y="10" width="2" height="2"/><rect x="20" y="8" width="2" height="6"/><rect x="4" y="12" width="2" height="2"/><rect x="6" y="14" width="16" height="2"/><rect x="8" y="10" width="2" height="4"/><rect x="10" y="8" width="2" height="6"/><rect x="12" y="10" width="2" height="4"/><rect x="14" y="9" width="2" height="5"/><rect x="16" y="10" width="2" height="4"/><rect x="2" y="12" width="2" height="2"/><rect x="2" y="14" width="4" height="2"/>
+              </svg>
+            </a>
+            {/* GitHub - Pixel Art */}
+            <a href="https://github.com/alevizio" target="_blank" rel="noopener noreferrer" className="text-[#1E1E1E] opacity-60 hover:opacity-100 transition-opacity">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="8" y="0" width="8" height="2"/><rect x="6" y="2" width="2" height="2"/><rect x="16" y="2" width="2" height="2"/><rect x="4" y="4" width="2" height="2"/><rect x="18" y="4" width="2" height="2"/><rect x="2" y="6" width="2" height="8"/><rect x="20" y="6" width="2" height="8"/><rect x="4" y="14" width="2" height="2"/><rect x="18" y="14" width="2" height="2"/><rect x="6" y="16" width="4" height="2"/><rect x="14" y="16" width="4" height="2"/><rect x="4" y="6" width="2" height="2"/><rect x="18" y="6" width="2" height="2"/><rect x="6" y="8" width="2" height="2"/><rect x="16" y="8" width="2" height="2"/><rect x="8" y="18" width="2" height="2"/><rect x="6" y="20" width="2" height="2"/><rect x="4" y="22" width="2" height="2"/><rect x="14" y="18" width="2" height="2"/><rect x="16" y="20" width="2" height="2"/><rect x="18" y="22" width="2" height="2"/>
               </svg>
             </a>
           </motion.div>
