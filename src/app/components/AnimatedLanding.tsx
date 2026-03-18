@@ -22,7 +22,7 @@ export default function AnimatedLanding() {
   }, []);
 
   return (
-    <div className="bg-[#dedbd1] relative size-full min-h-screen overflow-hidden" data-name="alevizio.com">
+    <div className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-hidden" data-name="alevizio.com">
       {/* ASCII Moon Background */}
       <div className="absolute inset-0 flex items-start justify-end pr-[5%] pt-[140px] pointer-events-none select-none">
         <pre
@@ -43,7 +43,7 @@ export default function AnimatedLanding() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 80.1162 53">
+          <svg className="absolute block w-full h-full" fill="none" preserveAspectRatio="none" viewBox="0 0 80.1162 53">
             <path d={svgPaths.p3e2d6e80} fill="#1E1E1E" id="Union" />
           </svg>
         </motion.div>

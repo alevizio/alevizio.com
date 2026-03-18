@@ -19,4 +19,26 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  build: {
+    // Target older browsers for broad compatibility
+    target: ['es2015', 'safari12', 'chrome64', 'firefox62', 'edge79'],
+    // Enable minification
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    // Optimize chunk splitting
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          motion: ['motion/react'],
+        },
+      },
+    },
+  },
 })
