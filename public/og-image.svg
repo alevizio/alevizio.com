@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#dedbd1"/>
+  <!-- Logo -->
+  <g transform="translate(100, 200) scale(2.5)">
+    <path d="M50.7402 31.5898L63.1689 0H80.1162L59.2656 53H42.2148L29.5811 20.8867L22.2812 39.4414H31.2246L36.5654 53H0L20.8506 0H38.3125L50.7402 31.5898Z" fill="#1E1E1E"/>
+  </g>
+  <!-- Text -->
+  <text x="100" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="42" fill="#1E1E1E" font-weight="400">a relentless mind shaping</text>
+  <text x="100" y="475" font-family="system-ui, -apple-system, sans-serif" font-size="42" fill="#1E1E1E" font-weight="400">product, brand &amp; interaction</text>
+  <text x="100" y="540" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="#1E1E1E" opacity="0.6">alevizio.com</text>
+</svg>
