@@ -106,7 +106,7 @@ const orderedCompanies = displayOrder.map((i) => companies[i]);
 
 export default function CompanyLogos() {
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-6 md:gap-6 w-full mt-16 md:mt-0">
       <motion.p
         className="text-[clamp(11px,1vw,13px)] text-[#1E1E1E] opacity-50 tracking-[0.05em] font-['Instrument_Sans',sans-serif]"
         style={{ fontVariationSettings: "'wdth' 100" }}
@@ -116,7 +116,7 @@ export default function CompanyLogos() {
       >
         companies i've helped shape across product & brand
       </motion.p>
-      <div className="flex flex-wrap items-center gap-x-20 gap-y-10">
+      <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-x-10 gap-y-8 md:gap-x-20 md:gap-y-10">
         {orderedCompanies.map((company, index) => (
           <motion.a
             key={company.name}
@@ -135,7 +135,7 @@ export default function CompanyLogos() {
           >
             <svg
               viewBox={company.viewBox}
-              className={`${company.height} w-auto`}
+              className={`${company.height} w-auto max-h-[20px] md:max-h-none`}
               fill={LOGO_COLOR}
             >
               {company.paths.map((d, i) => (
