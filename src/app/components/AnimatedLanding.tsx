@@ -1,37 +1,12 @@
 import { motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
 import svgPaths from "../../imports/svg-ectekmh7x3";
-import { moonFrames } from "../../imports/moon-frames";
+import AsciiRain from "./AsciiRain";
 
 export default function AnimatedLanding() {
-  const [frameIndex, setFrameIndex] = useState(0);
-  const rafRef = useRef<number>(0);
-  const lastTimeRef = useRef<number>(0);
-
-  useEffect(() => {
-    const frameDuration = 200; // ms per frame
-    const animate = (time: number) => {
-      if (time - lastTimeRef.current >= frameDuration) {
-        setFrameIndex((prev) => (prev + 1) % moonFrames.length);
-        lastTimeRef.current = time;
-      }
-      rafRef.current = requestAnimationFrame(animate);
-    };
-    rafRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, []);
-
   return (
     <div className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-hidden" data-name="alevizio.com">
-      {/* ASCII Moon Background */}
-      <div className="absolute inset-0 flex items-start justify-end pr-[5%] pt-[140px] pointer-events-none select-none">
-        <pre
-          className="text-[#1E1E1E] opacity-[0.25] leading-none whitespace-pre"
-          style={{ fontSize: "clamp(7px, 1.2vw, 16px)", transform: "scaleX(0.83)", transformOrigin: "center" }}
-        >
-          {moonFrames[frameIndex]}
-        </pre>
-      </div>
+      {/* ASCII Rain Background — ambient drops + mouse ripples */}
+      <AsciiRain />
 
       {/* Foreground Content */}
       <div className="relative z-10 flex flex-col gap-[140px] items-start p-[60px] md:p-[140px] max-w-[1440px]">
@@ -68,6 +43,16 @@ export default function AnimatedLanding() {
           >
             I design products, identities, and interactions that bring clarity to complex ideas — from early concepts to polished systems used by real people.
           </motion.p>
+          <motion.a
+            href="mailto:viziomas@gmail.com"
+            className="text-[clamp(14px,1.25vw,18px)] underline underline-offset-4 decoration-1 hover:opacity-60 transition-opacity"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            say hola
+          </motion.a>
           <motion.div
             className="flex items-center gap-4 mt-2"
             initial={{ opacity: 0, y: 15 }}
