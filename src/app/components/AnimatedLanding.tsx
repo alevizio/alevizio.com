@@ -1,9 +1,19 @@
 import { motion } from "motion/react";
+import { useState } from "react";
 import svgPaths from "../../imports/svg-ectekmh7x3";
 import AsciiRain from "./AsciiRain";
 import CompanyLogos from "./CompanyLogos";
 
 export default function AnimatedLanding() {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("viziomas@gmail.com").then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   return (
     <div className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-hidden" data-name="alevizio.com">
       {/* ASCII Rain Background — ambient drops + mouse ripples */}
@@ -52,16 +62,16 @@ export default function AnimatedLanding() {
           >
             I design products, identities, and interactions that bring clarity to complex ideas — from early concepts to polished systems used by real people.
           </motion.p>
-          <motion.a
-            href="mailto:viziomas@gmail.com"
-            className="text-[clamp(14px,1.25vw,18px)] font-semibold no-underline relative after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[1px] after:bg-[#1E1E1E] after:w-0 hover:after:w-full after:transition-all after:duration-300 hover:opacity-80 transition-opacity"
+          <motion.button
+            onClick={handleCopyEmail}
+            className="text-[clamp(14px,1.25vw,18px)] font-semibold text-[#1E1E1E] cursor-pointer bg-transparent border-none p-0 text-left relative after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[1px] after:bg-[#1E1E1E] after:w-0 hover:after:w-full after:transition-all after:duration-300 hover:opacity-80 transition-opacity"
             style={{ fontVariationSettings: "'wdth' 100" }}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            let's make something meaningful →
-          </motion.a>
+            {copied ? "email copied ✓" : "let's make something meaningful →"}
+          </motion.button>
           <motion.div
             className="flex items-center gap-5 mt-4"
             initial={{ opacity: 0, y: 15 }}
