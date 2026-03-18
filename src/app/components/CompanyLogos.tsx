@@ -117,7 +117,7 @@ export default function CompanyLogos() {
       >
         companies i've helped shape across product & brand
       </motion.p>
-      <div className="flex flex-col items-start gap-6 md:flex-row md:flex-wrap md:items-start md:gap-x-20 md:gap-y-10">
+      <div className="flex flex-col items-start gap-10 md:flex-row md:flex-wrap md:items-start md:gap-x-20 md:gap-y-10">
         {orderedCompanies.map((company, index) => (
           <motion.a
             key={company.name}
@@ -137,7 +137,7 @@ export default function CompanyLogos() {
             <div className="flex flex-col gap-2">
               <svg
                 viewBox={company.viewBox}
-                className={`${company.height} w-auto scale-[0.85] md:scale-100 origin-left`}
+                className={`${company.height} w-auto scale-100 origin-left`}
                 fill={LOGO_COLOR}
               >
                 {company.svgTransform ? (
