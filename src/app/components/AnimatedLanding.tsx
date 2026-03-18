@@ -10,18 +10,25 @@ export default function AnimatedLanding() {
 
       {/* Foreground Content */}
       <div className="relative z-10 flex flex-col gap-[140px] items-start p-[60px] md:p-[140px] max-w-[1440px]">
-        {/* Animated Logo */}
-        <motion.div
-          className="h-[53px] relative shrink-0 w-[80.116px]"
-          data-name="Union"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <svg className="absolute block w-full h-full" fill="none" preserveAspectRatio="none" viewBox="0 0 80.1162 53">
-            <path d={svgPaths.p3e2d6e80} fill="#1E1E1E" id="Union" />
+        {/* Animated Logo — draws itself then fills */}
+        <div className="h-[53px] relative shrink-0 w-[80.116px]" data-name="Union">
+          <svg className="absolute block w-full h-full" viewBox="0 0 80.1162 53">
+            <motion.path
+              d={svgPaths.p3e2d6e80}
+              stroke="#1E1E1E"
+              strokeWidth={1.5}
+              strokeLinejoin="miter"
+              fill="#1E1E1E"
+              initial={{ pathLength: 0, fillOpacity: 0, strokeOpacity: 1 }}
+              animate={{ pathLength: 1, fillOpacity: 1, strokeOpacity: 0 }}
+              transition={{
+                pathLength: { duration: 1.2, ease: "easeInOut" },
+                fillOpacity: { duration: 0.6, delay: 1.0, ease: "easeIn" },
+                strokeOpacity: { duration: 0.4, delay: 1.2 },
+              }}
+            />
           </svg>
-        </motion.div>
+        </div>
 
         {/* Animated Text Content */}
         <div className="flex flex-col font-['Instrument_Sans',sans-serif] font-normal gap-4 items-start leading-[normal] text-[#1E1E1E] max-w-[674px]">
