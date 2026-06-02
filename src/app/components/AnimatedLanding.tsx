@@ -3,6 +3,7 @@ import { useState } from "react";
 import svgPaths from "../../imports/svg-ectekmh7x3";
 import AsciiRain from "./AsciiRain";
 import CompanyLogos from "./CompanyLogos";
+import GlobestudioCard from "./GlobestudioCard";
 
 export default function AnimatedLanding() {
   const [copied, setCopied] = useState(false);
@@ -18,6 +19,9 @@ export default function AnimatedLanding() {
     <div className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-hidden" data-name="alevizio.com">
       {/* ASCII Rain Background — ambient drops + mouse ripples */}
       <AsciiRain />
+
+      {/* Globestudio announcement — fixed top-right */}
+      <GlobestudioCard />
 
       {/* Foreground Content */}
       <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] max-w-[1440px] min-h-screen">

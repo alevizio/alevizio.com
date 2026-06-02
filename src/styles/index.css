@@ -1,3 +1,51 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+/* Small single-step pixel corners for badges/pills. */
+.pixel-corners-sm {
+  border-radius: 0;
+  clip-path: polygon(
+    0 3px,
+    3px 3px,
+    3px 0,
+    calc(100% - 3px) 0,
+    calc(100% - 3px) 3px,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    3px calc(100% - 3px),
+    0 calc(100% - 3px)
+  );
+}
+
+/* Pixel-stepped corners — ported from globestudio. The clip-path defines
+   the card edge on its own, so no border is needed. */
+.pixel-corners {
+  border: 0;
+  border-radius: 0;
+  clip-path: polygon(
+    0px 6px,
+    0px 2px,
+    2px 2px,
+    2px 0px,
+    6px 0px,
+    calc(100% - 6px) 0px,
+    calc(100% - 2px) 0px,
+    calc(100% - 2px) 2px,
+    calc(100% - 0px) 2px,
+    calc(100% - 0px) 6px,
+    calc(100% - 0px) calc(100% - 6px),
+    calc(100% - 0px) calc(100% - 2px),
+    calc(100% - 2px) calc(100% - 2px),
+    calc(100% - 2px) calc(100% - 0px),
+    calc(100% - 6px) calc(100% - 0px),
+    6px calc(100% - 0px),
+    2px calc(100% - 0px),
+    2px calc(100% - 2px),
+    0px calc(100% - 2px),
+    0px calc(100% - 6px)
+  );
+}
