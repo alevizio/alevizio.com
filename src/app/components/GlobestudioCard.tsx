@@ -63,7 +63,7 @@ export default function GlobestudioCard() {
       href="https://globestudio.app"
       target="_blank"
       rel="noopener noreferrer"
-      className="group pixel-corners fixed top-5 right-5 md:top-8 md:right-8 z-20 flex flex-col items-start gap-8 w-[300px] overflow-hidden bg-[#1E1E1E]/[0.06] px-5 py-4 backdrop-blur-sm font-['Instrument_Sans',sans-serif] text-[#1E1E1E] hover:bg-[#1E1E1E]/[0.1] transition-colors"
+      className="group pixel-corners fixed bottom-4 left-4 right-4 z-20 md:bottom-auto md:left-auto md:top-8 md:right-8 flex flex-col items-start gap-8 md:w-[300px] overflow-hidden bg-[#1E1E1E]/[0.06] px-5 py-4 backdrop-blur-sm font-['Instrument_Sans',sans-serif] text-[#1E1E1E] hover:bg-[#1E1E1E]/[0.1] transition-colors"
       style={{ fontVariationSettings: "'wdth' 100" }}
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
