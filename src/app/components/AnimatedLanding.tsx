@@ -24,7 +24,10 @@ export default function AnimatedLanding() {
       <GlobestudioCard />
 
       {/* Foreground Content */}
-      <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] max-w-[1440px] min-h-screen">
+      {/* Extra bottom padding on mobile so the last logo row clears the
+          full-width Globestudio card that's fixed to the bottom of the screen.
+          Desktop keeps 140px (the card lives in the top-right there). */}
+      <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] pb-[190px] md:pb-[140px] max-w-[1440px] min-h-screen">
         <div className="flex flex-col gap-[140px] items-start">
         {/* Animated Logo — draws itself then fills */}
         <div className="h-[53px] relative shrink-0 w-[80.116px]" data-name="Union">
