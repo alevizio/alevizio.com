@@ -200,9 +200,17 @@ const Logo = ({
   </motion.a>
 );
 
-const Label = ({ text, delay }: { text: string; delay: number }) => (
+const Label = ({
+  text,
+  delay,
+  className = "",
+}: {
+  text: string;
+  delay: number;
+  className?: string;
+}) => (
   <motion.p
-    className="text-[clamp(11px,1vw,13px)] text-[#1E1E1E] opacity-50 tracking-[0.05em] font-['Instrument_Sans',sans-serif]"
+    className={`text-[clamp(11px,1vw,13px)] text-[#1E1E1E] opacity-50 tracking-[0.05em] font-['Instrument_Sans',sans-serif] ${className}`}
     style={{ fontVariationSettings: "'wdth' 100" }}
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 0.5, y: 0 }}
@@ -220,32 +228,51 @@ const Row = ({
   items: Company[];
   indexOffset: number;
   logoBoxHeight?: string;
-}) => (
-  <div
-    className={`flex flex-col items-start gap-14 md:flex-row md:flex-nowrap md:items-start md:gap-x-12${
-      items.some((c) => c.tag) ? " pb-7" : ""
-    }`}
-  >
-    {items.map((company, index) => (
-      <Logo
-        key={company.name}
-        company={company}
-        delay={1.6 + (indexOffset + index) * 0.12}
-        logoBoxHeight={logoBoxHeight}
-      />
-    ))}
-  </div>
-);
+}) => {
+  // MOBILE (flex stack): tagged rows get a larger vertical gap so the open
+  // space below each pill matches the pill-less rows' logo gap. Uses gap-Y only
+  // so it doesn't leak into the DESKTOP subgrid, where the column gap is
+  // inherited from the parent grid and logos snap to shared columns.
+  const hasTags = items.some((c) => c.tag);
+  return (
+    <div
+      className={`flex flex-col items-start md:grid md:grid-cols-subgrid md:col-span-6 md:items-start ${
+        hasTags ? "gap-y-[82px] pb-7" : "gap-y-14"
+      }`}
+    >
+      {items.map((company, index) => (
+        <Logo
+          key={company.name}
+          company={company}
+          delay={1.6 + (indexOffset + index) * 0.12}
+          logoBoxHeight={logoBoxHeight}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default function CompanyLogos() {
+  // DESKTOP: a shared 6-column max-content grid so both rows snap to the same
+  // column lines (Pachama under Planta, Aerolab under Messa). Each row block is
+  // a subgrid spanning those 6 columns; the Rows inside are subgrids too, so the
+  // logos inherit the parent's column tracks. MOBILE stays a flex-col stack.
   return (
-    <div className="flex flex-col gap-10 w-full mt-16 md:mt-0">
-      <div className="flex flex-col gap-6">
-        <Label text="helped with product & brand" delay={1.4} />
+    <div className="flex flex-col gap-y-10 w-full mt-16 md:mt-0 md:grid md:w-fit md:grid-cols-[repeat(6,max-content)] md:gap-x-12 md:gap-y-10">
+      <div className="flex flex-col gap-y-6 md:grid md:col-span-6 md:grid-cols-subgrid md:gap-y-6">
+        <Label
+          text="helped with product & brand"
+          delay={1.4}
+          className="md:col-span-6"
+        />
         <Row items={primary} indexOffset={0} />
       </div>
-      <div className="flex flex-col gap-6">
-        <Label text="i've helped build & shape" delay={1.5} />
+      <div className="flex flex-col gap-y-6 md:grid md:col-span-6 md:grid-cols-subgrid md:gap-y-6">
+        <Label
+          text="i've helped build & shape"
+          delay={1.5}
+          className="md:col-span-6"
+        />
         <Row
           items={secondary}
           indexOffset={primary.length}
