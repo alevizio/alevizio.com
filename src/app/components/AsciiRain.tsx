@@ -205,7 +205,7 @@ export default function AsciiRain() {
   return (
     <pre
       ref={preRef}
-      className="absolute inset-0 z-0 text-[#1E1E1E] opacity-[0.15] leading-none whitespace-pre pointer-events-none select-none overflow-hidden"
+      className="fixed inset-0 z-0 text-[#1E1E1E] opacity-[0.15] leading-none whitespace-pre pointer-events-none select-none overflow-hidden"
       style={{ fontSize: "14px", fontFamily: "monospace" }}
     />
   );
