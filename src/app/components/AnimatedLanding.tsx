@@ -31,7 +31,7 @@ export default function AnimatedLanding() {
         <div className="flex flex-col gap-[140px] items-start">
         {/* Animated Logo — draws itself then fills */}
         <div className="h-[53px] relative shrink-0 w-[80.116px]" data-name="Union">
-          <svg className="absolute block w-full h-full" viewBox="0 0 80.1162 53">
+          <svg className="absolute block w-full h-full" viewBox="0 0 80.1162 53" role="img" aria-label="Alejandro Vizio">
             <motion.path
               d={svgPaths.p3e2d6e80}
               stroke="#1E1E1E"
@@ -51,15 +51,24 @@ export default function AnimatedLanding() {
 
         {/* Animated Text Content */}
         <div className="flex flex-col font-['Instrument_Sans',sans-serif] font-normal gap-4 items-start leading-[normal] text-[#1E1E1E] max-w-[674px]">
-          <motion.p
-            className="text-[clamp(28px,4vw,52px)]"
+          <motion.h1
+            className="text-[clamp(28px,4vw,52px)] font-normal"
             style={{ fontVariationSettings: "'wdth' 100" }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
             a relentless mind shaping product, brand & interaction
-          </motion.p>
+          </motion.h1>
+          {/* Canonical positioning + named clients as real text for JS-rendering
+              crawlers (the logos are SVGs); visually hidden, read by Google + a11y. */}
+          <p className="sr-only">
+            Alejandro Vizio is a product and brand designer in San Francisco who
+            designs product and brand as one system. He is co-founder of Aerolab
+            (8+ years) and led design at Pachama (5+ years, acquired by Carbon
+            Direct in 2025), and has worked on product and brand for Planta,
+            Messa, Earthscale, Limai, Fudo, and Djooni.
+          </p>
           <motion.p
             className="text-[clamp(14px,1.25vw,18px)] max-w-[625px]"
             style={{ fontVariationSettings: "'wdth' 100" }}

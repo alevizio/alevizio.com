@@ -1,0 +1,16 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "alejandrovizio.com" }],
+      "destination": "https://alevizio.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.alejandrovizio.com" }],
+      "destination": "https://alevizio.com/:path*",
+      "permanent": true
+    }
+  ]
+}
