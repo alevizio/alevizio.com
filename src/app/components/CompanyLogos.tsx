@@ -276,7 +276,7 @@ export default function CompanyLogos() {
   // a subgrid spanning those 6 columns; the Rows inside are subgrids too, so the
   // logos inherit the parent's column tracks. MOBILE stays a flex-col stack.
   return (
-    <div className="flex flex-col gap-y-10 w-full mt-16 md:mt-0 md:grid md:w-fit md:grid-cols-[repeat(6,max-content)] md:gap-x-24 md:gap-y-10">
+    <div className="flex flex-col gap-y-14 w-full mt-16 md:mt-0 md:grid md:w-fit md:grid-cols-[repeat(6,max-content)] md:gap-x-24 md:gap-y-14">
       <div className="flex flex-col gap-y-6 md:grid md:col-span-6 md:grid-cols-subgrid md:gap-y-6">
         <Label
           text="helped with product & brand"

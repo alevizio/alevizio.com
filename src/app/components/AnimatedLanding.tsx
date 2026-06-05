@@ -28,7 +28,7 @@ export default function AnimatedLanding() {
           full-width Globestudio card that's fixed to the bottom of the screen.
           Desktop keeps 140px (the card lives in the top-right there). */}
       <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] pb-[190px] md:pb-[140px] max-w-[1440px] min-h-screen">
-        <div className="flex flex-col gap-[140px] items-start">
+        <div className="flex flex-col gap-[96px] items-start">
         {/* Animated Logo — draws itself then fills */}
         <div className="h-[53px] relative shrink-0 w-[80.116px]" data-name="Union">
           <svg className="absolute block w-full h-full" viewBox="0 0 80.1162 53" role="img" aria-label="Alejandro Vizio">
@@ -69,6 +69,9 @@ export default function AnimatedLanding() {
             Direct in 2025), and has worked on product and brand for Planta,
             Messa, Earthscale, Limai, Fudo, and Djooni.
           </p>
+          <a className="sr-only" href="/about">
+            About Alejandro Vizio and frequently asked questions
+          </a>
           <motion.p
             className="text-[clamp(14px,1.25vw,18px)] max-w-[625px]"
             style={{ fontVariationSettings: "'wdth' 100" }}

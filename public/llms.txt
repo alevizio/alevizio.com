@@ -30,6 +30,7 @@ Product & brand work:
 ## Links
 
 - Website: https://alevizio.com
+- About & FAQ: https://alevizio.com/about
 - LinkedIn: https://www.linkedin.com/in/alevizio/
 - Dribbble: https://dribbble.com/alevizio
 - GitHub: https://github.com/alevizio
