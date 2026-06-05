@@ -10,6 +10,7 @@ type Company = {
   paths: string[];
   svgTransform?: string;
   tag?: { text: string; url?: string };
+  years?: string;
 };
 
 const companies: Company[] = [
@@ -18,6 +19,7 @@ const companies: Company[] = [
     url: "https://pachama.com",
     height: "h-[32px]",
     tag: { text: "acquired by Carbon Direct", url: "https://techcrunch.com/2025/11/10/consolidation-begins-to-hit-the-carbon-credit-market/" },
+    years: "5+ yrs",
     viewBox: "0 0 239 66",
     paths: [
       "M57.4415 15.2593L31.7124 0.445433C30.6822-0.148478 29.4094-0.148478 28.3792 0.445433L2.65006 15.2593C1.61987 15.8532 0.981323 16.9562 0.981323 18.1397V47.7674C0.981323 48.951 1.61987 50.054 2.65006 50.6479L28.3792 65.4617C28.8815 65.7544 29.4604 65.9029 30.0479 65.9029C30.6354 65.9029 31.2101 65.746 31.7166 65.4617L57.4458 50.6479C58.4759 50.054 59.1145 48.951 59.1145 47.7674V18.1397C59.1145 16.9562 58.4759 15.8532 57.4458 15.2593H57.4415ZM49.4639 28.6562C51.2689 29.6956 52.8099 31.1803 53.9167 32.9493C52.8099 34.7183 51.2689 36.2031 49.4639 37.2425C47.825 38.1842 46.0371 38.7485 44.1427 38.9012C41.6226 35.0492 37.5487 32.3978 32.9384 31.613C37.1187 26.7811 44.0491 25.5339 49.4639 28.652V28.6562ZM46.7352 47.5765C46.7352 45.6506 46.3862 43.7628 45.705 41.9725C47.6079 41.6629 49.4171 41.018 51.0858 40.0593C52.7503 39.1006 54.2062 37.8661 55.4237 36.3855C56.3858 39.8472 55.8962 43.6313 54.0657 46.7832C52.2395 49.9352 49.2 52.2557 45.7136 53.155C46.3904 51.3648 46.7352 49.4855 46.7352 47.5723V47.5765ZM51.0901 25.8563C49.4129 24.8891 47.6036 24.2485 45.705 23.9389C46.3862 22.1402 46.7352 20.2566 46.7352 18.3391C46.7352 16.4216 46.3904 14.5466 45.7136 12.7564C49.2 13.66 52.2395 15.972 54.0657 19.1324C55.892 22.2844 56.3858 26.0685 55.4237 29.5301C54.2062 28.0496 52.7503 26.8151 51.0858 25.8563H51.0901ZM42.2654 23.7607C37.6594 24.011 33.3215 26.2084 30.3331 29.7931C28.2259 23.7692 30.6056 17.1598 36.0247 14.0418C37.8296 13.0024 39.8858 12.4127 41.9802 12.3406C42.9636 14.1817 43.4829 16.252 43.4829 18.3349C43.4829 20.2269 43.07 22.0511 42.2654 23.7564V23.7607ZM34.3943 11.2376C32.7213 12.2049 31.2526 13.4436 30.0394 14.9284C28.8176 13.4394 27.3575 12.2006 25.6888 11.2376C24.0243 10.2789 22.2236 9.63833 20.3335 9.32865C22.8621 6.76634 26.3954 5.29854 30.0436 5.29854C33.6919 5.29854 37.2294 6.76634 39.7538 9.32865C37.8637 9.63833 36.0545 10.2831 34.3943 11.2376ZM27.4384 31.1294C21.1551 29.9374 16.6044 24.5752 16.6044 18.3434C16.6044 16.2647 17.1237 14.1902 18.1071 12.3491C20.2015 12.4212 22.2577 13.0067 24.0626 14.0502C25.7015 14.992 27.0851 16.2604 28.1621 17.8088C26.0719 21.9111 25.8122 26.7557 27.4384 31.1294ZM17.8176 42.1634C22.4237 41.9174 26.7615 39.7199 29.7499 36.131C31.8571 42.155 29.4775 48.7643 24.0584 51.8824C22.2534 52.9217 20.1973 53.5114 18.1029 53.5835C17.1195 51.7424 16.6001 49.6722 16.6001 47.5892C16.6001 45.6972 17.0131 43.8731 17.8176 42.1677V42.1634ZM25.6845 54.6907C27.3575 53.7235 28.8262 52.4848 30.0394 51C31.2611 52.489 32.7213 53.7277 34.39 54.6907C36.0545 55.6495 37.8552 56.29 39.7495 56.5997C37.2209 59.162 33.6876 60.6298 30.0394 60.6298C26.3912 60.6298 22.8536 59.162 20.3292 56.5997C22.2193 56.29 24.0286 55.6452 25.6845 54.6907ZM32.6404 34.7989C38.9237 35.991 43.4744 41.3532 43.4744 47.585C43.4744 49.6637 42.955 51.7381 41.9717 53.5793C39.8773 53.5071 37.8211 52.9217 36.0162 51.8781C34.3772 50.9364 32.9937 49.6679 31.9167 48.1153C34.0069 44.0131 34.2666 39.1684 32.6404 34.7947V34.7989ZM13.3521 18.3306C13.3521 20.2566 13.7011 22.1444 14.3823 23.9346C12.4794 24.2443 10.6702 24.8891 9.00145 25.8479C7.33698 26.8066 5.88109 28.0411 4.6636 29.5216C3.70578 26.06 4.19108 22.2759 6.02157 19.1239C7.84781 15.972 10.8873 13.6515 14.3737 12.7479C13.6969 14.5381 13.3521 16.4174 13.3521 18.3306ZM8.9972 40.0551C10.6744 41.0223 12.4837 41.6629 14.3823 41.9725C13.7011 43.767 13.3521 45.6548 13.3521 47.5723C13.3521 49.4898 13.6969 51.3648 14.3737 53.155C10.8873 52.2515 7.84781 49.9394 6.02157 46.779C4.19533 43.627 3.70578 39.8387 4.6636 36.3813C5.88109 37.8618 7.33698 39.0963 9.00145 40.0551H8.9972ZM10.6234 37.2467C8.8184 36.2074 7.27738 34.7226 6.17057 32.9536C7.27738 31.1846 8.8184 29.6998 10.6234 28.6604C12.2623 27.7187 14.0545 27.1545 15.9446 27.0017C18.4647 30.8537 22.5386 33.5051 27.1489 34.2899C22.9686 39.1218 16.0382 40.369 10.6234 37.2509V37.2467Z",
@@ -124,6 +126,7 @@ const companies: Company[] = [
     url: "https://aerolab.co/",
     height: "h-[22px]",
     tag: { text: "former partner" },
+    years: "8+ yrs",
     viewBox: "0 0 106 18",
     paths: [
       "M11.5732 17.2183C10.468 17.8361 9.18628 17.9995 8.04847 17.7581C5.33098 17.1814 3.74381 14.9652 3.34287 11.7869C3.18586 10.536 3.01894 9.09672 2.47561 7.88879C2.04286 6.92069 1.3405 6.11638 0.121712 5.80336C0.02676 5.77936 -0.0305999 5.68696 -0.010723 5.5936C0.0704346 5.21241 0.26614 4.29321 0.348555 3.90612C0.358532 3.85926 0.386543 3.81815 0.426675 3.79234C0.47049 3.76731 0.518447 3.75898 0.566081 3.77024C2.53918 4.24603 3.68204 5.49402 4.37695 7.03842C5.00017 8.43146 5.22917 10.0856 5.41068 11.5288C5.68305 13.7021 6.62199 15.3295 8.48152 15.7241C9.2106 15.8788 10.0424 15.7499 10.7275 15.2978C10.7987 15.2528 10.8247 15.1665 10.7986 15.09C10.4021 14.0062 7.63995 6.40874 7.23956 5.30673C7.20999 5.22872 7.24003 5.14176 7.30752 5.09592C8.23159 4.49751 14.2421 0.597538 15.2732 -0.0695726C15.3539 -0.123405 15.4644 -0.0999695 15.5199 -0.0172254C16.1864 1.00974 20.0959 7.01441 20.6961 7.93706C20.7428 8.00713 20.7312 8.098 20.676 8.15841C19.7834 9.07861 13.1546 15.9186 13.1546 15.9186C13.1539 15.9219 13.1493 15.9251 13.1449 15.9281C12.8779 16.2058 12.2375 16.8459 11.5732 17.2183Z",
@@ -138,6 +141,11 @@ const primary = [1, 6, 2, 4, 3, 5].map((i) => companies[i]); // Planta, Messa, E
 const secondary = [0, 7].map((i) => companies[i]); // Pachama, Aerolab
 
 const tagClass =
+  "text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-50 border border-[#1E1E1E]/20 rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit";
+
+// Tenure segment — outlined to match the tag; attaches as a second segment
+// (the tag's right border serves as the divider, so this drops its left border).
+const yearsClass =
   "text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-50 border border-[#1E1E1E]/20 rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit";
 
 const Logo = ({
@@ -178,22 +186,32 @@ const Logo = ({
         )}
       </svg>
     </div>
-    {/* Pill is absolutely positioned so its width never widens the logo cell —
-        keeps the logo-to-logo gap uniform across rows regardless of tag length. */}
-    {company.tag && (
-      <div className="absolute left-0 top-full mt-2 whitespace-nowrap">
-        {company.tag.url ? (
-          <a
-            href={company.tag.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className={`${tagClass} hover:opacity-80 transition-opacity`}
+    {/* Tenure bubble + tag in one row, absolutely positioned so their width
+        never widens the logo cell (keeps logo columns aligned). */}
+    {(company.years || company.tag) && (
+      <div className="absolute left-0 top-full mt-2 flex flex-row items-center whitespace-nowrap">
+        {company.tag &&
+          (company.tag.url ? (
+            <a
+              href={company.tag.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className={`${tagClass} hover:opacity-80 transition-opacity`}
+            >
+              {company.tag.text}
+            </a>
+          ) : (
+            <span className={tagClass}>{company.tag.text}</span>
+          ))}
+        {company.years && (
+          <span
+            className={`${yearsClass} ${
+              company.tag ? "relative z-10 -ml-2 bg-[#dedbd1]" : ""
+            }`}
           >
-            {company.tag.text}
-          </a>
-        ) : (
-          <span className={tagClass}>{company.tag.text}</span>
+            {company.years}
+          </span>
         )}
       </div>
     )}
@@ -258,7 +276,7 @@ export default function CompanyLogos() {
   // a subgrid spanning those 6 columns; the Rows inside are subgrids too, so the
   // logos inherit the parent's column tracks. MOBILE stays a flex-col stack.
   return (
-    <div className="flex flex-col gap-y-10 w-full mt-16 md:mt-0 md:grid md:w-fit md:grid-cols-[repeat(6,max-content)] md:gap-x-12 md:gap-y-10">
+    <div className="flex flex-col gap-y-10 w-full mt-16 md:mt-0 md:grid md:w-fit md:grid-cols-[repeat(6,max-content)] md:gap-x-24 md:gap-y-10">
       <div className="flex flex-col gap-y-6 md:grid md:col-span-6 md:grid-cols-subgrid md:gap-y-6">
         <Label
           text="helped with product & brand"
