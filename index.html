@@ -83,6 +83,21 @@
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+      <!-- Pre-hydration styling for the static identity block inside #root,
+           so the instant before React mounts looks like the site, not a bare page. -->
+      <style>
+        body { margin: 0; background: #dedbd1; color: #1e1e1e; }
+        .static-identity {
+          max-width: 674px;
+          padding: 48px 28px;
+          font-family: "Instrument Sans", system-ui, sans-serif;
+          line-height: 1.6;
+          font-size: 17px;
+        }
+        .static-identity h1 { font-size: clamp(28px, 4vw, 52px); font-weight: 400; line-height: 1.15; margin: 0 0 24px; }
+        .static-identity p { margin: 0 0 16px; max-width: 62ch; }
+        .static-identity a { color: inherit; }
+      </style>
       <title>Alejandro Vizio — Product & Brand Designer in San Francisco</title>
       <!-- Google Analytics -->
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-JRVRY4MMLZ"></script>
@@ -95,17 +110,20 @@
     </head>
 
     <body>
-      <!-- Static identity for non-JS crawlers (GPTBot, ClaudeBot, PerplexityBot don't
-           run JS). Hidden from users with JS; the React app renders into #root below. -->
-      <noscript>
-        <h1>Alejandro Vizio — Product &amp; Brand Designer in San Francisco</h1>
-        <p>Alejandro Vizio (alevizio) is a product &amp; brand designer in San Francisco who designs product and brand as one system — so the interface and the identity feel like a single thing, from early concepts to polished systems used by real people.</p>
-        <p>He builds and shapes companies at founder and owner level: co-founder of Aerolab (8+ years) and design at Pachama (5+ years, acquired by Carbon Direct in 2025). He has led product and brand work for Planta, Messa, Earthscale, Limai, Fudo, and Djooni. Climate is a through-line via Pachama and Earthscale. Outside design he is also a DJ and music producer.</p>
-        <p>Based in San Francisco, CA, USA. Contact: <a href="mailto:viziomas@gmail.com">viziomas@gmail.com</a>.</p>
-        <p>Profiles: <a href="https://www.linkedin.com/in/alevizio/">LinkedIn</a>, <a href="https://dribbble.com/alevizio">Dribbble</a>, <a href="https://github.com/alevizio">GitHub</a>, <a href="https://x.com/alevizio">X / Twitter</a>, <a href="https://www.instagram.com/alevizio">Instagram</a>, <a href="https://soundcloud.com/alevizio">SoundCloud</a>.</p>
-        <p>More: <a href="/about">About Alejandro Vizio &amp; FAQ</a>.</p>
-      </noscript>
-      <div id="root"></div>
+      <!-- Static identity served in the initial HTML for non-JS crawlers (GPTBot,
+           ClaudeBot, PerplexityBot fetch but never execute JS) and noscript-stripping
+           extractors. React's createRoot().render() replaces #root's children on
+           mount, so JS users only see this for the instant before the app boots. -->
+      <div id="root">
+        <main class="static-identity">
+          <h1>Alejandro Vizio — Product &amp; Brand Designer in San Francisco</h1>
+          <p>Alejandro Vizio (alevizio) is a product &amp; brand designer in San Francisco who designs product and brand as one system — so the interface and the identity feel like a single thing, from early concepts to polished systems used by real people.</p>
+          <p>He builds and shapes companies at founder and owner level: co-founder of Aerolab (8+ years) and design at Pachama (5+ years, acquired by Carbon Direct in 2025). He has led product and brand work for Planta, Messa, Earthscale, Limai, Fudo, and Djooni. Climate is a through-line via Pachama and Earthscale. Outside design he is also a DJ and music producer.</p>
+          <p>Based in San Francisco, CA, USA. Contact: <a href="mailto:viziomas@gmail.com">viziomas@gmail.com</a>.</p>
+          <p>Profiles: <a href="https://www.linkedin.com/in/alevizio/">LinkedIn</a>, <a href="https://dribbble.com/alevizio">Dribbble</a>, <a href="https://github.com/alevizio">GitHub</a>, <a href="https://x.com/alevizio">X / Twitter</a>, <a href="https://www.instagram.com/alevizio">Instagram</a>, <a href="https://soundcloud.com/alevizio">SoundCloud</a>.</p>
+          <p>More: <a href="/about">About Alejandro Vizio &amp; FAQ</a>.</p>
+        </main>
+      </div>
       <script type="module" src="/src/main.tsx"></script>
     </body>
   </html>
