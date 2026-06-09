@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
+  "trailingSlash": false,
   "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "alejandrovizio.com" }],
+      "destination": "https://alevizio.com/",
+      "permanent": true
+    },
     {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "alejandrovizio.com" }],
@@ -8,8 +15,26 @@
       "permanent": true
     },
     {
+      "source": "/",
+      "has": [{ "type": "host", "value": "www.alejandrovizio.com" }],
+      "destination": "https://alevizio.com/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "www.alejandrovizio.com" }],
+      "destination": "https://alevizio.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "www.alevizio.com" }],
+      "destination": "https://alevizio.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.alevizio.com" }],
       "destination": "https://alevizio.com/:path*",
       "permanent": true
     }
