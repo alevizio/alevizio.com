@@ -1,4 +1,9 @@
+import { useState } from "react";
 import { motion } from "motion/react";
+import {
+  HoverVideoPreview,
+  type HoverPreviewPoint,
+} from "./HoverVideoPreview";
 
 const LOGO_COLOR = "#1E1E1E";
 
@@ -11,6 +16,9 @@ type Company = {
   svgTransform?: string;
   tag?: { text: string; url?: string };
   years?: string;
+  // Internal case-study link: replaces the external url on the logo and
+  // shows a cursor-following video preview on hover.
+  caseStudy?: { href: string; video: string; label: string };
 };
 
 const companies: Company[] = [
@@ -115,6 +123,13 @@ const companies: Company[] = [
     name: "Messa",
     url: "https://messa.ai/",
     height: "h-[26px]",
+    // TODO(content): /work/messa-preview.mp4 is a placeholder (copy of
+    // og-card.mp4) — overwrite the file with the real Messa loop when ready.
+    caseStudy: {
+      href: "/work/messa",
+      video: "/work/messa-preview.mp4",
+      label: "view case study",
+    },
     viewBox: "0 0 2786 690",
     paths: [
       "M397.89 0L0 229.72L397.89 459.44L795.79 229.72L397.89 0ZM149.21 545.6L397.89 689.18L795.77 459.44L696.3 402.01L397.89 574.32L248.68 488.16L149.21 545.6ZM190.93 256.19L246.17 224.3L200.33 197.82L145.08 229.72L190.93 256.19ZM246.69 288.39L499.5 142.43L547.1 169.92L294.31 315.88L246.69 288.39ZM350.12 348.09L602.92 202.13L650.52 229.63L397.73 375.59L350.12 348.09ZM397.89 83.77L443.75 110.24C393.07 139.49 352.62 162.83 301.94 192.09L256.1 165.62C306.76 136.35 347.21 113.03 397.89 83.77Z",
@@ -156,13 +171,27 @@ const Logo = ({
   company: Company;
   delay: number;
   logoBoxHeight?: string;
-}) => (
+}) => {
+  const caseStudy = company.caseStudy;
+  const [previewEntry, setPreviewEntry] = useState<HoverPreviewPoint | null>(
+    null
+  );
+  return (
   <motion.a
-    href={company.url}
-    target="_blank"
-    rel="noopener noreferrer"
+    href={caseStudy ? caseStudy.href : company.url}
+    {...(caseStudy ? {} : { target: "_blank", rel: "noopener noreferrer" })}
     className="relative opacity-80 hover:opacity-40 transition-opacity"
-    title={company.name}
+    title={caseStudy ? `${company.name} — case study` : company.name}
+    onPointerEnter={
+      caseStudy
+        ? (e) => {
+            // Hover-only affordance: touch taps go straight to the link.
+            if (e.pointerType === "mouse")
+              setPreviewEntry({ x: e.clientX, y: e.clientY });
+          }
+        : undefined
+    }
+    onPointerLeave={caseStudy ? () => setPreviewEntry(null) : undefined}
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 0.8, y: 0 }}
     transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
@@ -215,8 +244,16 @@ const Logo = ({
         )}
       </div>
     )}
+    {caseStudy && (
+      <HoverVideoPreview
+        entry={previewEntry}
+        videoSrc={caseStudy.video}
+        label={caseStudy.label}
+      />
+    )}
   </motion.a>
-);
+  );
+};
 
 const Label = ({
   text,
