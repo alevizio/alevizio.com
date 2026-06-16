@@ -4,6 +4,7 @@ import svgPaths from "../../imports/svg-ectekmh7x3";
 import AsciiRain from "./AsciiRain";
 import CompanyLogos from "./CompanyLogos";
 import GlobestudioCard from "./GlobestudioCard";
+import CurbCard from "./CurbCard";
 
 export default function AnimatedLanding() {
   const [copied, setCopied] = useState(false);
@@ -20,14 +21,23 @@ export default function AnimatedLanding() {
       {/* ASCII Rain Background — ambient drops + mouse ripples */}
       <AsciiRain />
 
-      {/* Globestudio announcement — fixed top-right */}
-      <GlobestudioCard />
+      {/* Project cards. ≥lg (1024px): vertical stack, fixed top-right, 300px wide.
+          <lg (mobile + tablet + small laptops): a snap-scrolling horizontal row
+          pinned to the bottom — swipe between Globestudio → curb. The stack
+          waits until lg so the 300px column never collides with the headline
+          on narrow desktops (the overlap clears around 1146px). */}
+      <div className="fixed bottom-4 left-0 right-0 z-20 flex flex-row gap-3 overflow-x-auto scroll-px-4 px-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:bottom-auto lg:left-auto lg:right-8 lg:top-8 lg:w-[300px] lg:flex-col lg:overflow-visible lg:px-0 lg:snap-none">
+        <GlobestudioCard />
+        <CurbCard />
+      </div>
 
       {/* Foreground Content */}
-      {/* Extra bottom padding on mobile so the last logo row clears the
-          full-width Globestudio card that's fixed to the bottom of the screen.
-          Desktop keeps 140px (the card lives in the top-right there). */}
-      <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] pb-[190px] md:pb-[140px] max-w-[1440px] min-h-screen">
+      {/* Extra bottom padding below lg so the last logo row clears the
+          single-height project-card row pinned to the bottom of the screen.
+          ≥lg drops back to 140px (the cards move to the top-right there).
+          (md:pb-[200px] is needed because md:p-[140px] would otherwise reset
+          the bottom padding before lg takes over.) */}
+      <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] pb-[200px] md:pb-[200px] lg:pb-[140px] max-w-[1440px] min-h-screen">
         <div className="flex flex-col gap-[96px] items-start">
         {/* Animated Logo — draws itself then fills */}
         <div className="h-[53px] relative shrink-0 w-[80.116px]" data-name="Union">
@@ -50,7 +60,7 @@ export default function AnimatedLanding() {
         </div>
 
         {/* Animated Text Content */}
-        <div className="flex flex-col font-['Instrument_Sans',sans-serif] font-normal gap-4 items-start leading-[normal] text-[#1E1E1E] max-w-[674px]">
+        <div className="flex flex-col font-['Instrument_Sans',sans-serif] font-normal gap-4 items-start leading-[normal] text-[#1E1E1E] max-w-[674px] lg:max-w-[520px] xl:max-w-[674px]">
           <motion.h1
             className="text-[clamp(28px,4vw,52px)] font-normal"
             style={{ fontVariationSettings: "'wdth' 100" }}
