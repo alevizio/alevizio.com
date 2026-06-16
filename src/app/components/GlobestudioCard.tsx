@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useMemo } from "react";
 
 // Globestudio brand mark — dotted-globe wordmark glyph (source viewBox 915×523).
@@ -53,17 +53,28 @@ const GLOBE_CONFIG = {
 const GLOBESTUDIO_ORIGIN = "https://globestudio.app";
 
 export default function GlobestudioCard() {
+  // Honor prefers-reduced-motion: freeze the globe (no autospin / no shader
+  // animation) for users who ask for it, while keeping the static sphere visual.
+  // The iframe can't read the parent's media query, so we bake the preference
+  // into the embed config here. (WCAG 2.2.2 Pause/Stop/Hide.)
+  const reduceMotion = useReducedMotion();
+
   const embedUrl = useMemo(() => {
-    const c = encodeURIComponent(JSON.stringify(GLOBE_CONFIG));
+    const config = {
+      ...GLOBE_CONFIG,
+      animationsEnabled: !reduceMotion,
+      globeSettings: { ...GLOBE_CONFIG.globeSettings, autoSpin: !reduceMotion },
+    };
+    const c = encodeURIComponent(JSON.stringify(config));
     return `${GLOBESTUDIO_ORIGIN}/embed?c=${c}&theme=light`;
-  }, []);
+  }, [reduceMotion]);
 
   return (
     <motion.a
       href="https://globestudio.app"
       target="_blank"
       rel="noopener noreferrer"
-      className="group pixel-corners fixed bottom-4 left-4 right-4 z-20 md:bottom-auto md:left-auto md:top-8 md:right-8 flex flex-col items-start gap-8 md:w-[300px] overflow-hidden bg-[#1E1E1E]/[0.06] px-5 py-4 backdrop-blur-sm font-['Instrument_Sans',sans-serif] text-[#1E1E1E] hover:bg-[#1E1E1E]/[0.1] transition-colors"
+      className="group pixel-corners relative flex w-[78vw] max-w-[320px] shrink-0 snap-start flex-col items-start gap-8 overflow-hidden lg:w-full bg-[#1E1E1E]/[0.06] px-5 py-4 backdrop-blur-sm font-['Instrument_Sans',sans-serif] text-[#1E1E1E] hover:bg-[#1E1E1E]/[0.1] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1E1E1E]"
       style={{ fontVariationSettings: "'wdth' 100" }}
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -84,13 +95,16 @@ export default function GlobestudioCard() {
           tabIndex={-1}
           loading="lazy"
           // Rendered at display size (not upscaled) so the dots stay crisp.
-          className="select-none absolute left-1/2 top-1/2 h-[440px] w-[440px]"
+          className="select-none absolute right-0 top-1/2 h-[440px] w-[440px]"
           style={{
             border: 0,
             colorScheme: "light",
             background: "transparent",
-            // Sized/positioned so the sphere sits cropped at the card's right.
-            transform: "translate(-50%, -50%) translate(119px, 29px) scale(1)",
+            // Anchored to the card's RIGHT edge (right-0) so the sphere crops
+            // identically at any card width — desktop 300px and the variable
+            // mobile snap-card (78vw, max 320px). +189px keeps the desktop crop
+            // pixel-identical to the old center-offset version (W=300 → right=489).
+            transform: "translate(189px, -50%) translate(0px, 29px) scale(1)",
             opacity: 0.4,
           }}
         />
