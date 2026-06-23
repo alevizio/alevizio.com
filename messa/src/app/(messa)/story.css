@@ -1,0 +1,544 @@
+/*
+ * Route-scoped styles for the Messa story. Everything is prefixed
+ * `story-` and only used inside src/app/story; the file holds the two
+ * things Tailwind utilities can't express inline — the font stacks
+ * built from next/font variables, and the cloud-drift keyframes.
+ */
+
+/* Headings: Perfectly Nineties, with Untitled Serif standing in. */
+.story-serif {
+  font-family:
+    var(--font-perfectly-nineties), var(--font-untitled-serif), Georgia,
+    serif;
+}
+
+/* Body and UI: Messina Sans. */
+.story-sans {
+  font-family: var(--font-messina-sans), system-ui, sans-serif;
+}
+
+/* Clouds drift a slow there-and-back; duration is set per cloud via
+ * Tailwind's [animation-duration:…] so the sky never moves in sync. */
+@keyframes story-cloud-drift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(48px);
+  }
+}
+
+.story-cloud {
+  animation: story-cloud-drift 70s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-cloud {
+    animation: none;
+  }
+}
+
+/* Hide horizontal scrollbars on the story's media strips (client call
+ * 2026-06-10) — the galleries keep every other affordance (drag, snap,
+ * arrows, buttons), the bar itself just never renders. */
+.story-scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.story-scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* PipelineWorlds: the full landing-page preview slowly pans top→bottom so
+ * the whole page (and where the painted background changes) is revealed
+ * without the reader scrolling. Image aspect is 1000:6571, the frame is
+ * 4:5, so -81% lands the window on the footer. */
+@keyframes worldPagePan {
+  0%, 7% { transform: translateY(0%); }
+  93%, 100% { transform: translateY(-81%); }
+}
+.world-page-pan {
+  animation: worldPagePan 26s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-page-pan { animation: none; }
+}
+
+/* Typography marquee — the display-face contact sheet scrolls as one row
+ * (client call 2026-06-13). Each card carries its own right margin so a
+ * doubled track loops seamlessly at translateX(-50%). Pauses on hover; under
+ * reduced motion it stops and becomes a manual horizontal scroll. */
+@keyframes story-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.story-marquee {
+  width: max-content;
+  animation: story-marquee 52s linear infinite;
+}
+/* Second stacked marquee (the objects row) drifts the opposite way. The
+ * doubled track stays seamless under reversed playback. */
+.story-marquee-reverse {
+  animation-direction: reverse;
+}
+.story-marquee-mask:hover .story-marquee {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-marquee { animation: none; }
+}
+
+/* Steam rising off the coffee-mug sprite in the objects marquee — a nod
+ * to the live site's SMIL steam. Two or three soft wisps rise, stretch and
+ * fade on staggered loops; transform-origin bottom so they grow upward.
+ * Stops under reduced motion. */
+@keyframes story-steam {
+  0% {
+    opacity: 0;
+    transform: translateY(2px) scaleY(0.7);
+  }
+  25% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-26px) scaleY(1.3);
+  }
+}
+.story-steam {
+  transform-origin: bottom center;
+  animation: story-steam 2.6s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-steam {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Soft edge fade for the hand-drawn people marquee — cutout figures
+ * dissolve at the left/right edges instead of hard-clipping mid-body.
+ * Scoped to the cast row; the typography marquee keeps its hard edges. */
+.story-marquee-fade {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+}
+
+/* Four-side edge feather for bare-on-cream media (the "part nobody built"
+ * cube): two intersecting linear gradients dissolve every edge into the page
+ * cream, so an opaque square clip carries no hard border. Mirrors the Messa
+ * pain-section's BREAKDOWN_FEATHER_MASK. */
+.story-edge-feather {
+  -webkit-mask-image:
+    linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.16) 1.5%, rgba(0,0,0,0.5) 3%, rgba(0,0,0,0.84) 4.5%, #000 6%, #000 96%, rgba(0,0,0,0.84) 97%, rgba(0,0,0,0.5) 98%, rgba(0,0,0,0.16) 99%, rgba(0,0,0,0) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.16) 2%, rgba(0,0,0,0.5) 4%, rgba(0,0,0,0.84) 6%, #000 8%, #000 90%, rgba(0,0,0,0.84) 92.5%, rgba(0,0,0,0.5) 95%, rgba(0,0,0,0.16) 97.5%, rgba(0,0,0,0) 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.16) 1.5%, rgba(0,0,0,0.5) 3%, rgba(0,0,0,0.84) 4.5%, #000 6%, #000 96%, rgba(0,0,0,0.84) 97%, rgba(0,0,0,0.5) 98%, rgba(0,0,0,0.16) 99%, rgba(0,0,0,0) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.16) 2%, rgba(0,0,0,0.5) 4%, rgba(0,0,0,0.84) 6%, #000 8%, #000 90%, rgba(0,0,0,0.84) 92.5%, rgba(0,0,0,0.5) 95%, rgba(0,0,0,0.16) 97.5%, rgba(0,0,0,0) 100%);
+  mask-composite: intersect;
+}
+
+/* The three CTA styles the April switcher toggled between — Flat, Glass, 3D —
+ * rebuilt natively for the UI section with real :hover/:active. Exact recipes
+ * lifted from messa-landing globals.css (the glass utility + the data-tactile
+ * letterpress button). 3D is the one that shipped. */
+.story-btn-flat {
+  background-color: #3C4BE6;
+  color: #ffffff;
+  border: 1px solid transparent;
+  transition: filter 150ms ease, transform 80ms ease;
+}
+.story-btn-flat:hover {
+  filter: brightness(1.08);
+}
+.story-btn-flat:active {
+  transform: translateY(0.5px) scale(0.99);
+}
+.story-btn-glass {
+  background-color: rgba(255, 255, 255, 0.62);
+  color: #3C4BE6;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  transition: background-color 150ms ease, transform 80ms ease;
+}
+.story-btn-glass:hover {
+  background-color: rgba(255, 255, 255, 0.82);
+}
+.story-btn-glass:active {
+  transform: translateY(0.5px) scale(0.99);
+}
+.story-btn-3d {
+  background-color: #5A6B8F;
+  color: #ffffff;
+  border: 1px solid rgba(30, 40, 60, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 1px 2px rgba(20, 30, 50, 0.12),
+    0 4px 10px rgba(20, 30, 50, 0.1);
+  font-weight: 600;
+  letter-spacing: 0.012em;
+  text-shadow:
+    0 -1px 0 rgba(15, 25, 45, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: filter 150ms ease, transform 80ms ease;
+}
+.story-btn-3d:hover {
+  filter: brightness(1.04);
+}
+.story-btn-3d:active {
+  transform: translateY(0.5px);
+}
+
+/* Step-icon stroke-draw for the live stepper reconstruction — each path is
+ * normalized to pathLength 1 and drawn from offset 1→0 when its step goes
+ * active (the glyph remounts per step, replaying it). Mirrors the site's
+ * AnimatedStepIcon stroke-dashoffset draw. */
+@keyframes story-step-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.story-step-glyph path {
+  stroke-dasharray: 1;
+  animation: story-step-draw 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-step-glyph path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Blinking caret for the native founder-letter typewriter — the exact recipe
+ * from the live About page: a 2px bar that blinks step-end, in the ink-blue
+ * accent (var(--color-accent) = #3C4BE6 here, the page accent). */
+.story-type-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--color-accent);
+  animation: story-type-caret-blink 0.7s step-end infinite;
+}
+@keyframes story-type-caret-blink {
+  50% { background: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-type-caret { display: none !important; }
+}
+
+/* ── Animated butterfly (vendored from messa-landing) ─────────────────
+ * Adapted from CodePen XzKJmv. Wings flap via 3D rotate; the body floats
+ * on a gentle path; the wrapper drifts a wandering lap around its anchor.
+ * Geometry is the native 100×100 art scaled by --bf-scale; timing/stagger
+ * via --bf-flap / --bf-fly / --bf-delay. Used at the foot of the
+ * hand-drawn section. */
+.messa-butterfly-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.messa-butterfly {
+  pointer-events: none;
+  animation: var(--bf-path, messa-bf-fly-a) var(--bf-fly, 18s) ease-in-out
+    var(--bf-delay, 0s) infinite;
+  will-change: transform;
+}
+.messa-bf-stage {
+  width: 100px;
+  height: 100px;
+  transform: rotate(var(--bf-tilt, 0deg)) scale(var(--bf-scale, 1))
+    scaleX(var(--bf-flip, 1));
+  transform-origin: center;
+  transform-style: preserve-3d;
+}
+.messa-bf-stage var {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  margin-left: -50px;
+  margin-top: -50px;
+  transform-style: preserve-3d;
+}
+.messa-bf-stage var.messa-bf-rotate {
+  transform: rotate3d(1, 0.5, 0, 50deg);
+  animation: messa-bf-float 4.5s ease-in-out var(--bf-delay, 0s) infinite;
+}
+.messa-bf-stage figure.messa-bf-fig {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  margin: -50px 0 0 -50px;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+}
+.messa-bf-stage .messa-bf-wing {
+  position: absolute;
+  width: 50px;
+  height: 100px;
+  transform-style: preserve-3d;
+  transform-origin: 50px 50px;
+}
+.messa-bf-stage .messa-bf-wing.left {
+  animation: messa-bf-left-flap var(--bf-flap, 1s) ease-in-out
+    var(--bf-delay, 0s) infinite;
+}
+.messa-bf-stage .messa-bf-wing.right {
+  transform: scaleX(-1);
+  animation: messa-bf-right-flap var(--bf-flap, 1s) ease-in-out
+    var(--bf-delay, 0s) infinite;
+}
+.messa-bf-stage .messa-bf-wing use {
+  display: block;
+}
+@keyframes messa-bf-float {
+  0%,
+  100% {
+    transform: rotate3d(1, 0.5, 0, 50deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: rotate3d(1, 0.5, 0, 50deg) translate3d(12px, -28px, 0);
+  }
+}
+@keyframes messa-bf-left-flap {
+  0%,
+  100% {
+    transform: scaleX(1) rotate3d(0, 1, 0, 60deg);
+  }
+  50% {
+    transform: scaleX(1) rotate3d(0, 1, 0, -70deg);
+  }
+}
+@keyframes messa-bf-right-flap {
+  0%,
+  100% {
+    transform: scaleX(-1) rotate3d(0, 1, 0, 60deg);
+  }
+  50% {
+    transform: scaleX(-1) rotate3d(0, 1, 0, -70deg);
+  }
+}
+@keyframes messa-bf-fly-a {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  14% {
+    transform: translate3d(64px, -58px, 0);
+  }
+  30% {
+    transform: translate3d(186px, -18px, 0);
+  }
+  46% {
+    transform: translate3d(268px, 40px, 0);
+  }
+  62% {
+    transform: translate3d(170px, 92px, 0);
+  }
+  78% {
+    transform: translate3d(58px, 52px, 0);
+  }
+  90% {
+    transform: translate3d(96px, -6px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes messa-bf-fly-b {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  16% {
+    transform: translate3d(-84px, 60px, 0);
+  }
+  32% {
+    transform: translate3d(-206px, 14px, 0);
+  }
+  50% {
+    transform: translate3d(-290px, -34px, 0);
+  }
+  66% {
+    transform: translate3d(-150px, -78px, 0);
+  }
+  82% {
+    transform: translate3d(-58px, -28px, 0);
+  }
+  92% {
+    transform: translate3d(-128px, 30px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .messa-butterfly,
+  .messa-bf-stage var.messa-bf-rotate,
+  .messa-bf-stage .messa-bf-wing.left,
+  .messa-bf-stage .messa-bf-wing.right {
+    animation: none;
+  }
+}
+
+/* ─── Ported Messa hero / conveyor keyframes ──────────────────────────
+ * Copied verbatim from messa-landing hero-factory.tsx's inline <style>.
+ * The ported conveyor-overlay.tsx applies these by NAME via inline
+ * styles/SMIL (blurReveal, stageZonePulse, iconActivePulse, logoDraw,
+ * etc.), so they MUST exist globally or the conveyor's reveals never
+ * fire (characters would stay at opacity 0). The hero clouds use
+ * heroCloudA–F + cloudEntry; the illustration uses factoryFade /
+ * factoryHeroPan. Drives the interactive factory in factory-layers.tsx. */
+@keyframes factoryFade {
+  from { transform: translateY(10px); }
+  to   { transform: translateY(0); }
+}
+@keyframes cloudEntry {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes factoryHeroPan {
+  0%, 100% { transform: translateX(22%); }
+  50%      { transform: translateX(-22%); }
+}
+@keyframes heroCloudA { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(48px); } }
+@keyframes heroCloudB { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-40px); } }
+@keyframes heroCloudC { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(32px); } }
+@keyframes heroCloudD { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-28px); } }
+@keyframes heroCloudE { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(22px); } }
+@keyframes heroCloudF { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-36px); } }
+/* Reveal used by conveyor-overlay revealDelay fields (opacity ramp). */
+@keyframes blurReveal { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes blurOnlyReveal { 0% { opacity: 1; } 100% { opacity: 1; } }
+@keyframes iconDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+/* Damped-spring "ping of life" on rooftop sign icons. */
+@keyframes iconActivePulse {
+  0%        { transform: scale(1); }
+  4%        { transform: scale(1.12); }
+  8%        { transform: scale(0.96); }
+  12%       { transform: scale(1.02); }
+  16%, 100% { transform: scale(1); }
+}
+/* Stage-zone glow pulse synced to icon pulse. */
+@keyframes stageZonePulse {
+  0%, 65%, 100% { opacity: 0; }
+  15% { opacity: 1; }
+  35% { opacity: 1; }
+}
+/* Outline-then-fill draw for the Messa wordmark in the intro sign. */
+@keyframes logoDraw {
+  0%   { stroke-dashoffset: 1; fill-opacity: 0; }
+  60%  { stroke-dashoffset: 0; fill-opacity: 0; }
+  100% { stroke-dashoffset: 0; fill-opacity: 1; }
+}
+/* Mobile/tablet: the illustration overflows its box and pans, giving the
+ * still raster ambient motion. Matches the live hero behaviour. */
+@media (max-width: 767px) {
+  .factory-hero-cloud-lg { display: none !important; }
+  .factory-hero-illustration {
+    width: 200% !important;
+    max-width: none !important;
+    animation: factoryHeroPan 28s ease-in-out infinite !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .factory-hero-illustration {
+    width: 150% !important;
+    max-width: none !important;
+    animation: factoryHeroPan 32s ease-in-out infinite !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .factory-hero-illustration {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Font aliases for the ported conveyor. The overlay labels its wall signs
+ * (1. Prepare / 2. Interview / 3. Decide), subtitles and intro sign with
+ * var(--font-sans) / var(--font-serif) — which this project doesn't define
+ * (it ships --font-messina-sans / --font-perfectly-nineties / -untitled-
+ * serif). Without these aliases the signage rendered in system-ui/Georgia
+ * fallbacks (the "incorrect typography"). Scope them to the stage so the
+ * signs use the real Messa faces and nothing else on the page is touched. */
+.factory-hero-illustration {
+  --font-sans: var(--font-messina-sans), system-ui, sans-serif;
+  --font-serif: var(--font-perfectly-nineties), var(--font-untitled-serif),
+    Georgia, serif;
+}
+
+/* ── The "Underneath" chapter, buried (client direction 2026-06-18): the whole
+ * chapter is soil-brown and collapsed behind a dig trigger, in the style of
+ * the product's "what's underneath the workflow" reveal. grid-rows 0fr→1fr
+ * animates the real height open; `inert` keeps the buried content out of the
+ * tab order while closed. ── */
+.underneath-collapsible {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.underneath-collapsible.dug {
+  grid-template-rows: 1fr;
+}
+.underneath-collapsible > div {
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .underneath-collapsible {
+    transition: none;
+  }
+}
+
+/* Re-theme the chapter's (light-built) content for the dark soil background —
+ * scoped overrides of the hardcoded cream-world colors. Headings + values go
+ * cream, body goes muted-cream, mono labels go sand, white cards go a faint
+ * translucent earth, and the hairlines go light. */
+.story-underneath .text-\[\#0A0A0B\] {
+  color: #fbf0e6;
+}
+.story-underneath .text-\[\#6E6B68\] {
+  color: rgba(251, 240, 230, 0.72);
+}
+.story-underneath .text-\[\#5A6B8F\] {
+  color: #cfb58b;
+}
+.story-underneath .bg-white {
+  background-color: rgba(255, 255, 255, 0.055);
+}
+.story-underneath .border-\[\#E8D9C5\] {
+  border-color: rgba(245, 236, 222, 0.15);
+}
+.story-underneath .bg-\[\#E8D9C5\] {
+  background-color: rgba(245, 236, 222, 0.15);
+}
+/* The accent-bug specimen keeps its own cream panel + literal slate/blue, so
+ * its point survives — restore dark text inside that panel. */
+.story-underneath .bg-\[\#FBF0E6\] .text-\[\#5A6B8F\] {
+  color: #5a6b8f;
+}
+.story-underneath .bg-\[\#FBF0E6\] .text-\[\#6E6B68\] {
+  color: #6e6b68;
+}

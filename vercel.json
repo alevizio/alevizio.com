@@ -3,6 +3,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/work/messa",
+      "destination": "https://messa.alevizio.com",
+      "permanent": false
+    },
+    {
       "source": "/",
       "has": [{ "type": "host", "value": "alejandrovizio.com" }],
       "destination": "https://alevizio.com/",
