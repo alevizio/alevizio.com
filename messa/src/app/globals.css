@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* ── Ported Messa product tokens (additive — drive the bg-bg-*, text-text-*,
+   * text-accent, glass, etc. utilities the ProductSection/DecisionsSection
+   * use). Fonts + accent are re-scoped on .messa-embed below. --font-serif is
+   * new (the case study otherwise uses the story-serif class). ── */
+  --font-serif: var(--font-perfectly-nineties), var(--font-untitled-serif), Georgia, serif;
+
+  --color-bg-primary: #FEFEFE;
+  --color-bg-secondary: #F8F7F5;
+  --color-bg-tertiary: #F0EFEC;
+  --color-text-primary: #0A0A0B;
+  --color-text-secondary: #6E6B68;
+  --color-text-muted: #A3A19E;
+  --color-border-default: #E6E5E2;
+  --color-border-hover: #DDDCD9;
+  --color-hover-bg: #F3F2F0;
+  --color-accent: #3C4BE6;
+  --color-accent-foreground: #FFFFFF;
+
+  --shadow-glass: 0 8px 32px rgba(0,0,0,0.08), inset 0 1px 1px rgba(255,255,255,0.95), inset 0 -1px 1px rgba(0,0,0,0.03);
+  --shadow-glass-subtle: 0 4px 16px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.95), inset 0 -1px 1px rgba(0,0,0,0.02);
+
+  --color-glass-bg: rgba(255,255,255,0.62);
+  --color-glass-bg-strong: rgba(255,255,255,0.78);
+  --color-glass-bg-strong-static: rgba(255,255,255,0.88);
+  --color-glass-bg-solid: rgba(255,255,255,0.95);
+  --color-glass-border: rgba(15,23,42,0.12);
+  --color-glass-border-accent: rgba(60,75,230,0.35);
+
+  --color-accent-glow: rgba(60,75,230,0.25);
+  --color-gradient-end: #5A9E72;
+
+  --color-success: #69B982;
+  --color-success-strong: #2E7A4D;
+  --color-success-bg: rgba(105,185,130,0.12);
+  --color-success-border: rgba(105,185,130,0.35);
+
+  --color-info: #3C4BE6;
+  --color-info-bg: rgba(60,75,230,0.08);
+  --color-info-border: rgba(60,75,230,0.28);
+
+  --color-warning: #D9924A;
+  --color-warning-strong: #8C530A;
+  --color-warning-bg: rgba(217,146,74,0.14);
+  --color-warning-border: rgba(217,146,74,0.3);
+
+  --color-problem: #CE6B52;
+  --color-problem-strong: #8B3A24;
+  --color-problem-bg: rgba(206,107,82,0.1);
+  --color-problem-border: rgba(206,107,82,0.28);
+}
+
+/* ── Ported Messa utilities used by the product/decisions sections ── */
+@utility text-heading {
+  font-size: clamp(2.125rem, 1.73rem + 1.69vw, 3rem);
+  line-height: 1.1;
+}
+@utility section-pill {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  color: var(--color-text-primary);
+  background: rgba(10, 10, 11, 0.06);
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  padding: 0.375rem 1rem;
+  margin-bottom: 1rem;
+}
+@utility section-pill-info {
+  color: var(--color-info);
+  background: var(--color-info-bg);
+  border-color: var(--color-info-border);
+}
+@utility animate-dropdown-enter {
+  animation: dropdownEnter 160ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: top center;
+}
+@keyframes dropdownEnter {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Scope: the ported product/underneath sections render in the brand's own
+ * fonts and the cream-landing slate accent (#5A6B8F), without touching the
+ * rest of the case study. Tailwind v4 utilities read these cascading vars. ── */
+.messa-embed {
+  --font-sans: var(--font-messina-sans), system-ui, sans-serif;
+  --font-serif: var(--font-perfectly-nineties), var(--font-untitled-serif), Georgia, serif;
+  --color-accent: #5A6B8F;
+  --color-accent-foreground: #FFFFFF;
+  --color-info: #5A6B8F;
+  --color-info-bg: rgba(90, 107, 143, 0.08);
+  --color-info-border: rgba(90, 107, 143, 0.3);
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
