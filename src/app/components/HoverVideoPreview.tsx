@@ -36,10 +36,12 @@ const placeCard = (clientX: number, clientY: number) => ({
 export const HoverVideoPreview = ({
   entry,
   videoSrc,
+  poster,
   label,
 }: {
   entry: HoverPreviewPoint | null;
   videoSrc: string;
+  poster?: string;
   label?: string;
 }) => {
   const reduceMotion = useReducedMotion();
@@ -85,6 +87,7 @@ export const HoverVideoPreview = ({
           <div className="w-[320px] overflow-hidden rounded-lg bg-[#1E1E1E] shadow-[0_24px_64px_-16px_rgba(30,30,30,0.45)]">
             <video
               src={videoSrc}
+              poster={poster}
               className="block aspect-video w-full object-cover"
               autoPlay
               muted

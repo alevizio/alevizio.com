@@ -18,7 +18,7 @@ type Company = {
   years?: string;
   // Internal case-study link: replaces the external url on the logo and
   // shows a cursor-following video preview on hover.
-  caseStudy?: { href: string; video: string; label: string };
+  caseStudy?: { href: string; video: string; poster?: string; label: string };
 };
 
 const companies: Company[] = [
@@ -123,11 +123,14 @@ const companies: Company[] = [
     name: "Messa",
     url: "https://messa.ai/",
     height: "h-[26px]",
-    // TODO(content): /work/messa-preview.mp4 is a placeholder (copy of
-    // og-card.mp4) — overwrite the file with the real Messa loop when ready.
+    tag: { text: "new case study" },
+    // Messa product trailer (the "See talent clearly." site walkthrough),
+    // encoded to a silent 480p loop; poster is the hero opening frame so the
+    // dark card doesn't flash black before the video paints.
     caseStudy: {
       href: "/work/messa",
       video: "/work/messa-preview.mp4",
+      poster: "/work/messa-preview-poster.jpg",
       label: "view case study",
     },
     viewBox: "0 0 2786 690",
@@ -248,6 +251,7 @@ const Logo = ({
       <HoverVideoPreview
         entry={previewEntry}
         videoSrc={caseStudy.video}
+        poster={caseStudy.poster}
         label={caseStudy.label}
       />
     )}
