@@ -17,14 +17,24 @@ const VIEWPORT_EDGE = 16;
 
 const SPRING = { stiffness: 400, damping: 40, mass: 0.7 };
 
-const placeCard = (clientX: number, clientY: number) => ({
-  // Trail to the right of the cursor, vertically centered, clamped to viewport.
-  x: Math.min(clientX + CURSOR_OFFSET_X, window.innerWidth - CARD_WIDTH - VIEWPORT_EDGE),
-  y: Math.min(
-    Math.max(clientY - CARD_HEIGHT / 2, VIEWPORT_EDGE),
-    window.innerHeight - CARD_HEIGHT - VIEWPORT_EDGE
-  ),
-});
+const placeCard = (clientX: number, clientY: number) => {
+  // Trail to the right of the cursor; if it wouldn't fit (e.g. the trigger is
+  // pinned to the top-right corner, like the project cards), flip to the left of
+  // the cursor so the preview doesn't cover the element being hovered.
+  const fitsRight =
+    clientX + CURSOR_OFFSET_X + CARD_WIDTH <= window.innerWidth - VIEWPORT_EDGE;
+  const x = fitsRight
+    ? clientX + CURSOR_OFFSET_X
+    : Math.max(VIEWPORT_EDGE, clientX - CURSOR_OFFSET_X - CARD_WIDTH);
+  return {
+    x,
+    // Vertically centered on the cursor, clamped to the viewport.
+    y: Math.min(
+      Math.max(clientY - CARD_HEIGHT / 2, VIEWPORT_EDGE),
+      window.innerHeight - CARD_HEIGHT - VIEWPORT_EDGE
+    ),
+  };
+};
 
 /**
  * Floating video card that follows the cursor while a trigger element is
@@ -37,11 +47,14 @@ export const HoverVideoPreview = ({
   entry,
   videoSrc,
   poster,
+  image,
   label,
 }: {
   entry: HoverPreviewPoint | null;
-  videoSrc: string;
+  videoSrc?: string;
   poster?: string;
+  /** Static image alternative to a video loop (e.g. an OG card). Takes priority over videoSrc. */
+  image?: string;
   label?: string;
 }) => {
   const reduceMotion = useReducedMotion();
@@ -85,16 +98,25 @@ export const HoverVideoPreview = ({
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="w-[320px] overflow-hidden rounded-lg bg-[#1E1E1E] shadow-[0_24px_64px_-16px_rgba(30,30,30,0.45)]">
-            <video
-              src={videoSrc}
-              poster={poster}
-              className="block aspect-video w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-            />
+            {image ? (
+              <img
+                src={image}
+                alt=""
+                aria-hidden="true"
+                className="block aspect-video w-full object-cover"
+              />
+            ) : (
+              <video
+                src={videoSrc}
+                poster={poster}
+                className="block aspect-video w-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
+            )}
             {label && (
               <p className="bg-[#dedbd1] px-3 py-2 text-[11px] tracking-[0.05em] text-[#1E1E1E] font-['Instrument_Sans',sans-serif]">
                 {label} →

@@ -1,4 +1,6 @@
 import { motion } from "motion/react";
+import { useState } from "react";
+import { HoverVideoPreview, type HoverPreviewPoint } from "./HoverVideoPreview";
 
 // CURB — SF street-parking / street-sweeping map (curb.guide). Same chrome as the
 // Globestudio + prode cards so the three read as one set. Foreground = CURB's real
@@ -9,6 +11,8 @@ import { motion } from "motion/react";
 // Globestudio's globe / prode's trophy, nodding to CURB's actual map. It fades in
 // from the left so it never competes with the wordmark + tagline.
 export default function CurbCard() {
+  const [previewEntry, setPreviewEntry] = useState<HoverPreviewPoint | null>(null);
+
   return (
     <motion.a
       href="https://curb.guide/"
@@ -19,6 +23,11 @@ export default function CurbCard() {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 1.9, ease: [0.22, 1, 0.36, 1] }}
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse")
+          setPreviewEntry({ x: e.clientX, y: e.clientY });
+      }}
+      onPointerLeave={() => setPreviewEntry(null)}
     >
       {/* Real Mission street map (OSM → ink lines), fading in from the left so the
           copy stays legible. Ambient weight to match the globe / trophy siblings. */}
@@ -51,6 +60,15 @@ export default function CurbCard() {
           know where to park in sf — sweeping times block by block.
         </p>
       </div>
+
+      {/* Cursor-following preview (desktop mouse only) — curb's OG card.
+          Portals to <body>, so it floats above the card; flips to the left of the
+          cursor near the right edge. */}
+      <HoverVideoPreview
+        entry={previewEntry}
+        image="/work/curb-og.jpg"
+        label="curb.guide"
+      />
     </motion.a>
   );
 }

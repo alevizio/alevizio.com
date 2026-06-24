@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { HoverVideoPreview, type HoverPreviewPoint } from "./HoverVideoPreview";
 
 // Globestudio brand mark — dotted-globe wordmark glyph (source viewBox 915×523).
 const LOGO_PATH =
@@ -58,6 +59,7 @@ export default function GlobestudioCard() {
   // The iframe can't read the parent's media query, so we bake the preference
   // into the embed config here. (WCAG 2.2.2 Pause/Stop/Hide.)
   const reduceMotion = useReducedMotion();
+  const [previewEntry, setPreviewEntry] = useState<HoverPreviewPoint | null>(null);
 
   const embedUrl = useMemo(() => {
     const config = {
@@ -79,6 +81,11 @@ export default function GlobestudioCard() {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 1.6, ease: [0.22, 1, 0.36, 1] }}
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse")
+          setPreviewEntry({ x: e.clientX, y: e.clientY });
+      }}
+      onPointerLeave={() => setPreviewEntry(null)}
     >
       {/* Live Globestudio globe — solid dark sphere with light dotted
           continents, transparent around the sphere so the cream shows. Spins on
@@ -132,6 +139,15 @@ export default function GlobestudioCard() {
           open-source dotted maps &amp; 3d globes for designers.
         </p>
       </div>
+
+      {/* Cursor-following preview (desktop mouse only) — globestudio's OG card.
+          Portals to <body>, so it floats above the card; flips to the left of the
+          cursor near the right edge. */}
+      <HoverVideoPreview
+        entry={previewEntry}
+        image="/work/globestudio-og.jpg"
+        label="globestudio.app"
+      />
     </motion.a>
   );
 }
