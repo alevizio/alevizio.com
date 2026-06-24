@@ -69,12 +69,20 @@ export const metadata: Metadata = {
     type: "article",
     images: [
       {
-        url: "/work/messa/timeline/09-2026-05-22-e9856d4b.webp",
-        width: 2160,
-        height: 1350,
-        alt: "The Messa landing page hero: an isometric cream hiring factory under a blue sky.",
+        // The same OG card as the live product (messa.ai/opengraph-image).
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Messa — See talent clearly. Built on a hiring playbook.",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Messa — the story — Alejandro Vizio",
+    description:
+      "A warm paper world for an AI hiring copilot. 759 commits, 15 captured deploys, one isometric factory.",
+    images: ["/og.jpg"],
   },
 };
 
