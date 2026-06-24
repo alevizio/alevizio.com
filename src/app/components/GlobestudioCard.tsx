@@ -140,12 +140,13 @@ export default function GlobestudioCard() {
         </p>
       </div>
 
-      {/* Cursor-following preview (desktop mouse only) — globestudio's OG card.
-          Portals to <body>, so it floats above the card; flips to the left of the
-          cursor near the right edge. */}
+      {/* Cursor-following preview (desktop mouse only) — the studio editor
+          wrapping a map into a globe. Portals to <body>, so it floats above the
+          card; flips to the left of the cursor near the right edge. */}
       <HoverVideoPreview
         entry={previewEntry}
-        image="/work/globestudio-og.jpg"
+        videoSrc="/work/globestudio-preview.mp4"
+        poster="/work/globestudio-preview-poster.jpg"
         label="globestudio.app"
       />
     </motion.a>
