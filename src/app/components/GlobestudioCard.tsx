@@ -117,9 +117,9 @@ export default function GlobestudioCard() {
         />
       </div>
 
-      {/* "NEW" pill — top-right corner */}
+      {/* "OPEN SOURCE" pill — top-right corner */}
       <span className="pixel-corners-sm absolute right-4 top-4 z-20 bg-[#1E1E1E] px-[5px] py-[3px] text-[8px] font-bold uppercase leading-none tracking-[0.14em] text-[#dedbd1]">
-        new
+        open source
       </span>
 
       {/* Foreground content */}

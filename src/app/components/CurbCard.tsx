@@ -22,7 +22,7 @@ export default function CurbCard() {
       style={{ fontVariationSettings: "'wdth' 100" }}
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay: 1.9, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.7, delay: 1.75, ease: [0.22, 1, 0.36, 1] }}
       onPointerEnter={(e) => {
         if (e.pointerType === "mouse")
           setPreviewEntry({ x: e.clientX, y: e.clientY });
@@ -42,9 +42,9 @@ export default function CurbCard() {
         />
       </div>
 
-      {/* "LIVE" pill — top-right corner */}
+      {/* "FREE" pill — top-right corner */}
       <span className="pixel-corners-sm absolute right-4 top-4 z-20 bg-[#1E1E1E] px-[5px] py-[3px] text-[8px] font-bold uppercase leading-none tracking-[0.14em] text-[#dedbd1]">
-        live
+        free
       </span>
 
       {/* Foreground content */}

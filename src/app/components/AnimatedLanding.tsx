@@ -4,6 +4,7 @@ import svgPaths from "../../imports/svg-ectekmh7x3";
 import AsciiRain from "./AsciiRain";
 import CompanyLogos from "./CompanyLogos";
 import GlobestudioCard from "./GlobestudioCard";
+import ProdeCard from "./ProdeCard";
 import CurbCard from "./CurbCard";
 
 export default function AnimatedLanding() {
@@ -23,12 +24,13 @@ export default function AnimatedLanding() {
 
       {/* Project cards. ≥lg (1024px): vertical stack, fixed top-right, 300px wide.
           <lg (mobile + tablet + small laptops): a snap-scrolling horizontal row
-          pinned to the bottom — swipe between Globestudio → curb. The stack
-          waits until lg so the 300px column never collides with the headline
-          on narrow desktops (the overlap clears around 1146px). */}
+          pinned to the bottom — swipe between Globestudio → curb → prode. The
+          stack waits until lg so the 300px column never collides with the
+          headline on narrow desktops (the overlap clears around 1146px). */}
       <div className="fixed bottom-4 left-0 right-0 z-20 flex flex-row gap-3 overflow-x-auto scroll-px-4 px-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:bottom-auto lg:left-auto lg:right-8 lg:top-8 lg:w-[300px] lg:flex-col lg:overflow-visible lg:px-0 lg:snap-none">
         <GlobestudioCard />
         <CurbCard />
+        <ProdeCard />
       </div>
 
       {/* Foreground Content */}
@@ -62,7 +64,7 @@ export default function AnimatedLanding() {
         {/* Animated Text Content */}
         <div className="flex flex-col font-['Instrument_Sans',sans-serif] font-normal gap-4 items-start leading-[normal] text-[#1E1E1E] max-w-[674px] lg:max-w-[520px] xl:max-w-[674px]">
           <motion.h1
-            className="text-[clamp(28px,4vw,52px)] font-normal"
+            className="text-[clamp(28px,4vw,52px)] font-normal leading-[1.05]"
             style={{ fontVariationSettings: "'wdth' 100" }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -74,7 +76,7 @@ export default function AnimatedLanding() {
               crawlers (the logos are SVGs); visually hidden, read by Google + a11y. */}
           <p className="sr-only">
             Alejandro Vizio is a product and brand designer in San Francisco who
-            designs product and brand as one system. He is co-founder of Aerolab
+            designs product and brand as one system. He started and led Aerolab
             (8+ years) and led design at Pachama (5+ years, acquired by Carbon
             Direct in 2025), and has worked on product and brand for Planta,
             Messa, Earthscale, Limai, Fudo, and Djooni.
