@@ -155,7 +155,7 @@ const companies: Company[] = [
 
 // Row 1 — companies I've helped with product & brand.
 const primary = [1, 6, 2, 4, 3, 5].map((i) => companies[i]); // Planta, Messa, Earthscale, Limai, Fudo, Djooni
-// Row 2 — companies I've helped build & shape (founder / owner level).
+// Row 2 — companies I've helped build & shape (owner / leadership level).
 const secondary = [0, 7].map((i) => companies[i]); // Pachama, Aerolab
 
 const tagClass =
