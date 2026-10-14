@@ -54,9 +54,9 @@ export default function SaboteursCard() {
         src="/saboteurs-mark.svg"
         alt=""
         aria-hidden="true"
-        // Dagger mark is a tall/narrow glyph (viewBox 24×80), so it needs more
-        // height than the other cards' marks to carry comparable visual weight.
-        className="relative z-10 shrink-0 h-[40px] w-auto"
+        // Same 34px-tall slot as the globestudio and curb marks, so the three
+        // titles line up and the cards come out the same height.
+        className="relative z-10 shrink-0 h-[34px] w-auto"
       />
       <div className="relative z-10 flex flex-col gap-0.5">
         <div className="text-[14px] font-semibold leading-tight">saboteurs</div>

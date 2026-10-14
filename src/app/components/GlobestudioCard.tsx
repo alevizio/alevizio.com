@@ -124,7 +124,9 @@ export default function GlobestudioCard() {
 
       {/* Foreground content */}
       <svg
-        className="relative z-10 shrink-0 w-[46px] h-auto text-[#1E1E1E]"
+        // Same 34px-tall slot as the curb and saboteurs marks, so the three titles
+        // line up; the globe keeps its 46px width and centres in it.
+        className="relative z-10 shrink-0 h-[34px] w-[46px] text-[#1E1E1E]"
         viewBox="0 0 915 523"
         fill="currentColor"
         aria-hidden="true"
