@@ -8,7 +8,7 @@ import { HoverVideoPreview, type HoverPreviewPoint } from "./HoverVideoPreview";
 // with the set (brand source is red #C1121F + gray; recolored to match the set).
 // Background = a real line map of the Mission, generated from OpenStreetMap street
 // geometry and rendered to ink lines (public/mission-map.svg) — the analog to
-// Globestudio's globe / saboteurs' compound, nodding to CURB's actual map. It fades in
+// Globestudio's globe / saboteurs' recon map, nodding to CURB's actual map. It fades in
 // from the left so it never competes with the wordmark + tagline.
 export default function CurbCard() {
   const [previewEntry, setPreviewEntry] = useState<HoverPreviewPoint | null>(null);
@@ -30,7 +30,7 @@ export default function CurbCard() {
       onPointerLeave={() => setPreviewEntry(null)}
     >
       {/* Real Mission street map (OSM → ink lines), fading in from the left so the
-          copy stays legible. Ambient weight to match the globe / compound siblings. */}
+          copy stays legible. Ambient weight to match the globe / recon-map siblings. */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden opacity-[0.22] [mask-image:linear-gradient(to_right,transparent,#000_45%)] [-webkit-mask-image:linear-gradient(to_right,transparent,#000_45%)]">
         <img
           src="/mission-map.svg"
