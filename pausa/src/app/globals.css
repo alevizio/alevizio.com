@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/* Pausa's tokens, as pausa.co ships them (:root) and the brand book
+ * names them. The three colour rules: the blue is a voice (≤ 5% of any
+ * surface: marks, links, one CTA), yellow is attention (one highlight per
+ * screen, behind ink only), and everything else is paper (≈ 95%). */
+@theme {
+  --color-paper: #ececee;
+  --color-panel: #f7f7f8; /* cards, spec cells */
+  --color-panel-2: #f1f1f3;
+  --color-sheet: #ffffff;
+  --color-ash: #b7b7bc;
+  --color-rule: #e4e4e7;
+  --color-rule-warm: #d9d9d6;
+  --color-muted: #8c8c93;
+  --color-body: #54545b; /* ink-soft: body text and rules */
+  --color-ink: #1a1a1d;
+  --color-pen: #172ca3; /* "electric": THE accent */
+  --color-highlighter: #ffd23f; /* "sun" */
+  --color-tile: #efeeea; /* the lockup's tile, always on */
+
+  --font-serif: var(--font-source-serif), Georgia, serif;
+  --font-hand: var(--font-caveat), "Bradley Hand", cursive;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+  background-color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* The page is pausa.co's: white, the wrinkled paper texture running down
+ * it at full width, and a 5% grain laid over everything. */
+body {
+  background-color: #fff;
+  background-image: url("/pausa-co/paper-texture.jpg");
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* Marks are laid on the page the way a pen is: multiplied into the paper. */
+.mark-multiply {
+  mix-blend-mode: multiply;
+}
+
+/* A mark is drawn once, left to right, when it scrolls into view. */
+.mark-wipe {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 800ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.mark-wipe[data-drawn="true"] {
+  clip-path: inset(0 0 0 0);
+}
+
+/* The vector strike draws along its own path. */
+.pen-stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 800ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.pen-stroke[data-drawn="true"] {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark-wipe {
+    clip-path: none;
+    transition: none;
+  }
+
+  .pen-stroke {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+}
