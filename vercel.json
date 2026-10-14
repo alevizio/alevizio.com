@@ -8,6 +8,11 @@
       "permanent": false
     },
     {
+      "source": "/work/pausa",
+      "destination": "https://pausa.alevizio.com",
+      "permanent": false
+    },
+    {
       "source": "/",
       "has": [{ "type": "host", "value": "alejandrovizio.com" }],
       "destination": "https://alevizio.com/",
