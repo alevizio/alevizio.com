@@ -4,7 +4,7 @@ import svgPaths from "../../imports/svg-ectekmh7x3";
 import AsciiRain from "./AsciiRain";
 import CompanyLogos from "./CompanyLogos";
 import GlobestudioCard from "./GlobestudioCard";
-import ProdeCard from "./ProdeCard";
+import SaboteursCard from "./SaboteursCard";
 import CurbCard from "./CurbCard";
 
 export default function AnimatedLanding() {
@@ -24,13 +24,13 @@ export default function AnimatedLanding() {
 
       {/* Project cards. ≥lg (1024px): vertical stack, fixed top-right, 300px wide.
           <lg (mobile + tablet + small laptops): a snap-scrolling horizontal row
-          pinned to the bottom — swipe between Globestudio → curb → prode. The
+          pinned to the bottom — swipe between Globestudio → curb → saboteurs. The
           stack waits until lg so the 300px column never collides with the
           headline on narrow desktops (the overlap clears around 1146px). */}
       <div className="fixed bottom-4 left-0 right-0 z-20 flex flex-row gap-3 overflow-x-auto scroll-px-4 px-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:bottom-auto lg:left-auto lg:right-8 lg:top-8 lg:w-[300px] lg:flex-col lg:overflow-visible lg:px-0 lg:snap-none">
         <GlobestudioCard />
         <CurbCard />
-        <ProdeCard />
+        <SaboteursCard />
       </div>
 
       {/* Foreground Content */}

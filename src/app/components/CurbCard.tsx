@@ -3,12 +3,12 @@ import { useState } from "react";
 import { HoverVideoPreview, type HoverPreviewPoint } from "./HoverVideoPreview";
 
 // CURB — SF street-parking / street-sweeping map (curb.guide). Same chrome as the
-// Globestudio + prode cards so the three read as one set. Foreground = CURB's real
+// Globestudio + saboteurs cards so the three read as one set. Foreground = CURB's real
 // cube "C" logo, recolored to ink (public/curb-logo.svg) so it stays monochrome
-// with the set (brand source is red #C1121F + gray; recolored like prode's mark).
+// with the set (brand source is red #C1121F + gray; recolored to match the set).
 // Background = a real line map of the Mission, generated from OpenStreetMap street
 // geometry and rendered to ink lines (public/mission-map.svg) — the analog to
-// Globestudio's globe / prode's trophy, nodding to CURB's actual map. It fades in
+// Globestudio's globe / saboteurs' compound, nodding to CURB's actual map. It fades in
 // from the left so it never competes with the wordmark + tagline.
 export default function CurbCard() {
   const [previewEntry, setPreviewEntry] = useState<HoverPreviewPoint | null>(null);
@@ -30,7 +30,7 @@ export default function CurbCard() {
       onPointerLeave={() => setPreviewEntry(null)}
     >
       {/* Real Mission street map (OSM → ink lines), fading in from the left so the
-          copy stays legible. Ambient weight to match the globe / trophy siblings. */}
+          copy stays legible. Ambient weight to match the globe / compound siblings. */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden opacity-[0.22] [mask-image:linear-gradient(to_right,transparent,#000_45%)] [-webkit-mask-image:linear-gradient(to_right,transparent,#000_45%)]">
         <img
           src="/mission-map.svg"
