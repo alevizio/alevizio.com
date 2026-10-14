@@ -1,38 +1,56 @@
 import Image from "next/image";
 import { cn } from "./cn";
 import type { Screen } from "./media";
+import { Phone } from "./phone";
+import { ROW_GUTTER } from "./story";
 
-/* Phone-sized screens in a row that scrolls sideways on narrow viewports
- * and snaps to each screen. Used for the app and the App Store listing. */
+/* Screens close to their real size (an iPhone is ~393 pt wide), in a row
+ * that runs off the right edge and scrolls sideways, snapping to each one.
+ * The first one lines up with the page's text column at any width. App
+ * screens sit in the book's white phone; App Store slides are shown the way
+ * the store shows them, as rounded cards. */
+
+/** A phone on the page, and the image sizes that go with it. */
+export const PHONE_WIDTH = "w-[74vw] max-w-[22rem] sm:w-[20rem] lg:w-[24rem] lg:max-w-none";
+export const PHONE_SIZES = "(min-width: 1024px) 384px, (min-width: 640px) 320px, 74vw";
+
 export const ScreenStrip = ({
   screens,
   label,
+  framed = true,
   className,
 }: {
   screens: readonly Screen[];
   label: string;
+  /** In the white phone (app screens), or bare cards (App Store slides). */
+  framed?: boolean;
   className?: string;
 }) => (
   <ol
     aria-label={label}
+    tabIndex={0}
     className={cn(
-      "mx-auto flex max-w-6xl snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-6 pb-4 [scrollbar-width:thin]",
+      "flex snap-x snap-mandatory gap-8 overflow-x-auto pt-2 pb-10 scrollbar-none sm:gap-10",
+      "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-pen",
+      ROW_GUTTER,
       className,
     )}
   >
     {screens.map((screen) => (
-      <li key={screen.src} className="w-[11.5rem] shrink-0 snap-start sm:w-[13rem]">
-        <div className="overflow-hidden rounded-[14px] bg-sheet shadow-[0_18px_40px_-28px_rgba(26,26,29,0.45)] ring-1 ring-rule">
+      <li key={screen.src} className={cn(PHONE_WIDTH, "shrink-0 snap-start")}>
+        {framed ? (
+          <Phone src={screen.src} alt={screen.alt} sizes={PHONE_SIZES} />
+        ) : (
           <Image
             src={screen.src}
-            width={660}
-            height={1434}
+            width={900}
+            height={1955}
             alt={screen.alt}
-            sizes="208px"
-            className="block h-auto w-full"
+            sizes={PHONE_SIZES}
+            className="block h-auto w-full rounded-[7%/3.2%] ring-1 ring-rule"
           />
-        </div>
-        <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted">{screen.label}</p>
+        )}
+        {screen.label ? <p className="type-label mt-5 text-body">{screen.label}</p> : null}
       </li>
     ))}
   </ol>

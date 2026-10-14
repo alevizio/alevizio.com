@@ -1,78 +1,64 @@
-import { Figure, FigureRow, Wide } from "../_components/figure";
-import { APP_SCREENS, APP_STORE, BOOK, SITE } from "../_components/media";
+import { FeedBoard } from "../_components/feed";
+import { Spread } from "../_components/figure";
+import { Loader } from "../_components/loader";
+import { APP_SCREENS, APP_STORE, OOH } from "../_components/media";
+import { Onboarding } from "../_components/onboarding";
 import { ScreenStrip } from "../_components/screen-strip";
-import { ChapterDivider, Prose, Section } from "../_components/story";
+import { PenMark } from "../_components/pen-mark";
+import { ChapterDivider, Section } from "../_components/story";
 
-/* IV · In the world: the app, the App Store listing, the ads and the site. */
+/* IV · In the world: the app (its onboarding, its screens, its loader),
+ * the App Store, the feed and the street. */
 export const InTheWorld = () => (
   <>
-    <ChapterDivider
-      id="in-the-world"
-      numeral="IV"
-      title="In the world"
-      blurb="The app, the App Store, a feed, and pausa.co."
-    />
+    <ChapterDivider id="world" numeral="IV" title="In the world">
+      The system <PenMark>doing its job</PenMark>: in the app, in the store, on the feed and on the&nbsp;street.
+    </ChapterDivider>
 
-    <Section id="app" kicker="The app" title="It reads you back" note="a blank notebook">
-      <Prose>
-        <p>
-          Once the brand was signed off, the brief for the app became simplicity: it should feel like a blank notebook,
-          so no screen uses every device at once. Paper, ink and the serif carry it. Blue appears only when Pausa
-          speaks, the highlighter only on the line worth noticing.
-        </p>
-        <p>
-          A last legibility pass took body type from 17 to 18 points and darkened every grey set below 14.
-        </p>
-      </Prose>
+    <Section
+      id="onboarding"
+      eyebrow="The app · Onboarding"
+      title="Three screens, three drawings"
+      text="The three onboarding screens each carry their own drawing: the overthinker, the loop, the reader. One drawing, one idea, and the copy underneath does the rest."
+    >
+      <Onboarding />
     </Section>
-    <ScreenStrip screens={APP_SCREENS} label="Five app screens" className="mt-10 lg:justify-center" />
+
+    <Section
+      id="app"
+      eyebrow="The app · Five screens"
+      title="The app, screen by screen"
+      text="One highlight per screen; the rest is paper. Shown close to the size they are on a phone."
+    >
+      <ScreenStrip screens={APP_SCREENS} label="The Pausa app's screens" />
+    </Section>
+
+    <Section id="loader" eyebrow="The app · Loading" title="Reading you back" text="The loader names what is happening, in the app’s own verb, and its knot keeps changing while you wait.">
+      <Loader />
+    </Section>
 
     <Section
       id="app-store"
-      kicker="App Store"
-      title="Two slides to make the case"
-      note="the hook goes first"
-      className="mt-24"
+      eyebrow="App Store · Eleven slides"
+      title="How it looks in the store"
+      text="The deck is eleven artboards. The only view that matters is the product page on a phone, so they’re shown here near true size."
     >
-      <Prose>
-        <p>
-          On a phone the listing shows two slides before anyone swipes. Nine of the eleven sit below that line, so the
-          hook, the proof and the difference all have to land in the first two.
-        </p>
-      </Prose>
-    </Section>
-    <ScreenStrip screens={APP_STORE} label="The eleven App Store slides" className="mt-10" />
-
-    <Section id="ads" kicker="Ads" title="The call-out, on a feed" note="one line is enough" className="mt-24">
-      <Prose>
-        <p>Pausa&apos;s whole argument fits in one line, so every ad is one line, on paper, with a single mark.</p>
-      </Prose>
-      <Figure shot={BOOK.ads} className="mt-10" />
+      <ScreenStrip screens={APP_STORE} label="The eleven App Store slides" framed={false} />
     </Section>
 
     <Section
-      id="website"
-      kicker="Website"
-      title="pausa.co, with the app on it at last"
-      note="same words, sharper page"
-      className="mt-24"
+      id="feed"
+      eyebrow="Ads · Digital"
+      title="The call-out, on a feed"
+      text="Pausa’s whole argument fits in one line, so the ad is one line: the call-out card lifted off the page it was written on. Same paper, same pen, nothing added to make it louder."
     >
-      <Prose>
-        <p>
-          The redesign kept most of the words and finally put the app on the page. One line got sharper: most journals
-          are built to make you feel better; almost none are built to make you honest.
-        </p>
-      </Prose>
+      <FeedBoard />
     </Section>
-    <Wide>
-      <Figure shot={SITE.hero} />
-      <FigureRow shots={[SITE.problem, SITE.reads]} className="mt-10" />
-      <a
-        href="https://www.pausa.co/"
-        className="mt-8 inline-flex items-center gap-2 rounded-full border-[1.5px] border-ink px-6 py-3 font-sans text-[0.95rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pen"
-      >
-        See it live at pausa.co <span aria-hidden>→</span>
-      </a>
-    </Wide>
+
+    <Section id="street" eyebrow="Out of home" title="And on the street">
+      <Spread shot={OOH.shelter} flush />
+      <Spread shot={OOH.subway} flush />
+      <Spread shot={OOH.station} flush />
+    </Section>
   </>
 );

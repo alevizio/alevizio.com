@@ -4,91 +4,67 @@ import type { ReactNode } from "react";
 import { cn } from "./cn";
 import { useInView } from "./use-in-view";
 
-/* Pausa's marks, as pausa.co draws them: organic pen and highlighter
- * shapes (public/pausa-co), multiplied into the paper over the words they
- * mark. "The pushback is an editor's annotation, not an alert." Each is
- * drawn once, left to right, when it scrolls into view. */
-const IMAGE_MARKS = {
-  // the blue double loop pausa.co puts round "tradition"
-  circle: {
-    src: "/pausa-co/mark-tradition.svg",
-    box: "-left-[0.18em] -top-[0.2em] h-[calc(100%+0.36em)] w-[calc(100%+0.36em)]",
-  },
-  // the triple pen underline under "what the app does"
+/* The brand book's own marks in use (pp. 16, 21), laid over the words they
+ * mark and drawn once, left to right, when they come into view. The
+ * highlight goes behind the ink, never on top of it. */
+const MARKS = {
   underline: {
-    src: "/pausa-co/mark-app-does.svg",
-    box: "-left-[0.05em] top-[86%] h-[0.32em] w-[calc(100%+0.15em)]",
+    src: "/pen/inuse-underline-word.svg",
+    box: "top-[88%] -left-[0.04em] h-[0.2em] w-[calc(100%+0.08em)]",
+  },
+  circle: {
+    src: "/pen/inuse-circle-you.svg",
+    box: "-top-[0.28em] -left-[0.22em] h-[calc(100%+0.52em)] w-[calc(100%+0.44em)]",
+  },
+  highlight: {
+    src: "/pen/inuse-highlight-word.svg",
+    box: "-z-10 top-[8%] -left-[0.1em] h-[92%] w-[calc(100%+0.2em)]",
+  },
+  strike: {
+    src: "/pen/inuse-strike-word.svg",
+    box: "top-[52%] -left-[0.04em] h-[0.12em] w-[calc(100%+0.08em)]",
   },
 } as const;
 
-type PenMarkProps = {
-  kind: keyof typeof IMAGE_MARKS | "strike";
-  children: ReactNode;
-  className?: string;
-};
-
-export const PenMark = ({ kind, children, className }: PenMarkProps) => {
-  const [ref, drawn] = useInView<HTMLSpanElement>();
-  return (
-    <span ref={ref} className={cn("relative inline-block", className)}>
-      {children}
-      {kind === "strike" ? (
-        // stroke-16 from the brand kit's pen set: the correction, two lines through it
-        <svg
-          aria-hidden
-          viewBox="0 0 220 52"
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute -inset-x-[0.12em] top-[34%] h-[0.42em] w-[calc(100%+0.24em)] overflow-visible"
-          fill="none"
-        >
-          <path
-            d="M18 18 C 90 30 150 22 202 36M18 36 C 90 24 150 32 202 18"
-            pathLength={1}
-            data-drawn={drawn}
-            className="pen-stroke stroke-pen"
-            strokeWidth={2.4}
-            strokeLinecap="round"
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
-      ) : (
-        // eslint-disable-next-line @next/next/no-img-element -- a stretched decorative SVG, not a photo
-        <img
-          aria-hidden
-          alt=""
-          src={IMAGE_MARKS[kind].src}
-          data-drawn={drawn}
-          className={cn(
-            "mark-wipe mark-multiply pointer-events-none absolute max-w-none",
-            IMAGE_MARKS[kind].box,
-          )}
-        />
-      )}
-    </span>
-  );
-};
-
-/* The highlighter: yellow, multiplied into the paper over the words, one
- * per screen. */
-export const Highlight = ({
+export const PenMark = ({
+  kind = "underline",
   children,
   className,
 }: {
+  kind?: keyof typeof MARKS;
   children: ReactNode;
   className?: string;
 }) => {
   const [ref, drawn] = useInView<HTMLSpanElement>();
   return (
-    <span ref={ref} className={cn("relative inline-block", className)}>
+    <span ref={ref} className={cn("relative isolate inline-block", className)}>
       {children}
       {/* eslint-disable-next-line @next/next/no-img-element -- a stretched decorative SVG */}
       <img
         aria-hidden
         alt=""
-        src="/pausa-co/hl-pushes-b.svg"
+        src={MARKS[kind].src}
         data-drawn={drawn}
-        className="mark-wipe mark-multiply pointer-events-none absolute -inset-x-[0.14em] top-[16%] h-[82%] w-[calc(100%+0.28em)] max-w-none"
+        className={cn("mark-wipe pointer-events-none absolute max-w-none", MARKS[kind].box)}
       />
     </span>
+  );
+};
+
+/** A line Pausa never sends, crossed out by the pen: the book's strike over
+ *  every line the words run to, drawn across them in reading order. It rides
+ *  on a transparent copy of the words laid over them, so it sits on top of
+ *  the ink the way a pen stroke does. */
+export const StruckLine = ({ children, className }: { children: string; className?: string }) => {
+  const [ref, drawn] = useInView<HTMLParagraphElement>();
+  return (
+    <p ref={ref} className={cn("relative", className)}>
+      <del className="no-underline">{children}</del>
+      <span aria-hidden className="pointer-events-none absolute inset-0 text-transparent select-none">
+        <span data-drawn={drawn} className="strike-lines">
+          {children}
+        </span>
+      </span>
+    </p>
   );
 };

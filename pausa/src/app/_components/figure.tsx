@@ -1,122 +1,97 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { cn } from "./cn";
+import { PAGE } from "./story";
 
 export type Shot = {
   src: string;
   width: number;
   height: number;
   alt: string;
-  /** Mono label above the caption, e.g. "Brand book · 16". */
+  /** A short name under the picture, set as a label. */
   label?: string;
+  /** A line under it in the book's caption style. */
   caption?: ReactNode;
+  /** White-paper scans: multiply them into the page so the white disappears. */
+  multiply?: boolean;
 };
 
-/** An image laid on the page like a printed sheet, with a mono label and caption. */
-export const Figure = ({
+const img = (shot: Shot) => cn("block h-auto w-full", shot.multiply && "mix-blend-multiply");
+
+/** Label and caption under a picture, the way the book captions its plates. */
+export const Caption = ({ label, caption, className }: { label?: string; caption?: ReactNode; className?: string }) =>
+  label || caption ? (
+    <figcaption className={cn("mt-4", className)}>
+      {label ? <span className="type-label block text-pen">{label}</span> : null}
+      {caption ? <span className={cn("type-secondary block text-body", label && "mt-1.5")}>{caption}</span> : null}
+    </figcaption>
+  ) : null;
+
+/* A spread at full size: on desktop a little wider than the window and
+ * centred with negative margins (no transform, so multiply still blends
+ * with the paper), so the browser's edges crop its paper margins. On
+ * phones it runs edge to edge. */
+export const Spread = ({
   shot,
-  sizes = "(min-width: 1152px) 1104px, 100vw",
   priority = false,
-  className,
+  flush = false,
 }: {
   shot: Shot;
-  sizes?: string;
   priority?: boolean;
-  className?: string;
+  /** No space above: it opens a section, or sits straight on the one before. */
+  flush?: boolean;
 }) => (
-  <figure className={className}>
-    <div className="overflow-hidden rounded-[6px] bg-sheet shadow-[0_1px_0_rgba(26,26,29,0.06),0_18px_40px_-24px_rgba(26,26,29,0.35)] ring-1 ring-rule">
+  <figure className={flush ? undefined : "mt-24 sm:mt-32"}>
+    <div className="lg:mx-[-3%] lg:w-[106%]">
       <Image
         src={shot.src}
         width={shot.width}
         height={shot.height}
         alt={shot.alt}
-        sizes={sizes}
+        sizes="(min-width: 1024px) 106vw, 100vw"
         priority={priority}
-        className="block h-auto w-full"
+        className={img(shot)}
       />
     </div>
-    {shot.label || shot.caption ? (
-      <figcaption className="mt-3 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-        {shot.label ? (
-          <span className="shrink-0 font-mono text-[11px] uppercase tracking-[0.18em] text-body">
-            {shot.label}
-          </span>
-        ) : null}
-        {shot.caption ? (
-          <span className="font-sans text-[0.9rem] leading-[1.55] text-body">
-            {shot.caption}
-          </span>
-        ) : null}
-      </figcaption>
-    ) : null}
+    <Caption label={shot.label} caption={shot.caption} className={PAGE} />
   </figure>
 );
 
-/** Two or three images side by side, stacking on phones. */
-export const FigureRow = ({
-  shots,
-  className,
-}: {
-  shots: readonly Shot[];
-  className?: string;
-}) => (
-  <div
-    className={cn(
-      "grid gap-6",
-      shots.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2",
-      className,
-    )}
-  >
+/** Images side by side across the page, stacking on phones. */
+export const FigureRow = ({ shots }: { shots: readonly Shot[] }) => (
+  <div className={cn(PAGE, "grid gap-8 md:grid-cols-2")}>
     {shots.map((shot) => (
-      <Figure
-        key={shot.src}
-        shot={shot}
-        sizes={`(min-width: 768px) ${Math.round(100 / shots.length)}vw, 100vw`}
-      />
+      <figure key={shot.src}>
+        <Image
+          src={shot.src}
+          width={shot.width}
+          height={shot.height}
+          alt={shot.alt}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          className={img(shot)}
+        />
+        <Caption label={shot.label} caption={shot.caption} />
+      </figure>
     ))}
   </div>
 );
 
-/** A wide block that breaks out of the reading column to the page width. */
-export const Wide = ({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) => (
-  <div className={cn("mx-auto mt-12 max-w-6xl px-6", className)}>{children}</div>
-);
-
-/** Sketches of different shapes, framed alike so the row reads as one set. */
-export const SketchRow = ({
-  shots,
-  className,
-}: {
-  shots: readonly Shot[];
-  className?: string;
-}) => (
-  <div className={cn("grid gap-6 md:grid-cols-3", className)}>
+/** Sketches of different shapes on a common box so the row lines up (on phones, each at its own shape). */
+export const SketchRow = ({ shots }: { shots: readonly Shot[] }) => (
+  <div className={cn(PAGE, "grid gap-10 md:grid-cols-3")}>
     {shots.map((shot) => (
       <figure key={shot.src}>
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[6px] bg-sheet ring-1 ring-rule">
+        <div className="relative md:aspect-[4/5]">
           <Image
             src={shot.src}
-            fill
+            width={shot.width}
+            height={shot.height}
             alt={shot.alt}
             sizes="(min-width: 768px) 33vw, 100vw"
-            className="object-contain p-4"
+            className={cn(img(shot), "md:absolute md:inset-0 md:h-full md:object-contain")}
           />
         </div>
-        <figcaption className="mt-3">
-          {shot.label ? (
-            <span className="block font-mono text-[11px] uppercase tracking-[0.18em] text-body">{shot.label}</span>
-          ) : null}
-          {shot.caption ? (
-            <span className="mt-1 block font-sans text-[0.9rem] leading-[1.55] text-body">{shot.caption}</span>
-          ) : null}
-        </figcaption>
+        <Caption label={shot.label} caption={shot.caption} />
       </figure>
     ))}
   </div>

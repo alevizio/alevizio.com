@@ -1,130 +1,87 @@
 import type { ReactNode } from "react";
 import { cn } from "./cn";
+import { tidy } from "./tidy";
+import { Written } from "./written";
 
-/* The page is laid out like the brand manual: a deep left margin that
- * carries the pen notes, and a reading column beside it. On phones the
- * margin folds in above the text it annotates. */
+/* Set the way the brand book sets a page: a small blue label, the head in
+ * Source Serif 4 Medium, a line or two of plain text at reading size, then
+ * the work, big. No rules, no frames: spacing does the separating. */
 
-/** The brand's technical label: Plex Mono, tracked, in the pen's blue. */
-export const Kicker = ({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) => (
-  <p
-    className={cn(
-      "font-mono text-[11px] uppercase tracking-[0.22em] text-pen",
-      className,
-    )}
-  >
-    {children}
+/** The page's content width. */
+export const PAGE = "mx-auto w-full max-w-[86rem] px-6 sm:px-10";
+
+/** For a full-width row that scrolls sideways: padding that starts its first item on PAGE's text column. */
+export const ROW_GUTTER = cn(
+  "px-[max(1.5rem,calc((100%_-_86rem)/2_+_1.5rem))] scroll-px-[max(1.5rem,calc((100%_-_86rem)/2_+_1.5rem))]",
+  "sm:px-[max(2.5rem,calc((100%_-_86rem)/2_+_2.5rem))] sm:scroll-px-[max(2.5rem,calc((100%_-_86rem)/2_+_2.5rem))]",
+);
+
+const tidyNode = (node: ReactNode) => (typeof node === "string" ? tidy(node) : node);
+
+/** Pausa's hand, used the way the book allows it: once per surface, and written out as it arrives. */
+export const Hand = ({ children, onDark = false, className }: { children: string; onDark?: boolean; className?: string }) => (
+  <p className={cn("type-hand", onDark ? "text-cream/85" : "text-pen", className)}>
+    <Written>{tidy(children)}</Written>
   </p>
 );
 
-/** A note in the margin, in Caveat and the pen's blue. */
-export const MarginNote = ({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) => (
-  <p
-    className={cn(
-      "font-hand text-[1.45rem] leading-[1.15] text-pen lg:text-right",
-      className,
-    )}
-  >
-    {children}
-  </p>
-);
-
-/** One section of the story: margin note on the left, reading column on the right. */
+/** One section: label, head, a short text, then the work below it. */
 export const Section = ({
   id,
-  kicker,
+  eyebrow,
   title,
-  note,
+  text,
   children,
   className,
 }: {
   id: string;
-  kicker?: string;
+  eyebrow?: string;
   title: ReactNode;
-  note?: ReactNode;
+  text?: ReactNode;
   children?: ReactNode;
   className?: string;
 }) => (
-  <section
-    id={id}
-    className={cn(
-      "mx-auto grid max-w-6xl scroll-mt-24 gap-x-12 px-6 lg:grid-cols-[13rem_minmax(0,1fr)]",
-      className,
-    )}
-  >
-    <div className="order-2 mt-5 lg:order-1 lg:mt-14">
-      {note ? <MarginNote>{note}</MarginNote> : null}
+  <section id={id} className={cn("mt-32 scroll-mt-10 sm:mt-44", className)}>
+    <div className={PAGE}>
+      {eyebrow ? <p className="type-label text-pen">{eyebrow}</p> : null}
+      <h3 className={cn("type-section max-w-[20ch] text-ink", eyebrow && "mt-4")}>{tidyNode(title)}</h3>
+      {text ? <p className="type-body mt-5 max-w-[36rem] text-body">{tidyNode(text)}</p> : null}
     </div>
-    <div className="order-1 max-w-[42rem] lg:order-2">
-      {kicker ? <Kicker>{kicker}</Kicker> : null}
-      <h3 className="mt-4 text-[2rem] leading-[1.12] font-medium tracking-[-0.015em] text-ink sm:text-[2.6rem]">
-        {title}
-      </h3>
-    </div>
-    {children ? (
-      <div className="order-3 mt-6 lg:col-start-2">{children}</div>
-    ) : null}
+    {children ? <div className="mt-12 sm:mt-16">{children}</div> : null}
   </section>
 );
 
-/** Reading text: Source Serif in the body grey, at a reading measure. */
-export const Prose = ({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) => (
-  <div
-    className={cn(
-      "max-w-[40rem] space-y-5 text-[1.125rem] leading-[1.7] text-body",
-      className,
-    )}
-  >
-    {children}
-  </div>
-);
-
-/** A full-width breather between chapters: numeral, title, one line. */
+/** A chapter break, set like the book's index page (p. 02): the number as a
+ *  label, the title at display size, one line with one mark on it, and the
+ *  book's pale tangle running off the edge of the page beside them. */
 export const ChapterDivider = ({
   numeral,
   title,
-  blurb,
   id,
+  children,
 }: {
   numeral: string;
   title: string;
-  blurb: string;
   id?: string;
+  /** The one line under the title. */
+  children?: ReactNode;
 }) => (
-  <header
-    id={id}
-    className="relative mx-auto my-24 max-w-6xl scroll-mt-24 px-6 sm:my-32"
-  >
-    <div className="border-t border-rule pt-10 lg:grid lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-x-12">
-      <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-body lg:text-right">
-        Chapter {numeral}
-      </p>
-      <div className="mt-4 lg:mt-0">
-        <h2 className="text-[3rem] leading-[1.04] font-medium tracking-[-0.02em] text-ink sm:text-[4.5rem]">
-          {title}
-        </h2>
-        <p className="mt-5 max-w-xl font-sans text-[1rem] leading-[1.6] text-body">
-          {blurb}
+  <header id={id} className="relative mt-40 scroll-mt-10 sm:mt-56">
+    {/* eslint-disable-next-line @next/next/no-img-element -- the book's own drawing, as SVG */}
+    <img
+      aria-hidden
+      alt=""
+      src="/chapter/index-tangle.svg"
+      className="pointer-events-none absolute -top-20 right-[-26vw] w-[18rem] max-w-none sm:-top-28 sm:right-[-10vw] sm:w-[clamp(24rem,38vw,35rem)]"
+    />
+    <div className={cn(PAGE, "relative")}>
+      <p className="type-label text-pen">Chapter {numeral}</p>
+      <h2 className="type-display mt-4 text-ink">{tidy(title)}</h2>
+      {children ? (
+        <p className="mt-6 max-w-[34rem] font-serif text-[length:clamp(1.125rem,1.55vw,1.375rem)] leading-[1.6] text-body">
+          {children}
         </p>
-      </div>
+      ) : null}
     </div>
   </header>
 );
