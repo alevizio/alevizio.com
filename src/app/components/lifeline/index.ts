@@ -20,6 +20,8 @@
  * - lifeline-desktop.tsx: waiting for view it is transparent, not hidden,
  *   so it stays focusable and in the accessibility tree.
  * - company-icon.tsx: the marks carry role="img" for their aria-label.
+ * - lifeline-marker.tsx, lifeline-vertical.tsx: badges keep their own shape at a
+ *   16px height (upstream fits them in a 24px square, which shrinks a row of stars).
  */
 export { Lifeline } from "./lifeline"
 export { LifelineMarkerColumn } from "./lifeline-marker"

@@ -99,7 +99,7 @@ export const LifelineMarkerColumn = forwardRef<
                       key={badge.src}
                       src={badge.src}
                       alt={badge.alt}
-                      className="h-6 w-6 object-contain opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+                      className="h-4 w-auto object-contain opacity-80 transition-opacity duration-300 group-hover:opacity-100"
                     />
                   ))}
                 </div>

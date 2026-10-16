@@ -87,6 +87,7 @@ const life = defineLifeline({
     },
     1986: {
       id: "spain",
+      badges: [{ src: "/marks/stars-2.svg", alt: "Two stars: Argentina's World Cups, 1978 and 1986" }],
       events: [
         "moved to Madrid, Spain.",
         { text: "Argentina won the World Cup.", effect: "fireworks-argentina" },
@@ -172,7 +173,13 @@ const life = defineLifeline({
           { type: "link", value: "UNR", href: "https://unr.edu.ar/" },
           { type: "text", value: "." },
         ],
-        "ran adidas' Proyecto Potreros at Arthur Newton Communications: football pitches in 23 towns.",
+        [
+          { type: "text", value: "ran " },
+          { type: "link", value: "adidas", href: "https://www.adidas.com.ar/" },
+          { type: "text", value: "' Proyecto Potreros at " },
+          { type: "link", value: "Arthur Newton Communications", href: "https://www.arthur-newton.com/" },
+          { type: "text", value: ": football pitches in 23 towns." },
+        ],
       ],
     },
     2009: {
@@ -200,7 +207,11 @@ const life = defineLifeline({
       id: "creative-director",
       companies: [aerolab],
       events: [
-        "creative director at Aerolab.",
+        [
+          { type: "text", value: "creative director at " },
+          { type: "link", value: "Aerolab", href: "https://aerolab.co/" },
+          { type: "text", value: "." },
+        ],
         [
           { type: "text", value: "redesigned " },
           { type: "link", value: "Lemon Wallet", href: "https://en.wikipedia.org/wiki/Lemon_Wallet" },
@@ -224,7 +235,11 @@ const life = defineLifeline({
           { type: "link", value: "Popcorn Time", href: "https://en.wikipedia.org/wiki/Popcorn_Time" },
           { type: "text", value: "." },
         ],
-        "took Popcorn Time to Y Combinator; didn't get in.",
+        [
+          { type: "text", value: "took Popcorn Time to " },
+          { type: "link", value: "Y Combinator", href: "https://www.ycombinator.com/" },
+          { type: "text", value: "; didn't get in." },
+        ],
         [
           { type: "text", value: "all the visuals for " },
           { type: "link", value: "JSConf Argentina", href: "https://aerolab.co/jsconf" },
@@ -260,7 +275,11 @@ const life = defineLifeline({
       id: "san-francisco",
       companies: [aerolab, { id: "digital-house", name: "Digital House" }],
       events: [
-        "moved to San Francisco as Aerolab's US manager.",
+        [
+          { type: "text", value: "moved to San Francisco as " },
+          { type: "link", value: "Aerolab", href: "https://aerolab.co/" },
+          { type: "text", value: "'s US manager." },
+        ],
         [
           { type: "text", value: "taught UX design at " },
           { type: "link", value: "Digital House", href: "https://www.digitalhouse.com/" },
@@ -279,7 +298,11 @@ const life = defineLifeline({
       id: "aerolab-ceo",
       companies: [aerolab, { id: "lullaby", name: "Lullaby" }, { id: "singularity", name: "Singularity University" }, { id: "eo", name: "Entrepreneurs' Organization" }],
       events: [
-        "became Aerolab's CEO.",
+        [
+          { type: "text", value: "became " },
+          { type: "link", value: "Aerolab", href: "https://aerolab.co/" },
+          { type: "text", value: "'s CEO." },
+        ],
         [
           { type: "text", value: "designed " },
           { type: "link", value: "Cartoon Network's site", href: "https://aerolab.co/cartoon-network" },
@@ -304,11 +327,18 @@ const life = defineLifeline({
     },
     2019: {
       id: "silvestre",
+      companies: [{ id: "soundcloud", name: "SoundCloud" }],
       events: [
         "my son Silvestre was born.",
         "got my green card.",
         [
-          { type: "text", value: "Aerolab made Forbes Argentina's " },
+          { type: "text", value: "uploaded my first set to SoundCloud: " },
+          { type: "link", value: "Tropical Disco", href: "https://soundcloud.com/alevizio/tropical-disco" },
+          { type: "text", value: "." },
+        ],
+        [
+          { type: "link", value: "Aerolab", href: "https://aerolab.co/" },
+          { type: "text", value: " made Forbes Argentina's " },
           {
             type: "link",
             value: "30 Promesas",
@@ -342,6 +372,7 @@ const life = defineLifeline({
     },
     2022: {
       id: "friends-of-figma",
+      badges: [{ src: "/marks/stars-3.svg", alt: "Three stars: Argentina's World Cups, 1978, 1986 and 2022" }],
       companies: [{ id: "figma", name: "Figma" }, joya],
       events: [
         [
@@ -356,7 +387,9 @@ const life = defineLifeline({
         [
           { type: "text", value: "took " },
           { type: "link", value: "Joya", href: "https://joya-art.org/" },
-          { type: "text", value: ", an art piece, to Burning Man." },
+          { type: "text", value: ", an art piece, to " },
+          { type: "link", value: "Burning Man", href: "https://burningman.org/" },
+          { type: "text", value: "." },
         ],
         { text: "Argentina won the World Cup again.", effect: "fireworks-argentina" },
       ],
@@ -371,7 +404,9 @@ const life = defineLifeline({
           { type: "text", value: "." },
         ],
         [
-          { type: "text", value: "back at Burning Man with " },
+          { type: "text", value: "back at " },
+          { type: "link", value: "Burning Man", href: "https://burningman.org/" },
+          { type: "text", value: " with " },
           { type: "link", value: "Joya", href: "https://joya-art.org/" },
           { type: "text", value: "." },
         ],
@@ -381,10 +416,22 @@ const life = defineLifeline({
       id: "senior",
       companies: [pachama, joya],
       events: [
-        "senior product designer at Pachama.",
-        "taught UX experts at Mercado Libre, with Edison.",
         [
-          { type: "text", value: "a third Burning Man with " },
+          { type: "text", value: "senior product designer at " },
+          { type: "link", value: "Pachama", href: "https://pachama.com" },
+          { type: "text", value: "." },
+        ],
+        [
+          { type: "text", value: "taught UX experts at " },
+          { type: "link", value: "Mercado Libre", href: "https://www.mercadolibre.com.ar/" },
+          { type: "text", value: ", with " },
+          { type: "link", value: "Edison", href: "https://somosedison.com/" },
+          { type: "text", value: "." },
+        ],
+        [
+          { type: "text", value: "a third " },
+          { type: "link", value: "Burning Man", href: "https://burningman.org/" },
+          { type: "text", value: " with " },
           { type: "link", value: "Joya", href: "https://joya-art.org/" },
           { type: "text", value: "." },
         ],
@@ -392,10 +439,12 @@ const life = defineLifeline({
     },
     2025: {
       id: "carbon-direct",
+      badges: [{ src: "/marks/flag-us.svg", alt: "The flag of the United States" }],
       companies: [{ id: "earthscale", name: "Earthscale" }, { id: "limai", name: "Limai" }, { id: "fudo", name: "Fudo" }],
       events: [
         [
-          { type: "text", value: "Pachama was " },
+          { type: "link", value: "Pachama", href: "https://pachama.com" },
+          { type: "text", value: " was " },
           {
             type: "link",
             value: "acquired by Carbon Direct",
@@ -403,15 +452,33 @@ const life = defineLifeline({
           },
           { type: "text", value: "; stayed on as senior product designer." },
         ],
-        "product & brand for Earthscale, Limai and Fudo.",
-        "became a US citizen.",
+        [
+          { type: "text", value: "product & brand for " },
+          { type: "link", value: "Earthscale", href: "https://www.earthscale.ai/" },
+          { type: "text", value: ", " },
+          { type: "link", value: "Limai", href: "https://www.limai.io/" },
+          { type: "text", value: " and " },
+          { type: "link", value: "Fudo", href: "https://fu.do/" },
+          { type: "text", value: "." },
+        ],
+        { text: "became a US citizen.", effect: "fireworks" },
       ],
     },
     2026: {
       id: "now",
       companies: [{ id: "bocho", name: "Bocho" }, { id: "planta", name: "Planta" }, { id: "messa", name: "Messa" }, { id: "pausa", name: "Pausa" }, { id: "djooni", name: "Djooni" }],
       events: [
-        "founding designer at Bocho, on Planta, Messa and Pausa.",
+        [
+          { type: "text", value: "founding designer at " },
+          { type: "link", value: "Bocho", href: "https://www.bocho.com/" },
+          { type: "text", value: ", on " },
+          { type: "link", value: "Planta", href: "https://www.planta.co/" },
+          { type: "text", value: ", " },
+          { type: "link", value: "Messa", href: "https://messa.ai/" },
+          { type: "text", value: " and " },
+          { type: "link", value: "Pausa", href: "https://www.pausa.co/" },
+          { type: "text", value: "." },
+        ],
         [
           { type: "text", value: "founding designer at " },
           { type: "link", value: "Djooni", href: "https://djooni.com" },
