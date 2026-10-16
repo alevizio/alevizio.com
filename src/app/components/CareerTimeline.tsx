@@ -67,6 +67,7 @@ registerCompanyIcons({
   "digital-house": { icon: DigitalHouseMark, sizeClassName: "h-3.5 w-[33px]" },
   lullaby: { icon: imageMark("lullaby.svg"), sizeClassName: "h-4 w-3" },
   joya: { icon: imageMark("joya.png"), sizeClassName: "h-4 w-5" },
+  "pampa-warro": { icon: imageMark("pampa-warro.png"), sizeClassName: "h-4 w-6" },
   bocho: { icon: imageMark("bocho.png"), sizeClassName: "h-4 w-[14px]" },
 });
 
@@ -369,7 +370,7 @@ const life = defineLifeline({
     },
     2017: {
       id: "san-francisco",
-      companies: [aerolab, { id: "digital-house", name: "Digital House" }],
+      companies: [aerolab, { id: "digital-house", name: "Digital House" }, { id: "pampa-warro", name: "Pampa Warro" }],
       events: [
         [
           { type: "text", value: "moved to San Francisco as " },
