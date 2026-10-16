@@ -427,6 +427,7 @@ const life = defineLifeline({
     },
     2019: {
       id: "silvestre",
+      companies: [aerolab],
       events: [
         "my son Silvestre was born.",
         "got my green card.",
