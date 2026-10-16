@@ -299,6 +299,10 @@ const life = defineLifeline({
           { type: "text", value: "'s marketing site." },
         ],
         [
+          { type: "link", value: "MURAL", href: "https://www.mural.co/" },
+          { type: "text", value: "'s first branding, back when it was Mural.ly." },
+        ],
+        [
           { type: "link", value: "Breach", href: "https://github.com/spolu/breach_core" },
           { type: "text", value: ", a browser in JavaScript, and " },
           { type: "link", value: "AcáNoHayLuz", href: "https://acanohayluz.com/" },
