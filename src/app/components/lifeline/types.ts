@@ -102,16 +102,8 @@ export interface LifelineLegendItem {
  * - `"auto"` — measured at runtime: page mode only when the timeline
  *   covers most of the viewport *and* there is nothing behind it left to
  *   scroll. Anything else is treated as embedded.
- * - `"scroll"` — (added for alevizio.com) the page's own vertical scroll
- *   moves the rail. Put the Lifeline in a `position: sticky` block at the
- *   top of a tall ancestor marked `data-lifeline-scroll`, followed by a
- *   spacer `height: var(--lifeline-travel)`, which the timeline writes onto
- *   that ancestor. While the block is pinned the rail travels 2008-to-now
- *   as the page scrolls; wheel, keys and touch are all left to the page.
- *   No intro: the reader's scroll is the sweep. Below md it is the
- *   vertical layout, in the page's flow.
  */
-export type LifelineMode = "auto" | "page" | "embed" | "scroll"
+export type LifelineMode = "auto" | "page" | "embed"
 
 export interface LifelineProps {
   markers: LifelineMarker[]

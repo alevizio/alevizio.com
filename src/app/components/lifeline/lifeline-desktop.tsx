@@ -53,9 +53,7 @@ export function LifelineDesktop({
   }, [markers])
 
   const intro = useLifelineIntro(widths)
-  // Scroll mode has no intro: the reader's own scroll is the sweep.
-  const scrollDriven = mode === "scroll"
-  const isIntroAnimating = !scrollDriven && intro.shouldPlay && intro.isPlaying
+  const isIntroAnimating = intro.shouldPlay && intro.isPlaying
 
   const {
     sectionRef,
@@ -69,7 +67,7 @@ export function LifelineDesktop({
     mode,
     introLocked: isIntroAnimating,
     introAnimating: isIntroAnimating,
-    introSkipped: scrollDriven || !intro.shouldPlay,
+    introSkipped: !intro.shouldPlay,
     introRailMs: intro.railDuration,
     introGetTrackProgress: intro.getTrackProgressAtTime,
     onIntroScrollStart: intro.startIntroTimer,
@@ -79,11 +77,7 @@ export function LifelineDesktop({
   // Embedded, the open waits for the module to come into view: the marker
   // fades are CSS animations that start the moment their class lands, so
   // applying it early would spend them below the fold.
-  const introWaitingInView =
-    isEmbed && !scrollDriven && intro.shouldPlay && !introArmed
-  // A tab stop with the arrows to scrub, only where the rail owns them;
-  // in scroll mode the arrows scroll the page, which already moves it.
-  const isScrubbable = isEmbed && !scrollDriven
+  const introWaitingInView = isEmbed && intro.shouldPlay && !introArmed
   const showIntro = isIntroAnimating && isLayoutReady && !introWaitingInView
 
   const trackWidth =
@@ -97,16 +91,16 @@ export function LifelineDesktop({
   return (
     <section
       ref={sectionRef}
-      data-lifeline-mode={scrollDriven ? "scroll" : isEmbed ? "embed" : "page"}
+      data-lifeline-mode={isEmbed ? "embed" : "page"}
       // Embedded, the module needs a tab stop to be operable at all — a
       // page-mode lifeline is reached just by scrolling to it.
-      tabIndex={isScrubbable ? 0 : undefined}
+      tabIndex={isEmbed ? 0 : undefined}
       className={cn(
         "relative h-full min-h-0 select-none overflow-hidden [&_a]:cursor-pointer",
         // `pan-y` lets the browser start a vertical page scroll on the
         // first frame instead of waiting on the JS axis lock; horizontal
         // panning stays ours.
-        isScrubbable &&
+        isEmbed &&
           "touch-pan-y focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         // Hold it blank rather than showing a settled timeline that then
         // resets itself to play the intro. Below the fold there is nothing

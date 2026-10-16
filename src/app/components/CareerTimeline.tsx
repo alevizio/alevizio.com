@@ -478,11 +478,14 @@ const life = defineLifeline({
         [
           { type: "text", value: "founding designer at " },
           { type: "link", value: "Bocho", href: "https://www.bocho.com/" },
-          { type: "text", value: ", on " },
+          { type: "text", value: " (" },
           { type: "link", value: "Planta", href: "https://www.planta.co/" },
-          { type: "text", value: ", " },
+          { type: "text", value: ")." },
+        ],
+        [
+          { type: "text", value: "the website for " },
           { type: "link", value: "Messa", href: "https://messa.ai/" },
-          { type: "text", value: " and " },
+          { type: "text", value: ", product & brand for " },
           { type: "link", value: "Pausa", href: "https://www.pausa.co/" },
           { type: "text", value: "." },
         ],
@@ -551,47 +554,39 @@ export default function CareerTimeline() {
     // data-site-nav-inner: Lifeline ends the rail 24px inside this element's
     // right edge, so with the section full width it runs to the window's edge.
     <section
-      data-lifeline-scroll
       data-site-nav-inner
       aria-labelledby="career-timeline"
-      className="relative z-10 pb-[200px] md:pb-[max(140px,calc(50dvh-17.5rem))]"
+      className="relative z-10 pb-[200px] lg:pb-[140px]"
     >
-      {/* md+: this block pins mid-screen while the page scrolls through the
-          spacer below it, and that scroll carries the rail sideways from
-          1985 to 2026 (Lifeline's scroll mode). The bottom padding mirrors
-          the sticky top, so the page can scroll until the rail reaches its
-          end with the block still centred. Below md it is a vertical list
-          in the page's flow (200px clears the pinned project cards). */}
-      <div className="md:sticky md:top-[max(1rem,calc(50dvh-17.5rem))]">
-        {/* Set like the logo rows' labels, but at 70% ink (5.2:1) rather
-            than their 50% (3.0:1), the same as the timeline's own text.
-            data-site-nav-logo: Lifeline starts the rail where this text
-            starts, on the page's 140px column; once it moves, the labels
-            pin at the window's left edge. */}
-        <h2
-          id="career-timeline"
-          className="px-[60px] text-[clamp(11px,1vw,13px)] font-normal tracking-[0.05em] text-foreground/70 md:px-[140px]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          <span data-site-nav-logo>how i got here</span>
-        </h2>
-        {/* Phones: its own 24px gutter tops this up to the page's 60px.
-            md+: the full width of the window. Its height fits the tallest
-            year (2026) plus the timeline's 20px top padding; raise it, and
-            the sticky top above, if a year grows. */}
-        <div className="px-[36px] md:h-[540px] md:px-0">
-          <Lifeline
-            mode="scroll"
-            markers={markers}
-            birthYear={life.birthYear}
-            title="timeline, 1985 to 2026"
-            className="h-full"
-          />
-        </div>
+      {/* Set like the logo rows' labels, but at 70% ink (5.2:1) rather
+          than their 50% (3.0:1), the same as the timeline's own text.
+          data-site-nav-logo: Lifeline starts the rail where this text
+          starts, on the page's 140px column; once it moves, the labels
+          pin at the window's left edge. */}
+      <h2
+        id="career-timeline"
+        className="px-[60px] text-[clamp(11px,1vw,13px)] font-normal tracking-[0.05em] text-foreground/70 md:px-[140px]"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        <span data-site-nav-logo>how i got here</span>
+      </h2>
+      {/* Phones: the vertical list in the page's flow (no height, so its
+          scroll box never scrolls); its own 24px gutter tops this up to the
+          page's 60px, and the 200px below clears the pinned project cards.
+          md+: the rail, the full width of the window. Once in view it plays
+          Lifeline's intro, 1985 to 2026, and rests on 2026; the wheel
+          scrubs it back while the pointer is on it. Its height fits the
+          tallest year (2026: 465px) plus the timeline's 20px top padding;
+          raise it if a year grows. */}
+      <div className="px-[36px] md:h-[485px] md:px-0">
+        <Lifeline
+          mode="embed"
+          markers={markers}
+          birthYear={life.birthYear}
+          title="timeline, 1985 to 2026"
+          className="h-full"
+        />
       </div>
-      {/* The room the page scrolls through while the rail travels; the
-          timeline writes --lifeline-travel. */}
-      <div aria-hidden="true" className="hidden h-[var(--lifeline-travel)] md:block" />
     </section>
   );
 }

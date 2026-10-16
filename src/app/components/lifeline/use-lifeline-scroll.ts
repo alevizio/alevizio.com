@@ -56,36 +56,10 @@ const EMBED_BOUNDARY_MAX_HOLD_MS = 900
 const EMBED_INTRO_ARM_MARGIN = "0px 0px -30% 0px"
 
 /**
- * Scroll mode: rail pixels travelled per pixel of page scroll. A life is
- * a long rail; at 1:1 it would take most of ten screens to cross.
- */
-const SCROLL_RAIL_SPEED = 1.6
-
-/**
  * Below this stage width the fine-pointer fade zones (200px right, 400px
  * left) cover most of the stage, so narrow stages fade like touch ones.
  */
-const NARROW_STAGE_WIDTH = 768
-
-/**
- * Scroll mode: the tall frame the page scrolls through, and the block
- * pinned inside it (the section itself if nothing between them sticks).
- */
-function getScrollFrame(section: HTMLElement) {
-  const frame = section.closest<HTMLElement>("[data-lifeline-scroll]")
-  if (!frame) return null
-
-  for (
-    let node = section.parentElement;
-    node && node !== frame;
-    node = node.parentElement
-  ) {
-    if (window.getComputedStyle(node).position === "sticky") {
-      return { frame, pin: node }
-    }
-  }
-  return { frame, pin: section }
-}
+const NARROW_STAGE_WIDTH = 1024
 
 function normalizeWheelDelta(event: WheelEvent) {
   let delta = Math.abs(event.deltaX) > Math.abs(event.deltaY)
@@ -377,8 +351,7 @@ export function useLifelineScroll(
     const mode = modeRef.current
 
     if (mode !== "auto") {
-      // Scroll mode sits in a page that scrolls, so it is embedded too.
-      const embed = mode !== "page"
+      const embed = mode === "embed"
       if (embed !== isEmbedRef.current) {
         isEmbedRef.current = embed
         setIsEmbed(embed)
@@ -466,37 +439,8 @@ export function useLifelineScroll(
     )
     maxTranslate.current = max
 
-    // Scroll mode: tell the frame how much page it takes to cross the rail,
-    // so its spacer can make that much room.
-    if (modeRef.current === "scroll") {
-      section
-        .closest<HTMLElement>("[data-lifeline-scroll]")
-        ?.style.setProperty(
-          "--lifeline-travel",
-          `${max / SCROLL_RAIL_SPEED}px`,
-        )
-    }
-
     return max
   }, [markerCount, resolveMode])
-
-  /**
-   * Scroll mode: the rail sits wherever the page's scroll puts it. The pin
-   * starts at the top of the frame and sticks there while the page scrolls
-   * through the spacer, so its offset inside the frame is the scroll the
-   * reader has spent on the timeline so far.
-   */
-  const syncToPageScroll = useCallback(() => {
-    const section = sectionRef.current
-    if (!section || modeRef.current !== "scroll") return
-    const scroll = getScrollFrame(section)
-    if (!scroll) return
-
-    const offset =
-      scroll.pin.getBoundingClientRect().top -
-      scroll.frame.getBoundingClientRect().top
-    applyTranslate(offset * SCROLL_RAIL_SPEED)
-  }, [applyTranslate])
 
   useLayoutEffect(() => {
     markerRefs.current.length = markerCount
@@ -517,7 +461,6 @@ export function useLifelineScroll(
     }
 
     applyTranslate(translatePx.current)
-    syncToPageScroll()
     setIsLayoutReady(true)
     // Sync initial position once before first paint; resize uses measure().
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -728,7 +671,6 @@ export function useLifelineScroll(
       if (!(introAnimatingRef.current && introStartedRef.current)) {
         applyTranslate(translatePx.current)
       }
-      syncToPageScroll()
 
       setIsLayoutReady(true)
     }
@@ -796,17 +738,6 @@ export function useLifelineScroll(
     }
 
     const onWheel = (event: WheelEvent) => {
-      if (modeRef.current === "scroll") {
-        // The page's scroll drives the rail, so the wheel is the page's. A
-        // sideways swipe over the rail becomes page scroll too, so it moves
-        // the rail the way it points (and never fires the back gesture).
-        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
-          event.preventDefault()
-          window.scrollBy(0, normalizeWheelDelta(event) / SCROLL_RAIL_SPEED)
-        }
-        return
-      }
-
       if (isScrollLocked()) return
 
       if (maxTranslate.current <= 0) {
@@ -916,34 +847,15 @@ export function useLifelineScroll(
       const stageWidth = section.getBoundingClientRect().width
       const markerLeft = LIFELINE_STICKY_SHIELD_WIDTH + marker.offsetLeft
       const stageLeft = Math.max(
-        isCoarsePointerRef.current ? LEFT_EXIT_FADE_ZONE_COARSE : LEFT_EXIT_FADE_ZONE,
+        isCoarsePointerRef.current || stageWidth < NARROW_STAGE_WIDTH
+          ? LEFT_EXIT_FADE_ZONE_COARSE
+          : LEFT_EXIT_FADE_ZONE,
         (stageWidth - marker.offsetWidth) / 2,
       )
 
-      const destination = startInset.current + markerLeft - stageLeft
-
-      if (modeRef.current === "scroll") {
-        // The rail follows the page, so move the page: to where the pin's
-        // offset in the frame puts the rail at `destination`. Measured from
-        // the pin's sticky top, so it holds before, while and after it sticks.
-        const scroll = getScrollFrame(section)
-        if (!scroll) return
-        const pinTop = scroll.pin.getBoundingClientRect().top
-        const stickyTop =
-          parseFloat(window.getComputedStyle(scroll.pin).top) || 0
-        const offset = pinTop - scroll.frame.getBoundingClientRect().top
-        const wanted =
-          clamp(destination, 0, maxTranslate.current) / SCROLL_RAIL_SPEED
-        window.scrollBy({
-          top: pinTop - stickyTop + wanted - offset,
-          behavior: "instant",
-        })
-        return
-      }
-
       stopMomentum()
       dragVelocity.current = 0
-      applyTranslate(destination)
+      applyTranslate(startInset.current + markerLeft - stageLeft)
     }
 
     const beginDrag = (event: PointerEvent) => {
@@ -966,8 +878,6 @@ export function useLifelineScroll(
     }
 
     const onPointerDown = (event: PointerEvent) => {
-      // Scroll mode: no drag. Touch scrolls the page, which moves the rail.
-      if (modeRef.current === "scroll") return
       if (isScrollLocked()) return
       if (isInteractiveTarget(event.target)) return
       if (maxTranslate.current <= 0) return
@@ -1071,8 +981,6 @@ export function useLifelineScroll(
     }
 
     const onKeyDown = (event: KeyboardEvent) => {
-      // Scroll mode: the arrows scroll the page, and the page moves the rail.
-      if (modeRef.current === "scroll") return
       if (maxTranslate.current <= 0) return
       if (isScrollLocked()) return
       if (isEditableTarget(event.target)) return
@@ -1107,7 +1015,6 @@ export function useLifelineScroll(
     section.addEventListener("pointerup", endDrag)
     section.addEventListener("pointercancel", endDrag)
     window.addEventListener("keydown", onKeyDown)
-    window.addEventListener("scroll", syncToPageScroll, { passive: true })
 
     return () => {
       cancelAnimationFrame(frameId)
@@ -1126,7 +1033,6 @@ export function useLifelineScroll(
       section.removeEventListener("pointerup", endDrag)
       section.removeEventListener("pointercancel", endDrag)
       window.removeEventListener("keydown", onKeyDown)
-      window.removeEventListener("scroll", syncToPageScroll)
       dragging.current = false
       gestureAxis.current = null
       activePointerId.current = null
@@ -1138,15 +1044,7 @@ export function useLifelineScroll(
       section.style.cursor = ""
       section.style.touchAction = ""
     }
-  }, [
-    applyTranslate,
-    isScrollLocked,
-    markerCount,
-    measureLayout,
-    resolveMode,
-    syncToPageScroll,
-    updateFades,
-  ])
+  }, [applyTranslate, isScrollLocked, markerCount, measureLayout, resolveMode, updateFades])
 
   return {
     sectionRef,

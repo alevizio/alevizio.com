@@ -316,7 +316,7 @@ export function LifelineVertical({
   // scrollability on desktop, but the mobile layout *is* a vertical
   // scroller inside a scrolling stage, so that test would read every
   // full-page timeline as embedded and drop its intro.
-  const isEmbed = mode === "embed" || mode === "scroll"
+  const isEmbed = mode === "embed"
   const heights = useMemo(
     () =>
       markers.map((marker, index) =>

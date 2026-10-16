@@ -5,10 +5,6 @@
  *
  * - Vite, not Next: no "use client", <img> for next/image (people), `cn`
  *   from ../ui/utils, and lib/lifeline-data.ts moved in here.
- * - A `"scroll"` mode (types.ts): the page's vertical scroll moves the
- *   rail while a sticky block pins it, the way the homepage uses it. The
- *   hook syncs to page scroll and leaves wheel, keys and touch to the page;
- *   no intro; the vertical layout treats it like an embed.
  * - A `showAge` prop, for a timeline that starts at a first year instead
  *   of a birth year.
  * - Labels set lowercase like the rest of the site; palette and type come

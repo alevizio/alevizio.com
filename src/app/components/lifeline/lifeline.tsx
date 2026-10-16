@@ -46,9 +46,7 @@ export function Lifeline(props: LifelineProps) {
         */}
         <div
           className={
-            // Scroll mode lays the vertical list out like an embed with no
-            // height: in the page's flow, its own box never scrolling.
-            props.mode === "embed" || props.mode === "scroll"
+            props.mode === "embed"
               ? cn(
                   "lifeline-typeset h-full overflow-y-auto pt-5",
                   props.className,
