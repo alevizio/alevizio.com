@@ -422,7 +422,7 @@ const life = defineLifeline({
           { type: "link", value: "EO", href: "https://eonetwork.org/" },
           { type: "text", value: ", the Entrepreneurs' Organization." },
         ],
-        "got my O-1 visa.",
+        "my O-1B visa for individuals with extraordinary ability in the arts was approved.",
       ],
     },
     2019: {
