@@ -239,11 +239,12 @@ const life = defineLifeline({
           },
           { type: "text", value: "." },
         ],
+        "took Joya, an art piece, to Burning Man.",
       ],
     },
     2023: {
       id: "complexchaos",
-      events: ["seed investor in ComplexChaos."],
+      events: ["seed investor in ComplexChaos.", "back at Burning Man with Joya."],
     },
     2024: {
       id: "senior",
@@ -251,6 +252,7 @@ const life = defineLifeline({
       events: [
         "senior product designer at Pachama.",
         "taught UX experts at Mercado Libre, with Edison.",
+        "a third Burning Man with Joya.",
       ],
     },
     2025: {
