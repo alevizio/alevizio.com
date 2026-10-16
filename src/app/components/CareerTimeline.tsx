@@ -336,9 +336,9 @@ const life = defineLifeline({
           { type: "text", value: " on my first trip to San Francisco; didn't get in." },
         ],
         [
-          { type: "text", value: "the visuals for " },
+          { type: "text", value: "helped organize " },
           { type: "link", value: "JSConf Argentina", href: "https://aerolab.co/jsconf" },
-          { type: "text", value: "." },
+          { type: "text", value: " and did all its visuals." },
         ],
         [
           {
@@ -669,9 +669,9 @@ export default function CareerTimeline() {
           md+: the rail, the full width of the window. Once in view it plays
           Lifeline's intro, 1985 to 2026, and rests on 2026; the wheel
           scrubs it back while the pointer is on it. Its height fits the
-          tallest year (2026: 465px) plus the timeline's 20px top padding;
+          tallest year (2014: 471px) plus the timeline's 20px top padding;
           raise it if a year grows. */}
-      <div className="px-[36px] md:h-[485px] md:px-0">
+      <div className="px-[36px] md:h-[491px] md:px-0">
         <Lifeline
           mode="embed"
           markers={markers}
