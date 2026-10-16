@@ -32,7 +32,7 @@
           "url": "https://alevizio.com/about",
           "name": "About Alejandro Vizio",
           "dateCreated": "2026-06-05",
-          "dateModified": "2026-06-09",
+          "dateModified": "2026-10-16",
           "mainEntity": { "@id": "https://alevizio.com/#person" }
         },
         {
@@ -46,8 +46,17 @@
           "knowsAbout": ["Product Design", "Brand Identity", "Interaction Design", "Design Systems", "UX/UI Design", "Climate & Sustainability Design"],
           "alumniOf": [
             { "@type": "Organization", "name": "Aerolab", "url": "https://aerolab.co/" },
-            { "@type": "Organization", "name": "Pachama", "url": "https://pachama.com" }
+            { "@type": "Organization", "name": "Pachama", "url": "https://pachama.com" },
+            { "@type": "School", "name": "St George's College", "url": "https://stgeorges.edu.ar/" },
+            { "@type": "EducationalOrganization", "name": "ORT Argentina", "url": "https://www.ort.edu.ar/" },
+            { "@type": "CollegeOrUniversity", "name": "Universidad Nacional de Rosario", "url": "https://unr.edu.ar/" },
+            { "@type": "EducationalOrganization", "name": "Image Campus", "url": "https://www.imagecampus.edu.ar/" }
           ],
+          "worksFor": [
+            { "@type": "Organization", "name": "Bocho", "url": "https://www.bocho.com/" },
+            { "@type": "Organization", "name": "Djooni", "url": "https://djooni.com" }
+          ],
+          "birthPlace": { "@type": "Place", "name": "Buenos Aires, Argentina" },
           "address": { "@type": "PostalAddress", "addressLocality": "San Francisco", "addressRegion": "CA", "addressCountry": "US" },
           "email": "mailto:viziomas@gmail.com",
           "sameAs": [
@@ -136,6 +145,11 @@
       .mentions a:hover { opacity: 1; }
       .home { display: inline-block; margin-top: 64px; opacity: 0.6; font-size: 15px; }
       footer { margin-top: 80px; font-size: 14px; opacity: 0.45; }
+      .timeline { list-style: none; }
+      .timeline li { display: grid; grid-template-columns: 3.5em 1fr; column-gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(30,30,30,0.12); }
+      .timeline time { opacity: 0.7; font-variant-numeric: tabular-nums; } /* 5.1:1, like the homepage timeline's years */
+      .timeline p { grid-column: 2; margin: 0; }
+      .timeline p + p { margin-top: 6px; }
     </style>
   </head>
 
@@ -187,6 +201,40 @@
         <dt>Is Alejandro Vizio also a DJ?</dt>
         <dd>Yes. Outside of design, Alejandro is a DJ and music producer of electronic music — part of his wider creative life, separate from his professional design practice.</dd>
       </dl>
+
+      <!-- The timeline at the foot of the homepage, line for line, for
+           crawlers that never run its script. Change the two together. -->
+      <h2 id="timeline">How I got here</h2>
+      <p>The timeline at the foot of <a href="/">alevizio.com</a>, in his own words.</p>
+      <ol class="timeline">
+        <li><time datetime="1985">1985</time><p>born in Buenos Aires,&nbsp;Argentina.</p></li>
+        <li><time datetime="1986">1986</time><p>moved to Madrid,&nbsp;Spain.</p><p>Argentina won the World&nbsp;Cup.</p></li>
+        <li><time datetime="1989">1989</time><p>primary school at <a href="https://www.madrid-soto.kingscollegeschools.org/en">King's College</a> in&nbsp;Madrid.</p></li>
+        <li><time datetime="1995">1995</time><p>moved to the US, to Lake Forest,&nbsp;Illinois.</p><p>started junior high&nbsp;there.</p></li>
+        <li><time datetime="1998">1998</time><p>back to Buenos Aires, to <a href="https://stgeorges.edu.ar/">St George's&nbsp;College</a>.</p></li>
+        <li><time datetime="2000">2000</time><p>started <a href="https://soundcloud.com/alevizio">djing</a> at fiestas de&nbsp;15.</p></li>
+        <li><time datetime="2003">2003</time><p>finished high&nbsp;school.</p></li>
+        <li><time datetime="2004">2004</time><p>started graphic design at&nbsp;<a href="https://www.ort.edu.ar/">ORT</a>.</p></li>
+        <li><time datetime="2006">2006</time><p>finished graphic design at <a href="https://www.ort.edu.ar/">ORT</a>, then started visual communication design at&nbsp;<a href="https://unr.edu.ar/">UNR</a>.</p><p>digital image design at <a href="https://www.imagecampus.edu.ar/">Image&nbsp;Campus</a>.</p></li>
+        <li><time datetime="2007">2007</time><p>graphic designer at <a href="https://www.arthur-newton.com/">Arthur Newton&nbsp;Communications</a>.</p><p>a year of web design at <a href="https://www.imagecampus.edu.ar/">Image&nbsp;Campus</a>.</p></li>
+        <li><time datetime="2008">2008</time><p>ran <a href="https://www.adidas.com.ar/">adidas</a>' Proyecto Potreros at <a href="https://www.arthur-newton.com/">Arthur Newton Communications</a>: football pitches in 23&nbsp;towns.</p></li>
+        <li><time datetime="2009">2009</time><p>art direction at&nbsp;Underground.</p></li>
+        <li><time datetime="2010">2010</time><p>Potreros won a silver&nbsp;FIP.</p></li>
+        <li><time datetime="2012">2012</time><p>joined <a href="https://aerolab.co/">Aerolab</a>, founded by <a href="https://www.linkedin.com/in/robertogonzalez/">Roberto&nbsp;Gonzalez</a> and <a href="https://www.linkedin.com/in/agustinlinenberg/">Agustin&nbsp;Linenberg</a>, as art director and third&nbsp;partner.</p></li>
+        <li><time datetime="2013">2013</time><p>creative director at&nbsp;<a href="https://aerolab.co/">Aerolab</a>.</p><p><a href="https://en.wikipedia.org/wiki/Lemon_Wallet">Lemon Wallet</a>'s marketing&nbsp;site.</p><p><a href="https://www.mural.co/">MURAL</a>'s first branding, back when it was&nbsp;Mural.ly.</p><p><a href="https://github.com/spolu/breach_core">Breach</a>, a browser in JavaScript, and <a href="https://acanohayluz.com/">AcáNoHayLuz</a>, a map of power&nbsp;cuts.</p></li>
+        <li><time datetime="2014">2014</time><p><a href="https://www.linkedin.com/in/heyimjuani/">Juani&nbsp;Ruiz&nbsp;Echazu</a> joined <a href="https://aerolab.co/">Aerolab</a> as the fourth&nbsp;partner.</p><p><a href="https://en.wikipedia.org/wiki/Popcorn_Time">Popcorn Time</a> launched: movies streamed over BitTorrent, to more than 100 million&nbsp;people.</p><p>took Popcorn Time to <a href="https://www.ycombinator.com/">Y Combinator</a> on my first trip to San Francisco; didn't get&nbsp;in.</p><p>helped organize <a href="https://aerolab.co/jsconf">JSConf Argentina</a> and did all its&nbsp;visuals.</p><p><a href="https://www.indiegogo.com/en/projects/josevigil/gesturekit-gesture-commands-for-mobile-interfaces">GestureKit</a> and its Indiegogo&nbsp;launch.</p></li>
+        <li><time datetime="2015">2015</time><p>a new mobile banking app for <a href="https://aerolab.co/banco-galicia">Banco&nbsp;Galicia</a>.</p><p>a new brand and apps for Streema's <a href="https://aerolab.co/simpleradio">Simple&nbsp;Radio</a>.</p><p>taught <a href="https://platzi.com/cursos/product-designer/">product design</a> at <a href="https://platzi.com/">Platzi</a>, in&nbsp;Bogotá.</p></li>
+        <li><time datetime="2017">2017</time><p>moved to San Francisco as <a href="https://aerolab.co/">Aerolab</a>'s US&nbsp;manager.</p><p>taught UX design at <a href="https://www.digitalhouse.com/">Digital&nbsp;House</a>.</p><p>took <a href="https://pampawarro.org/">Pampa Warro</a> to <a href="https://fuegoaustral.org/">Fuego Austral</a>, for the first&nbsp;time.</p></li>
+        <li><time datetime="2018">2018</time><p>became <a href="https://aerolab.co/">Aerolab</a>'s&nbsp;CEO.</p><p><a href="https://aerolab.co/cartoon-network">Cartoon Network's&nbsp;site</a>.</p><p><a href="https://uselullaby.com/">Lullaby</a>, a free treatment for&nbsp;tinnitus.</p><p><a href="https://www.su.org/">Singularity University</a>'s executive program in&nbsp;innovation.</p><p>joined <a href="https://eonetwork.org/">EO</a>, the Entrepreneurs'&nbsp;Organization.</p><p>my O-1B visa for individuals with extraordinary ability in the arts was&nbsp;approved.</p></li>
+        <li><time datetime="2019">2019</time><p>my son Silvestre was&nbsp;born.</p><p>got my green&nbsp;card.</p><p>uploaded my first set to SoundCloud: <a href="https://soundcloud.com/alevizio/tropical-disco">Tropical&nbsp;Disco</a>.</p><p><a href="https://aerolab.co/">Aerolab</a> made Forbes Argentina's <a href="https://www.forbesargentina.com/liderazgo/30-promesas-forbes-2019-emprendedores-estan-construyendo-futuro-n1324">30&nbsp;Promesas</a>.</p></li>
+        <li><time datetime="2020">2020</time><p>joined <a href="https://pachama.com">Pachama</a> as a product&nbsp;designer.</p></li>
+        <li><time datetime="2021">2021</time><p>design systems with <a href="https://www.nngroup.com/">Nielsen Norman&nbsp;Group</a>.</p></li>
+        <li><time datetime="2022">2022</time><p>gave “design systems para todos” at <a href="https://friends.figma.com/events/details/figma-medellin-presents-design-systems-para-todos/">Friends of Figma&nbsp;Medellín</a>.</p><p>took <a href="https://joya-art.org/">Joya</a>, an art piece, to <a href="https://burningman.org/">Burning&nbsp;Man</a>.</p><p>Argentina won the World&nbsp;Cup&nbsp;again.</p></li>
+        <li><time datetime="2023">2023</time><p>seed investor in&nbsp;<a href="https://www.builtinsf.com/company/complexchaos">ComplexChaos</a>.</p></li>
+        <li><time datetime="2024">2024</time><p>senior product designer at&nbsp;<a href="https://pachama.com">Pachama</a>.</p><p>taught UX experts at <a href="https://www.mercadolibre.com.ar/">Mercado Libre</a>, with&nbsp;<a href="https://somosedison.com/">Edison</a>.</p></li>
+        <li><time datetime="2025">2025</time><p><a href="https://pachama.com">Pachama</a> was <a href="https://techcrunch.com/2025/11/10/consolidation-begins-to-hit-the-carbon-credit-market/">acquired by Carbon Direct</a>; stayed on as senior product&nbsp;designer.</p><p>product &amp; brand for <a href="https://www.earthscale.ai/">Earthscale</a>, <a href="https://www.limai.io/">Limai</a> and&nbsp;<a href="https://fu.do/">Fudo</a>.</p><p>Brad Frost's <a href="https://courses.bradfrost.com/courses/atomic-design">Atomic Design certification&nbsp;course</a>.</p><p>became a US&nbsp;citizen.</p></li>
+        <li><time datetime="2026">2026</time><p>founding designer at <a href="https://www.bocho.com/">Bocho</a>&nbsp;(<a href="https://www.planta.co/">Planta</a>).</p><p>founding designer at&nbsp;<a href="https://djooni.com">Djooni</a>.</p><p>the website for <a href="https://messa.ai/">Messa</a>, product &amp; brand for&nbsp;<a href="https://www.pausa.co/">Pausa</a>.</p><p><a href="https://globestudio.app">globestudio</a> — open-source dotted maps &amp; 3d&nbsp;globes.</p><p><a href="https://curb.guide/">curb</a> — know where to park in sf. in <a href="https://www.sfgate.com/local/article/sf-street-sweeping-app-22317534.php">SFGate</a> and <a href="https://thedissentsf.com/article/after-2-000-in-sweeping-tickets-a-haight-developer-read-the-city-s-own-data">The Dissent&nbsp;SF</a>.</p><p><a href="https://saboteurs.app/">saboteurs</a> — squad stealth for iphone, in&nbsp;beta.</p></li>
+      </ol>
 
       <h2>Elsewhere</h2>
       <p class="links">

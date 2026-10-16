@@ -134,7 +134,9 @@ const pachama = { id: "pachama", name: "Pachama" };
 const joya = { id: "joya", name: "Joya" };
 
 // From the site, LinkedIn (experience, education, projects, featured) and
-// Alejandro himself.
+// Alejandro himself. public/about.html (#timeline) and public/llms.txt repeat
+// these lines as plain text, for crawlers that never run this script, so a
+// change here goes there too.
 const life = defineLifeline({
   slug: "alevizio",
   name: "Alejandro Vizio",
