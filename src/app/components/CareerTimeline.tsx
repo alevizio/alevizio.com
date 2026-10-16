@@ -88,6 +88,27 @@ const FlagUs = ({ className }: { className?: string }) => (
   </svg>
 );
 
+// Argentina's, 14 wide to 9 high: the two sky-blue bands are ink, the white
+// is the paper, and the Sun of May is a disc (its rays would not show).
+const FlagAr = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 140 90" fill="currentColor" aria-hidden="true" className={className}>
+    <rect width={140} height={30} />
+    <rect y={60} width={140} height={30} />
+    <circle cx={70} cy={45} r={9} />
+  </svg>
+);
+
+// Spain's, 3 wide to 2 high: the red bands (a quarter each) are ink, the
+// yellow is the paper, and the arms are a small shield half a flag-height
+// from the hoist, kept clear of the bands so it reads apart from them.
+const FlagEs = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 150 100" fill="currentColor" aria-hidden="true" className={className}>
+    <rect width={150} height={25} />
+    <rect y={75} width={150} height={25} />
+    <rect x={39} y={33} width={22} height={34} rx={7} />
+  </svg>
+);
+
 const preview = (name: string, alt: string) => ({
   src: `/work/${name}-preview-poster.jpg`,
   video: `/work/${name}-preview.mp4`,
@@ -108,12 +129,20 @@ const life = defineLifeline({
   milestones: {
     1985: {
       id: "born",
-      events: ["born in Buenos Aires, Argentina."],
+      events: [
+        [
+          { type: "text", value: "born in Buenos Aires, Argentina." },
+          { type: "image", icon: FlagAr, alt: "the flag of Argentina" },
+        ],
+      ],
     },
     1986: {
       id: "spain",
       events: [
-        "moved to Madrid, Spain.",
+        [
+          { type: "text", value: "moved to Madrid, Spain." },
+          { type: "image", icon: FlagEs, alt: "the flag of Spain" },
+        ],
         {
           text: [
             { type: "text", value: "Argentina won the World Cup." },
@@ -135,7 +164,13 @@ const life = defineLifeline({
     },
     1995: {
       id: "us",
-      events: ["moved to the US, to Lake Forest, Illinois.", "started junior high there."],
+      events: [
+        [
+          { type: "text", value: "moved to the US, to Lake Forest, Illinois." },
+          { type: "image", icon: FlagUs, alt: "the flag of the United States" },
+        ],
+        "started junior high there.",
+      ],
     },
     1998: {
       id: "back-home",
