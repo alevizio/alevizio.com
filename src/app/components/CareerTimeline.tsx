@@ -57,7 +57,6 @@ const life = defineLifeline({
   slug: "alevizio",
   name: "Alejandro Vizio",
   birthYear: 1985,
-  endYear: 2027,
   description: "A life in product and brand design, year by year.",
   milestones: {
     1985: {
@@ -329,10 +328,6 @@ const life = defineLifeline({
         ],
       ],
     },
-    2027: {
-      id: "alma",
-      events: ["Alma, our second, is due."],
-    },
   },
 });
 
@@ -371,7 +366,7 @@ export default function CareerTimeline() {
     >
       {/* md+: this block pins mid-screen while the page scrolls through the
           spacer below it, and that scroll carries the rail sideways from
-          1985 to 2027 (Lifeline's scroll mode). The bottom padding mirrors
+          1985 to 2026 (Lifeline's scroll mode). The bottom padding mirrors
           the sticky top, so the page can scroll until the rail reaches its
           end with the block still centred. Below md it is a vertical list
           in the page's flow (200px clears the pinned project cards). */}
@@ -397,7 +392,7 @@ export default function CareerTimeline() {
             mode="scroll"
             markers={markers}
             birthYear={life.birthYear}
-            title="timeline, 1985 to 2027"
+            title="timeline, 1985 to 2026"
             className="h-full"
           />
         </div>
