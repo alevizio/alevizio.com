@@ -171,6 +171,13 @@ const life = defineLifeline({
       id: "image-campus",
       events: [
         [
+          { type: "text", value: "finished graphic design at " },
+          { type: "link", value: "ORT", href: "https://www.ort.edu.ar/" },
+          { type: "text", value: ", then started visual communication design at " },
+          { type: "link", value: "UNR", href: "https://unr.edu.ar/" },
+          { type: "text", value: "." },
+        ],
+        [
           { type: "text", value: "digital image design at " },
           { type: "link", value: "Image Campus", href: "https://www.imagecampus.edu.ar/" },
           { type: "text", value: "." },
@@ -194,14 +201,9 @@ const life = defineLifeline({
       ],
     },
     2008: {
-      id: "unr",
+      id: "potreros",
       companies: [{ id: "adidas", name: "adidas" }],
       events: [
-        [
-          { type: "text", value: "started visual communication design at " },
-          { type: "link", value: "UNR", href: "https://unr.edu.ar/" },
-          { type: "text", value: "." },
-        ],
         [
           { type: "text", value: "ran " },
           { type: "link", value: "adidas", href: "https://www.adidas.com.ar/" },
