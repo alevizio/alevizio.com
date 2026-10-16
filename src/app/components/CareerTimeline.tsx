@@ -68,6 +68,7 @@ registerCompanyIcons({
   lullaby: { icon: imageMark("lullaby.svg"), sizeClassName: "h-4 w-3" },
   joya: { icon: imageMark("joya.png"), sizeClassName: "h-4 w-5" },
   "pampa-warro": { icon: imageMark("pampa-warro.png"), sizeClassName: "h-4 w-6" },
+  complexchaos: { icon: imageMark("complexchaos.png"), sizeClassName: "h-4 w-[18px]" },
   bocho: { icon: imageMark("bocho.png"), sizeClassName: "h-4 w-[14px]" },
 });
 
@@ -498,6 +499,7 @@ const life = defineLifeline({
     },
     2023: {
       id: "complexchaos",
+      companies: [{ id: "complexchaos", name: "ComplexChaos" }],
       events: [
         [
           { type: "text", value: "seed investor in " },
