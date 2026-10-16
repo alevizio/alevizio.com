@@ -16,8 +16,9 @@
  * - lifeline-desktop.tsx: waiting for view it is transparent, not hidden,
  *   so it stays focusable and in the accessibility tree.
  * - company-icon.tsx: the marks carry role="img" for their aria-label.
- * - types.ts, lifeline-event.tsx: an "image" event segment, a small image inline
- *   with the words and glued to the one before it (the World Cup stars, the flag).
+ * - types.ts, lifeline-event.tsx: an "image" event segment, a small inline mark
+ *   set like a glyph in the text's ink (baseline to cap line) and glued to the
+ *   word before it (the World Cup stars, the flag).
  * - lifeline-marker.tsx, lifeline-vertical.tsx: badges keep their own shape at a
  *   16px height (upstream fits them in a 24px square, which shrinks a row of stars).
  */

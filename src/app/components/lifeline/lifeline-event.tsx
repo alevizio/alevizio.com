@@ -67,12 +67,16 @@ export function LifelineEventText({
           // a line of its own.
           <span key={index} className="whitespace-nowrap">
             {"\u00a0"}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={segment.src}
-              alt={segment.alt}
-              className="inline-block h-[0.9em] w-auto -translate-y-px align-baseline"
-            />
+            {/* Set like a glyph: from the baseline to the cap line (0.72em
+                is Instrument Sans's cap height), drawn in currentColor so
+                it is the words' ink and darkens with them on hover. */}
+            <span
+              role="img"
+              aria-label={segment.alt}
+              className="inline-block align-baseline"
+            >
+              <segment.icon className="block h-[0.72em] w-auto" />
+            </span>
           </span>
         ) : (
           <span key={index}>{segment.value}</span>
@@ -118,6 +122,6 @@ export function getLifelineEventKey(event: LifelineEvent, index: number) {
   if (typeof content === "string") return `${index}-${content}`
 
   return `${index}-${content
-    .map((segment) => (segment.type === "image" ? segment.src : segment.value))
+    .map((segment) => (segment.type === "image" ? segment.alt : segment.value))
     .join("")}`
 }

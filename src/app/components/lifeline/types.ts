@@ -1,3 +1,4 @@
+import type { ComponentType } from "react"
 import type { CompanyIconId } from "./company-icon"
 
 
@@ -21,8 +22,8 @@ export interface LifelineCompany {
 export type LifelineEventSegment =
   | { type: "text"; value: string }
   | { type: "link"; value: string; href: string }
-  /** (alevizio.com) A small image inline with the words, an em tall: a row of stars after a line. */
-  | { type: "image"; src: string; alt: string }
+  /** (alevizio.com) A small mark inline with the words, set like a glyph in their ink: a row of stars after a line. */
+  | { type: "image"; icon: ComponentType<{ className?: string }>; alt: string }
 
 export interface LifelineEventImage {
   src: string

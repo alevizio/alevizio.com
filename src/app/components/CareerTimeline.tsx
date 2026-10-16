@@ -58,6 +58,36 @@ registerCompanyIcons({
   bocho: { icon: imageMark("bocho.png"), sizeClassName: "h-4 w-[14px]" },
 });
 
+// Marks set inline after a line, in the text's own ink (currentColor), each
+// cropped to its ink so the timeline can stand it on the baseline.
+
+// Argentina's World Cup stars, one per title, 24 units apart.
+const STAR_POINTS =
+  "10,0.5 12.35,7.26 19.51,7.41 13.8,11.74 15.88,18.59 10,14.5 4.12,18.59 6.2,11.74 0.49,7.41 7.65,7.26";
+const stars =
+  (count: number): ComponentType<{ className?: string }> =>
+  ({ className }) => (
+    <svg viewBox={`0.49 0.5 ${24 * (count - 1) + 19.02} 18.09`} fill="currentColor" aria-hidden="true" className={className}>
+      {Array.from({ length: count }, (_, index) => (
+        <polygon key={index} points={STAR_POINTS} transform={`translate(${24 * index} 0)`} />
+      ))}
+    </svg>
+  );
+
+// The US flag in one ink, in its official proportions: 1.9 wide to 1 high,
+// 13 stripes, the canton 0.76 wide and 7 stripes deep. The red stripes and
+// the canton are ink, the white is the paper; its 50 stars would be
+// sub-pixel at this size, so the canton is solid.
+const FLAG_STRIPE = 100 / 13;
+const FlagUs = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 190 100" fill="currentColor" aria-hidden="true" className={className}>
+    {[0, 2, 4, 6, 8, 10, 12].map((stripe) => (
+      <rect key={stripe} y={stripe * FLAG_STRIPE} width={190} height={FLAG_STRIPE} />
+    ))}
+    <rect width={76} height={7 * FLAG_STRIPE} />
+  </svg>
+);
+
 const preview = (name: string, alt: string) => ({
   src: `/work/${name}-preview-poster.jpg`,
   video: `/work/${name}-preview.mp4`,
@@ -87,7 +117,7 @@ const life = defineLifeline({
         {
           text: [
             { type: "text", value: "Argentina won the World Cup." },
-            { type: "image", src: "/marks/stars-2.svg", alt: "two stars: 1978 and 1986" },
+            { type: "image", icon: stars(2), alt: "two stars: 1978 and 1986" },
           ],
           effect: "fireworks-argentina",
         },
@@ -390,7 +420,7 @@ const life = defineLifeline({
         {
           text: [
             { type: "text", value: "Argentina won the World\u00a0Cup again." },
-            { type: "image", src: "/marks/stars-3.svg", alt: "three stars: 1978, 1986 and 2022" },
+            { type: "image", icon: stars(3), alt: "three stars: 1978, 1986 and 2022" },
           ],
           effect: "fireworks-argentina",
         },
@@ -465,7 +495,7 @@ const life = defineLifeline({
         {
           text: [
             { type: "text", value: "became a US citizen." },
-            { type: "image", src: "/marks/flag-us.svg", alt: "the flag of the United States" },
+            { type: "image", icon: FlagUs, alt: "the flag of the United States" },
           ],
           effect: "fireworks",
         },
