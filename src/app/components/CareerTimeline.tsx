@@ -434,13 +434,6 @@ const life = defineLifeline({
           { type: "link", value: "ComplexChaos", href: "https://www.builtinsf.com/company/complexchaos" },
           { type: "text", value: "." },
         ],
-        [
-          { type: "text", value: "back at " },
-          { type: "link", value: "Burning Man", href: "https://burningman.org/" },
-          { type: "text", value: " with " },
-          { type: "link", value: "Joya", href: "https://joya-art.org/" },
-          { type: "text", value: "." },
-        ],
       ],
     },
     2024: {
@@ -457,13 +450,6 @@ const life = defineLifeline({
           { type: "link", value: "Mercado Libre", href: "https://www.mercadolibre.com.ar/" },
           { type: "text", value: ", with " },
           { type: "link", value: "Edison", href: "https://somosedison.com/" },
-          { type: "text", value: "." },
-        ],
-        [
-          { type: "text", value: "a third " },
-          { type: "link", value: "Burning Man", href: "https://burningman.org/" },
-          { type: "text", value: " with " },
-          { type: "link", value: "Joya", href: "https://joya-art.org/" },
           { type: "text", value: "." },
         ],
       ],
