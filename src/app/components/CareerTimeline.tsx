@@ -205,6 +205,10 @@ const life = defineLifeline({
         ],
       ],
     },
+    2003: {
+      id: "high-school",
+      events: ["finished high school."],
+    },
     2005: {
       id: "ort",
       events: [
