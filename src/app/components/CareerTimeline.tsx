@@ -380,7 +380,6 @@ const life = defineLifeline({
           { type: "link", value: "Cartoon Network's site", href: "https://aerolab.co/cartoon-network" },
           { type: "text", value: "." },
         ],
-        "got my O-1 visa.",
         [
           { type: "link", value: "Lullaby", href: "https://uselullaby.com/" },
           { type: "text", value: ", a free treatment for tinnitus." },
@@ -394,6 +393,7 @@ const life = defineLifeline({
           { type: "link", value: "EO", href: "https://eonetwork.org/" },
           { type: "text", value: ", the Entrepreneurs' Organization." },
         ],
+        "got my O-1 visa.",
       ],
     },
     2019: {
