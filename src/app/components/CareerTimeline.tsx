@@ -530,7 +530,7 @@ const life = defineLifeline({
     },
     2026: {
       id: "now",
-      companies: [{ id: "bocho", name: "Bocho" }, { id: "planta", name: "Planta" }, { id: "messa", name: "Messa" }, { id: "pausa", name: "Pausa" }, { id: "djooni", name: "Djooni" }],
+      companies: [{ id: "bocho", name: "Bocho" }, { id: "planta", name: "Planta" }, { id: "djooni", name: "Djooni" }, { id: "messa", name: "Messa" }, { id: "pausa", name: "Pausa" }],
       events: [
         [
           { type: "text", value: "founding designer at " },
@@ -540,15 +540,15 @@ const life = defineLifeline({
           { type: "text", value: ")." },
         ],
         [
+          { type: "text", value: "founding designer at " },
+          { type: "link", value: "Djooni", href: "https://djooni.com" },
+          { type: "text", value: "." },
+        ],
+        [
           { type: "text", value: "the website for " },
           { type: "link", value: "Messa", href: "https://messa.ai/" },
           { type: "text", value: ", product & brand for " },
           { type: "link", value: "Pausa", href: "https://www.pausa.co/" },
-          { type: "text", value: "." },
-        ],
-        [
-          { type: "text", value: "founding designer at " },
-          { type: "link", value: "Djooni", href: "https://djooni.com" },
           { type: "text", value: "." },
         ],
         {
