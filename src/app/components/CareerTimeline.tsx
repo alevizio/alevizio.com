@@ -547,6 +547,11 @@ const life = defineLifeline({
           { type: "link", value: "Fudo", href: "https://fu.do/" },
           { type: "text", value: "." },
         ],
+        [
+          { type: "text", value: "Brad Frost's " },
+          { type: "link", value: "Atomic Design certification course", href: "https://courses.bradfrost.com/courses/atomic-design" },
+          { type: "text", value: "." },
+        ],
         {
           text: [
             { type: "text", value: "became a US citizen." },
