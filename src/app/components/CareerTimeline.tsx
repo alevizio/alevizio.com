@@ -25,8 +25,16 @@ const logoMark = (
   );
 };
 
-// Companies with no logo on the site (Arthur Newton, Carbon Direct, Bocho)
-// get Lifeline's own fallback: their initial in a ring.
+// The rest come from each organisation's own logo (its site, Wikimedia
+// Commons or Simple Icons), cut to the mark and kept in public/marks: SVGs
+// rebuilt from their path data alone, PNGs trimmed. Drawn in ink like the
+// others (brightness-0); Popcorn Time's bucket needs its stripes, so grey.
+const imageMark =
+  (file: string, tone = "brightness-0"): ComponentType<{ className?: string }> =>
+  ({ className }) => (
+    <img src={`/marks/${file}`} alt="" aria-hidden="true" className={`${className ?? ""} object-contain ${tone}`} />
+  );
+
 registerCompanyIcons({
   aerolab: { icon: logoMark("Aerolab", "-0.01 -0.1 20.74 17.96") },
   pachama: { icon: logoMark("Pachama", "0.98 0 58.13 65.9") },
@@ -40,6 +48,19 @@ registerCompanyIcons({
     icon: logoMark("Fudo", "159.2 162.18 232.3 58.42"),
     sizeClassName: "h-3 w-12",
   },
+  soundcloud: { icon: imageMark("soundcloud.svg"), sizeClassName: "h-3 w-[27px]" },
+  "arthur-newton": { icon: imageMark("arthur-newton.png"), sizeClassName: "h-6 w-[33px]" },
+  adidas: { icon: imageMark("adidas.svg"), sizeClassName: "h-3.5 w-[22px]" },
+  "popcorn-time": { icon: imageMark("popcorn-time.png", "grayscale contrast-125"), sizeClassName: "h-4 w-3" },
+  platzi: { icon: imageMark("platzi.svg") },
+  "digital-house": { icon: imageMark("digital-house.svg"), sizeClassName: "h-[9px] w-[117px]" },
+  lullaby: { icon: imageMark("lullaby.svg"), sizeClassName: "h-4 w-3" },
+  singularity: { icon: imageMark("singularity.svg"), sizeClassName: "h-4 w-[13px]" },
+  eo: { icon: imageMark("eo.svg") },
+  nngroup: { icon: imageMark("nngroup.png"), sizeClassName: "h-3.5 w-[30px]" },
+  figma: { icon: imageMark("figma.svg"), sizeClassName: "h-4 w-3" },
+  joya: { icon: imageMark("joya.png"), sizeClassName: "h-4 w-5" },
+  bocho: { icon: imageMark("bocho.png"), sizeClassName: "h-4 w-[14px]" },
 });
 
 const preview = (name: string, alt: string) => ({
@@ -50,6 +71,7 @@ const preview = (name: string, alt: string) => ({
 
 const aerolab = { id: "aerolab", name: "Aerolab" };
 const pachama = { id: "pachama", name: "Pachama" };
+const joya = { id: "joya", name: "Joya" };
 
 // From the site, LinkedIn (experience, education, projects, featured) and
 // Alejandro himself.
@@ -69,22 +91,31 @@ const life = defineLifeline({
     },
     1991: {
       id: "kings-college",
-      events: ["primary school at King's College in Madrid."],
-    },
-    1993: {
-      id: "us",
-      events: ["moved to the US, to Lake Forest, Illinois."],
+      events: [
+        [
+          { type: "text", value: "primary school at " },
+          { type: "link", value: "King's College", href: "https://www.madrid-soto.kingscollegeschools.org/en" },
+          { type: "text", value: " in Madrid." },
+        ],
+      ],
     },
     1995: {
-      id: "junior-high",
-      events: ["junior high in Lake Forest."],
+      id: "us",
+      events: ["moved to the US, to Lake Forest, Illinois.", "started junior high there."],
     },
     1998: {
       id: "back-home",
-      events: ["back to Buenos Aires, to St George's College."],
+      events: [
+        [
+          { type: "text", value: "back to Buenos Aires, to " },
+          { type: "link", value: "St George's College", href: "https://stgeorges.edu.ar/" },
+          { type: "text", value: "." },
+        ],
+      ],
     },
     2000: {
       id: "djing",
+      companies: [{ id: "soundcloud", name: "SoundCloud" }],
       events: [
         [
           { type: "text", value: "started " },
@@ -93,30 +124,45 @@ const life = defineLifeline({
         ],
       ],
     },
-    2003: {
-      id: "school",
-      events: ["finished school at St George's: bilingual, with the IB."],
-    },
     2005: {
       id: "ort",
-      events: ["started graphic design at ORT."],
+      events: [
+        [
+          { type: "text", value: "started graphic design at " },
+          { type: "link", value: "ORT", href: "https://www.ort.edu.ar/" },
+          { type: "text", value: "." },
+        ],
+      ],
     },
     2006: {
       id: "image-campus",
-      events: ["digital image design at Image Campus."],
+      events: [
+        [
+          { type: "text", value: "digital image design at " },
+          { type: "link", value: "Image Campus", href: "https://www.imagecampus.edu.ar/" },
+          { type: "text", value: "." },
+        ],
+      ],
     },
     2007: {
-      id: "ort-graduated",
+      id: "web-design",
       events: [
-        "graduated from ORT in graphic design.",
-        "a year of web design at Image Campus.",
+        [
+          { type: "text", value: "a year of web design at " },
+          { type: "link", value: "Image Campus", href: "https://www.imagecampus.edu.ar/" },
+          { type: "text", value: "." },
+        ],
       ],
     },
     2008: {
       id: "unr",
-      companies: [{ id: "arthur-newton", name: "Arthur Newton Communications" }],
+      companies: [{ id: "arthur-newton", name: "Arthur Newton Communications" }, { id: "adidas", name: "adidas" }],
       events: [
-        "started visual communication design at UNR.",
+        [
+          { type: "text", value: "started visual communication design at " },
+          { type: "link", value: "UNR", href: "https://unr.edu.ar/" },
+          { type: "text", value: "." },
+        ],
         "ran adidas' Proyecto Potreros at Arthur Newton Communications: football pitches in 23 towns.",
       ],
     },
@@ -125,9 +171,8 @@ const life = defineLifeline({
       events: ["art direction at Underground."],
     },
     2010: {
-      id: "unr-graduated",
+      id: "fip",
       events: [
-        "graduated in visual communication design from UNR.",
         "Potreros won a silver FIP.",
       ],
     },
@@ -138,7 +183,7 @@ const life = defineLifeline({
         [
           { type: "text", value: "joined " },
           { type: "link", value: "Aerolab", href: "https://aerolab.co/" },
-          { type: "text", value: " as art director." },
+          { type: "text", value: " as art director and partner." },
         ],
       ],
     },
@@ -153,7 +198,7 @@ const life = defineLifeline({
     },
     2014: {
       id: "popcorn-time",
-      companies: [aerolab],
+      companies: [aerolab, { id: "popcorn-time", name: "Popcorn Time" }],
       events: [
         [
           { type: "text", value: "designed " },
@@ -167,7 +212,7 @@ const life = defineLifeline({
     },
     2015: {
       id: "galicia",
-      companies: [aerolab],
+      companies: [aerolab, { id: "platzi", name: "Platzi" }],
       events: [
         "designed the Banco Galicia app.",
         [
@@ -179,20 +224,41 @@ const life = defineLifeline({
     },
     2017: {
       id: "san-francisco",
-      companies: [aerolab],
+      companies: [aerolab, { id: "digital-house", name: "Digital House" }],
       events: [
         "moved to San Francisco as Aerolab's US manager.",
-        "taught UX design at Digital House.",
+        [
+          { type: "text", value: "taught UX design at " },
+          { type: "link", value: "Digital House", href: "https://www.digitalhouse.com/" },
+          { type: "text", value: "." },
+        ],
+        [
+          { type: "text", value: "took Pampa Warro to " },
+          { type: "link", value: "Fuego Austral", href: "https://fuegoaustral.org/" },
+          { type: "text", value: ", for the first time." },
+        ],
       ],
     },
     2018: {
       id: "aerolab-ceo",
-      companies: [aerolab],
+      companies: [aerolab, { id: "lullaby", name: "Lullaby" }, { id: "singularity", name: "Singularity University" }, { id: "eo", name: "Entrepreneurs' Organization" }],
       events: [
         "became Aerolab's CEO.",
         "got my O-1 visa.",
-        "Singularity University's executive program in innovation.",
-        "joined EO, the Entrepreneurs' Organization.",
+        [
+          { type: "text", value: "made " },
+          { type: "link", value: "Lullaby", href: "https://uselullaby.com/" },
+          { type: "text", value: ", a free treatment for tinnitus." },
+        ],
+        [
+          { type: "link", value: "Singularity University", href: "https://www.su.org/" },
+          { type: "text", value: "'s executive program in innovation." },
+        ],
+        [
+          { type: "text", value: "joined " },
+          { type: "link", value: "EO", href: "https://eonetwork.org/" },
+          { type: "text", value: ", the Entrepreneurs' Organization." },
+        ],
       ],
     },
     2019: {
@@ -224,10 +290,18 @@ const life = defineLifeline({
     },
     2021: {
       id: "nngroup",
-      events: ["design systems with Nielsen Norman Group."],
+      companies: [{ id: "nngroup", name: "Nielsen Norman Group" }],
+      events: [
+        [
+          { type: "text", value: "design systems with " },
+          { type: "link", value: "Nielsen Norman Group", href: "https://www.nngroup.com/" },
+          { type: "text", value: "." },
+        ],
+      ],
     },
     2022: {
       id: "friends-of-figma",
+      companies: [{ id: "figma", name: "Figma" }, joya],
       events: [
         [
           { type: "text", value: "gave “design systems para todos” at " },
@@ -238,30 +312,41 @@ const life = defineLifeline({
           },
           { type: "text", value: "." },
         ],
-        "took Joya, an art piece, to Burning Man.",
+        [
+          { type: "text", value: "took " },
+          { type: "link", value: "Joya", href: "https://joya-art.org/" },
+          { type: "text", value: ", an art piece, to Burning Man." },
+        ],
       ],
     },
     2023: {
       id: "complexchaos",
-      events: ["seed investor in ComplexChaos.", "back at Burning Man with Joya."],
+      companies: [joya],
+      events: [
+        "seed investor in ComplexChaos.",
+        [
+          { type: "text", value: "back at Burning Man with " },
+          { type: "link", value: "Joya", href: "https://joya-art.org/" },
+          { type: "text", value: "." },
+        ],
+      ],
     },
     2024: {
       id: "senior",
-      companies: [pachama],
+      companies: [pachama, joya],
       events: [
         "senior product designer at Pachama.",
         "taught UX experts at Mercado Libre, with Edison.",
-        "a third Burning Man with Joya.",
+        [
+          { type: "text", value: "a third Burning Man with " },
+          { type: "link", value: "Joya", href: "https://joya-art.org/" },
+          { type: "text", value: "." },
+        ],
       ],
     },
     2025: {
       id: "carbon-direct",
-      companies: [
-        { id: "carbon-direct", name: "Carbon Direct" },
-        { id: "earthscale", name: "Earthscale" },
-        { id: "limai", name: "Limai" },
-        { id: "fudo", name: "Fudo" },
-      ],
+      companies: [{ id: "earthscale", name: "Earthscale" }, { id: "limai", name: "Limai" }, { id: "fudo", name: "Fudo" }],
       events: [
         [
           { type: "text", value: "Pachama was " },
@@ -278,13 +363,7 @@ const life = defineLifeline({
     },
     2026: {
       id: "now",
-      companies: [
-        { id: "bocho", name: "Bocho" },
-        { id: "planta", name: "Planta" },
-        { id: "messa", name: "Messa" },
-        { id: "pausa", name: "Pausa" },
-        { id: "djooni", name: "Djooni" },
-      ],
+      companies: [{ id: "bocho", name: "Bocho" }, { id: "planta", name: "Planta" }, { id: "messa", name: "Messa" }, { id: "pausa", name: "Pausa" }, { id: "djooni", name: "Djooni" }],
       events: [
         "founding designer at Bocho, on Planta, Messa and Pausa.",
         [
@@ -302,12 +381,10 @@ const life = defineLifeline({
         {
           text: [
             { type: "link", value: "curb", href: "https://curb.guide/" },
-            { type: "text", value: " — know where to park in sf. " },
-            {
-              type: "link",
-              value: "how it started",
-              href: "https://www.linkedin.com/feed/update/urn:li:activity:7473039062409326592/",
-            },
+            { type: "text", value: " — know where to park in sf. in " },
+            { type: "link", value: "SFGate", href: "https://www.sfgate.com/local/article/sf-street-sweeping-app-22317534.php" },
+            { type: "text", value: " and " },
+            { type: "link", value: "The Dissent SF", href: "https://thedissentsf.com/article/after-2-000-in-sweeping-tickets-a-haight-developer-read-the-city-s-own-data" },
             { type: "text", value: "." },
           ],
           image: { src: "/work/curb-og.jpg", alt: "curb, sweeping times block by block" },
@@ -319,13 +396,6 @@ const life = defineLifeline({
           ],
           image: preview("saboteurs", "the saboteurs trailer"),
         },
-        [
-          { type: "text", value: "case studies for " },
-          { type: "link", value: "messa", href: "/work/messa" },
-          { type: "text", value: " and " },
-          { type: "link", value: "pausa", href: "/work/pausa" },
-          { type: "text", value: "." },
-        ],
       ],
     },
   },
