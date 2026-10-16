@@ -349,14 +349,14 @@ const life = defineLifeline({
       companies: [aerolab, { id: "platzi", name: "Platzi" }],
       events: [
         [
-          { type: "text", value: "the " },
-          { type: "link", value: "Banco Galicia app", href: "https://aerolab.co/banco-galicia" },
+          { type: "text", value: "a new mobile banking app for " },
+          { type: "link", value: "Banco Galicia", href: "https://aerolab.co/banco-galicia" },
           { type: "text", value: "." },
         ],
         [
-          { type: "text", value: "the " },
+          { type: "text", value: "a new brand and apps for Streema's " },
           { type: "link", value: "Simple Radio", href: "https://aerolab.co/simpleradio" },
-          { type: "text", value: " app." },
+          { type: "text", value: "." },
         ],
         [
           { type: "text", value: "taught " },
