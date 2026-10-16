@@ -18,8 +18,7 @@ export function Lifeline(props: LifelineProps) {
   const [isMobile, setIsMobile] = useState<boolean | null>(null)
 
   useLayoutEffect(() => {
-    // Matches Tailwind's lg: breakpoint (see lifeline-layout) so JS and CSS
-    // can never disagree.
+    // Matches Tailwind's md: breakpoint so JS and CSS can never disagree.
     const query = window.matchMedia(
       `(min-width: ${LIFELINE_MOBILE_BREAKPOINT}px)`,
     )
@@ -47,7 +46,9 @@ export function Lifeline(props: LifelineProps) {
         */}
         <div
           className={
-            props.mode === "embed"
+            // Scroll mode lays the vertical list out like an embed with no
+            // height: in the page's flow, its own box never scrolling.
+            props.mode === "embed" || props.mode === "scroll"
               ? cn(
                   "lifeline-typeset h-full overflow-y-auto pt-5",
                   props.className,

@@ -22,7 +22,10 @@ export default function AnimatedLanding() {
   };
 
   return (
-    <div className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-hidden" data-name="alevizio.com">
+    // overflow-clip, not -hidden, where the browser has it: hidden makes this
+    // a scroll container, and the timeline's pinned block would stick to it
+    // (which never scrolls) instead of to the viewport.
+    <div className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip" data-name="alevizio.com">
       {/* ASCII Rain Background — ambient drops + mouse ripples */}
       <AsciiRain />
 
