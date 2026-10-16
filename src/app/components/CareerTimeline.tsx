@@ -299,7 +299,7 @@ const life = defineLifeline({
           { type: "text", value: "'s marketing site." },
         ],
         [
-          { type: "link", value: "Breach", href: "https://github.com/breach" },
+          { type: "link", value: "Breach", href: "https://github.com/spolu/breach_core" },
           { type: "text", value: ", a browser in JavaScript, and " },
           { type: "link", value: "AcáNoHayLuz", href: "https://acanohayluz.com/" },
           { type: "text", value: ", a map of power cuts." },
@@ -330,7 +330,14 @@ const life = defineLifeline({
           { type: "link", value: "JSConf Argentina", href: "https://aerolab.co/jsconf" },
           { type: "text", value: "." },
         ],
-        "GestureKit and its Indiegogo launch.",
+        [
+          {
+            type: "link",
+            value: "GestureKit",
+            href: "https://www.indiegogo.com/en/projects/josevigil/gesturekit-gesture-commands-for-mobile-interfaces",
+          },
+          { type: "text", value: " and its Indiegogo launch." },
+        ],
       ],
     },
     2015: {
