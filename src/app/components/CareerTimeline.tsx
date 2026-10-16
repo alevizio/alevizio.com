@@ -428,7 +428,6 @@ const life = defineLifeline({
     },
     2023: {
       id: "complexchaos",
-      companies: [joya],
       events: [
         [
           { type: "text", value: "seed investor in " },
@@ -446,7 +445,7 @@ const life = defineLifeline({
     },
     2024: {
       id: "senior",
-      companies: [pachama, joya],
+      companies: [pachama],
       events: [
         [
           { type: "text", value: "senior product designer at " },
