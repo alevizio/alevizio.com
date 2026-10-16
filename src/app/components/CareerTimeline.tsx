@@ -336,7 +336,7 @@ const life = defineLifeline({
 
 // No widows: the last space of every event (wherever it falls, link or
 // text) becomes a no-break space, so a last word never sits alone.
-const glue = (value: string) => value.replace(/ (?=\S*$)/, " ");
+const glue = (value: string) => value.replace(/ (?=\S*$)/, "\u00a0");
 const glueSegments = (segments: LifelineEventSegment[]) => {
   const last = segments.map((segment) => segment.value.includes(" ")).lastIndexOf(true);
   return segments.map((segment, index) =>
@@ -359,10 +359,13 @@ const markers = life.markers.map((marker) => ({
 
 export default function CareerTimeline() {
   return (
+    // data-site-nav-inner: Lifeline ends the rail 24px inside this element's
+    // right edge, so with the section full width it runs to the window's edge.
     <section
       data-lifeline-scroll
+      data-site-nav-inner
       aria-labelledby="career-timeline"
-      className="relative z-10 max-w-[1440px] pb-[200px] md:pb-[max(140px,calc(50dvh-17.5rem))]"
+      className="relative z-10 pb-[200px] md:pb-[max(140px,calc(50dvh-17.5rem))]"
     >
       {/* md+: this block pins mid-screen while the page scrolls through the
           spacer below it, and that scroll carries the rail sideways from
@@ -372,21 +375,22 @@ export default function CareerTimeline() {
           in the page's flow (200px clears the pinned project cards). */}
       <div className="md:sticky md:top-[max(1rem,calc(50dvh-17.5rem))]">
         {/* Set like the logo rows' labels, but at 70% ink (5.2:1) rather
-            than their 50% (3.0:1), the same as the timeline's own text. */}
+            than their 50% (3.0:1), the same as the timeline's own text.
+            data-site-nav-logo: Lifeline starts the rail where this text
+            starts, on the page's 140px column; once it moves, the labels
+            pin at the window's left edge. */}
         <h2
           id="career-timeline"
           className="px-[60px] text-[clamp(11px,1vw,13px)] font-normal tracking-[0.05em] text-foreground/70 md:px-[140px]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
-          how i got here
+          <span data-site-nav-logo>how i got here</span>
         </h2>
         {/* Phones: its own 24px gutter tops this up to the page's 60px.
-            md+: the box starts 20px left of the page's 140px column, where
-            the pinned labels sit, and ends 8px in, so the rail stops 32px
-            from the edge, in line with the project cards. Its height fits
-            the tallest year (2026) plus the timeline's 20px top padding;
-            raise it, and the sticky top above, if a year grows. */}
-        <div className="px-[36px] md:mr-2 md:ml-[120px] md:h-[540px] md:px-0">
+            md+: the full width of the window. Its height fits the tallest
+            year (2026) plus the timeline's 20px top padding; raise it, and
+            the sticky top above, if a year grows. */}
+        <div className="px-[36px] md:h-[540px] md:px-0">
           <Lifeline
             mode="scroll"
             markers={markers}
