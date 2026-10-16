@@ -228,7 +228,11 @@ const life = defineLifeline({
         [
           { type: "text", value: "joined " },
           { type: "link", value: "Aerolab", href: "https://aerolab.co/" },
-          { type: "text", value: " as art director and partner." },
+          { type: "text", value: ", founded by " },
+          { type: "link", value: "Roberto\u00a0Gonzalez", href: "https://www.linkedin.com/in/robertogonzalez/" },
+          { type: "text", value: " and " },
+          { type: "link", value: "Agustin\u00a0Linenberg", href: "https://www.linkedin.com/in/agustinlinenberg/" },
+          { type: "text", value: ", as art director and third partner." },
         ],
       ],
     },
@@ -242,12 +246,10 @@ const life = defineLifeline({
           { type: "text", value: "." },
         ],
         [
-          { type: "text", value: "redesigned " },
           { type: "link", value: "Lemon Wallet", href: "https://en.wikipedia.org/wiki/Lemon_Wallet" },
           { type: "text", value: "'s marketing site." },
         ],
         [
-          { type: "text", value: "built " },
           { type: "link", value: "Breach", href: "https://github.com/breach" },
           { type: "text", value: ", a browser in JavaScript, and " },
           { type: "link", value: "AcáNoHayLuz", href: "https://acanohayluz.com/" },
@@ -260,21 +262,26 @@ const life = defineLifeline({
       companies: [aerolab, { id: "popcorn-time", name: "Popcorn Time" }],
       events: [
         [
-          { type: "text", value: "designed " },
+          { type: "link", value: "Juani\u00a0Ruiz\u00a0Echazu", href: "https://www.linkedin.com/in/heyimjuani/" },
+          { type: "text", value: " joined " },
+          { type: "link", value: "Aerolab", href: "https://aerolab.co/" },
+          { type: "text", value: " as the fourth partner." },
+        ],
+        [
           { type: "link", value: "Popcorn Time", href: "https://en.wikipedia.org/wiki/Popcorn_Time" },
           { type: "text", value: "." },
         ],
         [
           { type: "text", value: "took Popcorn Time to " },
           { type: "link", value: "Y Combinator", href: "https://www.ycombinator.com/" },
-          { type: "text", value: "; didn't get in." },
+          { type: "text", value: " on my first trip to San Francisco; didn't get in." },
         ],
         [
-          { type: "text", value: "all the visuals for " },
+          { type: "text", value: "the visuals for " },
           { type: "link", value: "JSConf Argentina", href: "https://aerolab.co/jsconf" },
           { type: "text", value: "." },
         ],
-        "GestureKit's design and its Indiegogo launch.",
+        "GestureKit and its Indiegogo launch.",
       ],
     },
     2015: {
@@ -282,12 +289,12 @@ const life = defineLifeline({
       companies: [aerolab, { id: "platzi", name: "Platzi" }],
       events: [
         [
-          { type: "text", value: "designed the " },
+          { type: "text", value: "the " },
           { type: "link", value: "Banco Galicia app", href: "https://aerolab.co/banco-galicia" },
           { type: "text", value: "." },
         ],
         [
-          { type: "text", value: "designed the " },
+          { type: "text", value: "the " },
           { type: "link", value: "Simple Radio", href: "https://aerolab.co/simpleradio" },
           { type: "text", value: " app." },
         ],
@@ -333,13 +340,11 @@ const life = defineLifeline({
           { type: "text", value: "'s CEO." },
         ],
         [
-          { type: "text", value: "designed " },
           { type: "link", value: "Cartoon Network's site", href: "https://aerolab.co/cartoon-network" },
           { type: "text", value: "." },
         ],
         "got my O-1 visa.",
         [
-          { type: "text", value: "made " },
           { type: "link", value: "Lullaby", href: "https://uselullaby.com/" },
           { type: "text", value: ", a free treatment for tinnitus." },
         ],
