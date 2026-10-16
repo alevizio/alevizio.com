@@ -61,6 +61,19 @@ export function LifelineEventText({
           >
             {segment.value}
           </a>
+        ) : segment.type === "image" ? (
+          // Glued to the word before it, as the media icons are: a no-break
+          // space inside a span that never wraps, so the image never starts
+          // a line of its own.
+          <span key={index} className="whitespace-nowrap">
+            {"\u00a0"}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={segment.src}
+              alt={segment.alt}
+              className="inline-block h-[0.9em] w-auto -translate-y-px align-baseline"
+            />
+          </span>
         ) : (
           <span key={index}>{segment.value}</span>
         ),
@@ -104,5 +117,7 @@ export function getLifelineEventKey(event: LifelineEvent, index: number) {
 
   if (typeof content === "string") return `${index}-${content}`
 
-  return `${index}-${content.map((segment) => segment.value).join("")}`
+  return `${index}-${content
+    .map((segment) => (segment.type === "image" ? segment.src : segment.value))
+    .join("")}`
 }

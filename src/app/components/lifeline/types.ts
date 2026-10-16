@@ -21,6 +21,8 @@ export interface LifelineCompany {
 export type LifelineEventSegment =
   | { type: "text"; value: string }
   | { type: "link"; value: string; href: string }
+  /** (alevizio.com) A small image inline with the words, an em tall: a row of stars after a line. */
+  | { type: "image"; src: string; alt: string }
 
 export interface LifelineEventImage {
   src: string

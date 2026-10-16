@@ -48,17 +48,12 @@ registerCompanyIcons({
     icon: logoMark("Fudo", "159.2 162.18 232.3 58.42"),
     sizeClassName: "h-3 w-12",
   },
-  soundcloud: { icon: imageMark("soundcloud.svg"), sizeClassName: "h-3 w-[27px]" },
   "arthur-newton": { icon: imageMark("arthur-newton.png"), sizeClassName: "h-6 w-[33px]" },
   adidas: { icon: imageMark("adidas.svg"), sizeClassName: "h-3.5 w-[22px]" },
   "popcorn-time": { icon: imageMark("popcorn-time.png", "grayscale contrast-125"), sizeClassName: "h-4 w-3" },
   platzi: { icon: imageMark("platzi.svg") },
   "digital-house": { icon: imageMark("digital-house.svg"), sizeClassName: "h-[9px] w-[117px]" },
   lullaby: { icon: imageMark("lullaby.svg"), sizeClassName: "h-4 w-3" },
-  singularity: { icon: imageMark("singularity.svg"), sizeClassName: "h-4 w-[13px]" },
-  eo: { icon: imageMark("eo.svg") },
-  nngroup: { icon: imageMark("nngroup.png"), sizeClassName: "h-3.5 w-[30px]" },
-  figma: { icon: imageMark("figma.svg"), sizeClassName: "h-4 w-3" },
   joya: { icon: imageMark("joya.png"), sizeClassName: "h-4 w-5" },
   bocho: { icon: imageMark("bocho.png"), sizeClassName: "h-4 w-[14px]" },
 });
@@ -87,10 +82,15 @@ const life = defineLifeline({
     },
     1986: {
       id: "spain",
-      badges: [{ src: "/marks/stars-2.svg", alt: "Two stars: Argentina's World Cups, 1978 and 1986" }],
       events: [
         "moved to Madrid, Spain.",
-        { text: "Argentina won the World Cup.", effect: "fireworks-argentina" },
+        {
+          text: [
+            { type: "text", value: "Argentina won the World Cup." },
+            { type: "image", src: "/marks/stars-2.svg", alt: "two stars: 1978 and 1986" },
+          ],
+          effect: "fireworks-argentina",
+        },
       ],
     },
     1989: {
@@ -119,7 +119,6 @@ const life = defineLifeline({
     },
     2000: {
       id: "djing",
-      companies: [{ id: "soundcloud", name: "SoundCloud" }],
       events: [
         [
           { type: "text", value: "started " },
@@ -296,7 +295,7 @@ const life = defineLifeline({
     },
     2018: {
       id: "aerolab-ceo",
-      companies: [aerolab, { id: "lullaby", name: "Lullaby" }, { id: "singularity", name: "Singularity University" }, { id: "eo", name: "Entrepreneurs' Organization" }],
+      companies: [aerolab, { id: "lullaby", name: "Lullaby" }],
       events: [
         [
           { type: "text", value: "became " },
@@ -327,7 +326,6 @@ const life = defineLifeline({
     },
     2019: {
       id: "silvestre",
-      companies: [{ id: "soundcloud", name: "SoundCloud" }],
       events: [
         "my son Silvestre was born.",
         "got my green card.",
@@ -361,7 +359,6 @@ const life = defineLifeline({
     },
     2021: {
       id: "nngroup",
-      companies: [{ id: "nngroup", name: "Nielsen Norman Group" }],
       events: [
         [
           { type: "text", value: "design systems with " },
@@ -372,8 +369,7 @@ const life = defineLifeline({
     },
     2022: {
       id: "friends-of-figma",
-      badges: [{ src: "/marks/stars-3.svg", alt: "Three stars: Argentina's World Cups, 1978, 1986 and 2022" }],
-      companies: [{ id: "figma", name: "Figma" }, joya],
+      companies: [joya],
       events: [
         [
           { type: "text", value: "gave “design systems para todos” at " },
@@ -391,7 +387,13 @@ const life = defineLifeline({
           { type: "link", value: "Burning Man", href: "https://burningman.org/" },
           { type: "text", value: "." },
         ],
-        { text: "Argentina won the World Cup again.", effect: "fireworks-argentina" },
+        {
+          text: [
+            { type: "text", value: "Argentina won the World\u00a0Cup again." },
+            { type: "image", src: "/marks/stars-3.svg", alt: "three stars: 1978, 1986 and 2022" },
+          ],
+          effect: "fireworks-argentina",
+        },
       ],
     },
     2023: {
@@ -439,7 +441,6 @@ const life = defineLifeline({
     },
     2025: {
       id: "carbon-direct",
-      badges: [{ src: "/marks/flag-us.svg", alt: "The flag of the United States" }],
       companies: [{ id: "earthscale", name: "Earthscale" }, { id: "limai", name: "Limai" }, { id: "fudo", name: "Fudo" }],
       events: [
         [
@@ -461,7 +462,13 @@ const life = defineLifeline({
           { type: "link", value: "Fudo", href: "https://fu.do/" },
           { type: "text", value: "." },
         ],
-        { text: "became a US citizen.", effect: "fireworks" },
+        {
+          text: [
+            { type: "text", value: "became a US citizen." },
+            { type: "image", src: "/marks/flag-us.svg", alt: "the flag of the United States" },
+          ],
+          effect: "fireworks",
+        },
       ],
     },
     2026: {
@@ -518,9 +525,11 @@ const life = defineLifeline({
 // text) becomes a no-break space, so a last word never sits alone.
 const glue = (value: string) => value.replace(/ (?=\S*$)/, "\u00a0");
 const glueSegments = (segments: LifelineEventSegment[]) => {
-  const last = segments.map((segment) => segment.value.includes(" ")).lastIndexOf(true);
+  const last = segments
+    .map((segment) => segment.type !== "image" && segment.value.includes(" "))
+    .lastIndexOf(true);
   return segments.map((segment, index) =>
-    index === last ? { ...segment, value: glue(segment.value) } : segment
+    index === last && segment.type !== "image" ? { ...segment, value: glue(segment.value) } : segment
   );
 };
 const glueEvent = (event: LifelineEvent): LifelineEvent => {
