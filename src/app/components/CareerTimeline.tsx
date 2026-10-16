@@ -35,6 +35,18 @@ const imageMark =
     <img src={`/marks/${file}`} alt="" aria-hidden="true" className={`${className ?? ""} object-contain ${tone}`} />
   );
 
+// Digital House's symbol, an outlined D beside a solid square, redrawn from
+// its favicon: its site has no vector of it, and the wordmark ran 117px wide.
+const DigitalHouseMark = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 19 8" fill="currentColor" aria-hidden="true" className={className}>
+    <path
+      fillRule="evenodd"
+      d="M0 0h5.5A2.5 2.5 0 0 1 8 2.5v3A2.5 2.5 0 0 1 5.5 8H0Zm1 1v6h4.5A1.5 1.5 0 0 0 7 5.5v-3A1.5 1.5 0 0 0 5.5 1Z"
+    />
+    <rect x={11} width={8} height={8} />
+  </svg>
+);
+
 registerCompanyIcons({
   aerolab: { icon: logoMark("Aerolab", "-0.01 -0.1 20.74 17.96") },
   pachama: { icon: logoMark("Pachama", "0.98 0 58.13 65.9") },
@@ -52,7 +64,7 @@ registerCompanyIcons({
   adidas: { icon: imageMark("adidas.svg"), sizeClassName: "h-3.5 w-[22px]" },
   "popcorn-time": { icon: imageMark("popcorn-time.png", "grayscale contrast-125"), sizeClassName: "h-4 w-3" },
   platzi: { icon: imageMark("platzi.svg") },
-  "digital-house": { icon: imageMark("digital-house.svg"), sizeClassName: "h-[9px] w-[117px]" },
+  "digital-house": { icon: DigitalHouseMark, sizeClassName: "h-3.5 w-[33px]" },
   lullaby: { icon: imageMark("lullaby.svg"), sizeClassName: "h-4 w-3" },
   joya: { icon: imageMark("joya.png"), sizeClassName: "h-4 w-5" },
   bocho: { icon: imageMark("bocho.png"), sizeClassName: "h-4 w-[14px]" },
