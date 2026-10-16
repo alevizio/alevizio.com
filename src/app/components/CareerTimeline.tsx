@@ -87,9 +87,12 @@ const life = defineLifeline({
     },
     1986: {
       id: "spain",
-      events: ["moved to Madrid, Spain."],
+      events: [
+        "moved to Madrid, Spain.",
+        { text: "Argentina won the World Cup.", effect: "fireworks-argentina" },
+      ],
     },
-    1991: {
+    1989: {
       id: "kings-college",
       events: [
         [
@@ -145,8 +148,14 @@ const life = defineLifeline({
       ],
     },
     2007: {
-      id: "web-design",
+      id: "arthur-newton",
+      companies: [{ id: "arthur-newton", name: "Arthur Newton Communications" }],
       events: [
+        [
+          { type: "text", value: "graphic designer at " },
+          { type: "link", value: "Arthur Newton Communications", href: "https://www.arthur-newton.com/" },
+          { type: "text", value: "." },
+        ],
         [
           { type: "text", value: "a year of web design at " },
           { type: "link", value: "Image Campus", href: "https://www.imagecampus.edu.ar/" },
@@ -156,7 +165,7 @@ const life = defineLifeline({
     },
     2008: {
       id: "unr",
-      companies: [{ id: "arthur-newton", name: "Arthur Newton Communications" }, { id: "adidas", name: "adidas" }],
+      companies: [{ id: "adidas", name: "adidas" }],
       events: [
         [
           { type: "text", value: "started visual communication design at " },
@@ -192,8 +201,18 @@ const life = defineLifeline({
       companies: [aerolab],
       events: [
         "creative director at Aerolab.",
-        "redesigned Lemon Wallet's marketing site.",
-        "built Breach, a browser in JavaScript, and AcáNoHayLuz, a map of power cuts.",
+        [
+          { type: "text", value: "redesigned " },
+          { type: "link", value: "Lemon Wallet", href: "https://en.wikipedia.org/wiki/Lemon_Wallet" },
+          { type: "text", value: "'s marketing site." },
+        ],
+        [
+          { type: "text", value: "built " },
+          { type: "link", value: "Breach", href: "https://github.com/breach" },
+          { type: "text", value: ", a browser in JavaScript, and " },
+          { type: "link", value: "AcáNoHayLuz", href: "https://acanohayluz.com/" },
+          { type: "text", value: ", a map of power cuts." },
+        ],
       ],
     },
     2014: {
@@ -206,7 +225,11 @@ const life = defineLifeline({
           { type: "text", value: "." },
         ],
         "took Popcorn Time to Y Combinator; didn't get in.",
-        "all the visuals for JSConf Argentina.",
+        [
+          { type: "text", value: "all the visuals for " },
+          { type: "link", value: "JSConf Argentina", href: "https://aerolab.co/jsconf" },
+          { type: "text", value: "." },
+        ],
         "GestureKit's design and its Indiegogo launch.",
       ],
     },
@@ -214,11 +237,22 @@ const life = defineLifeline({
       id: "galicia",
       companies: [aerolab, { id: "platzi", name: "Platzi" }],
       events: [
-        "designed the Banco Galicia app.",
+        [
+          { type: "text", value: "designed the " },
+          { type: "link", value: "Banco Galicia app", href: "https://aerolab.co/banco-galicia" },
+          { type: "text", value: "." },
+        ],
+        [
+          { type: "text", value: "designed the " },
+          { type: "link", value: "Simple Radio", href: "https://aerolab.co/simpleradio" },
+          { type: "text", value: " app." },
+        ],
         [
           { type: "text", value: "taught " },
           { type: "link", value: "product design", href: "https://platzi.com/cursos/product-designer/" },
-          { type: "text", value: " at Platzi, in Bogotá." },
+          { type: "text", value: " at " },
+          { type: "link", value: "Platzi", href: "https://platzi.com/" },
+          { type: "text", value: ", in Bogotá." },
         ],
       ],
     },
@@ -233,7 +267,9 @@ const life = defineLifeline({
           { type: "text", value: "." },
         ],
         [
-          { type: "text", value: "took Pampa Warro to " },
+          { type: "text", value: "took " },
+          { type: "link", value: "Pampa Warro", href: "https://pampawarro.org/" },
+          { type: "text", value: " to " },
           { type: "link", value: "Fuego Austral", href: "https://fuegoaustral.org/" },
           { type: "text", value: ", for the first time." },
         ],
@@ -244,6 +280,11 @@ const life = defineLifeline({
       companies: [aerolab, { id: "lullaby", name: "Lullaby" }, { id: "singularity", name: "Singularity University" }, { id: "eo", name: "Entrepreneurs' Organization" }],
       events: [
         "became Aerolab's CEO.",
+        [
+          { type: "text", value: "designed " },
+          { type: "link", value: "Cartoon Network's site", href: "https://aerolab.co/cartoon-network" },
+          { type: "text", value: "." },
+        ],
         "got my O-1 visa.",
         [
           { type: "text", value: "made " },
@@ -317,13 +358,18 @@ const life = defineLifeline({
           { type: "link", value: "Joya", href: "https://joya-art.org/" },
           { type: "text", value: ", an art piece, to Burning Man." },
         ],
+        { text: "Argentina won the World Cup again.", effect: "fireworks-argentina" },
       ],
     },
     2023: {
       id: "complexchaos",
       companies: [joya],
       events: [
-        "seed investor in ComplexChaos.",
+        [
+          { type: "text", value: "seed investor in " },
+          { type: "link", value: "ComplexChaos", href: "https://www.builtinsf.com/company/complexchaos" },
+          { type: "text", value: "." },
+        ],
         [
           { type: "text", value: "back at Burning Man with " },
           { type: "link", value: "Joya", href: "https://joya-art.org/" },
