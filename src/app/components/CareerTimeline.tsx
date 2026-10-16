@@ -327,7 +327,7 @@ const life = defineLifeline({
         ],
         [
           { type: "link", value: "Popcorn Time", href: "https://en.wikipedia.org/wiki/Popcorn_Time" },
-          { type: "text", value: "." },
+          { type: "text", value: " launched: movies streamed over BitTorrent, to more than 100 million people." },
         ],
         [
           { type: "text", value: "took Popcorn Time to " },
