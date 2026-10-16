@@ -82,10 +82,10 @@ export default function AnimatedLanding() {
               crawlers (the logos are SVGs); visually hidden, read by Google + a11y. */}
           <p className="sr-only">
             Alejandro Vizio is a product and brand designer in San Francisco who
-            designs product and brand as one system. He started and led Aerolab
-            (8+ years) and led design at Pachama (5+ years, acquired by Carbon
-            Direct in 2025), and has worked on product and brand for Planta,
-            Messa, Earthscale, Limai, Fudo, and Djooni.
+            designs product and brand as one system. He was a partner and later
+            CEO at Aerolab (8+ years) and led design at Pachama (5+ years,
+            acquired by Carbon Direct in 2025), and has worked on product and
+            brand for Planta, Messa, Earthscale, Limai, Fudo, and Djooni.
           </p>
           <a className="sr-only" href="/about">
             About Alejandro Vizio and frequently asked questions
