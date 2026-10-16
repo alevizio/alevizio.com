@@ -161,6 +161,7 @@ const life = defineLifeline({
           { type: "link", value: "Popcorn Time", href: "https://en.wikipedia.org/wiki/Popcorn_Time" },
           { type: "text", value: "." },
         ],
+        "took Popcorn Time to Y Combinator; didn't get in.",
         "all the visuals for JSConf Argentina.",
         "GestureKit's design and its Indiegogo launch.",
       ],
