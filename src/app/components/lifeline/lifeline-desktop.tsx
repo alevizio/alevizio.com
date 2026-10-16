@@ -1,7 +1,5 @@
-"use client"
-
 import { useMemo, type CSSProperties } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "../ui/utils"
 import {
   LifelineStickyLabels,
   LIFELINE_STICKY_SHIELD_WIDTH,
@@ -21,6 +19,7 @@ export function LifelineDesktop({
   className,
   title = "Lifeline",
   mode = "auto",
+  showAge = true,
 }: LifelineProps) {
   const widths = useMemo(
     () =>
@@ -106,8 +105,11 @@ export function LifelineDesktop({
         // Hold it blank rather than showing a settled timeline that then
         // resets itself to play the intro. Below the fold there is nothing
         // to see anyway, and the arming margin means it fills in before it
-        // reaches the reader.
-        (!isLayoutReady || introWaitingInView) && "invisible",
+        // reaches the reader. Waiting for view it is only transparent, not
+        // hidden: still in the accessibility tree, and reachable by Tab
+        // (focus scrolls it into view, which arms the intro).
+        !isLayoutReady && "invisible",
+        introWaitingInView && "opacity-0",
         className,
       )}
       aria-label={title}
@@ -130,7 +132,12 @@ export function LifelineDesktop({
       >
         <div
           ref={trackRef}
-          className="relative flex w-max items-start will-change-transform [--lifeline-people-top:calc(14.5rem+40px)] [--lifeline-rail:5rem]"
+          className={cn(
+            "relative flex w-max items-start will-change-transform [--lifeline-people-top:calc(14.5rem+40px)]",
+            // The rail sits under the label rows: age (h-4 + mb-5) and
+            // years (h-5 + mb-6), or the years alone.
+            showAge ? "[--lifeline-rail:5rem]" : "[--lifeline-rail:2.75rem]",
+          )}
           style={{ width: trackWidth }}
         >
           {/*
@@ -153,7 +160,7 @@ export function LifelineDesktop({
             style={{ width: LIFELINE_STICKY_SHIELD_WIDTH }}
           >
             <div className={cn(showIntro && "lifeline-labels-intro")}>
-              <LifelineStickyLabels />
+              <LifelineStickyLabels showAge={showAge} />
             </div>
           </div>
 
@@ -177,6 +184,7 @@ export function LifelineDesktop({
                   ref={(node) => setMarkerRef(index, node)}
                   marker={marker}
                   birthYear={birthYear}
+                  showAge={showAge}
                   minWidth={widths[index]}
                   animateIntro={showIntro}
                   introDelay={intro.getMarkerDelay(index)}

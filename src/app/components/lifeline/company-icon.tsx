@@ -1,5 +1,5 @@
 import type { ComponentType } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "../ui/utils"
 
 export type CompanyIconId = string
 
@@ -48,6 +48,7 @@ export function CompanyIcon({
           entry.sizeClassName ?? "h-4 w-4",
           className,
         )}
+        role="img"
         aria-label={label}
         title={label}
       >
@@ -58,6 +59,7 @@ export function CompanyIcon({
 
   return (
     <span
+      role="img"
       title={label}
       aria-label={label}
       className={cn(

@@ -1,5 +1,3 @@
-"use client"
-
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import {
   LIFELINE_STICKY_LEFT,
@@ -49,11 +47,13 @@ const EMBED_BOUNDARY_QUIET_MS = 260
 const EMBED_BOUNDARY_MAX_HOLD_MS = 900
 
 /**
- * How early the sweep is armed, relative to the module entering view. A
- * couple of hundred pixels means it is already moving by the time it is
- * properly on screen, rather than starting cold under the reader's eyes.
+ * When the sweep is armed, relative to the module entering view. Upstream
+ * arms it 200px early, so it is already moving by the time it is on screen.
+ * On alevizio.com the timeline sits right under the fold, so that margin
+ * reached it at load and the sweep played to no one; here it waits until
+ * the module's top is 30% of the viewport above the bottom edge.
  */
-const EMBED_INTRO_ARM_MARGIN = "0px 0px 200px 0px"
+const EMBED_INTRO_ARM_MARGIN = "0px 0px -30% 0px"
 
 function normalizeWheelDelta(event: WheelEvent) {
   let delta = Math.abs(event.deltaX) > Math.abs(event.deltaY)
@@ -804,12 +804,49 @@ export function useLifelineScroll(
       scrub(movement, target)
     }
 
-    // The rail moves by transform; any native scroll on the section is the
+    // The rail moves by transform; any native scroll in the section is the
     // browser chasing a focused link deep in the track, and would leave the
-    // transform and the layout disagreeing about where the rail is.
-    const onSectionScroll = () => {
-      if (section.scrollLeft !== 0) section.scrollLeft = 0
-      if (section.scrollTop !== 0) section.scrollTop = 0
+    // transform and the layout disagreeing about where the rail is. It is
+    // usually the track's clipping wrapper that gets scrolled, not the
+    // section (upstream only reset the section), so this listens in the
+    // capture phase, which sees every descendant's scroll.
+    const resetNativeScroll = (element: Element) => {
+      if (element.scrollLeft !== 0) element.scrollLeft = 0
+      if (element.scrollTop !== 0) element.scrollTop = 0
+    }
+    const onSectionScroll = (event: Event) => {
+      if (!(event.target instanceof Element)) return
+      resetNativeScroll(event.target)
+      updateFades()
+    }
+
+    // …so the rail does the chasing instead: when focus lands inside a year,
+    // scrub that year onto the stage, centred but clear of the left-exit
+    // fade, so a tabbed-to link is never focused off-stage or faded out.
+    // The browser has already scrolled to reveal it by now; undo that first
+    // so the fades measure the real layout.
+    const onFocusIn = (event: FocusEvent) => {
+      if (isScrollLocked()) return
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const marker = markerRefs.current.find((node) => node?.contains(target))
+      if (!marker) return
+
+      resetNativeScroll(section)
+      if (trackRef.current?.parentElement) {
+        resetNativeScroll(trackRef.current.parentElement)
+      }
+
+      const stageWidth = section.getBoundingClientRect().width
+      const markerLeft = LIFELINE_STICKY_SHIELD_WIDTH + marker.offsetLeft
+      const stageLeft = Math.max(
+        isCoarsePointerRef.current ? LEFT_EXIT_FADE_ZONE_COARSE : LEFT_EXIT_FADE_ZONE,
+        (stageWidth - marker.offsetWidth) / 2,
+      )
+
+      stopMomentum()
+      dragVelocity.current = 0
+      applyTranslate(startInset.current + markerLeft - stageLeft)
     }
 
     const beginDrag = (event: PointerEvent) => {
@@ -958,7 +995,11 @@ export function useLifelineScroll(
       passive: true,
       capture: true,
     })
-    section.addEventListener("scroll", onSectionScroll, { passive: true })
+    section.addEventListener("scroll", onSectionScroll, {
+      passive: true,
+      capture: true,
+    })
+    section.addEventListener("focusin", onFocusIn)
     section.addEventListener("wheel", onWheel, { passive: false })
     section.addEventListener("pointerdown", onPointerDown)
     section.addEventListener("pointermove", onPointerMove, { passive: false })
@@ -975,7 +1016,8 @@ export function useLifelineScroll(
       motionQuery.removeEventListener("change", onMotionChange)
       window.removeEventListener("resize", scheduleMeasure)
       window.removeEventListener("wheel", onWheelStream, { capture: true })
-      section.removeEventListener("scroll", onSectionScroll)
+      section.removeEventListener("scroll", onSectionScroll, { capture: true })
+      section.removeEventListener("focusin", onFocusIn)
       section.removeEventListener("wheel", onWheel)
       section.removeEventListener("pointerdown", onPointerDown)
       section.removeEventListener("pointermove", onPointerMove)
@@ -993,7 +1035,7 @@ export function useLifelineScroll(
       section.style.cursor = ""
       section.style.touchAction = ""
     }
-  }, [applyTranslate, isScrollLocked, markerCount, measureLayout, resolveMode])
+  }, [applyTranslate, isScrollLocked, markerCount, measureLayout, resolveMode, updateFades])
 
   return {
     sectionRef,

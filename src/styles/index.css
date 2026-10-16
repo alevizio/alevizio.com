@@ -1,6 +1,7 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+@import './lifeline.css';
 
 /* Small single-step pixel corners for badges/pills. */
 .pixel-corners-sm {

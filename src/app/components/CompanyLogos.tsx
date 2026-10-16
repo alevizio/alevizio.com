@@ -21,7 +21,7 @@ type Company = {
   caseStudy?: { href: string; video: string; poster?: string; label: string };
 };
 
-const companies: Company[] = [
+export const companies: Company[] = [
   {
     name: "Pachama",
     url: "https://pachama.com",

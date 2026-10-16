@@ -1,11 +1,15 @@
 import { motion } from "motion/react";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import svgPaths from "../../imports/svg-ectekmh7x3";
 import AsciiRain from "./AsciiRain";
 import CompanyLogos from "./CompanyLogos";
 import GlobestudioCard from "./GlobestudioCard";
 import SaboteursCard from "./SaboteursCard";
 import CurbCard from "./CurbCard";
+
+// Below the fold, so it loads after the hero instead of with it (~25 KB
+// gzipped: the timeline component plus tailwind-merge for its cn()).
+const CareerTimeline = lazy(() => import("./CareerTimeline"));
 
 export default function AnimatedLanding() {
   const [copied, setCopied] = useState(false);
@@ -22,12 +26,14 @@ export default function AnimatedLanding() {
       {/* ASCII Rain Background — ambient drops + mouse ripples */}
       <AsciiRain />
 
-      {/* Project cards. ≥lg (1024px): vertical stack, fixed top-right, 300px wide.
+      {/* Project cards. ≥lg (1024px): vertical stack, top-right, 300px wide —
+          absolute, so it scrolls away with the hero instead of covering the
+          timeline's right end (the present) below it.
           <lg (mobile + tablet + small laptops): a snap-scrolling horizontal row
           pinned to the bottom — swipe between Globestudio → curb → saboteurs. The
           stack waits until lg so the 300px column never collides with the
           headline on narrow desktops (the overlap clears around 1146px). */}
-      <div className="fixed bottom-4 left-0 right-0 z-20 flex flex-row gap-3 overflow-x-auto scroll-px-4 px-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:bottom-auto lg:left-auto lg:right-8 lg:top-8 lg:w-[300px] lg:flex-col lg:overflow-visible lg:px-0 lg:snap-none">
+      <div className="fixed bottom-4 left-0 right-0 z-20 flex flex-row gap-3 overflow-x-auto scroll-px-4 px-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:absolute lg:bottom-auto lg:left-auto lg:right-8 lg:top-8 lg:w-[300px] lg:flex-col lg:overflow-visible lg:px-0 lg:snap-none">
         <GlobestudioCard />
         <CurbCard />
         <SaboteursCard />
@@ -155,6 +161,10 @@ export default function AnimatedLanding() {
           <CompanyLogos />
         </motion.div>
       </div>
+
+      <Suspense fallback={null}>
+        <CareerTimeline />
+      </Suspense>
     </div>
   );
 }

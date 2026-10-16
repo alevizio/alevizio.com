@@ -1,7 +1,5 @@
-"use client"
-
 import { useLayoutEffect, useState } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "../ui/utils"
 import { LifelineDesktop } from "./lifeline-desktop"
 import { LifelineFireworksProvider } from "./lifeline-fireworks"
 import { LifelineVertical } from "./lifeline-vertical"
@@ -20,7 +18,8 @@ export function Lifeline(props: LifelineProps) {
   const [isMobile, setIsMobile] = useState<boolean | null>(null)
 
   useLayoutEffect(() => {
-    // Matches Tailwind's md: breakpoint so JS and CSS can never disagree.
+    // Matches Tailwind's lg: breakpoint (see lifeline-layout) so JS and CSS
+    // can never disagree.
     const query = window.matchMedia(
       `(min-width: ${LIFELINE_MOBILE_BREAKPOINT}px)`,
     )

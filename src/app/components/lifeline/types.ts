@@ -109,4 +109,10 @@ export interface LifelineProps {
   className?: string
   title?: string
   mode?: LifelineMode
+  /**
+   * The age row above the years. Turn it off for a timeline that starts at
+   * a first year rather than a birth year (a career), where "age" would
+   * only count from that start. Defaults to true.
+   */
+  showAge?: boolean
 }

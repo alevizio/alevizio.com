@@ -1,4 +1,3 @@
-import Image from "next/image"
 import type { LifelineMarker } from "./types"
 
 export interface AggregatedLifelinePerson {
@@ -71,11 +70,13 @@ export function LifelinePeople({
             )}
           </div>
           {person.photo ? (
-            <Image
+            <img
               src={person.photo}
               alt={person.name}
               width={28}
               height={28}
+              loading="lazy"
+              decoding="async"
               className="h-7 w-7 shrink-0 rounded-full object-cover"
             />
           ) : (

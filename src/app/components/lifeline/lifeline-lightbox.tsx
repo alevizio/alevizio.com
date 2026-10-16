@@ -1,5 +1,3 @@
-"use client"
-
 import {
   useCallback,
   useEffect,
@@ -8,7 +6,7 @@ import {
   useState,
 } from "react"
 import { createPortal } from "react-dom"
-import { cn } from "@/lib/utils"
+import { cn } from "../ui/utils"
 import type { LifelinePhoto } from "./types"
 
 const OPEN_MS = 520
