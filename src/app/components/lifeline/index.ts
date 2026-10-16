@@ -21,6 +21,9 @@
  *   word before it (the World Cup stars, the flag).
  * - lifeline-marker.tsx, lifeline-vertical.tsx: badges keep their own shape at a
  *   16px height (upstream fits them in a 24px square, which shrinks a row of stars).
+ * - lifeline-marker.tsx: every year's first line sits at one height. The logo row is
+ *   a fixed 16px, and a year with lines but no logos keeps it open, its tick running
+ *   down through it.
  */
 export { Lifeline } from "./lifeline"
 export { LifelineMarkerColumn } from "./lifeline-marker"

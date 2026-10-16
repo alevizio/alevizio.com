@@ -42,6 +42,10 @@ export const LifelineMarkerColumn = forwardRef<
   const people = aggregateLifelinePeople(marker)
   const hoverImage = useLifelineHoverImage()
   const fireworks = useLifelineFireworks()
+  // A year with lines but no logos keeps the logo row open, so its first
+  // line sits level with every other year's, and its tick runs down
+  // through the open row.
+  const openLogoRow = !marker.companies?.length && marker.events.length > 0
 
   return (
     <div
@@ -61,8 +65,15 @@ export const LifelineMarkerColumn = forwardRef<
             : {}),
         }}
       >
+        {/* 5px above the rail; then 5px below it, or, with the logo row
+            open, down to the row's foot (pt-6 + h-4 below the rail). */}
         <span
-          className="absolute left-0 top-[var(--lifeline-rail)] z-10 h-[10px] w-px -translate-y-1/2 bg-zinc-400 transition-colors duration-300 group-hover:bg-zinc-600 dark:bg-zinc-700 dark:group-hover:bg-zinc-400"
+          className={cn(
+            "absolute left-0 top-[var(--lifeline-rail)] z-10 w-px bg-zinc-400 transition-colors duration-300 group-hover:bg-zinc-600 dark:bg-zinc-700 dark:group-hover:bg-zinc-400",
+            openLogoRow
+              ? "h-[calc(2.5rem+5px)] -translate-y-[5px]"
+              : "h-[10px] -translate-y-1/2",
+          )}
           aria-hidden="true"
         />
 
@@ -105,8 +116,10 @@ export const LifelineMarkerColumn = forwardRef<
                 </div>
               )}
 
+              {/* h-4 whatever the marks: a taller wordmark overflows the row
+                  evenly rather than pushing its year's first line down. */}
               {marker.companies && marker.companies.length > 0 && (
-                <div className="mb-2 flex items-center justify-start gap-1.5">
+                <div className="mb-2 flex h-4 items-center justify-start gap-1.5">
                   {marker.companies.map((company) => (
                     <CompanyIcon
                       key={company.id}
@@ -117,6 +130,7 @@ export const LifelineMarkerColumn = forwardRef<
                   ))}
                 </div>
               )}
+              {openLogoRow && <div aria-hidden="true" className="mb-2 h-4" />}
 
               <div className="min-h-[3.25rem] space-y-4">
                 {marker.events.map((event, index) => {
