@@ -656,8 +656,8 @@ export default function CareerTimeline() {
       aria-labelledby="career-timeline"
       className="relative z-10 pb-[60px] md:pb-[140px] max-md:bg-background max-md:before:pointer-events-none max-md:before:absolute max-md:before:inset-x-0 max-md:before:bottom-full max-md:before:h-24 max-md:before:bg-linear-to-b max-md:before:from-transparent max-md:before:to-background"
     >
-      {/* Set like the logo rows' labels, but at 70% ink (5.2:1) rather
-          than their 50% (3.0:1), the same as the timeline's own text.
+      {/* Set like the logo rows' labels, at 70% ink (5.2:1), the same as
+          the timeline's own text.
           data-site-nav-logo: Lifeline starts the rail where this text
           starts, on the page's 140px column; once it moves, the labels
           pin at the window's left edge. */}

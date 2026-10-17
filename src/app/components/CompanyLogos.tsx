@@ -183,13 +183,15 @@ const primary = [1, 6, 2, 4, 3, 5, 8].map((i) => companies[i]); // Planta, Messa
 // Row 2 — companies I've helped build & shape (owner / leadership level).
 const secondary = [0, 7].map((i) => companies[i]); // Pachama, Aerolab
 
+// The pills' text is at 70% ink (5.2:1), like the row labels; their outline
+// keeps its 10% (14% under the 70% opacity).
 const tagClass =
-  "text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-50 border border-[#1E1E1E]/20 rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit";
+  "text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-70 border border-[#1E1E1E]/[0.14] rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit";
 
 // Tenure segment — outlined to match the tag; attaches as a second segment
 // (the tag's right border serves as the divider, so this drops its left border).
 const yearsClass =
-  "text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-50 border border-[#1E1E1E]/20 rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit";
+  "text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-70 border border-[#1E1E1E]/[0.14] rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit";
 
 const Logo = ({
   company,
@@ -254,7 +256,7 @@ const Logo = ({
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className={`${tagClass} hover:opacity-80 transition-opacity`}
+              className={`${tagClass} hover:opacity-100 transition-opacity`}
             >
               {company.tag.text}
             </a>
@@ -294,10 +296,10 @@ const Label = ({
   className?: string;
 }) => (
   <motion.p
-    className={`text-[clamp(11px,1vw,13px)] text-[#1E1E1E] opacity-50 tracking-[0.05em] font-['Instrument_Sans',sans-serif] ${className}`}
+    className={`text-[clamp(11px,1vw,13px)] text-[#1E1E1E] opacity-70 tracking-[0.05em] font-['Instrument_Sans',sans-serif] ${className}`}
     style={{ fontVariationSettings: "'wdth' 100" }}
     initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 0.5, y: 0 }}
+    animate={{ opacity: 0.7, y: 0 }}
     transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
   >
     {text}
@@ -316,11 +318,12 @@ const Row = ({
   // MOBILE (flex stack): tagged rows get a larger vertical gap so the open
   // space below each pill matches the pill-less rows' logo gap. Uses gap-Y only
   // so it doesn't leak into the DESKTOP subgrid, where the column gap is
-  // inherited from the parent grid and logos snap to shared columns.
+  // inherited from the parent grid and logos snap to shared columns (there,
+  // gap-Y spaces the lines a row wraps onto below xl).
   const hasTags = items.some((c) => c.tag);
   return (
     <div
-      className={`flex flex-col items-start md:grid md:grid-cols-subgrid md:col-span-7 md:items-start ${
+      className={`flex flex-col items-start md:grid md:grid-cols-subgrid md:col-span-full md:items-start ${
         hasTags ? "gap-y-[82px] pb-7" : "gap-y-14"
       }`}
     >
@@ -337,26 +340,29 @@ const Row = ({
 };
 
 export default function CompanyLogos() {
-  // DESKTOP: a shared 7-column max-content grid so both rows snap to the same
-  // column lines (Pachama under Planta, Aerolab under Messa). Each row block is
-  // a subgrid spanning those 7 columns; the Rows inside are subgrids too, so the
+  // DESKTOP: a shared max-content grid so both rows snap to the same column
+  // lines (Pachama under Planta, Aerolab under Messa). Each row block is a
+  // subgrid spanning every column; the Rows inside are subgrids too, so the
   // logos inherit the parent's column tracks. The 64px column gap keeps seven
-  // logos within the width six took at 96px. MOBILE stays a flex-col stack.
+  // logos within the width six took at 96px. Seven columns are 1,103px, so
+  // they wait for xl (1280px); md gets 3 (503px) and lg 5 (789px), the row
+  // wrapping onto more lines, so no logo runs off the window. MOBILE stays a
+  // flex-col stack.
   return (
-    <div className="flex flex-col gap-y-14 w-full mt-16 md:mt-0 md:grid md:w-fit md:grid-cols-[repeat(7,max-content)] md:gap-x-16 md:gap-y-14">
-      <div className="flex flex-col gap-y-6 md:grid md:col-span-7 md:grid-cols-subgrid md:gap-y-6">
+    <div className="flex flex-col gap-y-14 w-full mt-16 md:mt-0 md:grid md:w-fit md:grid-cols-[repeat(3,max-content)] lg:grid-cols-[repeat(5,max-content)] xl:grid-cols-[repeat(7,max-content)] md:gap-x-16 md:gap-y-14">
+      <div className="flex flex-col gap-y-6 md:grid md:col-span-full md:grid-cols-subgrid md:gap-y-6">
         <Label
           text="helped with product & brand"
           delay={1.4}
-          className="md:col-span-7"
+          className="md:col-span-full"
         />
         <Row items={primary} indexOffset={0} />
       </div>
-      <div className="flex flex-col gap-y-6 md:grid md:col-span-7 md:grid-cols-subgrid md:gap-y-6">
+      <div className="flex flex-col gap-y-6 md:grid md:col-span-full md:grid-cols-subgrid md:gap-y-6">
         <Label
           text="i've helped build & shape"
           delay={1.5}
-          className="md:col-span-7"
+          className="md:col-span-full"
         />
         <Row
           items={secondary}
