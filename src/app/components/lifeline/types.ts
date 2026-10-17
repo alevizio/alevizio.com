@@ -118,4 +118,10 @@ export interface LifelineProps {
    * only count from that start. Defaults to true.
    */
   showAge?: boolean
+  /**
+   * The touch layout (under the md breakpoint) lists the years newest
+   * first, the present at the top, rather than oldest first. The rail
+   * keeps its order. Defaults to false.
+   */
+  newestFirstOnMobile?: boolean
 }

@@ -671,7 +671,8 @@ export default function CareerTimeline() {
       {/* Phones: the vertical list in the page's flow (no height, so its
           scroll box never scrolls); its own 24px gutter tops the left up to
           the page's 60px and is all of the right one, which gives the lines
-          238px on a 402px phone rather than 202.
+          238px on a 402px phone rather than 202. It runs newest first, 2026
+          at the top, so a phone opens on the present the way the rail does.
           md+: the rail, the full width of the window. Once in view it plays
           Lifeline's intro, 1985 to 2026, and rests on 2026; the wheel
           scrubs it back while the pointer is on it. Its height fits the
@@ -684,6 +685,7 @@ export default function CareerTimeline() {
           birthYear={life.birthYear}
           title="timeline, 1985 to 2026"
           className="h-full"
+          newestFirstOnMobile
         />
       </div>
     </section>

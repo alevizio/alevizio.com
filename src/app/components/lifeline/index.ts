@@ -24,6 +24,8 @@
  * - lifeline-marker.tsx: every year's first line sits at one height. The logo row is
  *   a fixed 16px, and a year with lines but no logos keeps it open, its tick running
  *   down through it.
+ * - lifeline.tsx, types.ts: a `newestFirstOnMobile` prop hands the touch layout its
+ *   years reversed, the present at the top.
  */
 export { Lifeline } from "./lifeline"
 export { LifelineMarkerColumn } from "./lifeline-marker"

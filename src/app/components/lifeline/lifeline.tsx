@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react"
+import { useLayoutEffect, useMemo, useState } from "react"
 import { cn } from "../ui/utils"
 import { LifelineDesktop } from "./lifeline-desktop"
 import { LifelineFireworksProvider } from "./lifeline-fireworks"
@@ -29,6 +29,12 @@ export function Lifeline(props: LifelineProps) {
     return () => query.removeEventListener("change", update)
   }, [])
 
+  const { markers, newestFirstOnMobile } = props
+  const verticalMarkers = useMemo(
+    () => (newestFirstOnMobile ? [...markers].reverse() : markers),
+    [markers, newestFirstOnMobile],
+  )
+
   if (isMobile === null) {
     return <div className="invisible h-full" aria-hidden="true" />
   }
@@ -54,7 +60,7 @@ export function Lifeline(props: LifelineProps) {
               : "lifeline-typeset pt-5"
           }
         >
-          <LifelineVertical {...props} />
+          <LifelineVertical {...props} markers={verticalMarkers} />
         </div>
       </LifelineFireworksProvider>
     )
