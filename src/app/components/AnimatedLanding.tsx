@@ -1,11 +1,11 @@
 import { motion } from "motion/react";
 import { lazy, Suspense, useState } from "react";
-import svgPaths from "../../imports/svg-ectekmh7x3";
 import AsciiRain from "./AsciiRain";
 import CompanyLogos from "./CompanyLogos";
 import GlobestudioCard from "./GlobestudioCard";
 import SaboteursCard from "./SaboteursCard";
 import CurbCard from "./CurbCard";
+import { LogoMark } from "./LogoMark";
 
 // Below the fold, so it loads after the hero instead of with it (~25 KB
 // gzipped: the timeline component plus tailwind-merge for its cn()).
@@ -54,25 +54,9 @@ export default function AnimatedLanding() {
           hero. */}
       <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] md:pb-[80px] lg:pb-[140px] max-w-[1440px] min-h-screen">
         <div className="flex flex-col gap-[96px] items-start">
-        {/* Animated Logo — draws itself then fills */}
-        <div className="h-[53px] relative shrink-0 w-[80.116px]" data-name="Union">
-          <svg className="absolute block w-full h-full" viewBox="0 0 80.1162 53" role="img" aria-label="Alejandro Vizio">
-            <motion.path
-              d={svgPaths.p3e2d6e80}
-              stroke="#1E1E1E"
-              strokeWidth={1.5}
-              strokeLinejoin="miter"
-              fill="#1E1E1E"
-              initial={{ pathLength: 0, fillOpacity: 0, strokeOpacity: 1 }}
-              animate={{ pathLength: 1, fillOpacity: 1, strokeOpacity: 0 }}
-              transition={{
-                pathLength: { duration: 1.2, ease: "easeInOut" },
-                fillOpacity: { duration: 0.6, delay: 1.0, ease: "easeIn" },
-                strokeOpacity: { duration: 0.4, delay: 1.2 },
-              }}
-            />
-          </svg>
-        </div>
+        {/* The AV mark in 3D: it turns in on load, and once per hover or tap.
+            64px tall on phones, 72px from md (the old flat mark was 53px). */}
+        <LogoMark className="h-16 w-auto shrink-0 md:h-[72px]" />
 
         {/* Animated Text Content */}
         <div className="flex flex-col font-['Instrument_Sans',sans-serif] font-normal gap-4 items-start leading-[normal] text-[#1E1E1E] max-w-[674px] lg:max-w-[520px] xl:max-w-[674px]">
