@@ -648,10 +648,13 @@ export default function CareerTimeline() {
   return (
     // data-site-nav-inner: Lifeline ends the rail 24px inside this element's
     // right edge, so with the section full width it runs to the window's edge.
+    // Phones: the section is paper, so the ASCII rain (and the ripples a
+    // scrolling thumb leaves) stays in the hero instead of running through
+    // the lines; it fades in over the 96px above, the gap under the cards.
     <section
       data-site-nav-inner
       aria-labelledby="career-timeline"
-      className="relative z-10 pb-[200px] lg:pb-[140px]"
+      className="relative z-10 pb-[60px] md:pb-[140px] max-md:bg-background max-md:before:pointer-events-none max-md:before:absolute max-md:before:inset-x-0 max-md:before:bottom-full max-md:before:h-24 max-md:before:bg-linear-to-b max-md:before:from-transparent max-md:before:to-background"
     >
       {/* Set like the logo rows' labels, but at 70% ink (5.2:1) rather
           than their 50% (3.0:1), the same as the timeline's own text.
@@ -666,14 +669,15 @@ export default function CareerTimeline() {
         <span data-site-nav-logo>how i got here</span>
       </h2>
       {/* Phones: the vertical list in the page's flow (no height, so its
-          scroll box never scrolls); its own 24px gutter tops this up to the
-          page's 60px, and the 200px below clears the pinned project cards.
+          scroll box never scrolls); its own 24px gutter tops the left up to
+          the page's 60px and is all of the right one, which gives the lines
+          238px on a 402px phone rather than 202.
           md+: the rail, the full width of the window. Once in view it plays
           Lifeline's intro, 1985 to 2026, and rests on 2026; the wheel
           scrubs it back while the pointer is on it. Its height fits the
           tallest year (2014: 471px) plus the timeline's 20px top padding;
           raise it if a year grows. */}
-      <div className="px-[36px] md:h-[491px] md:px-0">
+      <div className="pl-[36px] md:h-[491px] md:pl-0">
         <Lifeline
           mode="embed"
           markers={markers}

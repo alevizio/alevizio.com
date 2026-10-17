@@ -22,30 +22,37 @@ export default function AnimatedLanding() {
   };
 
   return (
-    <div className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-hidden" data-name="alevizio.com">
+    // overflow-clip, not hidden: hidden would make this box the scroller
+    // the project cards stick in, and they would never pin.
+    <div className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-clip" data-name="alevizio.com">
       {/* ASCII Rain Background — ambient drops + mouse ripples */}
       <AsciiRain />
 
+      {/* The project cards and the hero: ending this box is what lets the
+          card row (below lg) leave with the hero instead of covering the
+          timeline. */}
+      <div className="flex flex-col">
       {/* Project cards. ≥lg (1024px): vertical stack, top-right, 300px wide —
           absolute, so it scrolls away with the hero instead of covering the
           timeline's right end (the present) below it.
           <lg (mobile + tablet + small laptops): a snap-scrolling horizontal row
-          pinned to the bottom — swipe between Globestudio → curb → saboteurs. The
-          stack waits until lg so the 300px column never collides with the
-          headline on narrow desktops (the overlap clears around 1146px). */}
-      <div className="fixed bottom-4 left-0 right-0 z-20 flex flex-row gap-3 overflow-x-auto scroll-px-4 px-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:absolute lg:bottom-auto lg:left-auto lg:right-8 lg:top-8 lg:w-[300px] lg:flex-col lg:overflow-visible lg:px-0 lg:snap-none">
+          — swipe between Globestudio → curb → saboteurs. It is laid out after
+          the hero (order-last, so the source and tab order stay as they were)
+          and sticky: pinned to the bottom of the screen while the hero is on
+          it, then it settles under the logos and scrolls away. The stack
+          waits until lg so the 300px column never collides with the headline
+          on narrow desktops (the overlap clears around 1146px). */}
+      <div className="sticky bottom-4 z-20 order-last mb-[96px] md:mb-[120px] flex flex-row gap-3 overflow-x-auto scroll-px-4 px-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:absolute lg:bottom-auto lg:right-8 lg:top-8 lg:mb-0 lg:w-[300px] lg:flex-col lg:overflow-visible lg:px-0 lg:snap-none">
         <GlobestudioCard />
         <CurbCard />
         <SaboteursCard />
       </div>
 
       {/* Foreground Content */}
-      {/* Extra bottom padding below lg so the last logo row clears the
-          single-height project-card row pinned to the bottom of the screen.
-          ≥lg drops back to 140px (the cards move to the top-right there).
-          (md:pb-[200px] is needed because md:p-[140px] would otherwise reset
-          the bottom padding before lg takes over.) */}
-      <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] pb-[200px] md:pb-[200px] lg:pb-[140px] max-w-[1440px] min-h-screen">
+      {/* ≥lg: 140px all round (the cards sit top-right there). Below lg the
+          bottom padding is the gap above the card row, which follows the
+          hero. */}
+      <div className="relative z-10 flex flex-col justify-between items-start p-[60px] md:p-[140px] md:pb-[80px] lg:pb-[140px] max-w-[1440px] min-h-screen">
         <div className="flex flex-col gap-[96px] items-start">
         {/* Animated Logo — draws itself then fills */}
         <div className="h-[53px] relative shrink-0 w-[80.116px]" data-name="Union">
@@ -160,6 +167,7 @@ export default function AnimatedLanding() {
         >
           <CompanyLogos />
         </motion.div>
+      </div>
       </div>
 
       <Suspense fallback={null}>
