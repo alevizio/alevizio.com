@@ -2,7 +2,7 @@
 LinkedIn Company Page assets for Alevizio.
 
 Two outputs sized to LinkedIn's current spec:
-  linkedin-company-logo.png   → 400×400, AV monogram in #1e1e1e on #dedbd1
+  linkedin-company-logo.png   → 400×400, the 3D AV mark (solid, three ink tones) on #dedbd1
                                 (renders as the small square thumbnail next to
                                  every Experience entry that links to the Page)
   linkedin-company-cover.png  → 1128×191, tonal mesh + AV mark, brand-aligned
@@ -28,10 +28,14 @@ BRAND_BG = (222, 219, 209)   # #dedbd1
 BRAND_INK = (30, 30, 30)     # #1e1e1e
 
 AV_SVG = (
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80.1162 53" fill="#1E1E1E">'
-    '<path d="M50.7402 31.5898L63.1689 0H80.1162L59.2656 53H42.2148L29.5811 '
-    '20.8867L22.2812 39.4414H31.2246L36.5654 53H0L20.8506 0H38.3125L50.7402 '
-    '31.5898Z"/></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 83.1 53"><path d='
+    '"M4.37 53.00L26.23 15.14L34.97 15.14L13.11 53.00Z" fill="#7A7873"/><pa'
+    'th d="M48.09 37.86L26.23 0.00L34.97 0.00L56.83 37.86Z" fill="#7A7873"/'
+    '><path d="M48.09 53.00L74.31 7.57L83.06 7.57L56.83 53.00Z" fill="#7A78'
+    '73"/><path d="M74.31 7.57L69.94 0.00L78.68 0.00L83.06 7.57Z" fill="#7A'
+    '7873"/><path d="M0.00 45.43L4.37 53.00L30.60 7.57L26.23 0.00ZM21.86 7.'
+    '57L48.09 53.00L52.46 45.43L26.23 0.00ZM43.71 45.43L48.09 53.00L74.31 7'
+    '.57L69.94 0.00Z" fill="#1E1E1E"/></svg>'
 )
 
 
