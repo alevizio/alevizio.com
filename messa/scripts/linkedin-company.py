@@ -75,9 +75,9 @@ def render_logo(seed: int = 7) -> Image.Image:
     size = 400
     img = Image.new("RGB", (size, size), BRAND_BG)
 
-    # Mark sized at ~62% of canvas height — large enough to be legible at 48px
-    # but with comfortable whitespace at the larger Company Page rendering.
-    mark_h = int(size * 0.62)
+    # Mark sized to 72% of the canvas width (it is wider than tall, 83.1:53):
+    # legible at 48px, with whitespace that survives LinkedIn's rounded crop.
+    mark_h = int(size * 0.72 * 53 / 83.1)
     mark = rasterize_av_mark(mark_h)
     x = (size - mark.width) // 2
     y = (size - mark.height) // 2
