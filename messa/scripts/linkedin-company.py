@@ -2,7 +2,7 @@
 LinkedIn Company Page assets for Alevizio.
 
 Two outputs sized to LinkedIn's current spec:
-  linkedin-company-logo.png   → 400×400, the 3D AV mark (solid, three ink tones) on #dedbd1
+  linkedin-company-logo.png   → 400×400, the 3D AV mark in ink lines on #dedbd1
                                 (renders as the small square thumbnail next to
                                  every Experience entry that links to the Page)
   linkedin-company-cover.png  → 1128×191, tonal mesh + AV mark, brand-aligned
@@ -28,14 +28,14 @@ BRAND_BG = (222, 219, 209)   # #dedbd1
 BRAND_INK = (30, 30, 30)     # #1e1e1e
 
 AV_SVG = (
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 83.1 53"><path d='
-    '"M4.37 53.00L26.23 15.14L34.97 15.14L13.11 53.00Z" fill="#7A7873"/><pa'
-    'th d="M48.09 37.86L26.23 0.00L34.97 0.00L56.83 37.86Z" fill="#7A7873"/'
-    '><path d="M48.09 53.00L74.31 7.57L83.06 7.57L56.83 53.00Z" fill="#7A78'
-    '73"/><path d="M74.31 7.57L69.94 0.00L78.68 0.00L83.06 7.57Z" fill="#7A'
-    '7873"/><path d="M0.00 45.43L4.37 53.00L30.60 7.57L26.23 0.00ZM21.86 7.'
-    '57L48.09 53.00L52.46 45.43L26.23 0.00ZM43.71 45.43L48.09 53.00L74.31 7'
-    '.57L69.94 0.00Z" fill="#1E1E1E"/></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2.4 -2.4 87.9 57.8">'
+    '<path d="M0.0 45.4L4.4 53.0M4.4 53.0L26.2 15.1M13.1 53.0L30.6 22.7M4.4'
+    ' 53.0L13.1 53.0M26.2 15.1L48.1 53.0M48.1 53.0L74.3 7.6M56.8 53.0L83.1 '
+    '7.6M48.1 53.0L56.8 53.0M74.3 7.6L69.9 0.0M83.1 7.6L78.7 0.0M74.3 7.6L8'
+    '3.1 7.6M69.9 0.0L48.1 37.9M69.9 0.0L78.7 0.0M48.1 37.9L26.2 0.0M52.5 3'
+    '0.3L35.0 0.0M26.2 0.0L0.0 45.4M26.2 0.0L35.0 0.0" fill="none" stroke="'
+    '#1E1E1E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="ro'
+    'und"/></svg>'
 )
 
 
@@ -75,9 +75,10 @@ def render_logo(seed: int = 7) -> Image.Image:
     size = 400
     img = Image.new("RGB", (size, size), BRAND_BG)
 
-    # Mark sized to 72% of the canvas width (it is wider than tall, 83.1:53):
-    # legible at 48px, with whitespace that survives LinkedIn's rounded crop.
-    mark_h = int(size * 0.72 * 53 / 83.1)
+    # Mark sized to 72% of the canvas width (the SVG is 87.9:57.8, the line
+    # drawing plus a stroke's margin): whitespace that survives LinkedIn's
+    # rounded crop.
+    mark_h = int(size * 0.72 * 57.8 / 87.9)
     mark = rasterize_av_mark(mark_h)
     x = (size - mark.width) // 2
     y = (size - mark.height) // 2
