@@ -36,7 +36,7 @@ export const ThePen = () => (
       <Doodles />
     </Section>
 
-    <Section id="icons" eyebrow="The app set" title="Icons" text="Everything the app draws. Lucide, unmodified, at 22 px and a 1.5 stroke; nothing here is redrawn.">
+    <Section id="icons" eyebrow="The app set" title="Icons" text="Everything the app draws, at 22 px and a 1.5 stroke.">
       <IconSet />
     </Section>
 
