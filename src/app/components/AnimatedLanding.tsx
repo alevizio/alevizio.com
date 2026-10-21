@@ -5,6 +5,7 @@ import CompanyLogos from "./CompanyLogos";
 import GlobestudioCard from "./GlobestudioCard";
 import SaboteursCard from "./SaboteursCard";
 import CurbCard from "./CurbCard";
+import HoraCeroCard from "./HoraCeroCard";
 import { LogoMark } from "./LogoMark";
 
 // Below the fold, so it loads after the hero instead of with it (~25 KB
@@ -36,7 +37,8 @@ export default function AnimatedLanding() {
           absolute, so it scrolls away with the hero instead of covering the
           timeline's right end (the present) below it.
           <lg (mobile + tablet + small laptops): a snap-scrolling horizontal row
-          — swipe between Globestudio → curb → saboteurs. It is laid out after
+          — swipe between Globestudio → curb → saboteurs → hora cero (a slim
+          line under saboteurs in the stack). It is laid out after
           the hero (order-last, so the source and tab order stay as they were)
           and sticky: pinned to the bottom of the screen while the hero is on
           it, then it settles under the logos and scrolls away. The stack
@@ -46,6 +48,7 @@ export default function AnimatedLanding() {
         <GlobestudioCard />
         <CurbCard />
         <SaboteursCard />
+        <HoraCeroCard />
       </div>
 
       {/* Foreground Content */}
