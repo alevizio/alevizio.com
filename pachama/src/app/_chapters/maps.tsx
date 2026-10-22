@@ -5,9 +5,8 @@ import pointcloud from "@/assets/maps/pointcloud.jpg";
 import sundarbans from "@/assets/maps/sundarbans.jpg";
 import tlsScan from "@/assets/maps/tls-scan.jpg";
 import ucayali from "@/assets/maps/ucayali.jpg";
-import { HALF, Shot } from "../_components/shot";
+import { Clip, HALF, Shot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section, Slot } from "../_components/story";
-import { VideoLoop } from "../_components/video-loop";
 
 /* IV · The maps, on black like the renders: satellites, lidar and the
  * dynamic baselines, made legible. The imagery is in Dropbox; the map UI is
@@ -58,15 +57,12 @@ export const Maps = () => (
     </Section>
 
     <Section id="lidar" eyebrow="Lidar" title="Flying through a restored corridor">
-      <figure>
-        <VideoLoop
-          src="/video/lidar-flight.mp4"
-          poster="/video/lidar-flight.jpg"
-          label="A flight through the Corridors of Life point cloud, trees in their own colours"
-          className="block aspect-video w-full rounded-[10px] bg-white"
-        />
-        <figcaption className="type-caption mt-3 text-(--tone-text)">The Corridors of Life point cloud, in the trees&apos; own colours.</figcaption>
-      </figure>
+      <Clip
+        name="lidar-flight"
+        label="A flight through the Corridors of Life point cloud, trees in their own colours"
+        aspect="aspect-video"
+        caption="The Corridors of Life point cloud, in the trees' own colours."
+      />
     </Section>
 
     <Section id="map-ui" eyebrow="The map UI" title="Layers, legends and time">

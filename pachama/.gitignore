@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Licensed fonts (Chromatic Condensed by Colophon, Matter by Displaay): used
+# locally, never committed, because this repo is public. Copy them from
+# Dropbox /Pachama/Fonts (see README).
+/src/fonts/

@@ -21,12 +21,12 @@
   --color-ash: #b9c1bc;
   --color-muted: #7d8882;
 
-  --font-display: var(--font-saira), "Arial Narrow", sans-serif;
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-chromatic), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-matter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-matter-mono), ui-monospace, monospace;
 }
 
-/* Headlines set like the brand's: condensed, bold, in capitals, tight. */
+/* Headlines set like the brand's: Chromatic Condensed, bold, in capitals, tight. */
 @utility type-display {
   font-family: var(--font-display);
   font-size: clamp(3.25rem, 9vw, 8.5rem);

@@ -1,3 +1,10 @@
+import excellence from "@/assets/world/badges/excellence.png";
+import integrity from "@/assets/world/badges/integrity.png";
+import marketplace from "@/assets/world/badges/marketplace.png";
+import protocol from "@/assets/world/badges/protocol.png";
+import purpose from "@/assets/world/badges/purpose.png";
+import supply from "@/assets/world/badges/supply.png";
+import tenacity from "@/assets/world/badges/tenacity.png";
 import booth01 from "@/assets/world/booth-01.jpg";
 import booth02 from "@/assets/world/booth-02.jpg";
 import booth05 from "@/assets/world/booth-05.jpg";
@@ -14,21 +21,35 @@ import posterEarth from "@/assets/world/poster-earth.jpg";
 import posterForest from "@/assets/world/poster-forest.jpg";
 import posterOffsite from "@/assets/world/poster-offsite.jpg";
 import posterRedwoods from "@/assets/world/poster-redwoods.jpg";
+import retreatArt from "@/assets/world/retreat-art.jpg";
+import retreatSketch from "@/assets/world/retreat-sketch.jpg";
+import seriesBBanner from "@/assets/world/seriesb-banner.jpg";
 import sequoia from "@/assets/world/sequoia-mauve.png";
 import shirtPair from "@/assets/world/shirt-pair.jpg";
 import shirt from "@/assets/world/shirt.jpg";
 import stamp from "@/assets/world/stamp.jpg";
 import treeTrace from "@/assets/world/tree-trace.jpg";
-import values from "@/assets/world/values.png";
-import { HALF, QUARTER, Shot, THIRD } from "../_components/shot";
+import { Clip, HALF, QUARTER, Shot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
-/* V · In the world: the brand off the screen. Everything here is in
- * Dropbox /Pachama; the photographers are to credit. */
+// The 2022 offsite's badges: the three teams, then the four values.
+const BADGES = [
+  { src: protocol, name: "Protocol" },
+  { src: marketplace, name: "Marketplace" },
+  { src: supply, name: "Supply" },
+  { src: purpose, name: "Purpose" },
+  { src: integrity, name: "Integrity" },
+  { src: tenacity, name: "Tenacity" },
+  { src: excellence, name: "Excellence" },
+];
+
+/* V · In the world: the brand off the screen, and the things Alejandro drew
+ * for the people inside it. Everything here is in Dropbox /Pachama; the
+ * photographers are to credit. */
 export const World = () => (
   <Band tone="ground">
     <ChapterDivider id="world" numeral="V" title="In the world">
-      The brand off the screen: a booth, posters, swag and a field trip to a restored&nbsp;forest.
+      The brand off the screen: a booth, a banner for the Series B, a retreat, badges, swag and a restored&nbsp;forest.
     </ChapterDivider>
 
     <Section id="booth" eyebrow="Events" title="The 2024 booth" text="Two directions for the stand: See carbon in action, and Restoring balance.">
@@ -40,12 +61,53 @@ export const World = () => (
       </Row>
     </Section>
 
-    <Section id="print" eyebrow="Print" title="Posters" text="The Series B party in 2022, and the 2024 offsite.">
+    <Section
+      id="series-b"
+      eyebrow="Series B, 2022"
+      title="A banner for $55 million"
+      text="Drawn for the party when Pachama closed its Series B: redwoods, light through the canopy and every investor's name. The timelapse is the drawing, from the first trunk to the type."
+    >
+      <Row className="items-start">
+        <Shot src={seriesBBanner} alt="The Series B banner: '$55M Series B, led by Future Positive', the investors' names, framed by red redwood trunks" sizes={HALF} />
+        <Clip
+          name="seriesb-timelapse"
+          label="A timelapse of the banner being drawn: trunks, then the canopy and light, then the type"
+          aspect="aspect-square"
+          caption="The drawing, six times faster."
+        />
+      </Row>
+      <Row cols={3} className="mt-6">
+        <Shot src={posterForest} alt="A Series B variation: the type over a pale forest silhouette" sizes={THIRD} />
+        <Shot src={posterRedwoods} alt="A Series B variation in red and green, illustrated redwoods" sizes={THIRD} />
+        <Shot src={posterEarth} alt="A Series B variation in blue and green, like a map of the Earth" sizes={THIRD} />
+      </Row>
+    </Section>
+
+    <Section
+      id="retreat"
+      eyebrow="All-team retreat, 2024"
+      title="Time of renewal"
+      text="From a page in the sketchbook to the poster for Mendocino: redwoods, a fire, everyone around it."
+    >
+      <Row cols={3} className="items-start">
+        <Shot src={retreatSketch} alt="A sketchbook spread: the retreat poster and badge ideas drawn in pen" sizes={THIRD} caption="The sketchbook." />
+        <Shot src={retreatArt} alt="The retreat illustration without type: people around a campfire among redwoods" sizes={THIRD} caption="The illustration." />
+        <Shot src={posterOffsite} alt="The retreat poster: 'Time of renewal, all-team retreat 2024' over the campfire illustration" sizes={THIRD} caption="The poster." />
+      </Row>
+    </Section>
+
+    <Section
+      id="badges"
+      eyebrow="Offsite, 2022"
+      title="A badge for every team and every value"
+      text="Protocol, Marketplace and Supply for the teams; Purpose, Integrity, Tenacity and Excellence for what Pachama stood for."
+    >
       <Row cols={4}>
-        <Shot src={posterForest} alt="Series B poster: '$55M Series B, Future Positive' over a forest silhouette" sizes={QUARTER} />
-        <Shot src={posterRedwoods} alt="Series B poster in red and green, illustrated redwoods" sizes={QUARTER} />
-        <Shot src={posterEarth} alt="Series B poster in blue and green, like a map of the Earth" sizes={QUARTER} />
-        <Shot src={posterOffsite} alt="2024 offsite poster: 'Time of renewal', people around a fire among redwoods" sizes={QUARTER} />
+        {BADGES.map(({ src, name }) => (
+          <div key={name} className="rounded-[10px] bg-sheet p-6 sm:p-8">
+            <Shot src={src} alt={`The ${name} badge`} sizes={QUARTER} imageClassName="rounded-none" />
+          </div>
+        ))}
       </Row>
     </Section>
 
@@ -70,11 +132,10 @@ export const World = () => (
       </Row>
     </Section>
 
-    <Section id="small-things" eyebrow="Small things" title="Pins, a stamp, the values">
-      <Row cols={3}>
-        <Shot src={pins} alt="Two hexagon pins of the Pachama mark, one in the spectrum's colours, one in silver" sizes={THIRD} />
-        <Shot src={stamp} alt="A rubber stamp printing the Nature Positive seal" sizes={THIRD} />
-        <Shot src={values} alt="Four stickers of the company values: purpose, integrity, excellence, tenacity" sizes={THIRD} />
+    <Section id="small-things" eyebrow="Small things" title="Pins and a stamp">
+      <Row>
+        <Shot src={pins} alt="Two hexagon pins of the Pachama mark, one in the spectrum's colours, one in silver" sizes={HALF} />
+        <Shot src={stamp} alt="A rubber stamp printing the Nature Positive seal" sizes={HALF} />
       </Row>
     </Section>
 

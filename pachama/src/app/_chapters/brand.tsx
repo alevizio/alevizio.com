@@ -1,10 +1,23 @@
 import dotGrid from "@/assets/brand/dot-grid.jpg";
 import hexGrid from "@/assets/brand/hex-grid.jpg";
 import seeCarbon from "@/assets/brand/see-carbon-hero.jpg";
-import { Palette } from "../_components/palette";
+import book from "@/assets/howhow/book-sv.jpg";
+import economy from "@/assets/howhow/economy-sv.jpg";
+import exhibition from "@/assets/howhow/exhibition-l.jpg";
+import ipad from "@/assets/howhow/ipad-sv.jpg";
+import ooh from "@/assets/howhow/ooh-l.jpg";
+import phone from "@/assets/howhow/phone-sv.jpg";
+import sign from "@/assets/howhow/sign-sv.jpg";
+import technology from "@/assets/howhow/technology-l.jpg";
+import testimonial from "@/assets/howhow/testimonial-s.jpg";
+import typePoster from "@/assets/howhow/type-sv.jpg";
+import web from "@/assets/howhow/web-l.jpg";
+import zoom from "@/assets/howhow/zoom-l.jpg";
 import { cn } from "../_components/cn";
-import { HALF, Shot } from "../_components/shot";
+import { Palette } from "../_components/palette";
+import { Clip, HALF, Shot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section, Slot } from "../_components/story";
+import { TypeSpecimen } from "../_components/type-specimen";
 
 /** The brand's own SVG on a tile of the ground it was drawn for. */
 const LogoTile = ({ src, alt, tile, logo }: { src: string; alt: string; tile: string; logo: string }) => (
@@ -14,13 +27,19 @@ const LogoTile = ({ src, alt, tile, logo }: { src: string; alt: string; tile: st
   </div>
 );
 
-/* I · The brand: FNDR's strategy, How&How's identity, and carrying it into
- * everything Pachama made. The images are How&How's hand-over, used with
- * their permission; the in-house part is to confirm with Alejandro. */
+// How&How's portrait split format, 1494 × 1700.
+const SPLIT = "aspect-[1494/1700]";
+
+/* I · The brand, made in collaboration with How&How and FNDR: FNDR's
+ * strategy, How&How's identity, motion, mockups and site, and Alejandro
+ * carrying it into everything Pachama made. The hand-over and the stills and
+ * loops from how.studio/branding/pachama are How&How's, shown with their
+ * permission. */
 export const Brand = () => (
   <Band tone="ground">
     <ChapterDivider id="brand" numeral="I" title="The brand">
-      An identity by How&amp;How, from FNDR&apos;s strategy: see carbon in action, carried into everything Pachama&nbsp;made.
+      Made in collaboration with How&amp;How and FNDR: FNDR&apos;s strategy, How&amp;How&apos;s identity, and see carbon in
+      action carried into everything Pachama&nbsp;made.
     </ChapterDivider>
 
     <Section
@@ -38,7 +57,10 @@ export const Brand = () => (
       title="See carbon in action"
       text="FNDR's strategy put nature and data in the same sentence. How&How turned it into a headline and a way of drawing: the forest, and the carbon in it, made visible."
     >
-      <Shot src={seeCarbon} alt="The new site's hero: 'See carbon in action.' over an aerial view of a river through wetland forest" caption="How&How's hero for the new site." />
+      <Row className="items-start">
+        <Clip name="howhow/landing-s" label="'See carbon in action' over a tree drawn in coloured lidar points" aspect="aspect-square" />
+        <Shot src={seeCarbon} alt="The new site's hero: 'See carbon in action.' over an aerial view of a river through wetland forest" sizes={HALF} caption="The site's hero, from the hand-over." />
+      </Row>
     </Section>
 
     <Section
@@ -47,7 +69,8 @@ export const Brand = () => (
       title="Circles and hexagons, a flower and a leaf"
       text="Formal geometry overlapping like a Venn diagram: nature, technology and community, in one gradient from leaf to sky."
     >
-      <Row cols={3}>
+      <Clip name="howhow/logo-l" label="The Pachama logo drawing itself" aspect="aspect-video" />
+      <Row cols={3} className="mt-6">
         <LogoTile src="/brand/symbol-dark.svg" alt="The Pachama symbol: a flower of circles inside a hexagon, from green to sky" tile="bg-night" logo="w-1/4" />
         <LogoTile src="/brand/logo-dark.svg" alt="The Pachama logo on the dark green ground" tile="bg-deep" logo="w-3/5" />
         <LogoTile src="/brand/logo-light.svg" alt="The Pachama logo on white" tile="bg-sheet" logo="w-3/5" />
@@ -55,12 +78,16 @@ export const Brand = () => (
     </Section>
 
     <Section
-      id="grids"
-      eyebrow="The grids"
-      title="A mesh laid over the land"
-      text="A hex grid and a dot grid that drape over the terrain, with the carbon counted on top: the idea, drawn."
+      id="language"
+      eyebrow="The graphic language"
+      title="Particles, lidar and a mesh over the land"
+      text="Trees turned to points, lidar's colours, and grids that drape over the terrain with the carbon counted on top."
     >
-      <Row>
+      <Row className="items-start">
+        <Clip name="howhow/particles-s" label="'Not just a tree': a tree at sunset dissolving into particles" aspect="aspect-square" />
+        <Clip name="howhow/lidar-sv" label="'Lidar inspired': a tree in lidar points on dark green" aspect={SPLIT} />
+      </Row>
+      <Row className="mt-6">
         <Shot src={hexGrid} alt="'See carbon in action' beside an aerial forest with a hexagonal mesh draped over it and a counter of tonnes" sizes={HALF} caption="The hex grid." />
         <Shot src={dotGrid} alt="The same hero with a dot grid draped over the forest in the spectrum's colours" sizes={HALF} caption="The dot grid." />
       </Row>
@@ -70,19 +97,86 @@ export const Brand = () => (
       id="colour-type"
       eyebrow="Colour and type"
       title="A dark green ground, a gradient and a spectrum"
-      text="Set in Matter, Matter SQ and Matter Mono, from Displaay."
+      text="Chromatic Condensed by Colophon for the headlines, in capitals; Matter and Matter Mono by Displaay for text and numbers."
     >
-      <Row>
-        <Palette />
-        <Slot label="Matter, Matter SQ and Matter Mono, set" source="Figma · Pachama_Brand Guidelines_HO" aspect="aspect-[4/5]" />
+      <Row className="items-start">
+        <Clip name="howhow/colour-sv" label="The palette, animated" aspect={SPLIT} />
+        <Shot src={typePoster} alt="A type poster: 'While trees may be temporary, forests stand the test of time.'" sizes={HALF} />
       </Row>
+      <Row className="mt-6">
+        <Palette />
+        <TypeSpecimen />
+      </Row>
+    </Section>
+
+    <Section
+      id="illustration"
+      eyebrow="Illustration"
+      title="One tree at a time"
+      text="Trees traced from lidar and named for where they grow, the same drawings that became Pachama Originals."
+    >
+      <Row className="items-start">
+        <Clip name="howhow/illustration-sv" label="Tree illustrations, one after another: the tualang of Indonesia and others" aspect={SPLIT} />
+        <Clip name="howhow/particlecrop-sv" label="A close crop of a trunk, its bark breaking into particles" aspect={SPLIT} />
+      </Row>
+    </Section>
+
+    <Section id="brand-book" eyebrow="The brand book" title="Beyond carbon" text="The guidelines, bound and on screen.">
+      <Row className="items-start">
+        <Shot src={book} alt="The brand book, 'Beyond carbon', a hardcover on a dark table" sizes={HALF} />
+        <Shot src={ipad} alt="The brand on an iPad lying on plywood" sizes={HALF} />
+      </Row>
+    </Section>
+
+    <Section
+      id="applications"
+      eyebrow="Applications"
+      title="Out in the world"
+      text="Billboards, an exhibition, signage, phones, socials and the people behind the projects."
+    >
+      <Shot src={ooh} alt="A billboard on a city building: 'See carbon in action' over aerial forest" />
+      <Row className="mt-6">
+        <Shot src={exhibition} alt="An exhibition room with large screens of lidar trees and the line 'While trees may be temporary'" sizes={HALF} />
+        <Clip name="howhow/socials-l" label="Social posts for the brand, moving" aspect="aspect-video" />
+      </Row>
+      <Row cols={3} className="mt-6 items-start">
+        <Shot src={sign} alt="An acrylic sign: 'Make the invisible visible'" sizes={THIRD} />
+        <Shot src={phone} alt="A hand holding a phone open on 'The new nature of modern business'" sizes={THIRD} />
+        <Shot src={economy} alt="An 'Economy' card over a photograph of a farmer among tall plants" sizes={THIRD} />
+      </Row>
+      <Row className="mt-6 items-start">
+        <Shot src={testimonial} alt="A portrait for the brand: a man in a Pachama shirt against a giant tree trunk" sizes={HALF} />
+        <Clip name="howhow/services-sv" label="A mangrove tree on its stilt roots at dusk" aspect={SPLIT} />
+      </Row>
+    </Section>
+
+    <Section
+      id="site"
+      eyebrow="The website"
+      title="Restore nature. Remove carbon."
+      text="The new pachama.com, designed with How&How: the projects, the science and the numbers, on the same dark ground as everything else."
+    >
+      <Shot src={web} alt="The new site on a laptop among leaves: 'Restore nature. Remove carbon.'" />
+      <Row className="mt-6">
+        <Clip name="howhow/ui-l" label="The site's map: a satellite view with project cards" aspect="aspect-video" />
+        <Shot src={zoom} alt="'Restore nature.' on a frosted card over a forest" sizes={HALF} />
+      </Row>
+      <Row className="mt-6">
+        <Clip name="howhow/locations-l" label="A project card: King County Parks, 65,966 tonnes of CO₂" aspect="aspect-video" />
+        <Clip name="howhow/process-l" label="The process explained, step by step, over a forest" aspect="aspect-video" />
+      </Row>
+      <Row className="mt-6 items-start">
+        <Clip name="howhow/dashboard-s" label="The dashboard on screens in an office" aspect="aspect-square" />
+        <Shot src={technology} alt="'Ambient trees': a lidar tree in a card" sizes={HALF} />
+      </Row>
+      <Clip name="howhow/worldscale" label="Projects across the world, at scale" aspect="aspect-video" className="mt-6" caption="Brand, motion and site by How&How, in collaboration with Pachama." />
     </Section>
 
     <Section
       id="rollout"
       eyebrow="My part"
       title="Taking it in-house"
-      text="To confirm: the brief, the rollout into the product, the brand library in Figma, and everything printed."
+      text="Working with How&How and FNDR from Pachama's side: the brief, then the identity carried into the product, the site, the booth and everything printed."
     >
       <Slot label="The brand library in Figma: components, patterns, templates" source="Figma · Pachama_Brand Library_HO" />
     </Section>
