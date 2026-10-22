@@ -10,7 +10,7 @@ import { Patterns } from "../_components/banyan/patterns";
 import { DocWall } from "../_components/banyan/wall";
 import { Band, ChapterDivider, Section } from "../_components/story";
 
-/* III · Banyan, the design system Alejandro built for Pachama's products:
+/* III · Banyan, the design system Alejandro designed for Pachama's products:
  * its Figma cover and every documentation page up top, then each family
  * rebuilt live from the Figma, in Banyan's own order. */
 const COUNTS = [
@@ -23,8 +23,8 @@ const COUNTS = [
 export const Kit = () => (
   <Band tone="banyan" className="border-t border-rule">
     <ChapterDivider id="kit" numeral="III" title="Banyan">
-      The design system I built for Pachama&rsquo;s products: a Figma library with a page of documentation for every component, and the same
-      components in code. Rebuilt here from the Figma, and&nbsp;working.
+      The design system behind Pachama&rsquo;s products. I designed it and documented every component in Figma; Pachama&rsquo;s engineers built
+      the same components in code. Rebuilt here from the Figma, and&nbsp;working.
     </ChapterDivider>
 
     <Section
