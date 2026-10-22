@@ -36,6 +36,35 @@ export const Shot = ({
   </figure>
 );
 
+/** A page too long to show whole: it scrolls inside its own frame, which
+ *  takes keyboard focus so the arrow keys scroll it too. */
+export const TallShot = ({
+  src,
+  alt,
+  label,
+  caption,
+  frameClassName,
+}: {
+  src: StaticImageData;
+  alt: string;
+  /** Names the scrolling frame for screen readers. */
+  label: string;
+  caption?: ReactNode;
+  frameClassName?: string;
+}) => (
+  <figure>
+    <div
+      role="region"
+      aria-label={label}
+      tabIndex={0}
+      className={cn("h-[80vh] max-h-[56rem] overflow-y-auto rounded-[10px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current", frameClassName)}
+    >
+      <Image src={src} alt={alt} sizes="(min-width: 1376px) 1296px, 100vw" placeholder="blur" className="h-auto w-full" />
+    </div>
+    {caption ? <figcaption className="type-caption mt-3 text-(--tone-text)">{caption}</figcaption> : null}
+  </figure>
+);
+
 /** Sizes hints for the common columns. */
 export const HALF = "(min-width: 1376px) 636px, (min-width: 640px) 50vw, 100vw";
 export const THIRD = "(min-width: 1376px) 416px, (min-width: 640px) 33vw, 100vw";

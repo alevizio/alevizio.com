@@ -1,5 +1,10 @@
+import appExplore from "@/assets/product/app-explore.jpg";
+import appMyProjects from "@/assets/product/app-my-projects.jpg";
+import appOrders from "@/assets/product/app-orders.png";
+import appRetirements from "@/assets/product/app-retirements.png";
+import certificate from "@/assets/product/certificate.jpg";
 import evaluation from "@/assets/product/evaluation.png";
-import ordersEmpty from "@/assets/product/orders-empty.png";
+import manoaPage from "@/assets/product/manoa-page.jpg";
 import sourceEvaluation from "@/assets/product/source-evaluation.jpg";
 import sourceEventSettings from "@/assets/product/source-event-settings.jpg";
 import sourceEvents from "@/assets/product/source-events.jpg";
@@ -8,14 +13,13 @@ import sourceLandShare from "@/assets/product/source-land-share.jpg";
 import sourceLanding from "@/assets/product/source-landing.jpg";
 import sourceStart from "@/assets/product/source-start.jpg";
 import sourceSubmissions from "@/assets/product/source-submissions.jpg";
-import { HALF, Shot } from "../_components/shot";
-import { Band, ChapterDivider, Row, Section, Slot } from "../_components/story";
+import { HALF, Shot, TallShot } from "../_components/shot";
+import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
 /* II · The product, on the product's own light grey: the marketplace and
- * the tools around it. Public-facing screens only; the client's name on the
- * Orders screen is blurred. Source's screens are sample data with Acme as the
- * buyer; project names and a client's name in them are blurred. The
- * components have their own chapter, III. */
+ * the tools around it, shown as they were (Alejandro cleared everything
+ * from Pachama to be shared as is: client and project names included).
+ * The components have their own chapter, III. */
 
 // A screen lifted off the page: a hairline and a soft shadow.
 const SCREEN = "ring-1 ring-black/5 shadow-[0_24px_80px_rgb(20_26_23/0.12)]";
@@ -27,20 +31,38 @@ export const Product = () => (
       the&nbsp;open.
     </ChapterDivider>
 
-    <Section id="marketplace" eyebrow="The marketplace" title="Finding a project worth buying">
-      <Slot label="Project discovery: the list, the filters, the map" source="Figma · link to ask" />
+    <Section
+      id="marketplace"
+      eyebrow="The marketplace"
+      title="Finding a project worth buying"
+      text="Explore pairs every project with where it is: cards to filter on one side, the globe on the other, its fires marked in red."
+    >
+      <Shot
+        src={appExplore}
+        alt="Explore: filters for project type and location, cards for Manoa and Central Kalimantan Peatlands, and a globe of South America with fires in red"
+        imageClassName={SCREEN}
+      />
     </Section>
 
     <Section
       id="project"
       eyebrow="Project pages"
       title="Every credit, checked"
-      text="Manoa's evaluation: five quality checks, the reference region on the map, and the baseline set against what Pachama's satellites saw."
+      text="Manoa's page, top to bottom: the forest, its facts and registry, the evaluation on the map, its story and what it does beyond carbon. Then the evaluation as it looked before the rebrand."
     >
+      <TallShot
+        src={manoaPage}
+        frameClassName={SCREEN}
+        label="Manoa's project page, scrollable"
+        alt="Manoa's project page: an aerial hero, the overview with Verra and CCB, a photo gallery, a tech-verified evaluation map of deforestation around the project since 1996, the project story, its impacts on education and biodiversity, its files, and other projects"
+        caption="Manoa's page in the product. Scroll inside it."
+      />
       <Shot
         src={evaluation}
         alt="Manoa's evaluation page: the project's facts, five quality checks, a reference-region map and a baseline chart, both marked Pass"
+        caption="Evaluation 2.0, before the rebrand."
         imageClassName={SCREEN}
+        className="mt-10"
       />
     </Section>
 
@@ -48,16 +70,21 @@ export const Product = () => (
       id="buying"
       eyebrow="Buying"
       title="From order to retirement"
-      text="Explore, orders, retirement and impact, one account away. Empty, the Orders page points back to the projects."
+      text="Orders and retirements, every retirement with a certificate to download, and a buyer's projects with their news."
     >
-      <Row>
+      <Row className="items-start">
+        <Shot src={appOrders} alt="Orders: a table of dates, assets such as Jari 2017 and Manoa 2020, quantities, costs per tonne and status" sizes={HALF} imageClassName={SCREEN} />
+        <Shot src={appRetirements} alt="Retirements: dates, credits such as Manoa 2019 and Jari Para 2020, quantities, status and a Download certificate link on each" sizes={HALF} imageClassName={SCREEN} />
+      </Row>
+      <Row className="mt-6 items-start">
         <Shot
-          src={ordersEmpty}
-          alt="The Orders page, empty: 'No orders yet' and a button to explore projects"
+          src={certificate}
+          alt="A certificate of authenticity awarded to Just Spices for offsetting 200 tonnes of CO2, from the Kootznoowoo improved forest management project, registered with the American Carbon Registry"
           sizes={HALF}
+          caption="The certificate a retirement downloads."
           imageClassName={SCREEN}
         />
-        <Slot label="Checkout, and a retirement certificate" source="Figma · link to ask" aspect="aspect-[1440/1024]" />
+        <Shot src={appMyProjects} alt="My projects: cards for Manoa and Central Kalimantan Peatlands with their evaluations and monitoring, beside a feed of project updates" sizes={HALF} caption="A buyer's projects, and the news from them." imageClassName={SCREEN} />
       </Row>
     </Section>
 
@@ -65,7 +92,7 @@ export const Product = () => (
       id="sourcing"
       eyebrow="Sourcing"
       title="A sourcing event in one link"
-      text="Source let a buyer run its own call for carbon projects: publish what it's looking for, and developers submit, share their land and see how much of it qualifies. Sample data throughout, with Acme as the buyer."
+      text="Source generalised what we built for the Symbiosis RFP: any buyer could run its own call for carbon projects, publish what it's looking for, and have developers submit, share their land and see how much of it qualifies. Acme stands in for the buyer."
     >
       <Shot
         src={sourceLanding}
