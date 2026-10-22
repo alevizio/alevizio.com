@@ -24,7 +24,7 @@ type Company = {
 export const companies: Company[] = [
   {
     name: "Pachama",
-    url: "https://pachama.com",
+    url: "https://www.linkedin.com/company/pachama/",
     height: "h-[32px]",
     tag: { text: "acquired by Carbon Direct", url: "https://techcrunch.com/2025/11/10/consolidation-begins-to-hit-the-carbon-credit-market/" },
     years: "5+ yrs",

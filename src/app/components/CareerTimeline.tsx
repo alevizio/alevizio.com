@@ -456,7 +456,7 @@ const life = defineLifeline({
       events: [
         [
           { type: "text", value: "joined " },
-          { type: "link", value: "Pachama", href: "https://pachama.com" },
+          { type: "link", value: "Pachama", href: "https://www.linkedin.com/company/pachama/" },
           { type: "text", value: " as a product designer." },
         ],
       ],
@@ -517,7 +517,7 @@ const life = defineLifeline({
       events: [
         [
           { type: "text", value: "senior product designer at " },
-          { type: "link", value: "Pachama", href: "https://pachama.com" },
+          { type: "link", value: "Pachama", href: "https://www.linkedin.com/company/pachama/" },
           { type: "text", value: "." },
         ],
         [
@@ -534,7 +534,7 @@ const life = defineLifeline({
       companies: [{ id: "earthscale", name: "Earthscale" }, { id: "limai", name: "Limai" }, { id: "fudo", name: "Fudo" }],
       events: [
         [
-          { type: "link", value: "Pachama", href: "https://pachama.com" },
+          { type: "link", value: "Pachama", href: "https://www.linkedin.com/company/pachama/" },
           { type: "text", value: " was " },
           {
             type: "link",
