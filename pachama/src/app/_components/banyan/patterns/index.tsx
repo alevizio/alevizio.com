@@ -1,0 +1,87 @@
+import { Specimen, SpecimenGrid } from "../specimen";
+import { AccordionItem, Dropdown } from "./accordion";
+import { Breadcrumb, type Crumb } from "./breadcrumb";
+import { LIFECYCLE, MANOA } from "./content";
+import { DataPoints } from "./data-points";
+import { PortfolioCard, ProjectsByYear, RegionsCard } from "./graphs";
+import { HighlightsCard } from "./highlights-card";
+import { ProjectCard } from "./project-card";
+import { Sidebar } from "./sidebar";
+import { StepperRow, StepperVertical } from "./stepper";
+import { SubmissionCard } from "./submission-card";
+import { Tabs } from "./tabs";
+import { TopNav } from "./top-nav";
+
+/* Patterns: the bigger pieces, put together from the smaller ones, in
+ * Banyan's order: navigation, cards, graphs, accordion, stepper,
+ * breadcrumb and tabs. */
+const CRUMBS: Crumb[] = [
+  { label: "Projects", href: "#patterns" },
+  { label: "Brazil", href: "#patterns" },
+  { label: MANOA.name },
+];
+
+const Panel = ({ children }: { children: string }) => <p className="max-w-prose pt-4 text-[15px] leading-6 text-bn-medium">{children}</p>;
+
+export const Patterns = () => (
+  <div className="grid gap-12">
+    <Specimen name="Navigation, the website" note="The top bar on glass. Solutions opens its menu; with less room the bar folds into the menu button." panelClassName="block p-0 sm:p-0 overflow-hidden">
+      <TopNav />
+    </Specimen>
+    <Specimen name="Navigation, the product" note="The buyer app's sidebar: pick a page, open a group, or fold it down to its rail." panelClassName="block">
+      <Sidebar />
+    </Specimen>
+    <SpecimenGrid>
+      <Specimen name="Project card" note="Manoa as the marketplace lists it: its map, its facts and the evaluation it passed.">
+        <ProjectCard />
+      </Specimen>
+      <Specimen name="Highlights card" note="A project's highlights over its photos, paged. Corredores de Vida, photographed by Pachama.">
+        <HighlightsCard />
+      </Specimen>
+      <Specimen name="Submission card" note="A developer's project working through screening: tick the tasks off and Submit wakes up. A sample project.">
+        <SubmissionCard />
+      </Specimen>
+      <Specimen name="Data points" note="One number, its label and a line under it; grouped when several belong together. Sample values.">
+        <DataPoints />
+      </Specimen>
+    </SpecimenGrid>
+    <Specimen name="Graphs" note="Bars by year and stacked bars by share. Point at a bar or a legend entry to read it. The values are illustrative." panelClassName="grid items-start gap-6 lg:grid-cols-2">
+      <ProjectsByYear />
+      <PortfolioCard className="lg:row-span-2" />
+      <RegionsCard />
+    </Specimen>
+    <SpecimenGrid>
+      <Specimen name="Accordion" note="Cards that open to their fields, one heading and one button each." panelClassName="block">
+        <div className="grid gap-3">
+          <AccordionItem title="Location" initiallyOpen>
+            <Dropdown label="Country" options={["Brazil", "Peru", "Colombia", "Mexico"]} />
+          </AccordionItem>
+          <AccordionItem title="Project">
+            <Dropdown label="Project type" options={["REDD+", "ARR", "IFM"]} />
+          </AccordionItem>
+        </div>
+      </Specimen>
+      <Specimen name="Tabs" note="Arrow keys move between tabs; a dot or a count says something changed." panelClassName="block">
+        <Tabs
+          label={`${MANOA.name}, project`}
+          items={[
+            { label: "Summary", panel: <Panel>{`${MANOA.area} in ${MANOA.country}, ${MANOA.type}.`}</Panel> },
+            { label: "Evaluation", status: true, panel: <Panel>{MANOA.about}</Panel> },
+            { label: "Documents", count: 4, panel: <Panel>The project description, its validation and two monitoring reports. Sample files.</Panel> },
+            { label: "Monitoring", disabled: true, panel: <Panel>Not yet.</Panel> },
+          ]}
+        />
+      </Specimen>
+    </SpecimenGrid>
+    <Specimen name="Stepper" note="A developer's way through Pachama, from screening to earning credits: big, small and with each step's copy." panelClassName="min-w-0 flex-col items-start gap-8">
+      <StepperRow steps={LIFECYCLE} current={1} label="Project lifecycle" className="flex-wrap gap-y-3" />
+      <StepperRow steps={LIFECYCLE} current={1} size="small" showNext label="Project lifecycle, small" />
+      <StepperVertical steps={LIFECYCLE} current={1} label="Project lifecycle, with copy" />
+    </Specimen>
+    <Specimen name="Breadcrumb" note="Where a page sits, with three separators: a slash, a dash and an arrow." panelClassName="flex-col items-start gap-4">
+      <Breadcrumb items={CRUMBS} />
+      <Breadcrumb items={CRUMBS} separator="dash" label="Breadcrumb, dashes" />
+      <Breadcrumb items={CRUMBS} separator="icon" label="Breadcrumb, arrows" />
+    </Specimen>
+  </div>
+);

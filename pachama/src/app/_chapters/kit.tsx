@@ -1,86 +1,95 @@
-import { ButtonSet } from "../_components/kit/buttons";
-import { CardSet } from "../_components/kit/cards";
-import { ChipSet } from "../_components/kit/chips";
-import { BaselineChart, OrdersTable, StatCards } from "../_components/kit/data";
-import { FeedbackSet } from "../_components/kit/feedback";
-import { FieldSet } from "../_components/kit/fields";
-import { MapWidget } from "../_components/kit/map-widget";
-import { AppShell } from "../_components/kit/navigation";
-import { Tokens } from "../_components/kit/tokens";
+import { BanyanCover } from "../_components/banyan/cover";
+import { DataDisplay } from "../_components/banyan/data-display";
+import { Feedback } from "../_components/banyan/feedback";
+import { Forms } from "../_components/banyan/forms";
+import { Foundations } from "../_components/banyan/foundations";
+import { MapKit } from "../_components/banyan/maps";
+import { Media } from "../_components/banyan/media";
+import { Overlay } from "../_components/banyan/overlay";
+import { Patterns } from "../_components/banyan/patterns";
+import { DocWall } from "../_components/banyan/wall";
 import { Band, ChapterDivider, Section } from "../_components/story";
 
-/* III · The kit, on the product's light grey: the UI elements Alejandro
- * built for Pachama, rebuilt in code and working. First put together as the
- * product's frame, then family by family. The originals live in Pachama's
- * codebase. */
+/* III · Banyan, the design system Alejandro built for Pachama's products:
+ * its Figma cover and every documentation page up top, then each family
+ * rebuilt live from the Figma, in Banyan's own order. */
+const COUNTS = [
+  { value: "37", label: "documented pages" },
+  { value: "261", label: "button variants" },
+  { value: "1,310", label: "icons" },
+  { value: "8", label: "colour ramps" },
+];
+
 export const Kit = () => (
-  <Band tone="paper" className="border-t border-rule">
-    <ChapterDivider id="kit" numeral="III" title="The kit">
-      Every piece the product is built from, designed once and used everywhere: the site, the marketplace and the&nbsp;maps.
-      Rebuilt in code for this case study, and working; the originals live in Pachama&rsquo;s&nbsp;codebase.
+  <Band tone="banyan" className="border-t border-rule">
+    <ChapterDivider id="kit" numeral="III" title="Banyan">
+      The design system I built for Pachama&rsquo;s products: a Figma library with a page of documentation for every component, and the same
+      components in code. Rebuilt here from the Figma, and&nbsp;working.
     </ChapterDivider>
 
     <Section
       id="kit-all"
-      eyebrow="All together"
-      title="The product's frame, working"
-      text="The top bar, the side nav with its account switcher, and a project page with its tabs. Click around."
+      eyebrow="The system"
+      title="One library, documented page by page"
+      text="From getting started to the tooltip, every page of the documentation is below, side by side as the Figma lays them out. Each group jumps to its components."
     >
-      <AppShell />
+      <BanyanCover />
+      <dl className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
+        {COUNTS.map(({ value, label }) => (
+          <div key={label} className="border-t border-(--tone-line) pt-4">
+            <dt className="type-label text-(--tone-label)">{label}</dt>
+            <dd className="type-section mt-2 text-(--tone-head)">{value}</dd>
+          </div>
+        ))}
+      </dl>
+      <DocWall className="mt-10" />
     </Section>
 
-    <Section id="foundations" eyebrow="Foundations" title="Colour, type, corners and depth">
-      <Tokens />
-    </Section>
-
-    <Section id="controls" eyebrow="Controls" title="Buttons, fields, chips and toggles" text="Every variant and size, and fields that answer back.">
-      <div className="grid gap-6">
-        <ButtonSet />
-        <FieldSet />
-        <ChipSet />
-      </div>
+    <Section id="foundations" eyebrow="Foundations" title="Type, colour and the levels things sit on">
+      <Foundations />
     </Section>
 
     <Section
-      id="data"
-      eyebrow="Data"
-      title="Numbers, charts and tables"
-      text="The totals are the ones on How&How's billboard. The chart's values and the orders are sample data."
+      id="patterns"
+      eyebrow="Patterns"
+      title="How a page is put together"
+      text="Navigation, cards, graphs, accordions, steppers, breadcrumbs and tabs: the bigger pieces, built from the smaller ones."
     >
-      <div className="grid gap-6">
-        <StatCards />
-        <div className="grid gap-6 xl:grid-cols-2">
-          <BaselineChart />
-          <OrdersTable />
-        </div>
-      </div>
-    </Section>
-
-    <Section
-      id="cards"
-      eyebrow="Cards"
-      title="Projects and certificates"
-      text="Two real projects as the marketplace lists them, and the certificate a buyer keeps. The buyer is a sample."
-    >
-      <CardSet />
+      <Patterns />
     </Section>
 
     <Section
       id="map-kit"
-      eyebrow="Map controls"
-      title="Layers, a legend and the time slider"
-      text="Drag the years: forest loss piles up in the control area while the project holds, which is how a dynamic baseline reads. The areas and the loss are illustrative, over satellite imagery of the Ucayali, in Peru."
+      eyebrow="Maps"
+      title="Legends, tooltips, a player and pins"
+      text="What sits on top of the satellite imagery: what a colour means, where the data comes from, and how a forest changed year by year."
     >
-      <MapWidget />
+      <MapKit />
+    </Section>
+
+    <Section id="forms" eyebrow="Forms" title="Every control a form needs" text="Ten controls, from the button to the date picker, in the states the Figma documents.">
+      <Forms />
+    </Section>
+
+    <Section id="data-display" eyebrow="Data display" title="Tables, tags, badges and avatars" text="How numbers, statuses and people show up.">
+      <DataDisplay />
+    </Section>
+
+    <Section id="feedback" eyebrow="Feedback" title="Alerts, banners, progress and toasts" text="How the product answers back.">
+      <Feedback />
+    </Section>
+
+    <Section id="overlay" eyebrow="Overlay" title="Menus, modals, popovers and tooltips" text="What opens on top of a page, and closes again with Escape.">
+      <Overlay />
     </Section>
 
     <Section
-      id="states"
-      eyebrow="Feedback and states"
-      title="Toasts, dialogs, loaders and empty pages"
-      text="A toast to confirm, a dialog to ask, the loader while an evaluation runs, and the empty Orders page."
+      id="media"
+      eyebrow="Media"
+      title="Icons, by their Material names"
+      text="Google's Material Icons, 1,310 of them in the Figma library. Banyan also carries the seventeen UN Sustainable Development Goals and a set of country flags."
     >
-      <FeedbackSet />
+      <Media />
     </Section>
   </Band>
 );

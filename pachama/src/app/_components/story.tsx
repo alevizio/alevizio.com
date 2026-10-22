@@ -10,7 +10,7 @@ import { tidy } from "./tidy";
 /** The page's content width. */
 export const PAGE = "mx-auto w-full max-w-[86rem] px-6 sm:px-10";
 
-export type Tone = "night" | "ground" | "paper";
+export type Tone = "night" | "ground" | "paper" | "banyan";
 
 const ON_DARK =
   "[--tone-head:var(--color-fog)] [--tone-text:var(--color-haze)] [--tone-label:var(--color-leaf)] [--tone-line:rgb(255_255_255/0.16)] [--tone-fill:rgb(255_255_255/0.03)]";
@@ -21,6 +21,9 @@ const TONES: Record<Tone, string> = {
   // The leaf green is too light for small text on paper; this one reads 5:1.
   paper:
     "bg-paper [--tone-head:var(--color-ink)] [--tone-text:var(--color-body)] [--tone-label:#157a41] [--tone-line:var(--color-ash)] [--tone-fill:rgb(255_255_255/0.6)]",
+  // Banyan's own ground for the kit: white, with its green-black for heads.
+  banyan:
+    "bg-white [--tone-head:var(--color-bn-heavy)] [--tone-text:var(--color-bn-medium)] [--tone-label:#157a41] [--tone-line:var(--color-bn-grey-light)] [--tone-fill:var(--color-bn-eggshell)]",
 };
 
 const tidyNode = (node: ReactNode) => (typeof node === "string" ? tidy(node) : node);

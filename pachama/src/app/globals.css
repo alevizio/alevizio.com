@@ -24,6 +24,74 @@
   --font-display: var(--font-chromatic), "Arial Narrow", sans-serif;
   --font-sans: var(--font-matter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-matter-mono), ui-monospace, monospace;
+
+  /* Banyan, Pachama's design system (Figma: Banyan Foundations 3.0), for
+   * the kit chapter: its text, fills and glass levels, then the brand ramps
+   * by their Banyan names (lightest, light, default, dark, darkest). */
+  --color-bn-heavy: #0e2517; /* primary text and icons */
+  --color-bn-medium: #303b36; /* secondary text, strong borders */
+  --color-bn-light: #6d7e7b; /* disabled text only: 4.3:1 on white */
+  --color-bn-line: #bbbbbb; /* light borders */
+  --color-bn-eggshell: #fdfbf1; /* the fill behind components */
+  --color-bn-mono: #222222; /* the monochrome button */
+  --color-bn-glass-2: #e0e7e7;
+  --color-bn-glass-3: #6d7e7b;
+  --color-bn-glass-4: #495751;
+  --color-bn-glass-5: #0e2517;
+
+  --color-bn-green-lightest: #d9fbdd; /* lidar green */
+  --color-bn-green-light: #b3f7bb;
+  --color-bn-green: #81f18e;
+  --color-bn-green-dark: #68ce75;
+  --color-bn-yellow-lightest: #fdf7c5; /* canary */
+  --color-bn-yellow-light: #fbf08b;
+  --color-bn-yellow: #f9e63f;
+  --color-bn-yellow-dark: #cabb32;
+  --color-bn-yellow-darkest: #6d6419;
+  --color-bn-indigo-lightest: #d3e4ff; /* flax */
+  --color-bn-indigo-light: #a6caff;
+  --color-bn-indigo: #6ba6ff;
+  --color-bn-indigo-dark: #568ad9;
+  --color-bn-indigo-darkest: #2b528e;
+  --color-bn-mauve-lightest: #fadbff; /* hibiscus */
+  --color-bn-mauve-light: #f5b8ff;
+  --color-bn-mauve: #ee88ff;
+  --color-bn-mauve-dark: #cf6ddf;
+  --color-bn-mauve-darkest: #90369f;
+  --color-bn-blue-lightest: #daf6ff; /* glacier */
+  --color-bn-blue-light: #b5edff;
+  --color-bn-blue: #84e1ff;
+  --color-bn-blue-dark: #6ac2de;
+  --color-bn-blue-darkest: #35839d;
+  --color-bn-orange-lightest: #ffd5bd; /* blaze */
+  --color-bn-orange-light: #ffab7b;
+  --color-bn-orange: #ff7324;
+  --color-bn-orange-dark: #cc5c1c;
+  --color-bn-orange-darkest: #662e0e;
+  --color-bn-red-lightest: #ffbfbd; /* fire */
+  --color-bn-red-light: #ff8480;
+  --color-bn-red: #ff2a23;
+  --color-bn-red-dark: #b21212;
+  --color-bn-red-darkest: #660d0a;
+  --color-bn-grey-lightest: #eff2f1;
+  --color-bn-grey-light: #e0e7e7;
+  --color-bn-grey: #c0c9c9;
+  --color-bn-grey-dark: #6d7e7b;
+  --color-bn-grey-darkest: #303b36;
+}
+
+/* Banyan's gradients: green to glacier (a primary button's hover and press),
+ * and its faded form for a disabled one. */
+@utility bn-green-blue {
+  background-image: linear-gradient(97deg, #81f18e 19.7%, #84e1ff 112%);
+}
+
+@utility bn-green-blue-pressed {
+  background-image: linear-gradient(75deg, #81f18e, #84e1ff);
+}
+
+@utility bn-green-blue-faded {
+  background-image: linear-gradient(75deg, rgb(132 225 255 / 0.5), #81f18e);
 }
 
 /* Headlines set like the brand's: Chromatic Condensed, bold, in capitals, tight. */
