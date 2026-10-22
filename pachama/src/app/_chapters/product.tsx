@@ -1,7 +1,8 @@
 import { ChapterDivider, Section, Slot, SlotRow } from "../_components/story";
 
 /* II · The product: the marketplace and the tools around it. The screens
- * come from Figma (links to ask); public-facing ones only. */
+ * come from Figma (links to ask); public-facing ones only. The components
+ * they are built from have their own chapter, III · The kit. */
 export const Product = () => (
   <>
     <ChapterDivider id="product" numeral="II" title="The product">
@@ -31,10 +32,6 @@ export const Product = () => (
       text="To confirm what's public before it goes in."
     >
       <Slot label="The RFP: screening, submissions, review" source="Figma · link to ask" />
-    </Section>
-
-    <Section id="system" eyebrow="Design system" title="One kit for the product and the site">
-      <Slot label="Components, tokens, the map kit" source="Figma · link to ask" />
     </Section>
   </>
 );

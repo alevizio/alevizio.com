@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Brand } from "./_chapters/brand";
 import { Closing } from "./_chapters/closing";
 import { Hero } from "./_chapters/hero";
+import { Kit } from "./_chapters/kit";
 import { Maps } from "./_chapters/maps";
 import { Product } from "./_chapters/product";
 import { World } from "./_chapters/world";
@@ -46,12 +47,27 @@ const NAV: readonly NavGroup[] = [
       { id: "project", label: "Project pages" },
       { id: "buying", label: "Buying" },
       { id: "sourcing", label: "Sourcing" },
-      { id: "system", label: "Design system" },
+    ],
+  },
+  {
+    id: "kit",
+    numeral: "III",
+    title: "The kit",
+    items: [
+      { id: "kit-all", label: "Every component" },
+      { id: "foundations", label: "Foundations" },
+      { id: "controls", label: "Controls" },
+      { id: "data", label: "Data" },
+      { id: "cards", label: "Cards" },
+      { id: "map-kit", label: "Map controls" },
+      { id: "navigation", label: "Navigation" },
+      { id: "states", label: "Feedback and states" },
+      { id: "icons", label: "Icons" },
     ],
   },
   {
     id: "maps",
-    numeral: "III",
+    numeral: "IV",
     title: "The maps",
     items: [
       { id: "orbit", label: "From orbit" },
@@ -64,12 +80,12 @@ const NAV: readonly NavGroup[] = [
   },
   {
     id: "world",
-    numeral: "IV",
+    numeral: "V",
     title: "In the world",
     items: [
       { id: "booth", label: "Events" },
       { id: "print", label: "Print" },
-      { id: "cards", label: "Small things" },
+      { id: "small-things", label: "Small things" },
       { id: "field", label: "In the field" },
     ],
   },
@@ -83,6 +99,7 @@ export default function PachamaCaseStudy() {
         <Hero />
         <Brand />
         <Product />
+        <Kit />
         <Maps />
         <World />
         <Closing />

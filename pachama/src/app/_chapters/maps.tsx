@@ -1,11 +1,11 @@
 import { ChapterDivider, Section, Slot, SlotRow } from "../_components/story";
 
-/* III · The maps, on the forest ground: satellites, lidar and the dynamic
+/* IV · The maps, on the forest ground: satellites, lidar and the dynamic
  * baselines, made legible. The imagery is in Dropbox; the map UI is in
  * Figma (link to ask). */
 export const Maps = () => (
   <div className="mt-40 bg-forest pb-40 pt-1 sm:mt-56">
-    <ChapterDivider id="maps" numeral="III" title="The maps" dark>
+    <ChapterDivider id="maps" numeral="IV" title="The maps" dark>
       Satellites, lidar and machine learning, made legible: the maps that showed buyers what their money was&nbsp;doing.
     </ChapterDivider>
 

@@ -1,10 +1,10 @@
 import { ChapterDivider, Section, Slot, SlotRow } from "../_components/story";
 
-/* IV · In the world: the brand off the screen. Everything here is in
+/* V · In the world: the brand off the screen. Everything here is in
  * Dropbox /Pachama; photographers to credit. */
 export const World = () => (
   <>
-    <ChapterDivider id="world" numeral="IV" title="In the world">
+    <ChapterDivider id="world" numeral="V" title="In the world">
       The brand off the screen: a booth, posters, swag and a field trip to a restored&nbsp;forest.
     </ChapterDivider>
 
@@ -19,7 +19,7 @@ export const World = () => (
       </SlotRow>
     </Section>
 
-    <Section id="cards" eyebrow="Small things" title="Badges and business cards">
+    <Section id="small-things" eyebrow="Small things" title="Badges and business cards">
       <SlotRow>
         <Slot label="Badges" source="Dropbox /Pachama/Badge" aspect="aspect-[4/3]" />
         <Slot label="Business cards" source="Dropbox /Pachama/Business Cards Pachama" aspect="aspect-[4/3]" />
