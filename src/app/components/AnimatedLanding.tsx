@@ -7,6 +7,7 @@ import SaboteursCard from "./SaboteursCard";
 import CurbCard from "./CurbCard";
 import HoraCeroCard from "./HoraCeroCard";
 import { LogoMark } from "./LogoMark";
+import { GithubContributions } from "./GithubContributions";
 
 // Below the fold, so it loads after the hero instead of with it (~25 KB
 // gzipped: the timeline component plus tailwind-merge for its cn()).
@@ -160,6 +161,8 @@ export default function AnimatedLanding() {
               </svg>
             </motion.a>
           </div>
+          {/* The GitHub calendar, under the icons it belongs with. */}
+          <GithubContributions className="mt-6 w-full max-w-[480px]" />
         </div>
 
         </div>
