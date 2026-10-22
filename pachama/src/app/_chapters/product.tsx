@@ -2,9 +2,25 @@ import appExplore from "@/assets/product/app-explore.jpg";
 import appMyProjects from "@/assets/product/app-my-projects.jpg";
 import appOrders from "@/assets/product/app-orders.png";
 import appRetirements from "@/assets/product/app-retirements.png";
+import biodiversityExtinction from "@/assets/product/biodiversity-extinction.jpg";
+import biodiversityKba from "@/assets/product/biodiversity-kba.jpg";
+import biodiversityScore from "@/assets/product/biodiversity-score.jpg";
 import certificate from "@/assets/product/certificate.jpg";
+import developersHeatmap from "@/assets/product/developers-heatmap.jpg";
+import developersHome from "@/assets/product/developers-home.jpg";
+import developersIntake from "@/assets/product/developers-intake.jpg";
+import evaluationLoading from "@/assets/product/evaluation-loading.jpg";
 import evaluation from "@/assets/product/evaluation.png";
+import insightsGlobe from "@/assets/product/insights-globe.jpg";
 import manoaPage from "@/assets/product/manoa-page.jpg";
+import monitoringCarbon from "@/assets/product/monitoring-carbon.jpg";
+import monitoringDashboard from "@/assets/product/monitoring-dashboard.jpg";
+import monitoringFireProtanomaly from "@/assets/product/monitoring-fire-protanomaly.jpg";
+import monitoringFire from "@/assets/product/monitoring-fire.jpg";
+import portfolioDashboard from "@/assets/product/portfolio-dashboard.jpg";
+import portfolioGlobe from "@/assets/product/portfolio-globe.jpg";
+import portfolioProposal from "@/assets/product/portfolio-proposal.jpg";
+import portfolioSourcingPlan from "@/assets/product/portfolio-sourcing-plan.jpg";
 import sourceEvaluation from "@/assets/product/source-evaluation.jpg";
 import sourceEventSettings from "@/assets/product/source-event-settings.jpg";
 import sourceEvents from "@/assets/product/source-events.jpg";
@@ -41,6 +57,13 @@ export const Product = () => (
         src={appExplore}
         alt="Explore: filters for project type and location, cards for Manoa and Central Kalimantan Peatlands, and a globe of South America with fires in red"
         imageClassName={SCREEN}
+      />
+      <Shot
+        src={insightsGlobe}
+        alt="Insights, 2024: a dark globe with every project pinned, a list of projects beside it, and filters by project type and country"
+        caption="Insights, 2024: 182 projects on the globe, filtered by type and by country."
+        imageClassName={SCREEN}
+        className="mt-10"
       />
     </Section>
 
@@ -85,6 +108,91 @@ export const Product = () => (
           imageClassName={SCREEN}
         />
         <Shot src={appMyProjects} alt="My projects: cards for Manoa and Central Kalimantan Peatlands with their evaluations and monitoring, beside a feed of project updates" sizes={HALF} caption="A buyer's projects, and the news from them." imageClassName={SCREEN} />
+      </Row>
+    </Section>
+
+    <Section
+      id="portfolio"
+      eyebrow="Portfolios"
+      title="A portfolio, planned"
+      text="For buyers with a target: what they hold, mapped and broken down by type, cost, registry and verification; a sourcing plan for what's missing; and the proposals that answer it."
+    >
+      <TallShot
+        src={portfolioDashboard}
+        frameClassName={SCREEN}
+        label="A buyer's portfolio dashboard, scrollable"
+        alt="A portfolio dashboard: 1,327,912 tCO2e bought at $23.19 on average, charts by year, project types, registries, methodologies and verifications, a globe of the projects and the table of credits purchased"
+        caption="The portfolio, top to bottom. Scroll inside it."
+      />
+      <Row className="mt-6 items-start">
+        <Shot src={portfolioGlobe} alt="The portfolio on a globe: project pins across the Americas beside its breakdowns by type, cost, registry, methodology, verification and location" sizes={HALF} caption="The same portfolio, on the globe." imageClassName={SCREEN} />
+        <Shot src={portfolioSourcingPlan} alt="Create carbon sourcing plan: a name, existing or new projects, and chips for project types, methodologies, registries, regions and third-party verifications" sizes={HALF} caption="A sourcing plan: what to look for, and where." imageClassName={SCREEN} />
+      </Row>
+      <Shot src={portfolioProposal} alt="A proposal on Acme corp's call for proposals: the Choco-Darién Bioregion project and its opportunities by quantity, vintage and price" caption="A supplier's proposal, answering the call." imageClassName={SCREEN} className="mt-6" />
+    </Section>
+
+    <Section
+      id="monitoring"
+      eyebrow="Monitoring"
+      title="Watching over a project"
+      text="After the purchase: carbon monitoring against the baseline, forest loss year by year, fire risk by the day, and a dashboard for the rest. The fire reds were checked for colour-blind eyes."
+    >
+      <Row className="items-start">
+        <Shot src={monitoringCarbon} alt="Manoa's carbon monitoring: an update on emissions, the total climate benefit of 2,400,000 tCO2e by year, and observed forest loss on the map with a year player" sizes={HALF} caption="Manoa's carbon monitoring." imageClassName={SCREEN} />
+        <div className="grid gap-6">
+          <Shot src={monitoringFire} alt="Llanos de Apan's disturbance monitoring: fire risk today, 0 hectares affected, recent fires in red around the project boundary" sizes={HALF} caption="Fire risk: today, the last 24 hours, the last week." imageClassName={SCREEN} />
+          <Shot src={monitoringFireProtanomaly} alt="The same fire-risk map as someone with protanomaly sees it: the fires turn orange but still stand out" sizes={HALF} caption="The same map with protanomaly: the reds still read." imageClassName={SCREEN} />
+        </div>
+      </Row>
+      <Row className="mt-6 items-start">
+        <TallShot
+          src={monitoringDashboard}
+          frameClassName={SCREEN}
+          label="Llanos de Apan's project dashboard, scrollable"
+          sizes={HALF}
+          alt="Llanos de Apan's project dashboard: trees planted, survival, costs, milestones, weather, photos from the field and a risk table"
+          caption="A project's dashboard, from planting to risk."
+        />
+        <Shot src={evaluationLoading} alt="An evaluation page loading: grey skeleton blocks where the header, the tabs and the cards will be" sizes={HALF} caption="Before the data comes in, the page holds its shape." imageClassName={SCREEN} />
+      </Row>
+    </Section>
+
+    <Section
+      id="biodiversity"
+      eyebrow="Beyond carbon"
+      title="Biodiversity, scored"
+      text="Evaluation 2.2 added biodiversity: a project's conservation impact against the rest of the world, the key biodiversity areas around it, and the species at risk. Here, Borneo Peatlands and the Bornean orangutan."
+    >
+      <Row className="items-start">
+        <Shot src={biodiversityScore} alt="Borneo Peatlands' biodiversity conservation impact: the critically endangered Bornean orangutan, extinction risks and threats, and an impact score in the 95th percentile worldwide" sizes={HALF} caption="Its impact score: the 95th percentile, worldwide." imageClassName={SCREEN} />
+        <Shot src={biodiversityKba} alt="The project on a satellite map with layers for the project area, key biodiversity areas and protected areas, and a note on what makes a key biodiversity area" sizes={HALF} caption="Key biodiversity and protected areas around it." imageClassName={SCREEN} />
+      </Row>
+      <TallShot
+        src={biodiversityExtinction}
+        frameClassName={SCREEN}
+        label="Borneo Peatlands' species and extinction risk, scrollable"
+        alt="Borneo Peatlands' species: spotlights on the Bornean orangutan and the clouded leopard, the share of species by extinction risk, and the region's threats"
+        caption="The species behind the score. Scroll inside it."
+      />
+    </Section>
+
+    <Section
+      id="developers"
+      eyebrow="Developers"
+      title="Bringing projects in"
+      text="The other side of the market: landowners and developers. A map of forest carbon potential to start from, a home for their projects and boundaries, and the forms that take a project from its first details to its land's suitability."
+    >
+      <Shot src={developersHeatmap} alt="'Start your forest carbon project today': a map of forest carbon potential across South America, with an opportunity in Maranhão, Brazil, that could remove 246,416 tonnes of CO2" caption="Where a forest carbon project could start, and what it could earn." imageClassName={SCREEN} />
+      <Row className="mt-6 items-start">
+        <Shot src={developersHome} alt="A developer's home: create a new project or upload a boundary, the projects in progress, and boundaries still to finish" sizes={HALF} caption="A developer's home: projects and boundaries in progress." imageClassName={SCREEN} />
+        <TallShot
+          src={developersIntake}
+          frameClassName={SCREEN}
+          label="A project's intake, scrollable"
+          sizes={HALF}
+          alt="A project's intake: what's needed, the project details form, and land suitability with the project's parcels on the map"
+          caption="Intake, from the requirements to the land."
+        />
       </Row>
     </Section>
 

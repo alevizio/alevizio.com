@@ -43,6 +43,7 @@ export const TallShot = ({
   alt,
   label,
   caption,
+  sizes = "(min-width: 1376px) 1296px, 100vw",
   frameClassName,
 }: {
   src: StaticImageData;
@@ -50,6 +51,7 @@ export const TallShot = ({
   /** Names the scrolling frame for screen readers. */
   label: string;
   caption?: ReactNode;
+  sizes?: string;
   frameClassName?: string;
 }) => (
   <figure>
@@ -59,7 +61,7 @@ export const TallShot = ({
       tabIndex={0}
       className={cn("h-[80vh] max-h-[56rem] overflow-y-auto rounded-[10px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current", frameClassName)}
     >
-      <Image src={src} alt={alt} sizes="(min-width: 1376px) 1296px, 100vw" placeholder="blur" className="h-auto w-full" />
+      <Image src={src} alt={alt} sizes={sizes} placeholder="blur" className="h-auto w-full" />
     </div>
     {caption ? <figcaption className="type-caption mt-3 text-(--tone-text)">{caption}</figcaption> : null}
   </figure>
