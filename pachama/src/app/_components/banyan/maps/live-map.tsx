@@ -22,7 +22,8 @@ const PIN: Record<string, { at: string; side: "left" | "right" }> = {
   a3: { at: "left-[87%] top-[22%]", side: "left" },
 };
 
-export const LiveMap = ({ className }: { className?: string }) => {
+/** `name` labels the map region; give each instance on a page its own. */
+export const LiveMap = ({ name = "Project map, illustrative", className }: { name?: string; className?: string }) => {
   const [layers, setLayers] = useState<Layers>(ALL_ON);
   const [pick, setPick] = useState<Pick>("all");
   const [playing, setPlaying] = useState(false);
@@ -46,7 +47,7 @@ export const LiveMap = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn("relative w-full", className)}>
-      <div role="region" aria-label={`Project map, illustrative: fires and forest loss to ${latest}`} className="relative overflow-hidden rounded-[16px] bg-bn-glass-5">
+      <div role="region" aria-label={`${name}: fires and forest loss to ${latest}`} className="relative overflow-hidden rounded-[16px] bg-bn-glass-5">
         <div className={cn("relative aspect-[2/1] transition-transform duration-300 motion-reduce:transition-none", ZOOMS[zoom])}>
           <Image src={basemap} alt="" sizes="(min-width: 1376px) 1296px, 100vw" className="h-full w-full object-cover" />
           <svg viewBox="0 0 1000 500" aria-hidden className="absolute inset-0 h-full w-full">

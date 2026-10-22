@@ -83,7 +83,7 @@ export const Maps = () => (
         alt="Manoa's tech-verified evaluation: the project boundary in white on satellite imagery, deforestation around it in orange, and a player set to 1996, Project starts"
         caption="Manoa's tech-verified evaluation, in its project page."
       />
-      <LiveMap className="mt-10" />
+      <LiveMap name="The map to try, illustrative" className="mt-10" />
     </Section>
   </Band>
 );
