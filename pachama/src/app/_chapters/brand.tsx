@@ -1,73 +1,90 @@
-import { ChapterDivider, Section, Slot, SlotRow } from "../_components/story";
+import dotGrid from "@/assets/brand/dot-grid.jpg";
+import hexGrid from "@/assets/brand/hex-grid.jpg";
+import seeCarbon from "@/assets/brand/see-carbon-hero.jpg";
+import { Palette } from "../_components/palette";
+import { cn } from "../_components/cn";
+import { HALF, Shot } from "../_components/shot";
+import { Band, ChapterDivider, Row, Section, Slot } from "../_components/story";
+
+/** The brand's own SVG on a tile of the ground it was drawn for. */
+const LogoTile = ({ src, alt, tile, logo }: { src: string; alt: string; tile: string; logo: string }) => (
+  <div className={cn("flex aspect-[4/3] items-center justify-center rounded-[10px]", tile)}>
+    {/* eslint-disable-next-line @next/next/no-img-element -- vector logos, sharp at any size */}
+    <img src={src} alt={alt} className={logo} />
+  </div>
+);
 
 /* I · The brand: FNDR's strategy, How&How's identity, and carrying it into
- * everything Pachama made. The identity is How&How's; the chapter credits it
- * as theirs and shows the in-house part as mine (to confirm with Alejandro). */
+ * everything Pachama made. The images are How&How's hand-over, used with
+ * their permission; the in-house part is to confirm with Alejandro. */
 export const Brand = () => (
-  <>
+  <Band tone="ground">
     <ChapterDivider id="brand" numeral="I" title="The brand">
-      From FNDR&apos;s strategy to How&amp;How&apos;s identity: seeing carbon in action, carried into everything Pachama&nbsp;made.
+      An identity by How&amp;How, from FNDR&apos;s strategy: see carbon in action, carried into everything Pachama&nbsp;made.
     </ChapterDivider>
 
     <Section
       id="before"
       eyebrow="Where it started"
       title="A climate startup that looked like one"
-      text="Recoleta, Proxima Nova and a lot of green. The audit that made the case for starting again."
+      text="Recoleta, Proxima Nova and a lot of green: the identity the rebrand replaced."
     >
-      <Slot
-        label="The old identity next to the brand audit"
-        source="Dropbox /Pachama/Brand/Pachama Brand Audit.pdf · check what's internal"
-      />
+      <Slot label="The old identity, side by side with the new" source="Dropbox /Pachama/Logo/OLD · to pick" />
     </Section>
 
     <Section
       id="idea"
       eyebrow="The idea"
-      title="Seeing carbon in action"
-      text="FNDR's strategy: nature and data, heart and head, in one company. How&How turned it into a graphic language for the site and the product."
+      title="See carbon in action"
+      text="FNDR's strategy put nature and data in the same sentence. How&How turned it into a headline and a way of drawing: the forest, and the carbon in it, made visible."
     >
-      <Slot
-        label="The idea in one spread: the line, the references, the first marks"
-        source="Dropbox /Branding/Pachama x FNDR x How&How _ Design Briefing.pdf · internal, show only what launched"
-      />
+      <Shot src={seeCarbon} alt="The new site's hero: 'See carbon in action.' over an aerial view of a river through wetland forest" caption="How&How's hero for the new site." />
     </Section>
 
     <Section
       id="mark"
       eyebrow="The mark"
       title="Circles and hexagons, a flower and a leaf"
-      text="Formal geometry overlapping like a Venn diagram: nature, technology and community."
+      text="Formal geometry overlapping like a Venn diagram: nature, technology and community, in one gradient from leaf to sky."
     >
-      <Slot label="The mark's construction, then the lockups" source="Figma · Pachama_Brand Guidelines_HO (Dropbox /Pachama/Hand Over)" />
+      <Row cols={3}>
+        <LogoTile src="/brand/symbol-dark.svg" alt="The Pachama symbol: a flower of circles inside a hexagon, from green to sky" tile="bg-night" logo="w-1/4" />
+        <LogoTile src="/brand/logo-dark.svg" alt="The Pachama logo on the dark green ground" tile="bg-deep" logo="w-3/5" />
+        <LogoTile src="/brand/logo-light.svg" alt="The Pachama logo on white" tile="bg-sheet" logo="w-3/5" />
+      </Row>
     </Section>
 
     <Section
       id="grids"
       eyebrow="The grids"
-      title="A dot grid and a hex grid"
-      text="The patterns that carry the mark into maps, backgrounds and motion."
+      title="A mesh laid over the land"
+      text="A hex grid and a dot grid that drape over the terrain, with the carbon counted on top: the idea, drawn."
     >
-      <SlotRow>
-        <Slot label="The dot grid" source="Dropbox /Pachama/PACHAMA_DOT GRID MASTER.ai" aspect="aspect-square" />
-        <Slot label="The hex grid" source="Dropbox /Pachama/PACHAMA_HEX GRID MASTER.ai" aspect="aspect-square" />
-      </SlotRow>
+      <Row>
+        <Shot src={hexGrid} alt="'See carbon in action' beside an aerial forest with a hexagonal mesh draped over it and a counter of tonnes" sizes={HALF} caption="The hex grid." />
+        <Shot src={dotGrid} alt="The same hero with a dot grid draped over the forest in the spectrum's colours" sizes={HALF} caption="The dot grid." />
+      </Row>
     </Section>
 
-    <Section id="colour-type" eyebrow="Colour and type" title="Matter, Matter Mono and a forest of greens">
-      <SlotRow>
-        <Slot label="The palette" source="Figma · Pachama_Brand Guidelines_HO" aspect="aspect-[4/3]" />
-        <Slot label="Matter and Matter Mono, set" source="Figma · Pachama_Brand Guidelines_HO" aspect="aspect-[4/3]" />
-      </SlotRow>
+    <Section
+      id="colour-type"
+      eyebrow="Colour and type"
+      title="A dark green ground, a gradient and a spectrum"
+      text="Set in Matter, Matter SQ and Matter Mono, from Displaay."
+    >
+      <Row>
+        <Palette />
+        <Slot label="Matter, Matter SQ and Matter Mono, set" source="Figma · Pachama_Brand Guidelines_HO" aspect="aspect-[4/5]" />
+      </Row>
     </Section>
 
     <Section
       id="rollout"
       eyebrow="My part"
       title="Taking it in-house"
-      text="To confirm: the brief, the rollout into the product, the Figma brand library, and everything printed."
+      text="To confirm: the brief, the rollout into the product, the brand library in Figma, and everything printed."
     >
       <Slot label="The brand library in Figma: components, patterns, templates" source="Figma · Pachama_Brand Library_HO" />
     </Section>
-  </>
+  </Band>
 );

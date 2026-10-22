@@ -72,6 +72,7 @@ const NAV: readonly NavGroup[] = [
     items: [
       { id: "orbit", label: "From orbit" },
       { id: "canopy", label: "Canopy height" },
+      { id: "point-clouds", label: "Point clouds" },
       { id: "baselines", label: "Dynamic baselines" },
       { id: "change", label: "Change over time" },
       { id: "lidar", label: "Lidar" },
@@ -84,7 +85,8 @@ const NAV: readonly NavGroup[] = [
     title: "In the world",
     items: [
       { id: "booth", label: "Events" },
-      { id: "print", label: "Print" },
+      { id: "print", label: "Posters" },
+      { id: "trees", label: "Pachama Originals" },
       { id: "small-things", label: "Small things" },
       { id: "field", label: "In the field" },
     ],

@@ -1,39 +1,47 @@
 @import "tailwindcss";
 
-/* Placeholder tokens while the structure settles: a paper page, a forest
- * ground for the map chapter and one green for the voice. They get swapped
- * for the brand guidelines' values (Pachama_Brand Guidelines_HO.fig). */
+/* Pachama's colours, sampled from How&How's hand-over (frames and the
+ * product): the dark green ground, the mark's green-to-sky gradient, the
+ * spectrum that runs along the top of every hero, and the product's light
+ * greys for the screens. */
 @theme {
-  --color-paper: #f3f2ee;
-  --color-panel: #ffffff;
-  --color-rule: #dcdbd3;
-  --color-ash: #b9b8b0;
-  --color-muted: #85847a;
-  --color-body: #4a4943;
-  --color-ink: #12140f;
-  --color-leaf: #1d6b45; /* the accent */
-  --color-forest: #0d1f17; /* the ground under the maps */
-  --color-mist: #e9efe9; /* text on the forest ground */
+  --color-night: #000000; /* the hero and the maps, as dark as the lidar renders */
+  --color-ground: #303b36; /* the brand's dark green */
+  --color-deep: #222b27; /* a step darker, for bands inside the ground */
+  --color-fog: #eef2ef; /* text on the dark grounds */
+  --color-haze: #a7b3ad; /* quieter text on the dark grounds */
+  --color-leaf: #53f168; /* the mark's green */
+  --color-sky: #52d6fb; /* the mark's cyan */
+  --color-paper: #f5f6f8; /* the product's background */
+  --color-sheet: #ffffff;
+  --color-panel: #eef2ef; /* the nav card's hover */
+  --color-ink: #141a17; /* text on paper */
+  --color-body: #4b5550;
+  --color-rule: #dfe3e0;
+  --color-ash: #b9c1bc;
+  --color-muted: #7d8882;
 
-  /* Stand-ins for Matter and Matter Mono, which are licensed to Pachama. */
+  --font-display: var(--font-saira), "Arial Narrow", sans-serif;
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
+/* Headlines set like the brand's: condensed, bold, in capitals, tight. */
 @utility type-display {
-  font-family: var(--font-sans);
-  font-size: clamp(2.75rem, 6.4vw, 6rem);
-  line-height: 1;
-  letter-spacing: -0.035em;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: clamp(3.25rem, 9vw, 8.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 @utility type-section {
-  font-family: var(--font-sans);
-  font-size: clamp(1.875rem, 3.6vw + 0.5rem, 3.25rem);
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.6vw, 4rem);
+  line-height: 0.95;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 @utility type-body {
@@ -57,11 +65,21 @@
   text-transform: uppercase;
 }
 
+/* The spectrum line along the top of the brand's heroes. */
+@utility spectrum {
+  background-image: linear-gradient(90deg, #84e1ff, #81ef9d 22%, #f5e544 40%, #79a3ff 60%, #f185dc 80%, #ff7324);
+}
+
+/* The mark's gradient, for type and lines. */
+@utility mark-gradient {
+  background-image: linear-gradient(135deg, var(--color-leaf), var(--color-sky));
+}
+
 @layer base {
   html {
-    color-scheme: light;
+    color-scheme: dark;
     scroll-behavior: smooth;
-    background-color: var(--color-paper);
+    background-color: var(--color-night);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -71,12 +89,11 @@
   }
 
   body {
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-ground);
+    color: var(--color-fog);
     font-family: var(--font-sans);
   }
 
-  /* No line ends on a lone word; tidy() glues the last pair as well. */
   p,
   h1,
   h2,

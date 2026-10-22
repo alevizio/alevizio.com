@@ -87,8 +87,8 @@ export const StoryNav = ({ groups }: { groups: readonly NavGroup[] }) => {
                 jump(group.id);
               }}
               className={cn(
-                "flex w-full items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf",
-                gi === activeGroup ? "text-leaf" : "text-body hover:text-ink",
+                "flex w-full items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157a41]",
+                gi === activeGroup ? "text-[#157a41]" : "text-body hover:text-ink",
               )}
             >
               <span className="w-6 text-left">{group.numeral}</span>
@@ -116,7 +116,7 @@ export const StoryNav = ({ groups }: { groups: readonly NavGroup[] }) => {
                         close();
                       }}
                       className={cn(
-                        "block rounded-md px-2 py-1 font-sans text-[13px] leading-6 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf",
+                        "block rounded-md px-2 py-1 font-sans text-[13px] leading-6 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157a41]",
                         item.id === activeId ? "font-medium text-ink" : "text-body hover:bg-panel hover:text-ink",
                       )}
                     >
@@ -137,7 +137,7 @@ export const StoryNav = ({ groups }: { groups: readonly NavGroup[] }) => {
         inert={open || undefined}
         onClick={() => setOpen(true)}
         className={cn(
-          "flex flex-col items-end gap-2 rounded-full px-2 py-3 transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf",
+          "flex flex-col items-end gap-2 rounded-full px-2 py-3 transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157a41]",
           open ? "pointer-events-none opacity-0" : "opacity-100",
         )}
       >
