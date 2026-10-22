@@ -84,33 +84,6 @@ export const ChapterDivider = ({
   </header>
 );
 
-/** Where a piece of work will go, until it's found: what it is, where it
- *  comes from, and its shape on the page. */
-export const Slot = ({
-  label,
-  source,
-  aspect = "aspect-video",
-  className,
-}: {
-  label: string;
-  /** Where the asset lives now (Dropbox path, Figma file, to ask). */
-  source: string;
-  /** Its shape, as a Tailwind aspect class: "aspect-video", "aspect-[4/5]"… */
-  aspect?: string;
-  className?: string;
-}) => (
-  <figure
-    className={cn(
-      aspect,
-      "flex flex-col items-start justify-end gap-1.5 rounded-[10px] border border-dashed border-(--tone-line) bg-(--tone-fill) p-5 text-(--tone-head) sm:p-6",
-      className,
-    )}
-  >
-    <figcaption className="type-caption max-w-[40ch] font-medium">{tidy(label)}</figcaption>
-    <p className="type-label normal-case tracking-normal text-(--tone-text)">{source}</p>
-  </figure>
-);
-
 /** Two to four pieces side by side from sm up. */
 export const Row = ({ children, cols = 2, className }: { children: ReactNode; cols?: 2 | 3 | 4; className?: string }) => (
   <div
