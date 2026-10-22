@@ -1,10 +1,23 @@
 import dotGrid from "@/assets/brand/dot-grid.jpg";
+import guidelines1 from "@/assets/brand/guidelines-1.jpg";
+import guidelines13 from "@/assets/brand/guidelines-13.jpg";
+import guidelines26 from "@/assets/brand/guidelines-26.jpg";
+import guidelines46 from "@/assets/brand/guidelines-46.jpg";
+import guidelines6 from "@/assets/brand/guidelines-6.jpg";
+import guidelines68 from "@/assets/brand/guidelines-68.jpg";
+import guidelines83 from "@/assets/brand/guidelines-83.jpg";
 import hexGrid from "@/assets/brand/hex-grid.jpg";
+import logoSheet from "@/assets/brand/logo-sheet.jpg";
+import originalsSheet from "@/assets/brand/originals-sheet.jpg";
+import plusSheet from "@/assets/brand/plus-sheet.jpg";
 import ecologyEconomy from "@/assets/brand/reveal-ecology-economy.jpg";
 import fromTo from "@/assets/brand/reveal-from-to.jpg";
 import moodboard from "@/assets/brand/reveal-moodboard.jpg";
 import natureRelations from "@/assets/brand/reveal-nature-relations.jpg";
 import seeCarbon from "@/assets/brand/see-carbon-hero.jpg";
+import symbolColourways from "@/assets/brand/symbol-colourways.jpg";
+import symbolSheet from "@/assets/brand/symbol-sheet.jpg";
+import websiteHome from "@/assets/brand/website-home.jpg";
 import book from "@/assets/howhow/book-sv.jpg";
 import economy from "@/assets/howhow/economy-sv.jpg";
 import exhibition from "@/assets/howhow/exhibition-l.jpg";
@@ -19,8 +32,8 @@ import web from "@/assets/howhow/web-l.jpg";
 import zoom from "@/assets/howhow/zoom-l.jpg";
 import { cn } from "../_components/cn";
 import { Palette } from "../_components/palette";
-import { Clip, HALF, Shot, THIRD } from "../_components/shot";
-import { Band, ChapterDivider, Row, Section, Slot } from "../_components/story";
+import { Clip, HALF, Shot, TallShot, THIRD } from "../_components/shot";
+import { Band, ChapterDivider, Row, Section } from "../_components/story";
 import { TypeSpecimen } from "../_components/type-specimen";
 
 /** The brand's own SVG on a tile of the ground it was drawn for. */
@@ -98,6 +111,26 @@ export const Brand = () => (
         <LogoTile src="/brand/logo-dark.svg" alt="The Pachama logo on the dark green ground" tile="bg-deep" logo="w-3/5" />
         <LogoTile src="/brand/logo-light.svg" alt="The Pachama logo on white" tile="bg-sheet" logo="w-3/5" />
       </Row>
+      <Shot
+        src={symbolColourways}
+        alt="The symbol six ways: light, green and gradient on the dark green; dark and gradient on light; dark on lidar green"
+        caption="The symbol on every ground it's allowed on."
+        className="mt-6"
+      />
+      <Shot
+        src={symbolSheet}
+        alt="The symbol's sheet: 'Our beloved mandala that represents earth's mother, the pachamama', its two-colour and one-colour versions on light, dark and green"
+        caption="The symbol: 'our beloved mandala that represents earth's mother, the pachamama.'"
+        className="mt-6"
+      />
+      <Shot
+        src={logoSheet}
+        alt="The logo's sheet: the isologotype's construction, its two-colour gradient from #52F164 to #52D5FF at 45 degrees, and its one-colour versions on light, dark green and lidar green"
+        caption="The logo's versions and colours."
+        className="mt-6"
+      />
+      <Shot src={originalsSheet} alt="The Pachama Originals sub-brand: the symbol beside 'Pachama Originals', in one colour on light, dark and green" caption="Pachama Originals, a sub-brand." className="mt-6" />
+      <Shot src={plusSheet} alt="The Pachama Plus sub-brand: the symbol beside 'Pachama Plus', in one colour on light, dark and green" caption="Pachama Plus, another." className="mt-6" />
     </Section>
 
     <Section
@@ -185,7 +218,13 @@ export const Brand = () => (
       title="Restore nature. Remove carbon."
       text="The new pachama.com, designed with How&How: the projects, the science and the numbers, on the same dark ground as everything else."
     >
-      <Shot src={web} alt="The new site on a laptop among leaves: 'Restore nature. Remove carbon.'" />
+      <TallShot
+        src={websiteHome}
+        label="The pachama.com homepage, scrollable"
+        alt="The pachama.com homepage design: 'Restore nature. Remove carbon.' over an aerial river, 'See carbon in action' with a lidar tree and an emissions chart, the companies choosing Pachama, the technology, a BCG quote, resources and the footer"
+        caption="The homepage, top to bottom, from the site's Figma. Scroll inside it."
+      />
+      <Shot src={web} alt="The new site on a laptop among leaves: 'Restore nature. Remove carbon.'" className="mt-10" />
       <Row className="mt-6">
         <Clip name="howhow/ui-l" label="The site's map: a satellite view with project cards" aspect="aspect-video" />
         <Shot src={zoom} alt="'Restore nature.' on a frosted card over a forest" sizes={HALF} />
@@ -205,9 +244,17 @@ export const Brand = () => (
       id="rollout"
       eyebrow="My part"
       title="Taking it in-house"
-      text="Working with How&How and FNDR from Pachama's side: the brief, then the identity carried into the product, the site, the booth and everything printed."
+      text="Working with How&How and FNDR from Pachama's side: the brief, then the identity carried into the product, the site, the booth and everything printed, all of it set down in the brand guidelines."
     >
-      <Slot label="The brand library in Figma: components, patterns, templates" source="Figma · Pachama_Brand Library_HO" />
+      <Row cols={3} className="items-start">
+        <Shot src={guidelines1} alt="The brand guidelines' cover: 'Brand guidelines, version 1.0, December 2023'" sizes={THIRD} caption="Version 1.0, December 2023." />
+        <Shot src={guidelines6} alt="A guidelines page on logo placement: left or centre, aligned to the canvas margins, never on the right" sizes={THIRD} caption="Logo placement." />
+        <Shot src={guidelines13} alt="A guidelines page on the primary palette: lidar green, eggshell, white and pine" sizes={THIRD} caption="The primary palette." />
+        <Shot src={guidelines26} alt="A guidelines page on numbers and eyebrow headings: baseline emissions, project emissions and emission reductions set large in Matter" sizes={THIRD} caption="Numbers and eyebrows." />
+        <Shot src={guidelines46} alt="A guidelines page on technology imagery: ambient trees, landscape scanning and aerial reveal" sizes={THIRD} caption="Technology imagery." />
+        <Shot src={guidelines68} alt="A guidelines page on charts: stacked bars, area lines and rings in the brand's greens and greys" sizes={THIRD} caption="Charting." />
+      </Row>
+      <Shot src={guidelines83} alt="A guidelines page on art direction: five categories of photograph, aerial, cinematic, landscape, perspective and detail" caption="Art direction, in five kinds of photograph." className="mt-6" />
     </Section>
   </Band>
 );
