@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, type ReactNode } from "react";
 import AsciiRain from "./AsciiRain";
 import CompanyLogos from "./CompanyLogos";
 import GlobestudioCard from "./GlobestudioCard";
@@ -11,6 +11,18 @@ import { LogoMark } from "./LogoMark";
 // Below the fold, so it loads after the hero instead of with it (~25 KB
 // gzipped: the timeline component plus tailwind-merge for its cn()).
 const CareerTimeline = lazy(() => import("./CareerTimeline"));
+
+// A link inside the hero copy, underlined like the timeline's links.
+const InlineLink = ({ href, children }: { href: string; children: ReactNode }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="underline decoration-zinc-400 underline-offset-2 transition-colors duration-300 hover:decoration-[#1E1E1E]"
+  >
+    {children}
+  </a>
+);
 
 export default function AnimatedLanding() {
   const [copied, setCopied] = useState(false);
@@ -85,13 +97,20 @@ export default function AnimatedLanding() {
             About Alejandro Vizio and frequently asked questions
           </a>
           <motion.p
-            className="text-[clamp(14px,1.25vw,18px)] max-w-[625px]"
+            className="text-[clamp(14px,1.25vw,18px)] leading-[1.5] max-w-[625px]"
             style={{ fontVariationSettings: "'wdth' 100" }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            I design products, identities, and interactions that bring clarity to complex ideas — from early concepts to polished systems used by real people.
+            I bring clarity to complex ideas, from early concepts to polished systems used by real people. Previously at{" "}
+            <InlineLink href="https://www.linkedin.com/company/pachama/">Pachama</InlineLink>, acquired by{" "}
+            <InlineLink href="https://relae.co/">Relae</InlineLink>; now building{" "}
+            <InlineLink href="https://djooni.com">Djooni</InlineLink>. I started and led{" "}
+            <InlineLink href="https://aerolab.co/">Aerolab</InlineLink>, and on the side I build{" "}
+            <InlineLink href="https://saboteurs.app/">videogames</InlineLink> and I’m a{" "}
+            <InlineLink href="https://soundcloud.com/alevizio">vinyl{"\u00a0"}DJ</InlineLink>. Originally from Argentina but living in
+            San{"\u00a0"}Francisco.
           </motion.p>
           <motion.button
             onClick={handleCopyEmail}
