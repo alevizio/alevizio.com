@@ -1,5 +1,9 @@
 import dotGrid from "@/assets/brand/dot-grid.jpg";
 import hexGrid from "@/assets/brand/hex-grid.jpg";
+import ecologyEconomy from "@/assets/brand/reveal-ecology-economy.jpg";
+import fromTo from "@/assets/brand/reveal-from-to.jpg";
+import moodboard from "@/assets/brand/reveal-moodboard.jpg";
+import natureRelations from "@/assets/brand/reveal-nature-relations.jpg";
 import seeCarbon from "@/assets/brand/see-carbon-hero.jpg";
 import book from "@/assets/howhow/book-sv.jpg";
 import economy from "@/assets/howhow/economy-sv.jpg";
@@ -20,11 +24,14 @@ import { Band, ChapterDivider, Row, Section, Slot } from "../_components/story";
 import { TypeSpecimen } from "../_components/type-specimen";
 
 /** The brand's own SVG on a tile of the ground it was drawn for. */
-const LogoTile = ({ src, alt, tile, logo }: { src: string; alt: string; tile: string; logo: string }) => (
-  <div className={cn("flex aspect-[4/3] items-center justify-center rounded-[10px]", tile)}>
-    {/* eslint-disable-next-line @next/next/no-img-element -- vector logos, sharp at any size */}
-    <img src={src} alt={alt} className={logo} />
-  </div>
+const LogoTile = ({ src, alt, tile, logo, caption }: { src: string; alt: string; tile: string; logo: string; caption?: string }) => (
+  <figure>
+    <div className={cn("flex aspect-[4/3] items-center justify-center rounded-[10px]", tile)}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- vector logos, sharp at any size */}
+      <img src={src} alt={alt} className={logo} />
+    </div>
+    {caption ? <figcaption className="type-caption mt-3 text-(--tone-text)">{caption}</figcaption> : null}
+  </figure>
 );
 
 // How&How's portrait split format, 1494 × 1700.
@@ -46,9 +53,25 @@ export const Brand = () => (
       id="before"
       eyebrow="Where it started"
       title="A climate startup that looked like one"
-      text="Recoleta, Proxima Nova and a lot of green: the identity the rebrand replaced."
+      text="A thin green flower in a hexagon, Recoleta and Proxima Nova: the identity the rebrand grew out of."
     >
-      <Slot label="The old identity, side by side with the new" source="Dropbox /Pachama/Logo/OLD · to pick" />
+      <Row>
+        <LogoTile src="/brand/old-logo-color.svg" alt="The original Pachama logo: a thin green flower in a hexagon and a geometric wordmark" tile="bg-sheet" logo="w-3/5" caption="Before: the original mark." />
+        <LogoTile src="/brand/logo-light.svg" alt="The redrawn Pachama logo with its leaf-to-sky gradient" tile="bg-sheet" logo="w-3/5" caption="After: How&How's redraw, in one gradient." />
+      </Row>
+    </Section>
+
+    <Section
+      id="strategy"
+      eyebrow="The strategy"
+      title="From carbon offsetting to Nature Relations"
+      text="FNDR's narrative, from the deck that revealed the rebrand inside Pachama: business and nature in one relationship, ecology and economy from the same root."
+    >
+      <Shot src={natureRelations} alt="'We call this Nature Relations.' beside a tree drawn in coloured lidar points" caption="The central idea: a new relationship between businesses and nature." />
+      <Row className="mt-6">
+        <Shot src={ecologyEconomy} alt="'Ecology + Economy': a forest and a city plaza joined by a gradient bar, 'studying our home' and 'managing our home'" sizes={HALF} caption="Both words come from oikos, home." />
+        <Shot src={fromTo} alt="A from-to list: from singular transactions and carbon offsetting to original action and Nature Relations" sizes={HALF} caption="The shift, from offsetting to Nature Relations." />
+      </Row>
     </Section>
 
     <Section
@@ -107,6 +130,12 @@ export const Brand = () => (
         <Palette />
         <TypeSpecimen />
       </Row>
+      <Shot
+        src={moodboard}
+        alt="A moodboard of iridescent things: a beetle, a hummingbird, a shell, an insect's eye, a begonia and a rainbow, beside lidar scans of forest"
+        caption="The moodboard: iridescent animals and plants beside lidar scans, where the spectrum came from."
+        className="mt-6"
+      />
     </Section>
 
     <Section

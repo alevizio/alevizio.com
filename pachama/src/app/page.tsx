@@ -31,6 +31,7 @@ const NAV: readonly NavGroup[] = [
     title: "The brand",
     items: [
       { id: "before", label: "Where it started" },
+      { id: "strategy", label: "The strategy" },
       { id: "idea", label: "The idea" },
       { id: "mark", label: "The mark" },
       { id: "language", label: "The graphic language" },
