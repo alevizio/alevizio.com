@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* Placeholder tokens while the structure settles: a paper page, a forest
+ * ground for the map chapter and one green for the voice. They get swapped
+ * for the brand guidelines' values (Pachama_Brand Guidelines_HO.fig). */
+@theme {
+  --color-paper: #f3f2ee;
+  --color-panel: #ffffff;
+  --color-rule: #dcdbd3;
+  --color-ash: #b9b8b0;
+  --color-muted: #85847a;
+  --color-body: #4a4943;
+  --color-ink: #12140f;
+  --color-leaf: #1d6b45; /* the accent */
+  --color-forest: #0d1f17; /* the ground under the maps */
+  --color-mist: #e9efe9; /* text on the forest ground */
+
+  /* Stand-ins for Matter and Matter Mono, which are licensed to Pachama. */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@utility type-display {
+  font-family: var(--font-sans);
+  font-size: clamp(2.75rem, 6.4vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+@utility type-section {
+  font-family: var(--font-sans);
+  font-size: clamp(1.875rem, 3.6vw + 0.5rem, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+}
+
+@utility type-body {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+@utility type-caption {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@utility type-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    background-color: var(--color-paper);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  /* No line ends on a lone word; tidy() glues the last pair as well. */
+  p,
+  h1,
+  h2,
+  h3 {
+    text-wrap: pretty;
+  }
+}
