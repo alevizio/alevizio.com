@@ -1,12 +1,16 @@
 import canopyPara from "@/assets/maps/canopy-para.jpg";
 import lidarTerrain from "@/assets/maps/lidar-terrain.jpg";
+import manoaBaseline from "@/assets/maps/manoa-baseline.png";
+import manoaEvaluationMap from "@/assets/maps/manoa-evaluation-map.jpg";
+import manoaReference from "@/assets/maps/manoa-reference.png";
 import ndvi from "@/assets/maps/ndvi.jpg";
 import pointcloud from "@/assets/maps/pointcloud.jpg";
 import sundarbans from "@/assets/maps/sundarbans.jpg";
 import tlsScan from "@/assets/maps/tls-scan.jpg";
 import ucayali from "@/assets/maps/ucayali.jpg";
+import { LiveMap } from "../_components/banyan/maps/live-map";
 import { Clip, HALF, Shot } from "../_components/shot";
-import { Band, ChapterDivider, Row, Section, Slot } from "../_components/story";
+import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
 /* IV · The maps, on black like the renders: satellites, lidar and the
  * dynamic baselines, made legible. The imagery is in Dropbox; the map UI is
@@ -49,7 +53,10 @@ export const Maps = () => (
       title="A project and its control area"
       text="Each project matched to similar forest outside it, and the two watched side by side over time."
     >
-      <Slot label="Manoa and its control area, on a basemap" source="Dropbox /Pachama/manoa_control_area.png · needs a basemap" />
+      <Row className="items-start">
+        <Shot src={manoaReference} alt="Manoa's boundary outlined on satellite imagery, with its reference region's edge in cyan" sizes={HALF} caption="Manoa against its reference region, from its evaluation." />
+        <Shot src={manoaBaseline} alt="A chart of credits over time: the baseline Manoa claims rising above the line Pachama estimated, the gap shaded green" sizes={HALF} caption="The baseline the project claims, checked against Pachama's own." />
+      </Row>
     </Section>
 
     <Section id="change" eyebrow="Change over time" title="Green, then less green">
@@ -65,8 +72,18 @@ export const Maps = () => (
       />
     </Section>
 
-    <Section id="map-ui" eyebrow="The map UI" title="Layers, legends and time">
-      <Slot label="The map in the product: layers, legend, the time slider" source="Figma · link to ask" />
+    <Section
+      id="map-ui"
+      eyebrow="The map UI"
+      title="Layers, legends and time"
+      text="In the product the map sits inside every project's page: the boundary, the loss around it, and the years to play through. Under it, the same parts rebuilt to try."
+    >
+      <Shot
+        src={manoaEvaluationMap}
+        alt="Manoa's tech-verified evaluation: the project boundary in white on satellite imagery, deforestation around it in orange, and a player set to 1996, Project starts"
+        caption="Manoa's tech-verified evaluation, in its project page."
+      />
+      <LiveMap className="mt-10" />
     </Section>
   </Band>
 );
