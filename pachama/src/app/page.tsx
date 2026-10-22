@@ -52,6 +52,7 @@ const NAV: readonly NavGroup[] = [
       { id: "project", label: "Project pages" },
       { id: "buying", label: "Buying" },
       { id: "sourcing", label: "Sourcing" },
+      { id: "screening", label: "Screening" },
     ],
   },
   {
