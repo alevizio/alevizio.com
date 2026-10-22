@@ -59,15 +59,13 @@ const NAV: readonly NavGroup[] = [
     numeral: "III",
     title: "The kit",
     items: [
-      { id: "kit-all", label: "Every component" },
+      { id: "kit-all", label: "All together" },
       { id: "foundations", label: "Foundations" },
       { id: "controls", label: "Controls" },
       { id: "data", label: "Data" },
       { id: "cards", label: "Cards" },
       { id: "map-kit", label: "Map controls" },
-      { id: "navigation", label: "Navigation" },
       { id: "states", label: "Feedback and states" },
-      { id: "icons", label: "Icons" },
     ],
   },
   {
