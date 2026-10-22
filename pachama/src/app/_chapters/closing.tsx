@@ -103,7 +103,7 @@ export const Closing = () => (
         <p className="type-caption mt-3 max-w-[48rem] text-fog">
           Brand, motion and website in collaboration with How&amp;How, from FNDR&apos;s strategy; their work shown with their
           permission. Type: Chromatic Condensed by Colophon, Matter by Displaay. Product, maps and rollout with
-          Pachama&apos;s product, science and engineering teams. Satellite imagery: Deimos Imaging. Photography: to credit.
+          Pachama&apos;s product, science and engineering teams. Satellite imagery: Deimos Imaging. Photography: Pachama.
         </p>
         <a
           href="https://alevizio.com"

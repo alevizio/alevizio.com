@@ -45,7 +45,7 @@ const BADGES = [
 
 /* V · In the world: the brand off the screen, and the things Alejandro drew
  * for the people inside it. Everything here is in Dropbox /Pachama; the
- * photographers are to credit. */
+ * photographs are Pachama's. */
 export const World = () => (
   <Band tone="ground">
     <ChapterDivider id="world" numeral="V" title="In the world">
@@ -139,7 +139,7 @@ export const World = () => (
       </Row>
     </Section>
 
-    <Section id="field" eyebrow="In the field" title="Corredores de Vida" text="The restoration behind the lidar: farmland and forest in Brazil. Photographer to credit.">
+    <Section id="field" eyebrow="In the field" title="Corredores de Vida" text="The restoration behind the lidar: farmland and forest in Brazil. Photos: Pachama.">
       <Row>
         <Shot src={corredores41} alt="A river between stands of forest, from the air" sizes={HALF} />
         <Shot src={corredores45} alt="Forest meeting pasture along a lakeshore, from the air" sizes={HALF} />
