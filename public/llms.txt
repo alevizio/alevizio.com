@@ -90,7 +90,7 @@ In his own words, from the timeline at the foot of https://alevizio.com (also at
 - 2026: founding designer at [Djooni](https://djooni.com).
 - 2026: the website for [Messa](https://messa.ai/), product & brand for [Pausa](https://www.pausa.co/).
 - 2026: [globestudio](https://globestudio.app) — open-source dotted maps & 3d globes.
-- 2026: [curb](https://curb.guide/) — know where to park in sf. in [SFGate](https://www.sfgate.com/local/article/sf-street-sweeping-app-22317534.php) and [The Dissent SF](https://thedissentsf.com/article/after-2-000-in-sweeping-tickets-a-haight-developer-read-the-city-s-own-data).
+- 2026: [curb](https://curb.guide/) — know where to park in sf. in [SFGate](https://www.sfgate.com/local/article/sf-street-sweeping-app-22317534.php) and The Dissent SF.
 - 2026: [saboteurs](https://saboteurs.app/) — squad stealth for iphone, in beta.
 
 ## Links
