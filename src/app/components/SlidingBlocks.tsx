@@ -3,7 +3,9 @@ import { useEffect, useRef } from "react";
 // A slow field of noise, quantised to a grid of 16 cells across the screen
 // and dithered between two greys with a 2×2 Bayer screen: flat cells where
 // the field is saturated, dot and checker cells where it is in between, the
-// blobs sliding and shifting as the field moves. It moves in pulses, like
+// blobs sliding and shifting as the field moves. On load it develops across
+// the hero from the top-left, through the dither, like a print coming up,
+// once the logo has turned in. It moves in pulses, like
 // the reference: every PERIOD seconds it slides on for SLIDE seconds, eased,
 // then rests, and the loop sleeps through the rest. It covers the hero block,
 // runs 320px into the timeline, fades to the page colour by then and scrolls
@@ -22,6 +24,8 @@ const SLIDE = 5; // seconds a slide lasts
 const STEP = 0.055; // how far the field moves per slide; measured against the reference
 const VIGNETTE = 0.12; // darkening at the corners, 0 to 1
 const FADE = 0.4; // share of the height over which the field fades out at the bottom
+const DEVELOP_AT = 0.6; // seconds after load when the field starts to develop
+const DEVELOP = 1.6; // seconds the development takes
 // While the field slides the only visible changes are cells flipping now and
 // then, so 15 fps looks the same as 60 and costs a quarter. Ripples run at 60.
 const SLIDE_MS = 66;
@@ -44,6 +48,7 @@ interface Renderer {
   uScale: WebGLUniformLocation | null;
   uTime: WebGLUniformLocation | null;
   uDot: WebGLUniformLocation | null;
+  uDevelop: WebGLUniformLocation | null;
   uDrops: WebGLUniformLocation | null;
   uCount: WebGLUniformLocation | null;
 }
@@ -63,6 +68,7 @@ uniform vec2 u_view;             // viewport size, CSS px: sets the cell
 uniform float u_scale;           // canvas px per CSS px
 uniform float u_time;            // seconds
 uniform float u_dot;             // dither cell, canvas px
+uniform float u_develop;         // the intro, 0 (page colour) to 1 (developed)
 uniform vec3 u_light;
 uniform vec3 u_dark;
 uniform vec4 u_drops[MAX_DROPS]; // x, y (CSS px, origin bottom-left), radius, energy
@@ -126,8 +132,13 @@ void main() {
   float v = field(c);
   // Towards the foot the field goes to the page colour, through the dither
   // levels, so the section below starts on a plain background.
-  float fade = smoothstep(1.0 - FADE, 1.0, (u_size.y - p.y) / u_size.y);
+  vec2 f = vec2(p.x, u_size.y - p.y) / u_size;
+  float fade = smoothstep(1.0 - FADE, 1.0, f.y);
   v = mix(v, 1.0, fade);
+  // The intro: a soft front sweeps from the top-left corner and the field
+  // comes up behind it, through the dither levels.
+  float grown = smoothstep(0.0, 1.0, (u_develop * 1.3 - (f.x + f.y) * 0.5) / 0.3);
+  v = mix(1.0, v, grown);
 
   // Ripples: along each ring the field is inverted, so flat cells go dark
   // or light and the ring's soft edges come out as dots.
@@ -147,7 +158,7 @@ void main() {
   vec3 col = mix(u_dark, u_light, step(threshold, v));
 
   vec2 uv = p / u_size - 0.5;
-  col *= 1.0 - VIGNETTE * dot(uv, uv) * 2.0 * (1.0 - fade);
+  col *= 1.0 - VIGNETTE * dot(uv, uv) * 2.0 * (1.0 - fade) * grown;
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -193,7 +204,7 @@ function createRenderer(canvas: HTMLCanvasElement): Renderer | null {
   const u = (name: string) => gl.getUniformLocation(program, name);
   gl.uniform3fv(u("u_light"), new Float32Array(hexToRgb(LIGHT)));
   gl.uniform3fv(u("u_dark"), new Float32Array(hexToRgb(DARK)));
-  return { gl, uSize: u("u_size"), uView: u("u_view"), uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDrops: u("u_drops"), uCount: u("u_count") };
+  return { gl, uSize: u("u_size"), uView: u("u_view"), uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDevelop: u("u_develop"), uDrops: u("u_drops"), uCount: u("u_count") };
 }
 
 export default function SlidingBlocks() {
@@ -243,7 +254,10 @@ export default function SlidingBlocks() {
       r.gl.uniform1f(r.uDot, Math.round(DOT * scale));
     };
 
+    const easeInOut = (x: number) => x * x * (3 - 2 * x);
     const draw = (r: Renderer, time: number) => {
+      const grown = reduceMotion.matches ? 1 : Math.min(Math.max((time - DEVELOP_AT) / DEVELOP, 0), 1);
+      r.gl.uniform1f(r.uDevelop, easeInOut(grown));
       for (let i = 0; i < drops.length; i++) {
         const d = drops[i];
         dropData[i * 4] = d.x;
@@ -282,7 +296,8 @@ export default function SlidingBlocks() {
       const t = (now - start) / 1000;
       draw(renderer, t);
       const phase = t % PERIOD;
-      if (drops.length > 0) raf = requestAnimationFrame(frame);
+      const developing = t < DEVELOP_AT + DEVELOP + 0.1;
+      if (drops.length > 0 || developing) raf = requestAnimationFrame(frame);
       // Resting (the slide is drawn to its end): sleep until the next pulse.
       else if (phase >= SLIDE + 0.2) timer = window.setTimeout(wake, (PERIOD - phase) * 1000);
       else timer = window.setTimeout(wake, SLIDE_MS);
@@ -419,7 +434,7 @@ export default function SlidingBlocks() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 -bottom-[320px] z-0 w-full select-none opacity-0 transition-opacity duration-1000 [image-rendering:pixelated]"
+      className="pointer-events-none absolute inset-x-0 top-0 -bottom-[320px] z-0 w-full select-none opacity-0 [image-rendering:pixelated]"
     />
   );
 }

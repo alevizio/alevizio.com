@@ -78,9 +78,9 @@ export default function GlobestudioCard() {
       rel="noopener noreferrer"
       className="group pixel-corners relative flex w-[78vw] max-w-[320px] shrink-0 snap-start flex-col items-start gap-8 overflow-hidden lg:w-full bg-[#1E1E1E]/[0.06] px-5 py-4 backdrop-blur-sm font-['Instrument_Sans',sans-serif] text-[#1E1E1E] hover:bg-[#1E1E1E]/[0.1] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1E1E1E]"
       style={{ fontVariationSettings: "'wdth' 100" }}
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay: 1.6, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, x: 24 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, delay: 2.0, ease: [0.22, 1, 0.36, 1] }}
       onPointerEnter={(e) => {
         if (e.pointerType === "mouse")
           setPreviewEntry({ x: e.clientX, y: e.clientY });

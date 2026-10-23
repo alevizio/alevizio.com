@@ -333,7 +333,7 @@ const Row = ({
         <Logo
           key={company.name}
           company={company}
-          delay={1.6 + (indexOffset + index) * 0.12}
+          delay={2.4 + (indexOffset + index) * 0.08}
           logoBoxHeight={logoBoxHeight}
         />
       ))}
@@ -355,7 +355,7 @@ export default function CompanyLogos() {
       <div className="flex flex-col gap-y-6 md:grid md:col-span-full md:grid-cols-subgrid md:gap-y-6">
         <Label
           text="helped with product & brand"
-          delay={1.4}
+          delay={2.2}
           className="md:col-span-full"
         />
         <Row items={primary} indexOffset={0} />
@@ -363,7 +363,7 @@ export default function CompanyLogos() {
       <div className="flex flex-col gap-y-6 md:grid md:col-span-full md:grid-cols-subgrid md:gap-y-6">
         <Label
           text="i've helped build & shape"
-          delay={1.5}
+          delay={2.3}
           className="md:col-span-full"
         />
         {/* A wider column gap than the row above: its pills run under the
