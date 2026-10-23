@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { MdExpandMore } from "react-icons/md";
 import { cn } from "./cn";
 import { tidy } from "./tidy";
 
@@ -71,8 +72,18 @@ export const Section = ({
   </section>
 );
 
-/** A chapter break: a short spectrum bar, the number as a label, the title
- *  at display size and one line under it. */
+/** Each chapter's colour on the spine, from the brand's spectrum. */
+const NODE: Record<string, string> = {
+  I: "bg-[#84e1ff]",
+  II: "bg-[#f9e63f]",
+  III: "bg-[#81f18e]",
+  IV: "bg-[#ee88ff]",
+  V: "bg-[#ff7324]",
+};
+
+/** A chapter break, as Source's landing page joins its sections: a node in
+ *  the chapter's colour, a line dropping from it, then the number, the
+ *  title at display size and one line under it, centred. */
 export const ChapterDivider = ({
   numeral,
   title,
@@ -84,24 +95,30 @@ export const ChapterDivider = ({
   id?: string;
   /** The one line under the title. */
   children?: ReactNode;
-}) => (
-  <header id={id} className="mt-40 scroll-mt-10 sm:mt-56">
-    <div className={PAGE}>
-      <div aria-hidden data-reveal="grow-x" className="spectrum h-[3px] w-16 rounded-full" />
-      <p data-reveal className="type-label mt-6 text-(--tone-label) [--reveal-delay:0.1s]">
-        Chapter {numeral}
-      </p>
-      <h2 data-reveal className="type-display mt-4 text-(--tone-head) [--reveal-delay:0.18s]">
-        {tidy(title)}
-      </h2>
-      {children ? (
-        <p data-reveal className="type-body mt-6 max-w-[34rem] text-(--tone-text) [--reveal-delay:0.28s]">
-          {children}
+}) => {
+  const colour = NODE[numeral] ?? "bg-leaf";
+  return (
+    <header id={id} className="mt-32 scroll-mt-10 sm:mt-44">
+      <div className={cn(PAGE, "flex flex-col items-center text-center")}>
+        <span aria-hidden data-reveal="pop" className={cn("grid size-10 place-items-center rounded-full text-[#0e2517]", colour)}>
+          <MdExpandMore className="size-6" />
+        </span>
+        <span aria-hidden data-reveal="drop" className={cn("h-20 w-0.5 sm:h-28 [--reveal-delay:0.15s]", colour)} />
+        <p data-reveal className="type-label mt-6 text-(--tone-label) [--reveal-delay:0.3s]">
+          Chapter {numeral}
         </p>
-      ) : null}
-    </div>
-  </header>
-);
+        <h2 data-reveal className="type-display mt-4 text-(--tone-head) [--reveal-delay:0.38s]">
+          {tidy(title)}
+        </h2>
+        {children ? (
+          <p data-reveal className="type-body mt-6 max-w-[36rem] text-(--tone-text) [--reveal-delay:0.48s]">
+            {children}
+          </p>
+        ) : null}
+      </div>
+    </header>
+  );
+};
 
 /** Two to four pieces side by side from sm up. */
 export const Row = ({ children, cols = 2, className }: { children: ReactNode; cols?: 2 | 3 | 4; className?: string }) => (

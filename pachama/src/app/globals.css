@@ -203,6 +203,17 @@
     scale: 0 1;
   }
 
+  /* A line drops from the node above it. */
+  .motion [data-reveal="drop"] {
+    transform-origin: top;
+    transition-duration: 1.1s;
+  }
+  .motion [data-reveal="drop"]:not([data-in]) {
+    opacity: 1;
+    translate: none;
+    scale: 1 0;
+  }
+
   /* Lines draw themselves (SVG paths with pathLength="1"). */
   .motion [data-reveal="draw"] {
     stroke-dasharray: 1;

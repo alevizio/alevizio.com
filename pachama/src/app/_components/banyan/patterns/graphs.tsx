@@ -10,7 +10,7 @@ import { BN } from "../ui";
  * with its legend. Point at a bar, or a legend entry, to read it. The
  * values are illustrative. */
 const GraphCard = ({ title, subtitle, children, className }: { title: string; subtitle: string; children: ReactNode; className?: string }) => (
-  <figure className={cn("w-full rounded-[16px] border border-bn-grey-light bg-white p-6", className)}>
+  <figure data-reveal className={cn("w-full rounded-[16px] border border-bn-grey-light bg-white p-6", className)}>
     <figcaption>
       <span className="block text-[18px] leading-6 font-bold text-bn-heavy">{title}</span>
       <span className="mt-1 block text-[12px] leading-4 text-bn-medium">{subtitle}</span>
@@ -31,7 +31,7 @@ export const ProjectsByYear = ({ className }: { className?: string }) => {
   const [at, setAt] = useState<number | null>(null);
   const read = at === null ? `Today, ${NOW}: ${PER_YEAR[NOW - FIRST]} projects` : `${FIRST + at}: ${PER_YEAR[at]} projects`;
   return (
-    <GraphCard title="Projects" subtitle="Projects distributed over the years" className={className}>
+    <GraphCard title="Projects" subtitle="Projects distributed over the years. Illustrative values" className={className}>
       <p aria-hidden className="mt-3 h-4 text-right font-mono text-[12px] text-bn-medium">
         {read}
       </p>
@@ -121,7 +121,7 @@ const StackedBar = ({ label, segments }: { label: string; segments: Segment[] })
 };
 
 export const PortfolioCard = ({ className }: { className?: string }) => (
-  <GraphCard title="Project types and methodologies" subtitle="A portfolio's distribution" className={className}>
+  <GraphCard title="Project types and methodologies" subtitle="A portfolio's distribution. Illustrative values" className={className}>
     <StackedBar
       label="By project type"
       segments={[
@@ -145,7 +145,7 @@ export const PortfolioCard = ({ className }: { className?: string }) => (
 );
 
 export const RegionsCard = ({ className }: { className?: string }) => (
-  <GraphCard title="Regions" subtitle="Where a portfolio's projects are" className={className}>
+  <GraphCard title="Regions" subtitle="Where a portfolio's projects are. Illustrative values" className={className}>
     <StackedBar
       label="By country"
       segments={[
