@@ -1,4 +1,21 @@
 import excellence from "@/assets/world/badges/excellence.png";
+import draft01 from "@/assets/world/drafts/draft-01.jpg";
+import draft02 from "@/assets/world/drafts/draft-02.jpg";
+import draft03 from "@/assets/world/drafts/draft-03.jpg";
+import draft04 from "@/assets/world/drafts/draft-04.jpg";
+import draft05 from "@/assets/world/drafts/draft-05.jpg";
+import draft06 from "@/assets/world/drafts/draft-06.jpg";
+import draft07 from "@/assets/world/drafts/draft-07.jpg";
+import draft08 from "@/assets/world/drafts/draft-08.jpg";
+import draft09 from "@/assets/world/drafts/draft-09.jpg";
+import draft10 from "@/assets/world/drafts/draft-10.jpg";
+import draft11 from "@/assets/world/drafts/draft-11.jpg";
+import draft12 from "@/assets/world/drafts/draft-12.jpg";
+import draft13 from "@/assets/world/drafts/draft-13.jpg";
+import draft14 from "@/assets/world/drafts/draft-14.jpg";
+import draft15 from "@/assets/world/drafts/draft-15.jpg";
+import draft16 from "@/assets/world/drafts/draft-16.jpg";
+import draft17 from "@/assets/world/drafts/draft-17.jpg";
 import integrity from "@/assets/world/badges/integrity.png";
 import marketplace from "@/assets/world/badges/marketplace.png";
 import protocol from "@/assets/world/badges/protocol.png";
@@ -17,10 +34,7 @@ import corredores47 from "@/assets/world/corredores-47.jpg";
 import costaRica from "@/assets/world/costarica-tree-blue.png";
 import kapok from "@/assets/world/kapok-tree-green.png";
 import pins from "@/assets/world/pins.jpg";
-import posterEarth from "@/assets/world/poster-earth.jpg";
-import posterForest from "@/assets/world/poster-forest.jpg";
 import posterOffsite from "@/assets/world/poster-offsite.jpg";
-import posterRedwoods from "@/assets/world/poster-redwoods.jpg";
 import retreatSketch from "@/assets/world/retreat-sketch.jpg";
 import seriesBBanner from "@/assets/world/seriesb-banner.jpg";
 import sequoia from "@/assets/world/sequoia-mauve.png";
@@ -46,6 +60,29 @@ const SLIDE = "(min-width: 1376px) 830px, (min-width: 1024px) 64vw, (min-width: 
 // columns follow their shapes (1500 x 2123 and 960 x 956).
 const SAME_HEIGHT = "grid items-start gap-4 sm:grid-cols-[0.7066fr_1.0042fr] sm:gap-6";
 const POSTER = "(min-width: 1376px) 525px, (min-width: 640px) 41vw, 100vw";
+
+// The Series B banner's drafts, every artboard of the Illustrator file
+// before the final one (one exact repeat left out), in the order drawn.
+const DRAFTS = [
+  { src: draft01, alt: "A draft in thin type on white: $55M Series B, led by Future Positive, then the investors" },
+  { src: draft02, alt: "A draft in heavy black type on white" },
+  { src: draft03, alt: "A draft in thin type on white, set tighter" },
+  { src: draft04, alt: "A draft with the figure curving over a green planet under a blue sky" },
+  { src: draft05, alt: "A draft in heavy type over a dark silhouette of redwoods" },
+  { src: draft06, alt: "A draft in thin type over a misty redwood forest" },
+  { src: draft07, alt: "A draft in thin type over the misty redwoods, lighter" },
+  { src: draft08, alt: "A draft in heavy type over a forest and mountains" },
+  { src: draft09, alt: "A dark draft with a teal moon and the text in mono" },
+  { src: draft10, alt: "A dark draft with the figure running in a ring" },
+  { src: draft11, alt: "A dark draft with a teal moon and the text in two columns" },
+  { src: draft12, alt: "A draft in thin type over a green forest fading to pale" },
+  { src: draft13, alt: "A dark draft in mono over a wireframe landscape" },
+  { src: draft14, alt: "A draft in heavy type, a yellow sun rising over mountains at night" },
+  { src: draft15, alt: "A draft in thin type under a yellow sun over a forest" },
+  { src: draft16, alt: "A draft with the figure over a blue-green Earth" },
+  { src: draft17, alt: "A draft in red and green, illustrated redwoods" },
+];
+const DRAFT = "(min-width: 1024px) 22vw, (min-width: 640px) 34vw, 58vw";
 
 // The 2022 offsite's badges: the three teams, then the four values.
 type Badge = { src: StaticImageData; name: string };
@@ -110,11 +147,7 @@ export const World = () => (
         <p data-reveal className="type-label mt-16 text-(--tone-label)">
           Drafts, April 2022
         </p>
-        <Row cols={3} className="mt-5">
-          <Shot src={posterForest} alt="A draft: the type over a pale forest silhouette" sizes={THIRD} />
-          <Shot src={posterRedwoods} alt="A draft in red and green, illustrated redwoods" sizes={THIRD} />
-          <Shot src={posterEarth} alt="A draft in blue and green, like a map of the Earth" sizes={THIRD} />
-        </Row>
+        <Slider label="The banner's drafts, April 2022" slides={DRAFTS} sizes={DRAFT} item="w-[58%] sm:w-[34%] lg:w-[22%]" className="mt-5" />
       </Section>
 
       <Section
