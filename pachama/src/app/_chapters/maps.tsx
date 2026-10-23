@@ -10,7 +10,6 @@ import { MapLayers } from "../_components/map-layers";
 import { BaselineSandbox } from "../_components/screens/baseline-sandbox";
 import { Biodiversity } from "../_components/screens/biodiversity";
 import { DynamicBaseline } from "../_components/screens/dynamic-baseline";
-import { Evaluation } from "../_components/screens/evaluation";
 import { Clip, HALF, Shot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
@@ -101,13 +100,6 @@ export const Maps = () => (
       </p>
       <div data-reveal="frame" className="mt-8 sm:mt-10">
         <BaselineSandbox />
-      </div>
-      <p data-reveal className="type-body mt-20 max-w-[36rem] text-(--tone-text) sm:mt-28">
-        In the product, a baseline had to pass two checks on Manoa&apos;s evaluation, rebuilt here in Banyan from the screen it had
-        before the rebrand: is the reference region suitable, and is the baseline conservative? They draw as they come into view.
-      </p>
-      <div data-reveal="frame" className="mt-8 sm:mt-10">
-        <Evaluation />
       </div>
     </Section>
 

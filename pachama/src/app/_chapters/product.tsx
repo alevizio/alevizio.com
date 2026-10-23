@@ -60,7 +60,7 @@ export const Product = () => (
       id="project"
       eyebrow="Project pages"
       title="Every credit, checked"
-      text="A project's page opens on the project itself: from the whole Earth down to Manoa's forest in Rondônia, in 3D, before its facts, its evaluation, its story and what it does beyond carbon. Its evaluation screen, rebuilt in the new brand, is in the maps chapter."
+      text="A project's page opens on the project itself: from the whole Earth down to Manoa's forest in Rondônia, in 3D, before its facts, its evaluation, its story and what it does beyond carbon."
     >
       <ManoaFlight />
     </Section>
