@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useRef, useState, type KeyboardEvent } from "react";
 import { MdArrowBack, MdArrowForward, MdClose } from "react-icons/md";
 import { cn } from "./cn";
+import { useDragPan } from "./drag-pan";
 import { PAGES, WALL_ASPECT } from "./guidelines-pages";
 
 /* The brand guidelines' Figma page, zoomed out: every page where it sits on
@@ -14,8 +15,6 @@ import { PAGES, WALL_ASPECT } from "./guidelines-pages";
  * on the wall, so it's one stop for the Tab key. Each page is its own
  * image, exported from the Figma, so they stay sharp. */
 const RING = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf";
-// A drag shorter than this is still a click.
-const DRAG_PX = 5;
 
 export const GuidelinesWall = ({ className }: { className?: string }) => {
   const [at, setAt] = useState(0);
@@ -23,55 +22,9 @@ export const GuidelinesWall = ({ className }: { className?: string }) => {
   const frame = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
-  const dragged = useRef(false);
 
   // Drag to pan, with a mouse; touch and trackpads scroll natively.
-  useEffect(() => {
-    const el = frame.current;
-    if (!el) return;
-    let start: { x: number; y: number; left: number; top: number } | null = null;
-    const down = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" || e.button !== 0) return;
-      start = { x: e.clientX, y: e.clientY, left: el.scrollLeft, top: el.scrollTop };
-      dragged.current = false;
-    };
-    const move = (e: PointerEvent) => {
-      if (!start) return;
-      const dx = e.clientX - start.x;
-      const dy = e.clientY - start.y;
-      if (!dragged.current && Math.hypot(dx, dy) < DRAG_PX) return;
-      if (!dragged.current) {
-        dragged.current = true;
-        el.setPointerCapture(e.pointerId);
-        el.dataset.dragging = "";
-      }
-      el.scrollLeft = start.left - dx;
-      el.scrollTop = start.top - dy;
-    };
-    const up = () => {
-      start = null;
-      delete el.dataset.dragging;
-    };
-    // After a drag, the click that ends it doesn't open a page.
-    const click = (e: MouseEvent) => {
-      if (!dragged.current) return;
-      e.preventDefault();
-      e.stopPropagation();
-      dragged.current = false;
-    };
-    el.addEventListener("pointerdown", down);
-    el.addEventListener("pointermove", move);
-    el.addEventListener("pointerup", up);
-    el.addEventListener("pointercancel", up);
-    el.addEventListener("click", click, true);
-    return () => {
-      el.removeEventListener("pointerdown", down);
-      el.removeEventListener("pointermove", move);
-      el.removeEventListener("pointerup", up);
-      el.removeEventListener("pointercancel", up);
-      el.removeEventListener("click", click, true);
-    };
-  }, []);
+  useDragPan(frame);
 
   const show = (i: number) => {
     setOpen(i);
