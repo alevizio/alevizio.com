@@ -3,32 +3,32 @@ import { useEffect, useRef } from "react";
 // A slow field of noise, quantised to a grid of 16 cells across the screen
 // and dithered between two greys with a 2×2 Bayer screen: flat cells where
 // the field is saturated, dot and checker cells where it is in between, the
-// blobs sliding and shifting as the field moves. On load it develops across
-// the hero from the top-left, through the dither, like a print coming up,
-// once the logo has turned in. It moves in pulses, like
-// the reference: every PERIOD seconds it slides on for SLIDE seconds, eased,
-// then rests, and the loop sleeps through the rest. It covers the hero block,
+// blobs sliding and shifting as the field moves. It moves all the time,
+// along a random path: the direction and the pace wander, from noise over
+// time, so cells flip here and there and it never settles. On load it
+// develops across the hero from the top-left, through the dither, like a
+// print coming up, once the logo has turned in. It covers the hero block,
 // runs 320px into the timeline, fades to the page colour by then and scrolls
-// away with the hero; the loop
-// stops while the hero is off screen. Drawn by the GPU as one WebGL
-// triangle. The mouse leaves ripples that invert the field along a ring,
-// with the old ASCII rain's drop physics in pixels.
+// away with the hero; the loop stops while the hero is off screen. Drawn by
+// the GPU as one WebGL triangle. The mouse leaves ripples that invert the
+// field along a ring, with the old ASCII rain's drop physics in pixels.
 
 // The page background, and the dark grey the field dithers towards.
 const LIGHT = "#dedbd1";
 const DARK = "#cfccc2";
 const CELLS = 16; // cells across the width
 const DOT = 4; // dither cell, CSS px
-const PERIOD = 14; // seconds from one slide to the next
-const SLIDE = 5; // seconds a slide lasts
-const STEP = 0.055; // how far the field moves per slide; measured against the reference
+const WANDER = 0.06; // how fast the path changes direction and pace, per second
+const REACH = 0.12; // how far the path wanders, in field units
+const DRIFT = 0.0015; // a steady drift under the wander, field units per second, so it never retraces
 const VIGNETTE = 0.12; // darkening at the corners, 0 to 1
 const FADE = 0.4; // share of the height over which the field fades out at the bottom
 const DEVELOP_AT = 0.6; // seconds after load when the field starts to develop
 const DEVELOP = 1.6; // seconds the development takes
-// While the field slides the only visible changes are cells flipping now and
-// then, so 15 fps looks the same as 60 and costs a quarter. Ripples run at 60.
-const SLIDE_MS = 66;
+// The field's only visible changes are cells flipping now and then, seconds
+// apart, so 10 fps looks the same as 60 at a sixth of the cost. Ripples and
+// the intro run at 60.
+const FRAME_MS = 100;
 const MAX_DROPS = 20;
 // The rain measured its drops in 7px-wide characters; same numbers, in px.
 const CHAR = 7;
@@ -77,9 +77,9 @@ uniform vec4 u_drops[MAX_DROPS]; // x, y (CSS px, origin bottom-left), radius, e
 uniform int u_count;
 
 const float CELLS = ${CELLS.toFixed(1)};
-const float PERIOD = ${PERIOD.toFixed(2)};
-const float SLIDE = ${SLIDE.toFixed(2)};
-const float STEP = ${STEP.toFixed(4)};
+const float WANDER = ${WANDER.toFixed(4)};
+const float REACH = ${REACH.toFixed(4)};
+const float DRIFT = ${DRIFT.toFixed(5)};
 const float VIGNETTE = ${VIGNETTE.toFixed(3)};
 const float FADE = ${FADE.toFixed(3)};
 const float SCALE = 3.0;      // blobs span a few cells
@@ -114,14 +114,20 @@ float snoise(vec2 v) {
   return 130.0 * dot(m, g);
 }
 
+// Where the field has drifted to: a random path, from noise over time, whose
+// direction and pace wander, over a slow steady drift so it never retraces.
+vec2 path(float time) {
+  float s = time * WANDER;
+  return vec2(snoise(vec2(s, 2.7)), snoise(vec2(s, 9.4))) * REACH + vec2(time, time * 0.35) * DRIFT;
+}
+
 // The field at a point, in cell units measured from the top-left: three
-// octaves of noise, warped by a slower one, moved on by a step per pulse.
+// octaves of noise, warped by a slower one, moved along the path.
 float field(vec2 c) {
   vec2 n = c / CELLS;
-  float k = floor(u_time / PERIOD);
-  float t = (k + smoothstep(0.0, 1.0, (u_time - k * PERIOD) / SLIDE)) * STEP;
-  vec2 warp = vec2(snoise(n * 1.5 + t * 0.7), snoise(n * 1.5 + vec2(3.7, 9.1) - t * 0.5)) * WARP;
-  vec2 q = n * SCALE + warp + vec2(t, t * 0.35);
+  vec2 o = path(u_time);
+  vec2 warp = vec2(snoise(n * 1.5 + o * 0.7), snoise(n * 1.5 + vec2(3.7, 9.1) - o.yx * 0.5)) * WARP;
+  vec2 q = n * SCALE + warp + o;
   float f = 0.6 * snoise(q) + 0.3 * snoise(q * 2.0 + 11.0) + 0.15 * snoise(q * 4.0 + 23.0);
   return 0.5 + f * CONTRAST + BIAS;
 }
@@ -306,12 +312,9 @@ export default function SlidingBlocks() {
       }
       const t = (now - start) / 1000;
       draw(renderer, t);
-      const phase = t % PERIOD;
       const developing = t < DEVELOP_AT + DEVELOP + 0.1;
       if (drops.length > 0 || developing) raf = requestAnimationFrame(frame);
-      // Resting (the slide is drawn to its end): sleep until the next pulse.
-      else if (phase >= SLIDE + 0.2) timer = window.setTimeout(wake, (PERIOD - phase) * 1000);
-      else timer = window.setTimeout(wake, SLIDE_MS);
+      else timer = window.setTimeout(wake, FRAME_MS);
     };
 
     const wake = () => {
