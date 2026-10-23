@@ -146,6 +146,7 @@ export function useLifelineScroll(
   const sectionRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const labelsRef = useRef<HTMLDivElement>(null)
+  const markersRef = useRef<HTMLDivElement>(null)
   const markerRefs = useRef<(HTMLDivElement | null)[]>([])
   const maxTranslate = useRef(0)
   const startInset = useRef(LIFELINE_DEFAULT_START_INSET)
@@ -226,6 +227,7 @@ export function useLifelineScroll(
   const applyLabelSticky = useCallback(
     (translate: number) => {
       const labels = labelsRef.current
+      const markers = markersRef.current
       const { isSticky, labelLeft } = getLabelStageLeft(translate)
 
       if (!labels) return { isSticky, labelLeft }
@@ -239,9 +241,14 @@ export function useLifelineScroll(
           snapToDevicePixel(startInset.current - translate)
         labels.style.transform = `translate3d(${labelExtra}px, 0, 0)`
         labels.classList.add("is-pinned")
+        // The label column paints nothing, so the markers are clipped at
+        // its right edge instead. The marker column starts where the label
+        // column ends, so the inset is the column's own shift.
+        if (markers) markers.style.clipPath = `inset(0 0 0 ${labelExtra}px)`
       } else {
         labels.style.transform = ""
         labels.classList.remove("is-pinned")
+        if (markers) markers.style.clipPath = ""
       }
 
       return { isSticky, labelLeft }
@@ -1050,6 +1057,7 @@ export function useLifelineScroll(
     sectionRef,
     trackRef,
     labelsRef,
+    markersRef,
     setMarkerRef,
     isLayoutReady,
     isEmbed,

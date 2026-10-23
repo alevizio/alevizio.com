@@ -60,8 +60,7 @@
    the greys go cold, and zinc-500 (its text) drops to 3.5:1, so inside the
    timeline each grey is re-pointed at the site's ink at a set strength:
    text at 70% (5.2:1), ticks and icons at 45%, the dashed rail at 25%.
-   Black is the ink and white is the paper, which is what the pinned label
-   column paints so the years scrolling under it stay hidden. */
+   Black is the ink and white is the paper. */
 .lifeline-typeset {
   --lifeline-font: "Instrument Sans", sans-serif;
   font-family: var(--lifeline-font);
