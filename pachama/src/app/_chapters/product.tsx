@@ -84,7 +84,7 @@ export const Product = () => (
       id="buying"
       eyebrow="Buying"
       title="From order to retirement"
-      text="Every retirement a buyer makes, with the certificate it issues: pick a row to see its certificate."
+      text="Every retirement a buyer makes, and the certificate it issues: here, the one Just Spices got for 200 tonnes from Kootznoowoo."
     >
       <Retirements />
     </Section>
@@ -97,7 +97,7 @@ export const Product = () => (
     >
       <PortfolioDashboard />
       <p className="type-caption mt-3 text-(--tone-text)">The portfolio, rebuilt live from its Figma with the design&rsquo;s sample figures. Point at a year or a segment to read it, or retire an order.</p>
-      <div className="mt-10 grid items-start gap-6 rounded-[28px] bg-[#25302b] p-3 sm:p-6 lg:grid-cols-2 lg:p-8">
+      <div className="mt-10 grid items-start gap-6 lg:grid-cols-2 lg:gap-8">
         <SourcingPlanModal />
         <ProposalModal />
       </div>

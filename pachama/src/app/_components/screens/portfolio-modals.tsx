@@ -16,7 +16,7 @@ import { cn } from "../cn";
  * and its opportunities). Chips come off and go back, the opportunities
  * table takes new rows, and both submit. The values are the designs'
  * samples. */
-const CARD = "rounded-[24px] bg-white p-5 text-bn-heavy shadow-[0_30px_80px_rgb(4_18_10/0.35)] sm:p-7";
+const CARD = "rounded-[24px] bg-white p-5 text-bn-heavy shadow-[0_2px_6px_rgb(20_26_23/0.06),0_24px_70px_rgb(20_26_23/0.14)] ring-1 ring-black/5 sm:p-7";
 const SECTION = "rounded-[16px] p-4 ring-1 ring-[#e6e8e4] sm:p-5";
 
 const CRITERIA: { title: string; items: string[] }[] = [

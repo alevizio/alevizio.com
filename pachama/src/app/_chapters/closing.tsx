@@ -7,7 +7,7 @@ import { Band, PAGE, Section } from "../_components/story";
 // total (the Series A and B amounts are the press below and the Series B
 // banner), the pages Banyan's documentation and the brand guidelines' Figma.
 const NUMBERS = [
-  { value: 5, unit: "years", text: "At Pachama, from product designer to senior product designer, 2020 to 2025." },
+  { value: 5, unit: "years", text: "At Pachama as senior product designer, 2020 to 2025." },
   { value: 90, before: "$", unit: "million raised", text: "Across the seed, the Series A ($15 million, 2021) and the Series B ($55 million, 2022)." },
   { value: 37, unit: "pages of Banyan", text: "The design system, every component designed and documented in Figma, and built." },
   { value: 127, unit: "pages of guidelines", text: "The brand set down for everyone, from the logo to the charts and the photographs." },

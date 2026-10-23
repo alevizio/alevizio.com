@@ -87,8 +87,13 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
       <div className="w-full max-w-[56rem] [perspective:2600px] [perspective-origin:50%_20%]">
         {/* The camera: the book lies back and turns a little, like a still life on a table. */}
         <div className="relative [transform-style:preserve-3d] [transform:rotateX(46deg)_rotateZ(-18deg)_scale(0.92)]">
-          <span aria-hidden className="absolute inset-[6%_10%_-4%] rounded-[50%] bg-black/25 blur-2xl [transform:translateZ(-2px)]" />
           <div className={cn("relative aspect-[1224/792] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] motion-reduce:transition-none", shift)}>
+            {/* Under each half with pages on it: the table's shadows (a tight
+                contact one at the edges, a soft one cast away from the light,
+                up and to the left) and the stack's edge, the paper showing
+                its thickness. */}
+            <Under side="left" on={turned > 0} />
+            <Under side="right" on={turned < last} />
             {LEAVES.map((leaf, i) => {
               const isTurned = i < turned;
               return (
@@ -123,9 +128,22 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
   );
 };
 
+/** What lies under one half of the open book, on the table. */
+const Under = ({ side, on }: { side: "left" | "right"; on: boolean }) => {
+  const half = cn("absolute inset-y-0 w-1/2", side === "left" ? "left-0 rounded-l-[6px]" : "left-1/2 rounded-r-[6px]");
+  return (
+    <div aria-hidden className={cn("transition-opacity duration-500 motion-reduce:transition-none", on ? "opacity-100" : "opacity-0")}>
+      <span className={cn(half, "bg-black/30 blur-[22px] [transform:translate3d(2.5%,4%,-3px)]")} />
+      <span className={cn(half, "bg-black/45 blur-[3px] [transform:translate3d(0.4%,0.8%,-2px)]")} />
+      <span className={cn(half, "bg-[#d9d3bf] [transform:translate3d(0.45%,0.9%,-1px)]")} />
+      <span className={cn(half, "bg-[#ebe6d4] [transform:translate3d(0.2%,0.45%,-0.5px)]")} />
+    </div>
+  );
+};
+
 /** One side of a leaf: the page, with a little shading toward the spine. */
 const Face = ({ src, alt, back = false }: { src: StaticImageData; alt: string; back?: boolean }) => (
-  <div className={cn("absolute inset-0 overflow-hidden bg-white shadow-[0_18px_40px_rgb(20_26_23/0.18)] [backface-visibility:hidden]", back ? "rounded-l-[6px] [transform:rotateY(180deg)]" : "rounded-r-[6px]")}>
+  <div className={cn("absolute inset-0 overflow-hidden bg-white ring-1 ring-black/[0.06] [backface-visibility:hidden]", back ? "rounded-l-[6px] [transform:rotateY(180deg)]" : "rounded-r-[6px]")}>
     <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 448px, 50vw" className="object-cover" />
     <span aria-hidden className={cn("absolute inset-y-0 w-10", back ? "right-0 bg-linear-to-l from-black/12 to-transparent" : "left-0 bg-linear-to-r from-black/12 to-transparent")} />
   </div>

@@ -11,11 +11,12 @@ import { cn } from "./cn";
 import { BLEED } from "./shot";
 import { PAGE } from "./story";
 
-/* Corredores de Vida on the ground, as a gallery: one photograph across the
- * window and the others as thumbnails over its foot; pick one and it takes
- * the big frame. It moves on by itself every few seconds while it's in
- * view, holding while it's pointed at; with less motion it waits for a
- * click. Photos: Pachama. */
+/* Corredores de Vida on the ground, the restoration behind the lidar, as a
+ * gallery that closes the maps chapter: one photograph across the window
+ * and the others as thumbnails over its foot; pick one and it takes the big
+ * frame. It moves on by itself every few seconds while it's in view,
+ * holding while it's pointed at; with less motion it waits for a click.
+ * Photos: Pachama (credited at the end). */
 const PHOTOS = [
   { src: corredores41, alt: "A river between stands of forest, from the air" },
   { src: corredores45, alt: "Forest meeting pasture along a lakeshore, from the air" },
@@ -23,7 +24,7 @@ const PHOTOS = [
   { src: corredores47, alt: "A farmstead with a tree nursery, from the air" },
 ];
 
-export const FieldGallery = ({ caption, className }: { caption: string; className?: string }) => {
+export const FieldGallery = ({ className }: { className?: string }) => {
   const [at, setAt] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   useAutoplay(
@@ -46,7 +47,7 @@ export const FieldGallery = ({ caption, className }: { caption: string; classNam
           />
         ))}
         <div aria-hidden className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-black/65 to-transparent" />
-        <div role="group" aria-label="Corredores de Vida, the photos" className={cn(PAGE, "absolute inset-x-0 bottom-4 flex gap-2 sm:bottom-8 sm:gap-3")}>
+        <div role="group" aria-label="Corredores de Vida, in Brazil: the photos" className={cn(PAGE, "absolute inset-x-0 bottom-4 flex gap-2 sm:bottom-8 sm:gap-3")}>
           {PHOTOS.map((p, i) => (
             <button
               key={p.alt}
@@ -65,7 +66,6 @@ export const FieldGallery = ({ caption, className }: { caption: string; classNam
           ))}
         </div>
       </div>
-      <figcaption className={cn(PAGE, "type-caption mt-3 text-(--tone-text)")}>{caption}</figcaption>
     </figure>
   );
 };

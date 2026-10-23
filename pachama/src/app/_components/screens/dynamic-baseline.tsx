@@ -6,10 +6,11 @@ import { cn } from "../cn";
 import { VideoLoop } from "../video-loop";
 
 /* A dynamic baseline in three steps, each in Pachama's own layers for
- * Manoa: its control area (every dot a matched pixel of forest), the
- * forest loss around it year by year (the layer from its carbon monitoring
- * page, clearing in red), and the control area of one of its placebos.
- * Each step's number takes its layer's colour. */
+ * Manoa: its control area (a ring of matched pixels of forest around the
+ * project), the forest loss around it year by year (the layer from its
+ * carbon monitoring page, clearing in red), and the control areas of its
+ * placebos, scattered where there's no project. Each step's number takes
+ * its layer's colour. */
 const MEDIA = "relative aspect-[1176/620] overflow-hidden rounded-[10px] bg-[#06100b]";
 
 const Step = ({
@@ -44,18 +45,21 @@ export const DynamicBaseline = ({ className }: { className?: string }) => (
   <ol className={cn("grid gap-16 sm:gap-24", className)}>
     <Step
       n={1}
-      colour="bg-[#84e1ff] text-[#0e2517]"
+      colour="bg-[#f9e63f] text-[#0e2517]"
       title="Find the forest's twin"
-      text="Forest outside the project is matched, pixel by pixel, to forest inside it: alike in everything that makes land likely to be cleared. Each blue dot is a match. Together, they're Manoa's control area."
+      text="Forest outside the project is matched, pixel by pixel, to forest inside it: alike in everything that makes land likely to be cleared. Each yellow dot is a match. Together, they ring Manoa: its control area."
       media={
         <div data-reveal="sweep" className={MEDIA}>
           <Image
             src={controlArea}
-            alt="Manoa's control area: thousands of matched pixels of forest, in blue, in patches around the project"
+            alt="Manoa's control area: a ring of matched pixels of forest, in yellow, around the project"
             fill
-            sizes="(min-width: 1024px) 720px, 100vw"
-            className="object-cover"
+            sizes="(min-width: 1024px) 420px, 60vw"
+            className="object-contain p-2 sm:p-6"
           />
+          <span className="type-label absolute top-1/2 left-1/2 -translate-1/2 rounded-full border border-white/20 bg-black/60 px-2 py-1 text-fog sm:px-3 sm:py-1.5">
+            Manoa
+          </span>
         </div>
       }
     />
@@ -78,21 +82,18 @@ export const DynamicBaseline = ({ className }: { className?: string }) => (
     />
     <Step
       n={3}
-      colour="bg-[#f9e63f] text-[#0e2517]"
+      colour="bg-[#84e1ff] text-[#0e2517]"
       title="Test it where there's no project"
-      text="The same matching, run on forest with no project: a placebo. Its control area, the yellow ring, should lose what the forest inside it loses. Any gap between them is the method's own error."
+      text="The same matching, run on forest with no project: placebos. Their control areas, the blue patches, should lose what the forest inside them loses. Any gap between them is the method's own error."
       media={
         <div data-reveal="frame" className={MEDIA}>
           <Image
             src={placeboArea}
-            alt="A placebo's control area: a ring of matched pixels, in yellow, around forest with no project"
+            alt="Placebos' control areas: thousands of matched pixels of forest, in blue, in patches where there's no project"
             fill
-            sizes="(min-width: 1024px) 420px, 60vw"
-            className="object-contain p-2 sm:p-6"
+            sizes="(min-width: 1024px) 720px, 100vw"
+            className="object-cover"
           />
-          <span className="type-label absolute top-1/2 left-1/2 -translate-1/2 rounded-full border border-white/20 bg-black/60 px-2 py-1 text-fog sm:px-3 sm:py-1.5">
-            No project
-          </span>
         </div>
       }
     />

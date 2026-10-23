@@ -4,7 +4,7 @@ import { PAGE } from "../_components/story";
 
 // The facts strip under the hero. Draft wording, to confirm.
 const FACTS = [
-  { label: "Role", value: "Product designer, then senior product designer" },
+  { label: "Role", value: "Senior product designer" },
   { label: "Timeline", value: "2020 to 2025, five years" },
   { label: "With", value: "Pachama's product, science and engineering teams; How&How and FNDR on the brand" },
   { label: "Outcome", value: "Acquired by Carbon Direct in 2025, now Relae" },

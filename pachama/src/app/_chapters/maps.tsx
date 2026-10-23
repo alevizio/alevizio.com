@@ -18,7 +18,7 @@ import { Band, ChapterDivider, Row, Section } from "../_components/story";
  * apart and put back together. The imagery is in Dropbox; the Ucayali
  * image is the live map's ground. */
 export const Maps = () => (
-  <Band tone="night">
+  <Band tone="night" className="pb-0 sm:pb-0">
     <ChapterDivider id="maps" numeral="IV" title="The maps">
       Satellites, lidar and machine learning, made legible: the maps that showed buyers what their money was&nbsp;doing.
     </ChapterDivider>
@@ -124,10 +124,9 @@ export const Maps = () => (
         name="lidar-flight"
         label="A flight through the Corridors of Life point cloud, trees in their own colours"
         aspect="aspect-video"
-        caption="The Corridors of Life point cloud, in the trees' own colours."
         bleed
       />
-      <FieldGallery caption="Corredores de Vida, the restoration behind the lidar, in Brazil. Photos: Pachama." className="mt-16 sm:mt-24" />
+      <FieldGallery />
     </Section>
 
   </Band>
