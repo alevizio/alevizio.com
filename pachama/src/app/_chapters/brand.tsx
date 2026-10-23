@@ -1,3 +1,13 @@
+import deck01 from "@/assets/brand/originals/01-cover.jpg";
+import deck02 from "@/assets/brand/originals/02-challenges.jpg";
+import deck03 from "@/assets/brand/originals/03-lifecycle.jpg";
+import deck04 from "@/assets/brand/originals/04-approach.jpg";
+import deck05 from "@/assets/brand/originals/05-quality.jpg";
+import deck06 from "@/assets/brand/originals/06-technology.jpg";
+import deck07 from "@/assets/brand/originals/07-pricing.jpg";
+import deck08 from "@/assets/brand/originals/08-opportunities.jpg";
+import deck09 from "@/assets/brand/originals/09-in-action.jpg";
+import deck10 from "@/assets/brand/originals/10-measurement.jpg";
 import ecologyEconomy from "@/assets/brand/reveal-ecology-economy.jpg";
 import fromTo from "@/assets/brand/reveal-from-to.jpg";
 import socialEditorial from "@/assets/brand/social/editorial.jpg";
@@ -64,6 +74,21 @@ const TEMPLATES = [
 
 // Half the window: the applications run edge to edge in two columns.
 const EDGE_HALF = "(min-width: 640px) 50vw, 100vw";
+
+// The Pachama Originals deck, ten of its 45 slides, rendered from the
+// Google Slides file (Originals Core Deck) with their text.
+const DECK = [
+  { src: deck01, alt: "The deck's cover: A new generation of tech-enabled forest projects, over an aerial of a river winding through wetland, with the Pachama Originals logo" },
+  { src: deck02, alt: "The market's challenges: 75% of ARR projects don't plant enough native species or lack data to verify additionality, two planting seasons left, a projected 6x rise in credit prices by 2035" },
+  { src: deck03, alt: "The Originals project lifecycle in four stages, each with a photo: Qualify, 1 to 3 months; Plan & Commit, 6 to 12 months; Execute, 1 to 5 years; Maintain, 5 to 30 years" },
+  { src: deck04, alt: "Our approach, beside a lidar tree in the spectrum's colours: designed with quality at the forefront, radical transparency across the project life cycle, technology from creation to credits" },
+  { src: deck05, alt: "Designed with quality at the forefront: the four criteria, additional, conservative, durable and beyond carbon, each with the checks behind it" },
+  { src: deck06, alt: "Enabled by technology from creation to credits: the reforestation partner portal for developers and the buyer portal for corporates, powered by AI and remote sensing" },
+  { src: deck07, alt: "Removal credits with price and volume security: projected spot prices rising to 150 to 200 dollars a tonne by 2050, against the Originals' fixed price" },
+  { src: deck08, alt: "Investment opportunities: Avahoula and Flyway Forest in the Lower Mississippi, Águas do Rio and Corredores Pau Brasil in Brazil's Atlantic Rainforest" },
+  { src: deck09, alt: "Originals in action: Mercado Libre's Regenera América, 23.7 million dollars invested, 15,000 hectares restored and 9 projects supported" },
+  { src: deck10, alt: "All powered by AI and remote sensing based measurement: estimating carbon, assessing the baseline and monitoring forest cover change" },
+];
 
 export const Brand = () => (
   <Band tone="ground">
@@ -199,6 +224,15 @@ export const Brand = () => (
         ))}
       </ul>
       <Slider label="Each template's posts" slides={TEMPLATES} sizes="(min-width: 1024px) 64vw, 86vw" className="mt-12" />
+    </Section>
+
+    <Section
+      id="decks"
+      eyebrow="Presentations"
+      title="A deck for Pachama Originals"
+      text="Originals were the reforestation projects Pachama set up and financed from the start, and corporate buyers needed the case for them. I designed the deck in the new brand: the challenge, how a project runs from qualifying the land to issuing credits, the quality it's held to, and what it costs and delivers."
+    >
+      <Slider label="The Originals deck, ten of its slides" slides={DECK} sizes="(min-width: 1376px) 830px, (min-width: 1024px) 64vw, (min-width: 640px) 72vw, 86vw" />
     </Section>
 
     <Section
