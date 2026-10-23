@@ -3,9 +3,10 @@ import { useEffect, useRef } from "react";
 // A slow field of noise, quantised to a grid of 16 cells across the screen
 // and dithered between two greys with a 2×2 Bayer screen: flat cells where
 // the field is saturated, dot and checker cells where it is in between, the
-// blobs sliding and shifting as the field moves. It moves all the time,
-// along a random path: the direction and the pace wander, from noise over
-// time, so cells flip here and there and it never settles. On load, once
+// blobs sliding and shifting as the field moves. It moves in the
+// reference's rhythm: every PERIOD seconds it slides on for SLIDE seconds,
+// eased, along a new random direction, and between slides it creeps, so
+// it never stands still. On load, once
 // the logo has turned in, the cells come up one by one in a random order,
 // each through the dither, spreading a little from the mark's corner; each
 // load starts somewhere else in the noise, so no two look alike. It
@@ -20,9 +21,11 @@ const LIGHT = "#dedbd1";
 const DARK = "#d3d0c6";
 const CELLS = 16; // cells across the width
 const DOT = 4; // dither cell, CSS px
-const WANDER = 0.06; // how fast the path changes direction and pace, per second
-const REACH = 0.12; // how far the path wanders, in field units
-const DRIFT = 0.0015; // a steady drift under the wander, field units per second, so it never retraces
+const PERIOD = 14; // seconds from one slide to the next, the reference's rhythm
+const SLIDE = 6; // seconds a slide lasts
+const STEP = 0.055; // how far a slide moves the field, in field units
+const CREEP = 0.05; // how far the field wanders between slides, in field units
+const CREEP_RATE: [number, number] = [0.031, 0.023]; // radians per second of that wander, one per axis, so it never retraces
 const VIGNETTE = 0.12; // darkening at the corners, 0 to 1
 const FADE = 0.4; // share of the height over which the field fades out at the bottom
 const DEVELOP_AT = 0.6; // seconds after load when the field starts to develop
@@ -51,7 +54,7 @@ interface Renderer {
   uSize: WebGLUniformLocation | null;
   uView: WebGLUniformLocation | null;
   uScale: WebGLUniformLocation | null;
-  uTime: WebGLUniformLocation | null;
+  uOffset: WebGLUniformLocation | null;
   uDot: WebGLUniformLocation | null;
   uDevelop: WebGLUniformLocation | null;
   uFoot: WebGLUniformLocation | null;
@@ -72,7 +75,7 @@ precision mediump float;
 uniform vec2 u_size;             // canvas size, CSS px
 uniform vec2 u_view;             // viewport size, CSS px: sets the cell
 uniform float u_scale;           // canvas px per CSS px
-uniform float u_time;            // seconds
+uniform vec2 u_offset;           // where the field has moved to, in field units
 uniform float u_dot;             // dither cell, canvas px
 uniform float u_develop;         // the intro, 0 (page colour) to 1 (developed)
 uniform float u_foot;            // the hero's foot, as a share of the canvas height
@@ -83,9 +86,6 @@ uniform vec4 u_drops[MAX_DROPS]; // x, y (CSS px, origin bottom-left), radius, e
 uniform int u_count;
 
 const float CELLS = ${CELLS.toFixed(1)};
-const float WANDER = ${WANDER.toFixed(4)};
-const float REACH = ${REACH.toFixed(4)};
-const float DRIFT = ${DRIFT.toFixed(5)};
 const float VIGNETTE = ${VIGNETTE.toFixed(3)};
 const float FADE = ${FADE.toFixed(3)};
 const float POP = ${POP.toFixed(3)};
@@ -125,18 +125,11 @@ float snoise(vec2 v) {
 // A random number per cell, for the order the cells come up in.
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 
-// Where the field has drifted to: a random path, from noise over time, whose
-// direction and pace wander, over a slow steady drift so it never retraces.
-vec2 path(float time) {
-  float s = time * WANDER;
-  return vec2(snoise(vec2(s, 2.7)), snoise(vec2(s, 9.4))) * REACH + vec2(time, time * 0.35) * DRIFT;
-}
-
 // The field at a point, in cell units measured from the top-left: three
-// octaves of noise, warped by a slower one, moved along the path.
+// octaves of noise, warped by a slower one, moved on by the offset.
 float field(vec2 c) {
   vec2 n = c / CELLS;
-  vec2 o = path(u_time) + u_seed;
+  vec2 o = u_offset + u_seed;
   vec2 warp = vec2(snoise(n * 1.5 + o * 0.7), snoise(n * 1.5 + vec2(3.7, 9.1) - o.yx * 0.5)) * WARP;
   vec2 q = n * SCALE + warp + o;
   float f = 0.6 * snoise(q) + 0.3 * snoise(q * 2.0 + 11.0) + 0.15 * snoise(q * 4.0 + 23.0);
@@ -229,7 +222,7 @@ function createRenderer(canvas: HTMLCanvasElement): Renderer | null {
   gl.uniform3fv(u("u_light"), new Float32Array(hexToRgb(LIGHT)));
   gl.uniform3fv(u("u_dark"), new Float32Array(hexToRgb(DARK)));
   gl.uniform2f(u("u_seed"), Math.random() * SEED, Math.random() * SEED);
-  return { gl, uSize: u("u_size"), uView: u("u_view"), uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDevelop: u("u_develop"), uFoot: u("u_foot"), uDrops: u("u_drops"), uCount: u("u_count") };
+  return { gl, uSize: u("u_size"), uView: u("u_view"), uScale: u("u_scale"), uOffset: u("u_offset"), uDot: u("u_dot"), uDevelop: u("u_develop"), uFoot: u("u_foot"), uDrops: u("u_drops"), uCount: u("u_count") };
 }
 
 export default function SlidingBlocks() {
@@ -285,6 +278,25 @@ export default function SlidingBlocks() {
     };
 
     const easeInOut = (x: number) => x * x * (3 - 2 * x);
+    // Where the field is at a time: the slides so far, the current one eased
+    // in, and the creep, a slow wander that never stops.
+    let banked: [number, number] = [0, 0];
+    let direction: [number, number] = [0, 0];
+    let pulse = -1;
+    const offset = (time: number): [number, number] => {
+      const k = Math.floor(time / PERIOD);
+      if (k !== pulse) {
+        banked = [banked[0] + STEP * direction[0], banked[1] + STEP * direction[1]];
+        const angle = Math.random() * Math.PI * 2;
+        direction = [Math.cos(angle), Math.sin(angle)];
+        pulse = k;
+      }
+      const slid = STEP * easeInOut(Math.min((time - k * PERIOD) / SLIDE, 1));
+      return [
+        banked[0] + direction[0] * slid + CREEP * Math.sin(time * CREEP_RATE[0]),
+        banked[1] + direction[1] * slid + CREEP * Math.cos(time * CREEP_RATE[1]),
+      ];
+    };
     const draw = (r: Renderer, time: number) => {
       const grown = reduceMotion.matches ? 1 : Math.min(Math.max((time - DEVELOP_AT) / DEVELOP, 0), 1);
       r.gl.uniform1f(r.uDevelop, easeInOut(grown));
@@ -297,7 +309,7 @@ export default function SlidingBlocks() {
       }
       r.gl.uniform4fv(r.uDrops, dropData);
       r.gl.uniform1i(r.uCount, drops.length);
-      r.gl.uniform1f(r.uTime, time);
+      r.gl.uniform2fv(r.uOffset, offset(time));
       r.gl.drawArrays(r.gl.TRIANGLES, 0, 3);
       if (!shown) {
         shown = true;
