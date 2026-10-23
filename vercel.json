@@ -13,6 +13,11 @@
       "permanent": false
     },
     {
+      "source": "/work/pachama",
+      "destination": "https://pachama.alevizio.com",
+      "permanent": false
+    },
+    {
       "source": "/",
       "has": [{ "type": "host", "value": "alejandrovizio.com" }],
       "destination": "https://alevizio.com/",
