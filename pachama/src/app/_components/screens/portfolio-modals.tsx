@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import { MdAdd, MdArrowForward, MdCheckCircle, MdMoreVert } from "react-icons/md";
 import { Button } from "../banyan/button";
 import { Tag } from "../banyan/data-display/tag";
-import { Radio } from "../banyan/forms/choice";
+import { Radio, RadioMark } from "../banyan/forms/choice";
 import { TextInput } from "../banyan/forms/input";
 import { BN } from "../banyan/ui";
 import { MARKS } from "../brand-marks";
@@ -150,7 +150,7 @@ export const ProposalModal = ({ className }: { className?: string }) => {
           <h4 className="font-display text-[32px] leading-none font-bold">Proposal details</h4>
           <section>
             <h5 className="font-mono text-[13px] font-bold tracking-[0.04em] uppercase">Project</h5>
-            <label className="mt-3 flex cursor-pointer items-center gap-4 rounded-[16px] p-4 ring-1 ring-[#d6dad5] has-checked:ring-2 has-checked:ring-bn-grey-dark">
+            <label className="group mt-3 flex cursor-pointer items-center gap-4 rounded-[16px] p-4 ring-1 ring-[#d6dad5] has-checked:bg-bn-green-lightest/40 has-checked:ring-2 has-checked:ring-bn-green-dark">
               <span className="grid flex-1 gap-1">
                 <span className="flex items-center gap-2 text-[13px]">
                   <span className="grid size-6 place-items-center rounded-full bg-bn-green">
@@ -164,7 +164,8 @@ export const ProposalModal = ({ className }: { className?: string }) => {
                 <span className="font-display text-[24px] leading-7 font-bold">Chocó-Darién Bioregion</span>
                 <span className="text-[13px] text-bn-medium">Avoided unplanned deforestation</span>
               </span>
-              <input type="radio" name="proposal-project" defaultChecked className={cn("size-5 accent-bn-heavy", BN.focus)} />
+              <input type="radio" name="proposal-project" defaultChecked className="peer sr-only" />
+              <RadioMark />
             </label>
           </section>
           <section>

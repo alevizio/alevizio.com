@@ -51,21 +51,28 @@ export const Checkbox = ({ label, size = "md", indeterminate = false, className,
 const RING: Record<Size, string> = { sm: "size-5", md: "size-6", lg: "size-7" };
 const DOT: Record<Size, string> = { sm: "size-2", md: "size-2.5", lg: "size-3" };
 
+/** A radio's ring and dot alone, for an option whose label is a whole
+ *  card: put it right after the card's sr-only radio input, in a `group`
+ *  label. */
+export const RadioMark = ({ size = "md" }: { size?: Size }) => (
+  <span
+    aria-hidden
+    className={cn(
+      "grid shrink-0 place-items-center rounded-full border border-bn-medium bg-white/30 transition-colors group-hover:border-bn-heavy",
+      "peer-checked:border-2 peer-checked:border-bn-heavy group-has-[:disabled]:border-bn-line",
+      FOCUS,
+      RING[size],
+    )}
+  >
+    <span className={cn("rounded-full bg-bn-heavy opacity-0 group-has-[:checked]:opacity-100 group-has-[:disabled]:bg-bn-line", DOT[size])} />
+  </span>
+);
+
 /** One option of a radio group; group them in a fieldset with one name. */
 export const Radio = ({ label, size = "md", className, ...input }: ChoiceProps) => (
   <label className={cn(LABEL, TEXT[size], className)}>
     <input type="radio" className="peer sr-only" {...input} />
-    <span
-      aria-hidden
-      className={cn(
-        "grid shrink-0 place-items-center rounded-full border border-bn-medium bg-white/30 transition-colors group-hover:border-bn-heavy",
-        "peer-checked:border-2 peer-checked:border-bn-heavy group-has-[:disabled]:border-bn-line",
-        FOCUS,
-        RING[size],
-      )}
-    >
-      <span className={cn("rounded-full bg-bn-heavy opacity-0 group-has-[:checked]:opacity-100 group-has-[:disabled]:bg-bn-line", DOT[size])} />
-    </span>
+    <RadioMark size={size} />
     <span className={LABEL_TEXT}>{label}</span>
   </label>
 );
