@@ -17,10 +17,12 @@ import { CarbonMonitoring } from "../_components/screens/carbon-monitoring";
 import { EvaluationBook } from "../_components/screens/evaluation-book";
 import { ManoaFlight } from "../_components/screens/manoa-flight";
 import { Insights } from "../_components/screens/insights";
+import { LandSuitability } from "../_components/screens/land-suitability";
 import { OpportunityMap } from "../_components/screens/opportunity-map";
 import { PortfolioDashboard } from "../_components/screens/portfolio";
 import { ProposalModal, SourcingPlanModal } from "../_components/screens/portfolio-modals";
 import { Retirements } from "../_components/screens/retirements";
+import { SourceFlow } from "../_components/screens/source-flow";
 import { SourcingEvent } from "../_components/screens/sourcing-event";
 import { BLEED, HALF, Shot, TallShot } from "../_components/shot";
 import { Slider } from "../_components/slider";
@@ -172,10 +174,21 @@ export const Product = () => (
       title="A sourcing event in one link"
       text="Source generalised what we built for the Symbiosis RFP: any buyer could run its own call for carbon projects, publish what it's looking for in one link, and have developers submit, share their land and see how much of it qualifies. Acme stands in for the buyer. Try it: submit a proposal."
     >
-      <div data-reveal="frame">
+      <SourceFlow />
+      <div data-reveal="frame" className="mt-14 sm:mt-20">
         <SourcingEvent />
       </div>
       <p className="type-caption mt-3 text-(--tone-text)">The event page a buyer shares, rebuilt live from the design, and the first steps of a submission.</p>
+      <div id="land-suitability" className="mt-16 scroll-mt-10 sm:mt-24">
+        <p data-reveal className="type-body max-w-[40rem] text-(--tone-text)">
+          The step it all turns on is land suitability: the developer shares the project&apos;s land and sees, against satellite data, how much of it
+          qualifies and why the rest doesn&apos;t, then adds whatever context the buyer should weigh. Here on three parcels, with the live product&apos;s
+          figures: turn each class off and on, or go back a tab and calculate again.
+        </p>
+        <div data-reveal="frame" className="mt-8 sm:mt-10">
+          <LandSuitability />
+        </div>
+      </div>
     </Section>
 
     <Section
