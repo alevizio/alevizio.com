@@ -1,4 +1,4 @@
-import { Bento, Specimen } from "../specimen";
+import { Specimen } from "../specimen";
 import { Avatar, AvatarGroup } from "./avatar";
 import { Badge, InsightBadge, PassBadge } from "./badge";
 import { Divider } from "./divider";
@@ -16,7 +16,7 @@ const PEOPLE = [
 ];
 
 export const DataDisplay = () => (
-  <Bento>
+  <>
     <Specimen name="Table" span="full" note="Search, filter by status, sort by any column, pick rows and page through. Credit balances on the two real projects; the numbers are samples." panelClassName="block">
       <DataTable />
     </Specimen>
@@ -57,5 +57,5 @@ export const DataDisplay = () => (
         REDD+
       </div>
     </Specimen>
-  </Bento>
+  </>
 );

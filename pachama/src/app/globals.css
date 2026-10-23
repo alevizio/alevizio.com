@@ -81,17 +81,18 @@
 }
 
 /* Banyan's gradients: green to glacier (a primary button's hover and press),
- * and its faded form for a disabled one. */
+ * and its faded form for a disabled one. They run from the accent token, so
+ * a swapped accent (the gallery's tint) carries into them. */
 @utility bn-green-blue {
-  background-image: linear-gradient(97deg, #81f18e 19.7%, #84e1ff 112%);
+  background-image: linear-gradient(97deg, var(--color-bn-green) 19.7%, var(--color-bn-blue) 112%);
 }
 
 @utility bn-green-blue-pressed {
-  background-image: linear-gradient(75deg, #81f18e, #84e1ff);
+  background-image: linear-gradient(75deg, var(--color-bn-green), var(--color-bn-blue));
 }
 
 @utility bn-green-blue-faded {
-  background-image: linear-gradient(75deg, rgb(132 225 255 / 0.5), #81f18e);
+  background-image: linear-gradient(75deg, rgb(132 225 255 / 0.5), var(--color-bn-green));
 }
 
 /* Headlines set like the brand's: Chromatic Condensed, bold, in capitals, tight. */

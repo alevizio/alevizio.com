@@ -69,14 +69,7 @@ const NAV: readonly NavGroup[] = [
     title: "Banyan",
     items: [
       { id: "kit-all", label: "The system" },
-      { id: "foundations", label: "Foundations" },
-      { id: "patterns", label: "Patterns" },
-      { id: "map-kit", label: "Maps" },
-      { id: "forms", label: "Forms" },
-      { id: "data-display", label: "Data display" },
-      { id: "feedback", label: "Feedback" },
-      { id: "overlay", label: "Overlay" },
-      { id: "media", label: "Media" },
+      { id: "components", label: "Every component" },
     ],
   },
   {

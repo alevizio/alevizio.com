@@ -1,4 +1,4 @@
-import { Bento, Specimen } from "../specimen";
+import { Specimen } from "../specimen";
 import { CalendarExample, DatePicker } from "./datepicker";
 import { ButtonRows, Choices, IconButtons, Inputs, Selects, TextAreas } from "./demos";
 import { FileUpload } from "./file-upload";
@@ -6,7 +6,7 @@ import { FileUpload } from "./file-upload";
 /* Forms: the ten controls, in Banyan's order, each in the states its docs
  * show. */
 export const Forms = () => (
-  <Bento>
+  <>
     <Specimen
       name="Button"
       span="full"
@@ -39,5 +39,5 @@ export const Forms = () => (
     <Specimen name="File upload" span="wide" note="Drop an image or browse for one: it uploads, then fills the zone. It stays in this tab." panelClassName="block">
       <FileUpload className="mx-auto max-w-lg" />
     </Specimen>
-  </Bento>
+  </>
 );

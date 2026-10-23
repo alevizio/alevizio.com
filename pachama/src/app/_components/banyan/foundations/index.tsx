@@ -1,11 +1,11 @@
-import { Bento, Specimen } from "../specimen";
+import { Specimen } from "../specimen";
 import { BrandRamps, Gradients, Roles } from "./colours";
 import { Levels } from "./levels";
 import { TypeScale } from "./type-scale";
 
 /* Foundations: the type, the colour and the levels everything sits on. */
 export const Foundations = () => (
-  <Bento>
+  <>
     <Specimen
       name="Typography"
       span="full"
@@ -31,5 +31,5 @@ export const Foundations = () => (
     >
       <Levels />
     </Specimen>
-  </Bento>
+  </>
 );

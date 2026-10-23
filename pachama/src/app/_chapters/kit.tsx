@@ -1,12 +1,5 @@
 import { BanyanCover } from "../_components/banyan/cover";
-import { DataDisplay } from "../_components/banyan/data-display";
-import { Feedback } from "../_components/banyan/feedback";
-import { Forms } from "../_components/banyan/forms";
-import { Foundations } from "../_components/banyan/foundations";
-import { MapKit } from "../_components/banyan/maps";
-import { Media } from "../_components/banyan/media";
-import { Overlay } from "../_components/banyan/overlay";
-import { Patterns } from "../_components/banyan/patterns";
+import { ComponentGallery } from "../_components/banyan/gallery";
 import { DocWall } from "../_components/banyan/wall";
 import { CountUp } from "../_components/count-up";
 import { Band, ChapterDivider, Section } from "../_components/story";
@@ -48,51 +41,13 @@ export const Kit = () => (
       <DocWall className="mt-10" />
     </Section>
 
-    <Section id="foundations" eyebrow="Foundations" title="Type, colour and the levels things sit on">
-      <Foundations />
-    </Section>
-
     <Section
-      id="patterns"
-      eyebrow="Patterns"
-      title="How a page is put together"
-      text="Navigation, cards, graphs, accordions, steppers, breadcrumbs and tabs: the bigger pieces, built from the smaller ones."
+      id="components"
+      eyebrow="Every component"
+      title="The whole library, live"
+      text="Every family from the Figma, rebuilt and working, in one place. Use them: the buttons press, the menus open, the map plays."
     >
-      <Patterns />
-    </Section>
-
-    <Section
-      id="map-kit"
-      eyebrow="Maps"
-      title="Legends, tooltips, a player and pins"
-      text="What sits on top of the satellite imagery: what a colour means, where the data comes from, and how a forest changed year by year."
-    >
-      <MapKit />
-    </Section>
-
-    <Section id="forms" eyebrow="Forms" title="Every control a form needs" text="Ten controls, from the button to the date picker, in the states the Figma documents.">
-      <Forms />
-    </Section>
-
-    <Section id="data-display" eyebrow="Data display" title="Tables, tags, badges and avatars" text="How numbers, statuses and people show up.">
-      <DataDisplay />
-    </Section>
-
-    <Section id="feedback" eyebrow="Feedback" title="Alerts, banners, progress and toasts" text="How the product answers back.">
-      <Feedback />
-    </Section>
-
-    <Section id="overlay" eyebrow="Overlay" title="Menus, modals, popovers and tooltips" text="What opens on top of a page, and closes again with Escape.">
-      <Overlay />
-    </Section>
-
-    <Section
-      id="media"
-      eyebrow="Media"
-      title="Icons, by their Material names"
-      text="Google's Material Icons, 1,310 of them in the Figma library. Banyan also carries the seventeen UN Sustainable Development Goals and a set of country flags."
-    >
-      <Media />
+      <ComponentGallery />
     </Section>
   </Band>
 );

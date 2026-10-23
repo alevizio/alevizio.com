@@ -1,9 +1,9 @@
-import { Bento, Specimen } from "../specimen";
+import { Specimen } from "../specimen";
 import { IconGrid } from "./icons";
 
 /* Media: the icon set, and what else Banyan carries for pictures. */
 export const Media = () => (
-  <Bento>
+  <>
     <Specimen
       name="Icons"
       span="full"
@@ -12,5 +12,5 @@ export const Media = () => (
     >
       <IconGrid />
     </Specimen>
-  </Bento>
+  </>
 );

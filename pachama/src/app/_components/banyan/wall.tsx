@@ -9,7 +9,7 @@ import { cn } from "../cn";
 import { BN } from "./ui";
 
 /* Every page of Banyan's documentation, as the Figma lays them out side by
- * side, in its six groups. Each group links to its section below. */
+ * side, in its six groups. Each group opens the gallery below on its family. */
 const GROUPS: { id: string; label: string; image: StaticImageData; pages: string }[] = [
   { id: "foundations", label: "Foundations", image: foundations, pages: "the cover, getting started, typography, colour and background levels" },
   { id: "patterns", label: "Patterns", image: patterns, pages: "navigation, cards, graphs, accordion, stepper, breadcrumb, tabs and maps" },

@@ -1,4 +1,4 @@
-import { Bento, Specimen } from "../specimen";
+import { Specimen } from "../specimen";
 import { Alert } from "./alert";
 import { BannerDemo, ProgressDemo, ToastDemo } from "./demos";
 import { Skeleton } from "./skeleton";
@@ -7,7 +7,7 @@ import { Spinner } from "./spinner";
 /* Feedback: how the product answers back, from a toast that comes and goes
  * to the skeleton a page shows while it loads. */
 export const Feedback = () => (
-  <Bento>
+  <>
     <Specimen name="Toast" span="half" note="Raise one: it comes in on glass with a stripe of its tone, stays eight seconds, and Escape or the close button sends it off." panelClassName="block">
       <ToastDemo />
     </Specimen>
@@ -34,5 +34,5 @@ export const Feedback = () => (
         <Skeleton className="w-1/2" />
       </div>
     </Specimen>
-  </Bento>
+  </>
 );

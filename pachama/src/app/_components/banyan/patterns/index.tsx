@@ -1,5 +1,5 @@
 import { cn } from "../../cn";
-import { BENTO_CARD, Bento, SPAN, Specimen } from "../specimen";
+import { BENTO_CARD, SPAN, Specimen } from "../specimen";
 import { AccordionItem, Dropdown } from "./accordion";
 import { AppFrame } from "./app-frame";
 import { Breadcrumb, type Crumb } from "./breadcrumb";
@@ -25,7 +25,7 @@ const CRUMBS: Crumb[] = [
 const Panel = ({ children }: { children: string }) => <p className="max-w-prose pt-4 text-[15px] leading-6 text-bn-medium">{children}</p>;
 
 export const Patterns = () => (
-  <Bento>
+  <>
     <Specimen name="Navigation, the website" span="full" flush note="The top bar on glass. Solutions opens its menu; with less room the bar folds into the menu button." panelClassName="block p-0 sm:p-0 overflow-hidden">
       <TopNav />
     </Specimen>
@@ -78,5 +78,5 @@ export const Patterns = () => (
       <Breadcrumb items={CRUMBS} separator="dash" label="Breadcrumb, dashes" />
       <Breadcrumb items={CRUMBS} separator="icon" label="Breadcrumb, arrows" />
     </Specimen>
-  </Bento>
+  </>
 );

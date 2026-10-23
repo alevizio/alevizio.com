@@ -1,4 +1,4 @@
-import { Bento, Specimen } from "../specimen";
+import { Specimen } from "../specimen";
 import { AccountMenu, MenuTemplates, MultiSelectMenu, SingleSelectMenu } from "./menu-demos";
 import { ModalDemos, ModalStill } from "./modal-demos";
 import { PopoverExamples, PopoverPositions } from "./popover-demos";
@@ -6,8 +6,8 @@ import { TooltipExamples, TooltipPositions } from "./tooltip-demos";
 
 /* Overlay: what floats over the page. Menus, modals, popovers and tooltips,
  * all on Banyan's glass. */
-export const Overlay = ({ className }: { className?: string }) => (
-  <Bento className={className}>
+export const Overlay = () => (
+  <>
     <Specimen
       name="Menu"
       span="full"
@@ -38,5 +38,5 @@ export const Overlay = ({ className }: { className?: string }) => (
     <Specimen name="Tooltip, in use" span="half" note="A name cut short in a table, a field too narrow for its picks. Hover or tab to them; sample rows.">
       <TooltipExamples />
     </Specimen>
-  </Bento>
+  </>
 );
