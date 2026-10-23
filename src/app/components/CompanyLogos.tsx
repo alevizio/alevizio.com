@@ -210,7 +210,7 @@ const Logo = ({
   <motion.a
     href={caseStudy ? caseStudy.href : company.url}
     {...(caseStudy ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-    className="relative opacity-80 hover:opacity-40 transition-opacity"
+    className="group relative opacity-80 hover:opacity-40 transition-opacity"
     title={caseStudy ? `${company.name} — case study` : company.name}
     onPointerEnter={
       caseStudy
@@ -246,9 +246,15 @@ const Logo = ({
       </svg>
     </div>
     {/* Tenure bubble + tag in one row, absolutely positioned so their width
-        never widens the logo cell (keeps logo columns aligned). */}
+        never widens the logo cell (keeps logo columns aligned). A case
+        study's pill waits for the pointer, or keyboard focus, on the logo;
+        touch screens have no hover, so they keep it. */}
     {(company.years || company.tag) && (
-      <div className="absolute left-0 top-full mt-2 flex flex-row items-center whitespace-nowrap">
+      <div
+        className={`absolute left-0 top-full mt-2 flex flex-row items-center whitespace-nowrap ${
+          caseStudy ? "transition-opacity [@media(hover:hover)]:opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100" : ""
+        }`}
+      >
         {company.tag &&
           (company.tag.url ? (
             <a
