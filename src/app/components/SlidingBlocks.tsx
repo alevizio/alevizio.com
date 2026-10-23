@@ -5,13 +5,15 @@ import { useEffect, useRef } from "react";
 // the field is saturated, dot and checker cells where it is in between, the
 // blobs sliding and shifting as the field moves. It moves all the time,
 // along a random path: the direction and the pace wander, from noise over
-// time, so cells flip here and there and it never settles. On load it
-// develops across the hero from the top-left, through the dither, like a
-// print coming up, once the logo has turned in. It covers the hero block,
-// runs 320px into the timeline, fades to the page colour by then and scrolls
-// away with the hero; the loop stops while the hero is off screen. Drawn by
-// the GPU as one WebGL triangle. The mouse leaves ripples that invert the
-// field along a ring, with the old ASCII rain's drop physics in pixels.
+// time, so cells flip here and there and it never settles. On load, once
+// the logo has turned in, the cells come up one by one in a random order,
+// each through the dither, spreading a little from the mark's corner; each
+// load starts somewhere else in the noise, so no two look alike. It
+// covers the hero block, runs 320px into the timeline, fades to the page
+// colour by then and scrolls away with the hero; the loop stops while the
+// hero is off screen. Drawn by the GPU as one WebGL triangle. The mouse
+// leaves ripples that invert the field along a ring, with the old ASCII
+// rain's drop physics in pixels.
 
 // The page background, and the dark grey the field dithers towards.
 const LIGHT = "#dedbd1";
@@ -25,6 +27,9 @@ const VIGNETTE = 0.12; // darkening at the corners, 0 to 1
 const FADE = 0.4; // share of the height over which the field fades out at the bottom
 const DEVELOP_AT = 0.6; // seconds after load when the field starts to develop
 const DEVELOP = 1.6; // seconds the development takes
+const POP = 0.2; // share of the development each cell takes to come up
+const SPREAD = 0.3; // how much the cells' order follows the distance from the mark's corner, 0 (random) to 1 (a sweep)
+const SEED = 20; // each load starts somewhere else in the noise, up to this far, in field units
 // The field's only visible changes are cells flipping now and then, seconds
 // apart, so 10 fps looks the same as 60 at a sixth of the cost. Ripples and
 // the intro run at 60.
@@ -71,6 +76,7 @@ uniform float u_time;            // seconds
 uniform float u_dot;             // dither cell, canvas px
 uniform float u_develop;         // the intro, 0 (page colour) to 1 (developed)
 uniform float u_foot;            // the hero's foot, as a share of the canvas height
+uniform vec2 u_seed;             // where in the noise this load starts
 uniform vec3 u_light;
 uniform vec3 u_dark;
 uniform vec4 u_drops[MAX_DROPS]; // x, y (CSS px, origin bottom-left), radius, energy
@@ -82,6 +88,8 @@ const float REACH = ${REACH.toFixed(4)};
 const float DRIFT = ${DRIFT.toFixed(5)};
 const float VIGNETTE = ${VIGNETTE.toFixed(3)};
 const float FADE = ${FADE.toFixed(3)};
+const float POP = ${POP.toFixed(3)};
+const float SPREAD = ${SPREAD.toFixed(3)};
 const float SCALE = 3.0;      // blobs span a few cells
 const float WARP = 0.35;      // distortion of the field
 const float CONTRAST = 8.0;   // most cells saturate; the rest dither
@@ -114,6 +122,9 @@ float snoise(vec2 v) {
   return 130.0 * dot(m, g);
 }
 
+// A random number per cell, for the order the cells come up in.
+float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+
 // Where the field has drifted to: a random path, from noise over time, whose
 // direction and pace wander, over a slow steady drift so it never retraces.
 vec2 path(float time) {
@@ -125,7 +136,7 @@ vec2 path(float time) {
 // octaves of noise, warped by a slower one, moved along the path.
 float field(vec2 c) {
   vec2 n = c / CELLS;
-  vec2 o = path(u_time);
+  vec2 o = path(u_time) + u_seed;
   vec2 warp = vec2(snoise(n * 1.5 + o * 0.7), snoise(n * 1.5 + vec2(3.7, 9.1) - o.yx * 0.5)) * WARP;
   vec2 q = n * SCALE + warp + o;
   float f = 0.6 * snoise(q) + 0.3 * snoise(q * 2.0 + 11.0) + 0.15 * snoise(q * 4.0 + 23.0);
@@ -143,9 +154,10 @@ void main() {
   vec2 f = vec2(p.x, u_size.y - p.y) / u_size;
   float fade = smoothstep(1.0 - FADE, 1.0, f.y);
   v = mix(v, 1.0, fade);
-  // The intro: a soft front sweeps from the top-left corner and the field
-  // comes up behind it, through the dither levels.
-  float grown = smoothstep(0.0, 1.0, (u_develop * 1.3 - (f.x + f.y) * 0.5) / 0.3);
+  // The intro: the cells come up one by one in a random order, each through
+  // the dither over a short while, spreading a little from the mark's corner.
+  float order = mix(hash(c + u_seed), (f.x + f.y) * 0.5, SPREAD) * (1.0 - POP);
+  float grown = smoothstep(order, order + POP, u_develop);
   v = mix(1.0, v, grown);
 
   // Ripples: along each ring the field is inverted, so flat cells go dark
@@ -167,10 +179,10 @@ void main() {
 
   // The vignette, gone by the hero's foot: past it the field runs under the
   // timeline, whose pinned labels paint paper and would show as boxes on a
-  // tint.
+  // tint. It comes up with the intro.
   vec2 uv = p / u_size - 0.5;
   float vignette = 1.0 - smoothstep(1.0 - FADE, u_foot, f.y);
-  col *= 1.0 - VIGNETTE * dot(uv, uv) * 2.0 * vignette * grown;
+  col *= 1.0 - VIGNETTE * dot(uv, uv) * 2.0 * vignette * u_develop;
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -216,6 +228,7 @@ function createRenderer(canvas: HTMLCanvasElement): Renderer | null {
   const u = (name: string) => gl.getUniformLocation(program, name);
   gl.uniform3fv(u("u_light"), new Float32Array(hexToRgb(LIGHT)));
   gl.uniform3fv(u("u_dark"), new Float32Array(hexToRgb(DARK)));
+  gl.uniform2f(u("u_seed"), Math.random() * SEED, Math.random() * SEED);
   return { gl, uSize: u("u_size"), uView: u("u_view"), uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDevelop: u("u_develop"), uFoot: u("u_foot"), uDrops: u("u_drops"), uCount: u("u_count") };
 }
 
