@@ -1,13 +1,16 @@
 "use client";
 
 import agrocortex from "@/assets/screens/explore-agrocortex.jpg";
+import aguas from "@/assets/screens/explore-aguas.jpg";
+import avahoula from "@/assets/screens/explore-avahoula.jpg";
 import corredores from "@/assets/screens/explore-corredores.jpg";
+import flyaway from "@/assets/screens/explore-flyaway.jpg";
 import kalimantan from "@/assets/screens/explore-kalimantan.jpg";
 import manoa from "@/assets/screens/explore-manoa.jpg";
 import nicaforest from "@/assets/screens/explore-nicaforest.jpg";
 import Image, { type StaticImageData } from "next/image";
 import { useMemo, useState } from "react";
-import { MdArrowBack, MdForest, MdNature, MdPark, MdSearch } from "react-icons/md";
+import { MdArrowBack, MdForest, MdPark, MdSearch } from "react-icons/md";
 import { BN } from "../banyan/ui";
 import { cn } from "../cn";
 import { Globe } from "./globe";
@@ -15,10 +18,11 @@ import { Globe } from "./globe";
 /* Insights, rebuilt live from the product's Explore and Insights screens:
  * Pachama's projects in a list to search and filter, on a dotted globe that
  * turns to each one. The projects, their countries, types and standards are
- * the ones the product's own screens show (hectares where they show them);
- * pins mark each project's region, not its exact site. */
-type Kind = "REDD+" | "ARR" | "IFM";
-type Flag = "br" | "id" | "ni" | "us" | "mx";
+ * the ones the product's own screens show, with three Pachama Originals
+ * from their project pages (hectares where the pages agree on them); pins
+ * mark each project's region, not its exact site. */
+type Kind = "REDD+" | "ARR";
+type Flag = "br" | "id" | "ni" | "us";
 type Project = {
   name: string;
   country: string;
@@ -38,14 +42,14 @@ const PROJECTS: Project[] = [
   { name: "Nicaforest", country: "Nicaragua", flag: "ni", area: "486 ha", kind: "ARR", type: "Afforestation, reforestation & revegetation", standard: "Gold Standard", photo: nicaforest, lon: -85.2, lat: 12.9 },
   { name: "Corredores de Vida", country: "Brazil", flag: "br", kind: "ARR", type: "Restoration of farmland into forest corridors", photo: corredores, lon: -52, lat: -21.5 },
   { name: "Agrocortex", country: "Brazil", flag: "br", area: "182,219 ha", kind: "REDD+", type: "Avoided planned deforestation", standard: "Verified Carbon Standard", photo: agrocortex, lon: -68.3, lat: -8.8 },
-  { name: "Kootznoowoo", country: "United States", flag: "us", kind: "IFM", type: "Improved forest management", standard: "American Carbon Registry", lon: -134.5, lat: 57.5 },
-  { name: "Los Llanos de Apan", country: "Mexico", flag: "mx", kind: "ARR", type: "Restoration", lon: -98.4, lat: 19.7 },
-  { name: "Jari Pará", country: "Brazil", flag: "br", kind: "REDD+", type: "Avoided deforestation", standard: "Verified Carbon Standard", lon: -52.5, lat: -1 },
+  { name: "Águas da Mata Atlântica", country: "Brazil", flag: "br", kind: "ARR", type: "Reforestation of the Atlantic Forest", standard: "Verified Carbon Standard", photo: aguas, lon: -42.9, lat: -22.4 },
+  { name: "Avahoula", country: "United States", flag: "us", area: "2,428 ha", kind: "ARR", type: "Reforestation of marginal, flooded farmland", standard: "Verified Carbon Standard", photo: avahoula, lon: -91.9, lat: 31 },
+  { name: "Flyaway Forests", country: "United States", flag: "us", area: "1,200 ha", kind: "ARR", type: "Native bottomland hardwood forest", standard: "Verified Carbon Standard", photo: flyaway, lon: -90.9, lat: 33.4 },
 ];
 
-const KINDS: Kind[] = ["REDD+", "ARR", "IFM"];
+const KINDS: Kind[] = ["REDD+", "ARR"];
 const COUNTRIES = [...new Map(PROJECTS.map((p) => [p.country, p.flag])).entries()];
-const KIND_ICON = { "REDD+": MdForest, ARR: MdPark, IFM: MdNature } as const;
+const KIND_ICON = { "REDD+": MdForest, ARR: MdPark } as const;
 
 /** Small round flags, like Banyan's country chips. */
 const FlagDot = ({ flag }: { flag: Flag }) => (
@@ -65,12 +69,6 @@ const FlagDot = ({ flag }: { flag: Flag }) => (
       <>
         <rect width="24" height="24" fill="#0067c6" />
         <rect y="8" width="24" height="8" fill="#ffffff" />
-      </>
-    ) : flag === "mx" ? (
-      <>
-        <rect width="8" height="24" fill="#006847" />
-        <rect x="8" width="8" height="24" fill="#ffffff" />
-        <rect x="16" width="8" height="24" fill="#ce1126" />
       </>
     ) : (
       <>
@@ -148,7 +146,7 @@ export const Insights = ({ className }: { className?: string }) => {
                   onClick={() => setPicked(p.name)}
                   className={cn(
                     "grid w-full grid-cols-[1fr_5.25rem] items-center gap-4 rounded-[14px] p-3 text-left transition-colors motion-safe:animate-[arrive_0.45s_var(--ease-arrive)_both]",
-                    on ? "bg-white/12 ring-1 ring-bn-green" : "hover:bg-white/6",
+                    on ? "bg-white/12 ring-1 ring-bn-green ring-inset" : "hover:bg-white/6",
                     BN.focus,
                     "focus-visible:outline-white",
                   )}
