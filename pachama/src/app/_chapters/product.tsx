@@ -6,10 +6,6 @@ import landYield from "@/assets/product/land/4-yield.jpg";
 import monitoringDashboard from "@/assets/product/monitoring-dashboard.jpg";
 import monitoringFireProtanomaly from "@/assets/product/monitoring-fire-protanomaly.jpg";
 import monitoringFire from "@/assets/product/monitoring-fire.jpg";
-import sourceEvaluation from "@/assets/product/source-evaluation.jpg";
-import sourceEventSettings from "@/assets/product/source-event-settings.jpg";
-import sourceEvents from "@/assets/product/source-events.jpg";
-import sourceSubmissions from "@/assets/product/source-submissions.jpg";
 import { cn } from "../_components/cn";
 import { Compare } from "../_components/compare";
 import { BoundaryUpload } from "../_components/screens/boundary-upload";
@@ -22,9 +18,10 @@ import { OpportunityMap } from "../_components/screens/opportunity-map";
 import { PortfolioDashboard } from "../_components/screens/portfolio";
 import { ProposalModal, SourcingPlanModal } from "../_components/screens/portfolio-modals";
 import { Retirements } from "../_components/screens/retirements";
+import { ScreeningBoard } from "../_components/screens/screening-board";
 import { SourceFlow } from "../_components/screens/source-flow";
 import { SourcingEvent } from "../_components/screens/sourcing-event";
-import { BLEED, HALF, Shot, TallShot } from "../_components/shot";
+import { BLEED, HALF, TallShot } from "../_components/shot";
 import { Slider } from "../_components/slider";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
@@ -195,44 +192,11 @@ export const Product = () => (
       id="screening"
       eyebrow="Screening"
       title="Every submission, screened"
-      text="On the buyer's side, projects arrive already checked against satellite data, then move through diligence stage by stage, with the reports beside them."
+      text="On the buyer's side, every submission arrives already checked against satellite data, then moves through diligence stage by stage, each stage's result and report a click away. Rebuilt live from the Source design: a round of submissions plays through it as it's reached; open any one for its evaluation."
     >
-      <Row className="items-start">
-        <Shot
-          zoom
-          src={sourceEvents}
-          alt="Sourcing events: an open reforestation event card with an aerial photo and country flags, and a card to request a new event"
-          caption="A buyer's sourcing events, and a way to request a new one."
-          sizes={HALF}
-          imageClassName={SCREEN}
-        />
-        <Shot
-          zoom
-          src={sourceEventSettings}
-          alt="Event settings: status, name, description, deadline and support email, then the eligibility criteria as removable chips for countries, project types and registries"
-          caption="The event's criteria: countries, project types and the registries it accepts."
-          sizes={HALF}
-          imageClassName={SCREEN}
-        />
-      </Row>
-      <Row className="mt-6 items-start">
-        <Shot
-          zoom
-          src={sourceSubmissions}
-          alt="A table of project submissions: type, location and supplier, screening marked Pass with a priority or Fail, and DMRV core diligence marked No flags"
-          caption="Submissions as they come in, with screening and diligence results alongside."
-          sizes={HALF}
-          imageClassName={SCREEN}
-        />
-        <Shot
-          zoom
-          src={sourceEvaluation}
-          alt="A project's evaluation results: screening passed with a results spreadsheet, internal commentary, and the DMRV core diligence report open in a viewer"
-          caption="Screening, then diligence: each stage's result and the full report in one place."
-          sizes={HALF}
-          imageClassName={SCREEN}
-        />
-      </Row>
+      <div data-reveal>
+        <ScreeningBoard />
+      </div>
     </Section>
   </Band>
 );
