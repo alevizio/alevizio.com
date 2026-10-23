@@ -73,8 +73,9 @@ const paint = (c: HTMLCanvasElement | null, b: Box | null) => {
   for (const i of lit) ctx.fillRect(PAIRS[i * 4], PAIRS[i * 4 + 1], dot, dot);
 };
 
-// The canopy height chart, traced from the design (its own sample line).
-const LINE = "M22 40L40 39L76 38L106 47L130 41L154 44L172 17L211 145L244 19L268 41L295 143L328 19L346 14L376 22";
+// The canopy height chart, traced from the design (its own sample line),
+// its two plunges to about 8 m smoothed into dips, so it reads as data.
+const LINE = "M22 40L40 39L76 38L106 47L130 41L154 44L172 17L211 55L244 19L268 41L295 52L328 19L346 14L376 22";
 const TICKS = [
   { v: "35", y: 3 },
   { v: "30", y: 42 },
@@ -131,7 +132,7 @@ const CanopyChart = () => (
       <svg
         viewBox="0 0 376 172"
         role="img"
-        aria-label="Canopy height in metres: around 30 from 2003, rising to 33 and dropping to about 8 twice, around 2014 and 2019, then back near 33 by 2024. The design's sample line."
+        aria-label="Canopy height in metres: around 30 from 2003, rising to 33 with two dips, around 2014 and 2019, and near 33 by 2024. The design's sample line, smoothed."
         className="block w-full overflow-visible"
       >
         {TICKS.map(({ v, y }) => (

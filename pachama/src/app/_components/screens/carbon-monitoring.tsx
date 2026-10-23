@@ -7,7 +7,8 @@ import { ForestLossMap } from "./forest-loss-map";
  * page of the project data roadmapping Figma: the project's header, its
  * latest monitoring update, the climate benefit year by year, and the
  * forest loss map, which runs on real data. The update's words and the
- * chart's figures are the design's own. */
+ * chart's figures are the design's own, but for the baseline in the
+ * legend: the design's 24,816,000 didn't add up, so it's 20,816,000. */
 const YEARS = [2017, 2018, 2019, 2020, 2021];
 const BASELINE = [2300, 2800, 3500, 3750, 5000];
 const PROJECT = [1200, 1450, 1800, 1900, 2600];
@@ -39,7 +40,7 @@ const CO2e = () => (
 const HATCH = "bg-[repeating-linear-gradient(-45deg,#a4d44a_0_3px,#c8e88c_3px_6px)]";
 
 const BENEFIT = [
-  { label: "Baseline emissions", value: 24816000, swatch: "bg-[#33494a]" },
+  { label: "Baseline emissions", value: 20816000, swatch: "bg-[#33494a]" },
   { label: "Project emissions", value: 16000000, swatch: "bg-[#ff6159]", minus: true },
   { label: "Climate benefit", value: 4816000, swatch: HATCH, total: true },
 ];
