@@ -1,4 +1,3 @@
-import appExplore from "@/assets/product/app-explore.jpg";
 import appMyProjects from "@/assets/product/app-my-projects.jpg";
 import appOrders from "@/assets/product/app-orders.png";
 import appRetirements from "@/assets/product/app-retirements.png";
@@ -7,10 +6,8 @@ import biodiversityKba from "@/assets/product/biodiversity-kba.jpg";
 import biodiversityScore from "@/assets/product/biodiversity-score.jpg";
 import certificate from "@/assets/product/certificate.jpg";
 import developersHeatmap from "@/assets/product/developers-heatmap.jpg";
-import developersHome from "@/assets/product/developers-home.jpg";
 import developersIntake from "@/assets/product/developers-intake.jpg";
 import evaluationLoading from "@/assets/product/evaluation-loading.jpg";
-import evaluation from "@/assets/product/evaluation.png";
 import insightsGlobe from "@/assets/product/insights-globe.jpg";
 import manoaPage from "@/assets/product/manoa-page.jpg";
 import monitoringCarbon from "@/assets/product/monitoring-carbon.jpg";
@@ -24,12 +21,13 @@ import portfolioSourcingPlan from "@/assets/product/portfolio-sourcing-plan.jpg"
 import sourceEvaluation from "@/assets/product/source-evaluation.jpg";
 import sourceEventSettings from "@/assets/product/source-event-settings.jpg";
 import sourceEvents from "@/assets/product/source-events.jpg";
-import sourceLandResults from "@/assets/product/source-land-results.jpg";
 import sourceLandShare from "@/assets/product/source-land-share.jpg";
 import sourceLanding from "@/assets/product/source-landing.jpg";
 import sourceStart from "@/assets/product/source-start.jpg";
 import sourceSubmissions from "@/assets/product/source-submissions.jpg";
 import { Compare } from "../_components/compare";
+import { BoundaryUpload } from "../_components/screens/boundary-upload";
+import { Explore } from "../_components/screens/explore";
 import { HALF, Shot, TallShot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
@@ -52,14 +50,11 @@ export const Product = () => (
       id="marketplace"
       eyebrow="The marketplace"
       title="Finding a project worth buying"
-      text="Explore pairs every project with where it is: cards to filter on one side, the globe on the other, its fires marked in red."
+      text="Explore pairs every project with where it is: cards to filter on one side, the world on the other. Rebuilt here to use: filter by type, pick a project, and the map follows. Then Insights, the same idea for 182 projects."
     >
-      <Shot
-        zoom
-        bleed
-        src={appExplore}
-        alt="Explore: filters for project type and location, cards for Manoa and Central Kalimantan Peatlands, and a globe of South America with fires in red"
-      />
+      <div data-reveal="frame">
+        <Explore />
+      </div>
       <Shot
         zoom
         src={insightsGlobe}
@@ -74,7 +69,7 @@ export const Product = () => (
       id="project"
       eyebrow="Project pages"
       title="Every credit, checked"
-      text="Manoa's page, top to bottom: the forest, its facts and registry, the evaluation on the map, its story and what it does beyond carbon. Then the evaluation as it looked before the rebrand."
+      text="Manoa's page, top to bottom: the forest, its facts and registry, the evaluation on the map, its story and what it does beyond carbon. Its evaluation screen, rebuilt in the new brand, is in the maps chapter."
     >
       <TallShot
         src={manoaPage}
@@ -82,14 +77,6 @@ export const Product = () => (
         label="Manoa's project page, scrollable"
         alt="Manoa's project page: an aerial hero, the overview with Verra and CCB, a photo gallery, a tech-verified evaluation map of deforestation around the project since 1996, the project story, its impacts on education and biodiversity, its files, and other projects"
         caption="Manoa's page in the product. Scroll inside it."
-      />
-      <Shot
-        zoom
-        src={evaluation}
-        alt="Manoa's evaluation page: the project's facts, five quality checks, a reference-region map and a baseline chart, both marked Pass"
-        caption="Evaluation 2.0, before the rebrand."
-        imageClassName={SCREEN}
-        className="mt-10"
       />
     </Section>
 
@@ -105,7 +92,7 @@ export const Product = () => (
       </Row>
       <Row className="mt-6 items-start">
         <Shot
-        zoom
+          zoom
           src={certificate}
           alt="A certificate of authenticity awarded to Just Spices for offsetting 200 tonnes of CO2, from the Kootznoowoo improved forest management project, registered with the American Carbon Registry"
           sizes={HALF}
@@ -191,20 +178,19 @@ export const Product = () => (
       id="developers"
       eyebrow="Developers"
       title="Bringing projects in"
-      text="The other side of the market: landowners and developers. A map of forest carbon potential to start from, a home for their projects and boundaries, and the forms that take a project from its first details to its land's suitability."
+      text="The other side of the market: landowners and developers. A map of forest carbon potential to start from, a boundary uploaded and checked against satellite data (it plays below, with the live product's figures), and the intake that takes a project from its first details to its land's suitability."
     >
       <Shot zoom bleed src={developersHeatmap} alt="'Start your forest carbon project today': a map of forest carbon potential across South America, with an opportunity in Maranhão, Brazil, that could remove 246,416 tonnes of CO2" caption="Where a forest carbon project could start, and what it could earn." />
-      <Row className="mt-6 items-start">
-        <Shot zoom src={developersHome} alt="A developer's home: create a new project or upload a boundary, the projects in progress, and boundaries still to finish" sizes={HALF} caption="A developer's home: projects and boundaries in progress." imageClassName={SCREEN} />
+      <BoundaryUpload className="mt-6" />
+      <div className="mt-6">
         <TallShot
           src={developersIntake}
           frameClassName={SCREEN}
           label="A project's intake, scrollable"
-          sizes={HALF}
           alt="A project's intake: what's needed, the project details form, and land suitability with the project's parcels on the map"
           caption="Intake, from the requirements to the land."
         />
-      </Row>
+      </div>
     </Section>
 
     <Section
@@ -222,7 +208,7 @@ export const Product = () => (
       />
       <Row className="mt-6 items-start">
         <Shot
-        zoom
+          zoom
           src={sourceStart}
           alt="A Start your submission dialog over the event page: pick a project from an earlier event, or name a new one"
           caption="Starting a submission, or reusing a project from an earlier event."
@@ -230,7 +216,7 @@ export const Product = () => (
           imageClassName={SCREEN}
         />
         <Shot
-        zoom
+          zoom
           src={sourceLandShare}
           alt="A project's Land suitability tab: a panel asking the developer to share the project area, beside a globe ready for a boundary"
           caption="Sharing the project's boundary, to be checked against satellite data."
@@ -248,7 +234,7 @@ export const Product = () => (
     >
       <Row className="items-start">
         <Shot
-        zoom
+          zoom
           src={sourceEvents}
           alt="Sourcing events: an open reforestation event card with an aerial photo and country flags, and a card to request a new event"
           caption="A buyer's sourcing events, and a way to request a new one."
@@ -256,7 +242,7 @@ export const Product = () => (
           imageClassName={SCREEN}
         />
         <Shot
-        zoom
+          zoom
           src={sourceEventSettings}
           alt="Event settings: status, name, description, deadline and support email, then the eligibility criteria as removable chips for countries, project types and registries"
           caption="The event's criteria: countries, project types and the registries it accepts."
@@ -264,25 +250,17 @@ export const Product = () => (
           imageClassName={SCREEN}
         />
       </Row>
-      <Shot
-        zoom
-        src={sourceSubmissions}
-        alt="A table of project submissions: type, location and supplier, screening marked Pass with a priority or Fail, and DMRV core diligence marked No flags"
-        caption="Submissions as they come in, with screening and diligence results alongside."
-        className="mt-6"
-        imageClassName={SCREEN}
-      />
       <Row className="mt-6 items-start">
         <Shot
-        zoom
-          src={sourceLandResults}
-          alt="Land suitability results: 99% of the area eligible, suitable and unsuitable hectares by reason, beside the project's parcels on satellite imagery coloured by suitability"
-          caption="Land suitability: how much of a project's area qualifies, and why the rest doesn't."
+          zoom
+          src={sourceSubmissions}
+          alt="A table of project submissions: type, location and supplier, screening marked Pass with a priority or Fail, and DMRV core diligence marked No flags"
+          caption="Submissions as they come in, with screening and diligence results alongside."
           sizes={HALF}
           imageClassName={SCREEN}
         />
         <Shot
-        zoom
+          zoom
           src={sourceEvaluation}
           alt="A project's evaluation results: screening passed with a results spreadsheet, internal commentary, and the DMRV core diligence report open in a viewer"
           caption="Screening, then diligence: each stage's result and the full report in one place."

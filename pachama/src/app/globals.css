@@ -203,6 +203,18 @@
     scale: 0 1;
   }
 
+  /* Lines draw themselves (SVG paths with pathLength="1"). */
+  .motion [data-reveal="draw"] {
+    stroke-dasharray: 1;
+    transition: stroke-dashoffset 1.8s var(--ease-arrive);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  .motion [data-reveal="draw"]:not([data-in]) {
+    opacity: 1;
+    translate: none;
+    stroke-dashoffset: 1;
+  }
+
   /* Siblings follow one another. */
   .motion [data-stagger] > :nth-child(2) {
     --reveal-delay: 0.09s;
@@ -236,6 +248,12 @@
   .settle {
     animation: settle 1.5s var(--ease-arrive) both;
     animation-delay: var(--arrive-delay, 0s);
+  }
+}
+
+@keyframes scan {
+  to {
+    left: 100%;
   }
 }
 

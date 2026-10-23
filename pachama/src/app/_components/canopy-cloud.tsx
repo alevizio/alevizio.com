@@ -186,7 +186,7 @@ export const CanopyCloud = ({ className }: { className?: string }) => {
       const cover = Math.min(HALF_D * 2, (HALF_W * 2) / aspect) / (2 * Math.tan(fov / 2));
       const yaw = (Math.sin(t * 0.08) * 0.32 + (tilt.x - 0.5) * 0.5) * (1 - p);
       const pitch = lerp(0.5 + (tilt.y - 0.5) * 0.14, Math.PI / 2 - 0.001, p);
-      const dist = lerp(aspect < 1 ? 4.6 : 3.1, cover, p);
+      const dist = lerp(aspect < 1 ? 3.9 : 3.1, cover, p);
       const target = [0, lerp(0.06, 0, p), lerp(0.12, 0, p)];
       const eye = [
         target[0] + dist * Math.cos(pitch) * Math.sin(yaw),

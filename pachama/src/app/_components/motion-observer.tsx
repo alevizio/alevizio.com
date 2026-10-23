@@ -7,7 +7,8 @@ const SETTLE_MS = 1600;
 
 /** Marks each [data-reveal] with data-in as it scrolls into view (see
  *  globals.css). What's already on screen is marked before html.motion
- *  switches the hiding on, so nothing blinks on load. */
+ *  switches the hiding on, so nothing blinks on load; anything mounted
+ *  later (a tab switched back, a panel opened) is watched the same way. */
 export const MotionObserver = () => {
   useEffect(() => {
     const show = (el: Element, settled: boolean) => {
@@ -15,14 +16,6 @@ export const MotionObserver = () => {
       if (settled) el.setAttribute("data-done", "");
       else window.setTimeout(() => el.setAttribute("data-done", ""), SETTLE_MS);
     };
-    const all = [...document.querySelectorAll("[data-reveal]")];
-    const waiting = all.filter((el) => {
-      const onScreen = el.getBoundingClientRect().top < window.innerHeight;
-      if (onScreen) show(el, true);
-      return !onScreen;
-    });
-    document.documentElement.classList.add("motion");
-
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -33,8 +26,34 @@ export const MotionObserver = () => {
       },
       { rootMargin: "0px 0px -8% 0px" },
     );
-    for (const el of waiting) observer.observe(el);
-    return () => observer.disconnect();
+    const onScreen = (el: Element) => el.getBoundingClientRect().top < window.innerHeight;
+
+    for (const el of document.querySelectorAll("[data-reveal]")) {
+      if (onScreen(el)) show(el, true);
+      else observer.observe(el);
+    }
+    document.documentElement.classList.add("motion");
+
+    // Mounted later: on screen, it plays after one frame of its hidden
+    // state (so it animates rather than pops); off screen, it waits.
+    const later = (el: Element) => {
+      if (el.hasAttribute("data-in")) return;
+      if (onScreen(el)) requestAnimationFrame(() => requestAnimationFrame(() => show(el, false)));
+      else observer.observe(el);
+    };
+    const mutations = new MutationObserver((records) => {
+      for (const record of records)
+        for (const node of record.addedNodes) {
+          if (!(node instanceof Element)) continue;
+          if (node.matches("[data-reveal]")) later(node);
+          for (const el of node.querySelectorAll("[data-reveal]")) later(el);
+        }
+    });
+    mutations.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      observer.disconnect();
+      mutations.disconnect();
+    };
   }, []);
 
   return null;

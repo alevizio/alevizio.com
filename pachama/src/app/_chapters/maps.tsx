@@ -1,10 +1,9 @@
 import lidarTerrain from "@/assets/maps/lidar-terrain.jpg";
-import manoaBaseline from "@/assets/maps/manoa-baseline.png";
-import manoaReference from "@/assets/maps/manoa-reference.png";
 import ndvi from "@/assets/maps/ndvi.jpg";
 import pointcloud from "@/assets/maps/pointcloud.jpg";
 import sundarbans from "@/assets/maps/sundarbans.jpg";
 import tlsScan from "@/assets/maps/tls-scan.jpg";
+import { Evaluation } from "../_components/screens/evaluation";
 import { Clip, HALF, Shot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
@@ -45,12 +44,11 @@ export const Maps = () => (
       id="baselines"
       eyebrow="Dynamic baselines"
       title="A project and its control area"
-      text="Each project matched to similar forest outside it, and the two watched side by side over time."
+      text="Each project matched to similar forest outside it, and the two watched side by side over time. Here, Manoa's evaluation, rebuilt in Banyan from the screen it had before the rebrand: pick a standard, and watch the checks draw."
     >
-      <Row className="items-start">
-        <Shot src={manoaReference} alt="Manoa's boundary outlined on satellite imagery, with its reference region's edge in cyan" sizes={HALF} caption="Manoa against its reference region, from its evaluation." />
-        <Shot src={manoaBaseline} alt="A chart of credits over time: the baseline Manoa claims rising above the line Pachama estimated, the gap shaded green" sizes={HALF} caption="The baseline the project claims, checked against Pachama's own." />
-      </Row>
+      <div data-reveal="frame">
+        <Evaluation />
+      </div>
     </Section>
 
     <Section
