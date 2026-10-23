@@ -49,6 +49,9 @@ const SPLIT = "aspect-[1494/1700]";
  * carrying it into everything Pachama made. The hand-over and the stills and
  * loops from how.studio/branding/pachama are How&How's, shown with their
  * permission. */
+// Half the window: the applications run edge to edge in two columns.
+const EDGE_HALF = "(min-width: 640px) 50vw, 100vw";
+
 export const Brand = () => (
   <Band tone="ground">
     <ChapterDivider id="brand" numeral="I" title="The brand">
@@ -159,13 +162,13 @@ export const Brand = () => (
       text="Billboards, an exhibition, signage, phones, socials and the people behind the projects."
     >
       <Shot src={ooh} alt="A billboard on a city building: 'See carbon in action' over aerial forest" bleed />
-      <Masonry className="mt-6">
-        <Shot src={exhibition} alt="An exhibition room with large screens of lidar trees and the line 'While trees may be temporary'" sizes={THIRD} />
-        <Shot src={sign} alt="An acrylic sign: 'Make the invisible visible'" sizes={THIRD} />
+      <Masonry cols={2} className={cn(BLEED, "mt-6 px-4 sm:px-6")}>
+        <Shot src={exhibition} alt="An exhibition room with large screens of lidar trees and the line 'While trees may be temporary'" sizes={EDGE_HALF} />
+        <Shot src={sign} alt="An acrylic sign: 'Make the invisible visible'" sizes={EDGE_HALF} />
         <Clip name="howhow/socials-l" label="Social posts for the brand, moving" aspect="aspect-video" />
-        <Shot src={phone} alt="A hand holding a phone open on 'The new nature of modern business'" sizes={THIRD} />
-        <Shot src={testimonial} alt="A portrait for the brand: a man in a Pachama shirt against a giant tree trunk" sizes={THIRD} />
-        <Shot src={economy} alt="An 'Economy' card over a photograph of a farmer among tall plants" sizes={THIRD} />
+        <Shot src={phone} alt="A hand holding a phone open on 'The new nature of modern business'" sizes={EDGE_HALF} />
+        <Shot src={testimonial} alt="A portrait for the brand: a man in a Pachama shirt against a giant tree trunk" sizes={EDGE_HALF} />
+        <Shot src={economy} alt="An 'Economy' card over a photograph of a farmer among tall plants" sizes={EDGE_HALF} />
         <Clip name="howhow/services-sv" label="A mangrove tree on its stilt roots at dusk" aspect={SPLIT} />
       </Masonry>
     </Section>
