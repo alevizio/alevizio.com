@@ -20,8 +20,10 @@ import { ARROW } from "../slider";
  * the start and the glossary alone at the end, the book sliding over so
  * what's open sits in the middle. It reads itself while it's in view (a
  * leaf every few seconds, then back to the cover), holds while it's pointed
- * at, and the arrows turn it by hand. With less motion it only turns by
- * hand. */
+ * at, and the arrows turn it by hand. It arrives flat, facing you, and the
+ * page holds still for a moment while the scroll lays it down into that
+ * camera; once it's down, it starts reading. With less motion it's already
+ * down, doesn't hold the page, and only turns by hand. */
 const LEAVES: { front: StaticImageData; back: StaticImageData; alt: [string, string] }[] = [
   { front: p1, back: p2, alt: ["The cover: Pachama's latest criteria, how we find the highest quality forest carbon projects", "Project Evaluation Criteria 2.2: is the climate benefit additional, conservative and durable, and are there impacts beyond carbon"] },
   { front: p3, back: p4, alt: ["Is the climate benefit additional? Baseline emissions, project emissions and leakage", "Is the climate benefit based on conservative claims? The baseline, the project boundary and leakage"] },
@@ -35,9 +37,14 @@ const FLIP_MS = 900;
 // on the left the last turned; the one turning rides over both.
 const Z_RIGHT = ["z-[4]", "z-[3]", "z-[2]", "z-[1]"];
 const Z_LEFT = ["z-[10]", "z-[11]", "z-[12]", "z-[13]"];
+// From flat to the camera, eased, over the scroll the stage is held for.
+const smooth = (t: number) => t * t * (3 - 2 * t);
 
 export const EvaluationBook = ({ className }: { className?: string }) => {
   const root = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const camera = useRef<HTMLDivElement>(null);
+  const [down, setDown] = useState(false);
   const [turned, setTurned] = useState(0);
   const [moving, setMoving] = useState<number | null>(null);
   const [held, setHeld] = useState(false);
@@ -52,6 +59,35 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
     return () => observer.disconnect();
   }, []);
 
+  // The scroll through the held stage lays the book down: --tilt runs from
+  // 0, flat, to 1, the camera (its default, for less motion and no script).
+  useEffect(() => {
+    const track = stage.current;
+    const cam = camera.current;
+    if (!track || !cam) return;
+    // With less motion it never reads on its own, so there's nothing to wait for.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = track.getBoundingClientRect();
+      const t = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - window.innerHeight)));
+      cam.style.setProperty("--tilt", smooth(t).toFixed(4));
+      if (t > 0.98) setDown(true);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
   const go = (next: number) => {
     if (next === turned || next < 0 || next > last) return;
     setMoving(next > turned ? turned : turned - 1);
@@ -61,7 +97,7 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
   // Reading on its own: a leaf at a time, then a beat on the glossary and
   // back to the cover.
   useEffect(() => {
-    if (!inView || held || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!inView || !down || held || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = window.setTimeout(
       () => {
         setMoving(turned >= last ? null : turned);
@@ -70,7 +106,7 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
       turned === last ? TURN_MS * 1.5 : TURN_MS,
     );
     return () => window.clearTimeout(id);
-  }, [inView, held, turned, last]);
+  }, [inView, down, held, turned, last]);
 
   useEffect(() => {
     if (moving === null) return;
@@ -83,46 +119,54 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
   const shift = turned === 0 ? "-translate-x-1/4" : turned === last ? "translate-x-1/4" : "translate-x-0";
 
   return (
-    <div ref={root} className={cn("grid justify-items-center gap-6", className)} onPointerEnter={() => setHeld(true)} onPointerLeave={() => setHeld(false)}>
-      <div className="w-full max-w-[56rem] [perspective:2600px] [perspective-origin:50%_20%]">
-        {/* The camera: the book lies back and turns a little, like a still life on a table. */}
-        <div className="relative [transform-style:preserve-3d] [transform:rotateX(46deg)_rotateZ(-18deg)_scale(0.92)]">
-          <div className={cn("relative aspect-[1224/792] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] motion-reduce:transition-none", shift)}>
-            {/* Under each half with pages on it: the table's shadows (a tight
-                contact one at the edges, a soft one cast away from the light,
-                up and to the left) and the stack's edge, the paper showing
-                its thickness. */}
-            <Under side="left" on={turned > 0} />
-            <Under side="right" on={turned < last} />
-            {LEAVES.map((leaf, i) => {
-              const isTurned = i < turned;
-              return (
-                <div
-                  key={leaf.alt[0]}
-                  className={cn(
-                    "absolute inset-y-0 left-1/2 w-1/2 origin-left transition-transform duration-[900ms] ease-[cubic-bezier(0.45,0,0.2,1)] [transform-style:preserve-3d] motion-reduce:transition-none",
-                    isTurned ? "[transform:rotateY(-180deg)]" : "[transform:rotateY(0deg)]",
-                    moving === i ? "z-50" : isTurned ? Z_LEFT[i] : Z_RIGHT[i],
-                  )}
-                >
-                  <Face src={leaf.front} alt={i === turned ? leaf.alt[0] : ""} />
-                  <Face src={leaf.back} alt={i === turned - 1 ? leaf.alt[1] : ""} back />
-                </div>
-              );
-            })}
+    // The stage: taller than the window, so the book is held in view (sticky) while it's laid down.
+    <div ref={stage} className={cn("relative motion-safe:h-[185vh]", className)}>
+      <div className="motion-safe:sticky motion-safe:top-0 motion-safe:flex motion-safe:h-svh motion-safe:items-center">
+        <div ref={root} className="grid w-full justify-items-center gap-6" onPointerEnter={() => setHeld(true)} onPointerLeave={() => setHeld(false)}>
+          <div className="w-full max-w-[56rem] [perspective:2600px] [perspective-origin:50%_20%]">
+            {/* The camera: the book lies back and turns a little, like a still life on a table. */}
+            <div
+              ref={camera}
+              className="relative [transform-style:preserve-3d] [transform:rotateX(calc(var(--tilt,1)*46deg))_rotateZ(calc(var(--tilt,1)*-18deg))_scale(calc(1-var(--tilt,1)*0.08))]"
+            >
+              <div className={cn("relative aspect-[1224/792] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] motion-reduce:transition-none", shift)}>
+                {/* Under each half with pages on it: the table's shadows (a tight
+                    contact one at the edges, a soft one cast away from the light,
+                    up and to the left) and the stack's edge, the paper showing
+                    its thickness. */}
+                <Under side="left" on={turned > 0} />
+                <Under side="right" on={turned < last} />
+                {LEAVES.map((leaf, i) => {
+                  const isTurned = i < turned;
+                  return (
+                    <div
+                      key={leaf.alt[0]}
+                      className={cn(
+                        "absolute inset-y-0 left-1/2 w-1/2 origin-left transition-transform duration-[900ms] ease-[cubic-bezier(0.45,0,0.2,1)] [transform-style:preserve-3d] motion-reduce:transition-none",
+                        isTurned ? "[transform:rotateY(-180deg)]" : "[transform:rotateY(0deg)]",
+                        moving === i ? "z-50" : isTurned ? Z_LEFT[i] : Z_RIGHT[i],
+                      )}
+                    >
+                      <Face src={leaf.front} alt={i === turned ? leaf.alt[0] : ""} />
+                      <Face src={leaf.back} alt={i === turned - 1 ? leaf.alt[1] : ""} back />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <button type="button" aria-label="Turn back a page" disabled={turned === 0} onClick={() => go(turned - 1)} className={ARROW}>
+              <MdArrowBack aria-hidden className="size-5" />
+            </button>
+            <p aria-live="polite" className="min-w-[9rem] text-center font-mono text-[13px] text-(--tone-text)">
+              {turned === 0 ? "Cover" : turned === last ? `Page ${PAGES} of ${PAGES}` : `Pages ${turned * 2} and ${turned * 2 + 1} of ${PAGES}`}
+            </p>
+            <button type="button" aria-label="Turn the page" disabled={turned === last} onClick={() => go(turned + 1)} className={ARROW}>
+              <MdArrowForward aria-hidden className="size-5" />
+            </button>
           </div>
         </div>
-      </div>
-      <div className="flex items-center gap-3">
-        <button type="button" aria-label="Turn back a page" disabled={turned === 0} onClick={() => go(turned - 1)} className={ARROW}>
-          <MdArrowBack aria-hidden className="size-5" />
-        </button>
-        <p aria-live="polite" className="min-w-[9rem] text-center font-mono text-[13px] text-(--tone-text)">
-          {turned === 0 ? "Cover" : turned === last ? `Page ${PAGES} of ${PAGES}` : `Pages ${turned * 2} and ${turned * 2 + 1} of ${PAGES}`}
-        </p>
-        <button type="button" aria-label="Turn the page" disabled={turned === last} onClick={() => go(turned + 1)} className={ARROW}>
-          <MdArrowForward aria-hidden className="size-5" />
-        </button>
       </div>
     </div>
   );
