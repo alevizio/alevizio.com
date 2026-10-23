@@ -251,6 +251,30 @@
   }
 }
 
+@keyframes mark-turn {
+  from {
+    opacity: 0;
+    rotate: -60deg;
+  }
+}
+
+@keyframes drift {
+  from {
+    scale: 1.02;
+  }
+  to {
+    scale: 1.09;
+    translate: -1.5% -1%;
+  }
+}
+
+@keyframes pin-drop {
+  from {
+    opacity: 0;
+    scale: 0.3;
+  }
+}
+
 @keyframes scan {
   to {
     left: 100%;

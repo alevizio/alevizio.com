@@ -5,10 +5,8 @@ import biodiversityExtinction from "@/assets/product/biodiversity-extinction.jpg
 import biodiversityKba from "@/assets/product/biodiversity-kba.jpg";
 import biodiversityScore from "@/assets/product/biodiversity-score.jpg";
 import certificate from "@/assets/product/certificate.jpg";
-import developersHeatmap from "@/assets/product/developers-heatmap.jpg";
 import developersIntake from "@/assets/product/developers-intake.jpg";
 import evaluationLoading from "@/assets/product/evaluation-loading.jpg";
-import insightsGlobe from "@/assets/product/insights-globe.jpg";
 import manoaPage from "@/assets/product/manoa-page.jpg";
 import monitoringCarbon from "@/assets/product/monitoring-carbon.jpg";
 import monitoringDashboard from "@/assets/product/monitoring-dashboard.jpg";
@@ -25,10 +23,12 @@ import sourceLandShare from "@/assets/product/source-land-share.jpg";
 import sourceLanding from "@/assets/product/source-landing.jpg";
 import sourceStart from "@/assets/product/source-start.jpg";
 import sourceSubmissions from "@/assets/product/source-submissions.jpg";
+import { cn } from "../_components/cn";
 import { Compare } from "../_components/compare";
 import { BoundaryUpload } from "../_components/screens/boundary-upload";
-import { Explore } from "../_components/screens/explore";
-import { HALF, Shot, TallShot } from "../_components/shot";
+import { Insights } from "../_components/screens/insights";
+import { OpportunityMap } from "../_components/screens/opportunity-map";
+import { BLEED, HALF, Shot, TallShot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
 /* II · The product, on the product's own light grey: the marketplace and
@@ -50,19 +50,11 @@ export const Product = () => (
       id="marketplace"
       eyebrow="The marketplace"
       title="Finding a project worth buying"
-      text="Explore pairs every project with where it is: cards to filter on one side, the world on the other. Rebuilt here to use: filter by type, pick a project, and the map follows. Then Insights, the same idea for 182 projects."
+      text="Every project and where it is: a list to search and filter on one side, the world on the other. Rebuilt live from the product's Explore and Insights screens with Pachama's projects: filter by type or country, pick one, and the globe turns to it."
     >
       <div data-reveal="frame">
-        <Explore />
+        <Insights />
       </div>
-      <Shot
-        zoom
-        src={insightsGlobe}
-        alt="Insights, 2024: a dark globe with every project pinned, a list of projects beside it, and filters by project type and country"
-        caption="Insights, 2024: 182 projects on the globe, filtered by type and by country."
-        bleed
-        className="mt-10"
-      />
     </Section>
 
     <Section
@@ -180,7 +172,10 @@ export const Product = () => (
       title="Bringing projects in"
       text="The other side of the market: landowners and developers. A map of forest carbon potential to start from, a boundary uploaded and checked against satellite data (it plays below, with the live product's figures), and the intake that takes a project from its first details to its land's suitability."
     >
-      <Shot zoom bleed src={developersHeatmap} alt="'Start your forest carbon project today': a map of forest carbon potential across South America, with an opportunity in Maranhão, Brazil, that could remove 246,416 tonnes of CO2" caption="Where a forest carbon project could start, and what it could earn." />
+      <div className={cn(BLEED, "mt-2")} data-reveal="frame">
+        <OpportunityMap />
+      </div>
+      <p className="type-caption mt-3 text-(--tone-text)">Where a forest carbon project could start, and what it could earn. The first opportunity is the design&rsquo;s; the others are samples at its rates. Pick a pin.</p>
       <BoundaryUpload className="mt-6" />
       <div className="mt-6">
         <TallShot

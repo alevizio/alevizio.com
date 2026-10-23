@@ -7,16 +7,11 @@ import guidelines6 from "@/assets/brand/guidelines-6.jpg";
 import guidelines68 from "@/assets/brand/guidelines-68.jpg";
 import guidelines83 from "@/assets/brand/guidelines-83.jpg";
 import hexGrid from "@/assets/brand/hex-grid.jpg";
-import logoSheet from "@/assets/brand/logo-sheet.jpg";
-import originalsSheet from "@/assets/brand/originals-sheet.jpg";
-import plusSheet from "@/assets/brand/plus-sheet.jpg";
 import ecologyEconomy from "@/assets/brand/reveal-ecology-economy.jpg";
 import fromTo from "@/assets/brand/reveal-from-to.jpg";
 import moodboard from "@/assets/brand/reveal-moodboard.jpg";
 import natureRelations from "@/assets/brand/reveal-nature-relations.jpg";
 import seeCarbon from "@/assets/brand/see-carbon-hero.jpg";
-import symbolColourways from "@/assets/brand/symbol-colourways.jpg";
-import symbolSheet from "@/assets/brand/symbol-sheet.jpg";
 import websiteHome from "@/assets/brand/website-home.jpg";
 import book from "@/assets/howhow/book-sv.jpg";
 import economy from "@/assets/howhow/economy-sv.jpg";
@@ -31,6 +26,7 @@ import typePoster from "@/assets/howhow/type-sv.jpg";
 import web from "@/assets/howhow/web-l.jpg";
 import zoom from "@/assets/howhow/zoom-l.jpg";
 import { cn } from "../_components/cn";
+import { MarkExplorer } from "../_components/mark-explorer";
 import { Palette } from "../_components/palette";
 import { BLEED, Clip, HALF, Masonry, Shot, TallShot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
@@ -93,10 +89,12 @@ export const Brand = () => (
       title="See carbon in action"
       text="FNDR's strategy put nature and data in the same sentence. How&How turned it into a headline and a way of drawing: the forest, and the carbon in it, made visible."
     >
-      <Row className="items-start">
-        <Clip name="howhow/landing-s" label="'See carbon in action' over a tree drawn in coloured lidar points" aspect="aspect-square" />
-        <Shot src={seeCarbon} alt="The new site's hero: 'See carbon in action.' over an aerial view of a river through wetland forest" sizes={HALF} caption="The site's hero, from the hand-over." />
-      </Row>
+      <Shot
+        src={seeCarbon}
+        alt="The new site's hero: 'See carbon in action.' over an aerial view of a river through wetland forest"
+        caption="The site's hero, from the hand-over."
+        bleed
+      />
     </Section>
 
     <Section
@@ -106,36 +104,9 @@ export const Brand = () => (
       text="Formal geometry overlapping like a Venn diagram: nature, technology and community, in one gradient from leaf to sky."
     >
       <Clip name="howhow/logo-l" label="The Pachama logo drawing itself" aspect="aspect-video" bleed />
-      <div data-reveal="frame" className={cn(BLEED, "mt-6 grid sm:grid-cols-3")}>
-        <LogoTile src="/brand/symbol-dark.svg" alt="The Pachama symbol: a flower of circles inside a hexagon, from green to sky" tile="rounded-none bg-night" logo="w-1/4" />
-        <LogoTile src="/brand/logo-dark.svg" alt="The Pachama logo on the dark green ground" tile="rounded-none bg-deep" logo="w-3/5" />
-        <LogoTile src="/brand/logo-light.svg" alt="The Pachama logo on white" tile="rounded-none bg-sheet" logo="w-3/5" />
+      <div data-reveal="frame" className={cn(BLEED, "mt-6")}>
+        <MarkExplorer />
       </div>
-      <Masonry cols={2} className="mt-6">
-        <Shot
-          src={symbolColourways}
-          alt="The symbol six ways: light, green and gradient on the dark green; dark and gradient on light; dark on lidar green"
-          caption="The symbol on every ground it's allowed on."
-          sizes={HALF}
-          zoom
-        />
-        <Shot
-          src={symbolSheet}
-          alt="The symbol's sheet: 'Our beloved mandala that represents earth's mother, the pachamama', its two-colour and one-colour versions on light, dark and green"
-          caption="The symbol: 'our beloved mandala that represents earth's mother, the pachamama.'"
-          sizes={HALF}
-          zoom
-        />
-        <Shot
-          src={logoSheet}
-          alt="The logo's sheet: the isologotype's construction, its two-colour gradient from #52F164 to #52D5FF at 45 degrees, and its one-colour versions on light, dark green and lidar green"
-          caption="The logo's versions and colours."
-          sizes={HALF}
-          zoom
-        />
-        <Shot src={originalsSheet} alt="The Pachama Originals sub-brand: the symbol beside 'Pachama Originals', in one colour on light, dark and green" caption="Pachama Originals, a sub-brand." sizes={HALF} zoom />
-        <Shot src={plusSheet} alt="The Pachama Plus sub-brand: the symbol beside 'Pachama Plus', in one colour on light, dark and green" caption="Pachama Plus, another." sizes={HALF} zoom />
-      </Masonry>
     </Section>
 
     <Section
