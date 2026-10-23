@@ -94,7 +94,7 @@ export const SourcingPlanModal = ({ className }: { className?: string }) => {
         >
           <h4 className="font-display text-[32px] leading-none font-bold">Create carbon sourcing plan</h4>
           <TextInput label="Carbon sourcing plan name" defaultValue="Nature based carbon procurement plan 2024 to 2030" />
-          <fieldset className="grid grid-cols-3 overflow-hidden rounded-[14px] ring-1 ring-bn-heavy">
+          <fieldset className="grid grid-cols-3 overflow-hidden rounded-[14px] ring-1 ring-bn-grey-dark">
             <legend className="sr-only">Which projects</legend>
             {SCOPES.map((s) => (
               <Radio
@@ -103,7 +103,7 @@ export const SourcingPlanModal = ({ className }: { className?: string }) => {
                 label={s}
                 checked={scope === s}
                 onChange={() => setScope(s)}
-                className={cn("justify-center border-bn-heavy px-3 py-4 text-center text-[13px] not-last:border-r", scope === s && "bg-[#e9edea]")}
+                className={cn("justify-center border-bn-grey-dark px-3 py-4 text-center text-[13px] not-last:border-r", scope === s && "bg-[#e9edea]")}
               />
             ))}
           </fieldset>
@@ -150,7 +150,7 @@ export const ProposalModal = ({ className }: { className?: string }) => {
           <h4 className="font-display text-[32px] leading-none font-bold">Proposal details</h4>
           <section>
             <h5 className="font-mono text-[13px] font-bold tracking-[0.04em] uppercase">Project</h5>
-            <label className="mt-3 flex cursor-pointer items-center gap-4 rounded-[16px] p-4 ring-1 ring-[#d6dad5] has-checked:ring-2 has-checked:ring-bn-heavy">
+            <label className="mt-3 flex cursor-pointer items-center gap-4 rounded-[16px] p-4 ring-1 ring-[#d6dad5] has-checked:ring-2 has-checked:ring-bn-grey-dark">
               <span className="grid flex-1 gap-1">
                 <span className="flex items-center gap-2 text-[13px]">
                   <span className="grid size-6 place-items-center rounded-full bg-bn-green">
