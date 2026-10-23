@@ -226,6 +226,14 @@
     scale: 1 0;
   }
 
+  /* A marker runs along its scale to its value as its card arrives. */
+  .motion [data-reveal] [data-run] {
+    transition: left 1.6s var(--ease-arrive) 0.4s;
+  }
+  .motion [data-reveal]:not([data-in]) [data-run] {
+    left: 0;
+  }
+
   /* Lines draw themselves (SVG paths with pathLength="1"). */
   .motion [data-reveal="draw"] {
     stroke-dasharray: 1;

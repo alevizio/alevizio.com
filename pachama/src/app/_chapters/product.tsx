@@ -1,9 +1,6 @@
 import appMyProjects from "@/assets/product/app-my-projects.jpg";
 import appOrders from "@/assets/product/app-orders.png";
 import appRetirements from "@/assets/product/app-retirements.png";
-import biodiversityExtinction from "@/assets/product/biodiversity-extinction.jpg";
-import biodiversityKba from "@/assets/product/biodiversity-kba.jpg";
-import biodiversityScore from "@/assets/product/biodiversity-score.jpg";
 import certificate from "@/assets/product/certificate.jpg";
 import developersIntake from "@/assets/product/developers-intake.jpg";
 import evaluationLoading from "@/assets/product/evaluation-loading.jpg";
@@ -19,15 +16,14 @@ import portfolioSourcingPlan from "@/assets/product/portfolio-sourcing-plan.jpg"
 import sourceEvaluation from "@/assets/product/source-evaluation.jpg";
 import sourceEventSettings from "@/assets/product/source-event-settings.jpg";
 import sourceEvents from "@/assets/product/source-events.jpg";
-import sourceLandShare from "@/assets/product/source-land-share.jpg";
-import sourceLanding from "@/assets/product/source-landing.jpg";
-import sourceStart from "@/assets/product/source-start.jpg";
 import sourceSubmissions from "@/assets/product/source-submissions.jpg";
 import { cn } from "../_components/cn";
 import { Compare } from "../_components/compare";
+import { Biodiversity } from "../_components/screens/biodiversity";
 import { BoundaryUpload } from "../_components/screens/boundary-upload";
 import { Insights } from "../_components/screens/insights";
 import { OpportunityMap } from "../_components/screens/opportunity-map";
+import { SourcingEvent } from "../_components/screens/sourcing-event";
 import { BLEED, HALF, Shot, TallShot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
@@ -151,19 +147,11 @@ export const Product = () => (
       id="biodiversity"
       eyebrow="Beyond carbon"
       title="Biodiversity, scored"
-      text="Evaluation 2.2 added biodiversity: a project's conservation impact against the rest of the world, the key biodiversity areas around it, and the species at risk. Here, Borneo Peatlands and the Bornean orangutan."
+      text="Evaluation 2.2 added biodiversity: how much a project's land matters to species at risk, scored against the rest of the world, with the species, the risks and the threats behind the score. Rebuilt live from Borneo Peatlands' screens: switch the spotlight, point at a risk or a threat."
     >
-      <Row className="items-start">
-        <Shot zoom src={biodiversityScore} alt="Borneo Peatlands' biodiversity conservation impact: the critically endangered Bornean orangutan, extinction risks and threats, and an impact score in the 95th percentile worldwide" sizes={HALF} caption="Its impact score: the 95th percentile, worldwide." imageClassName={SCREEN} />
-        <Shot zoom src={biodiversityKba} alt="The project on a satellite map with layers for the project area, key biodiversity areas and protected areas, and a note on what makes a key biodiversity area" sizes={HALF} caption="Key biodiversity and protected areas around it." imageClassName={SCREEN} />
-      </Row>
-      <TallShot
-        src={biodiversityExtinction}
-        frameClassName={SCREEN}
-        label="Borneo Peatlands' species and extinction risk, scrollable"
-        alt="Borneo Peatlands' species: spotlights on the Bornean orangutan and the clouded leopard, the share of species by extinction risk, and the region's threats"
-        caption="The species behind the score. Scroll inside it."
-      />
+      <div data-reveal="frame">
+        <Biodiversity />
+      </div>
     </Section>
 
     <Section
@@ -192,33 +180,12 @@ export const Product = () => (
       id="sourcing"
       eyebrow="Sourcing"
       title="A sourcing event in one link"
-      text="Source generalised what we built for the Symbiosis RFP: any buyer could run its own call for carbon projects, publish what it's looking for, and have developers submit, share their land and see how much of it qualifies. Acme stands in for the buyer."
+      text="Source generalised what we built for the Symbiosis RFP: any buyer could run its own call for carbon projects, publish what it's looking for in one link, and have developers submit, share their land and see how much of it qualifies. Acme stands in for the buyer. Try it: submit a proposal."
     >
-      <Shot
-        zoom
-        src={sourceLanding}
-        alt="An event page for Acme Corp's reforestation and agroforestry sourcing event: a description, Submit proposal and Log in buttons, and the eligible countries and project types, beside an aerial photo of forest"
-        caption="The event page a buyer shares: what it's sourcing, where, under which standards and by when."
-        imageClassName={SCREEN}
-      />
-      <Row className="mt-6 items-start">
-        <Shot
-          zoom
-          src={sourceStart}
-          alt="A Start your submission dialog over the event page: pick a project from an earlier event, or name a new one"
-          caption="Starting a submission, or reusing a project from an earlier event."
-          sizes={HALF}
-          imageClassName={SCREEN}
-        />
-        <Shot
-          zoom
-          src={sourceLandShare}
-          alt="A project's Land suitability tab: a panel asking the developer to share the project area, beside a globe ready for a boundary"
-          caption="Sharing the project's boundary, to be checked against satellite data."
-          sizes={HALF}
-          imageClassName={SCREEN}
-        />
-      </Row>
+      <div data-reveal="frame">
+        <SourcingEvent />
+      </div>
+      <p className="type-caption mt-3 text-(--tone-text)">The event page a buyer shares, rebuilt live from the design, and the first steps of a submission.</p>
     </Section>
 
     <Section
