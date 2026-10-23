@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { BN } from "../banyan/ui";
 import { cn } from "../cn";
+import { BaselineInsights } from "./baseline-insights";
 import { PAIRS, POLYGON_AT, POLYGON_D, RING } from "./dcab-pixels";
 
 /* The DCAB sandbox's Baseline insights, rebuilt live from the DCAB Freemium
@@ -14,7 +15,8 @@ import { PAIRS, POLYGON_AT, POLYGON_D, RING } from "./dcab-pixels";
  * once it's reached, it makes the design's own selection by itself. The
  * basemap and the polygon are the design's; the pixels are drawn from the
  * basemap, forest matched to forest by colour, an illustration of the
- * matching; the figures are the design's samples. Everything sits in the
+ * matching; the figures are the design's samples (the panel's charts and
+ * figures are in baseline-insights.tsx). Everything sits in the
  * design's 1440 x 900 frame; below lg the map shows its right part. */
 const W = 1440;
 const H = 900;
@@ -73,16 +75,6 @@ const paint = (c: HTMLCanvasElement | null, b: Box | null) => {
   for (const i of lit) ctx.fillRect(PAIRS[i * 4], PAIRS[i * 4 + 1], dot, dot);
 };
 
-// The canopy height chart, traced from the design (its own sample line),
-// its two plunges to about 8 m smoothed into dips, so it reads as data.
-const LINE = "M22 40L40 39L76 38L106 47L130 41L154 44L172 17L211 55L244 19L268 41L295 52L328 19L346 14L376 22";
-const TICKS = [
-  { v: "35", y: 3 },
-  { v: "30", y: 42 },
-  { v: "25", y: 81 },
-  { v: "20", y: 120 },
-  { v: "0", y: 159 },
-];
 const LEGEND = [
   { label: "Project boundary", swatch: "rounded-[3px] bg-white" },
   { label: "Control area pixels", swatch: "rounded-[3px] bg-[#2fd3f2]" },
@@ -121,37 +113,6 @@ const Tip = ({ count, onNext, className }: { count: number; onNext: () => void; 
       </p>
     </div>
   </div>
-);
-
-const CanopyChart = () => (
-  <figure>
-    <figcaption className="flex items-baseline justify-between gap-3 text-[14px] text-white">
-      Change in canopy height over time <span className="shrink-0 text-[12px] text-white/70">2003 &ndash; 2024</span>
-    </figcaption>
-    <div className="mt-3 rounded-[10px] bg-white/10 p-3 ring-1 ring-white/15">
-      <svg
-        viewBox="0 0 376 172"
-        role="img"
-        aria-label="Canopy height in metres: around 30 from 2003, rising to 33 with two dips, around 2014 and 2019, and near 33 by 2024. The design's sample line, smoothed."
-        className="block w-full overflow-visible"
-      >
-        {TICKS.map(({ v, y }) => (
-          <g key={v}>
-            <line x1={22} x2={376} y1={y} y2={y} stroke="#ffffff" strokeOpacity={0.14} />
-            <text x={0} y={y + 3} fill="#ffffff" fillOpacity={0.75} fontSize={9} className="font-mono">
-              {v}
-            </text>
-          </g>
-        ))}
-        <path data-reveal="draw" d={LINE} pathLength={1} fill="none" stroke="#3ee06b" strokeWidth={2} strokeLinejoin="round" />
-        {[2003, 2008, 2013, 2018, 2024].map((y) => (
-          <text key={y} x={18 + ((y - 2003) / 21) * 358} y={172} fill="#ffffff" fillOpacity={0.75} fontSize={9} textAnchor="middle" className="font-mono">
-            {y}
-          </text>
-        ))}
-      </svg>
-    </div>
-  </figure>
 );
 
 export const BaselineSandbox = ({ className }: { className?: string }) => {
@@ -283,40 +244,14 @@ export const BaselineSandbox = ({ className }: { className?: string }) => {
       </div>
 
       {/* The results: over the map's left from lg up, under it below. */}
-      <div className="flex flex-col gap-6 p-5 sm:p-6 lg:absolute lg:inset-y-0 lg:left-0 lg:w-[30.56%] lg:bg-[#2c4634]/70 lg:p-8 lg:backdrop-blur-md">
+      <div className="flex flex-col gap-5 p-5 sm:p-6 lg:absolute lg:inset-y-0 lg:left-0 lg:w-[30.56%] lg:bg-[#2c4634]/70 lg:p-7 lg:backdrop-blur-md">
         <div>
           <h4 className="text-[20px] leading-7 font-bold">Baseline insights</h4>
           <p className="text-[13px] text-white/75">Here&rsquo;s a result of your polygon</p>
         </div>
         <Tip count={count} onNext={next} className="sm:hidden" />
         <Legend className="sm:hidden" />
-        {/* Side by side between sm and lg, where the panel runs the map's width. */}
-        <div className="grid gap-6 sm:max-lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] sm:max-lg:items-end">
-          <CanopyChart />
-          <dl className="grid grid-cols-2 gap-3 sm:max-lg:grid-cols-1">
-            {[
-              { label: "Baseline deduction forecast", value: "19%" },
-              { label: "Match quality", value: "Good" },
-            ].map(({ label, value }) => (
-              <div key={label} className="rounded-[10px] bg-white/10 p-3 ring-1 ring-white/15">
-                <dt className="font-mono text-[10px] leading-4 text-white/80 uppercase">{label}</dt>
-                <dd className="mt-1 font-display text-[30px] leading-none font-bold">{value}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-        {/* The way on to a real analysis, as the panel ends; on wide screens, where it fits. */}
-        <div className="mt-auto rounded-[12px] bg-[#e6f6fb] p-4 text-[#0e2517] max-xl:hidden">
-          <span className="rounded-full bg-[#1f6f8b] px-2 py-0.5 font-mono text-[10px] font-bold text-white uppercase">Pro</span>
-          <p className="mt-3 text-[16px] leading-5 font-bold">Need insights for your own project area?</p>
-          <p className="mt-2 text-[12px] leading-4">We&rsquo;ll run a custom DCAB analysis to support:</p>
-          <ul className="mt-1 list-disc pl-4 text-[12px] leading-5">
-            <li>Issuance or validation</li>
-            <li>Diligence and credit risk assessment</li>
-            <li>Investment decision-making</li>
-          </ul>
-          <span className="mt-3 inline-block rounded-full bg-[linear-gradient(90deg,#84e1ff,#6ba6ff)] px-4 py-1.5 font-mono text-[11px] font-bold uppercase">Request custom analysis</span>
-        </div>
+        <BaselineInsights />
       </div>
     </div>
   );
