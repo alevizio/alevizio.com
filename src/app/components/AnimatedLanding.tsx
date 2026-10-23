@@ -38,13 +38,13 @@ export default function AnimatedLanding() {
     // overflow-clip, not hidden: hidden would make this box the scroller
     // the project cards stick in, and they would never pin.
     <main className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-clip" data-name="alevizio.com">
-      {/* Sliding grey blocks, drawn on the GPU, with ripples from the mouse */}
-      <SlidingBlocks />
-
       {/* The project cards and the hero: ending this box is what lets the
           card row (below lg) leave with the hero instead of covering the
-          timeline. */}
-      <div className="flex flex-col">
+          timeline. It is also the box the background covers: the dithered
+          field (drawn on the GPU, rippling under the mouse) fades out at its
+          foot and scrolls away with it, so the timeline sits on plain colour. */}
+      <div className="relative flex flex-col">
+      <SlidingBlocks />
       {/* Project cards. ≥lg (1024px): vertical stack, top-right, 300px wide —
           absolute, so it scrolls away with the hero instead of covering the
           timeline's right end (the present) below it.

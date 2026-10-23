@@ -3,20 +3,27 @@ import { useEffect, useRef } from "react";
 // A slow field of noise, quantised to a grid of 16 cells across the screen
 // and dithered between two greys with a 2×2 Bayer screen: flat cells where
 // the field is saturated, dot and checker cells where it is in between, the
-// blobs sliding and shifting as the field drifts. Drawn by the GPU as one
-// fullscreen WebGL triangle. The mouse leaves ripples that invert the field
-// along a ring, with the old ASCII rain's drop physics in pixels.
+// blobs sliding and shifting as the field moves. It moves in pulses, like
+// the reference: every PERIOD seconds it slides on for SLIDE seconds, eased,
+// then rests, and the loop sleeps through the rest. It covers the hero block,
+// fades to the page colour at its foot and scrolls away with it; the loop
+// stops while the hero is off screen. Drawn by the GPU as one WebGL
+// triangle. The mouse leaves ripples that invert the field along a ring,
+// with the old ASCII rain's drop physics in pixels.
 
 // The page background, and the dark grey the field dithers towards.
 const LIGHT = "#dedbd1";
-const DARK = "#c0bdb3";
+const DARK = "#c9c6bc";
 const CELLS = 16; // cells across the width
 const DOT = 4; // dither cell, CSS px
-const SPEED = 0.015; // how fast the field drifts
+const PERIOD = 14; // seconds from one slide to the next
+const SLIDE = 5; // seconds a slide lasts
+const STEP = 0.055; // how far the field moves per slide; measured against the reference
 const VIGNETTE = 0.12; // darkening at the corners, 0 to 1
-// With no ripple the only visible changes are cells flipping now and then, so
-// 15 fps looks the same as 60 and costs a quarter. Ripples run at 60.
-const IDLE_MS = 66;
+const FADE = 0.4; // share of the height over which the field fades out at the bottom
+// While the field slides the only visible changes are cells flipping now and
+// then, so 15 fps looks the same as 60 and costs a quarter. Ripples run at 60.
+const SLIDE_MS = 66;
 const MAX_DROPS = 20;
 // The rain measured its drops in 7px-wide characters; same numbers, in px.
 const CHAR = 7;
@@ -59,8 +66,11 @@ uniform vec4 u_drops[MAX_DROPS]; // x, y (CSS px, origin bottom-left), radius, e
 uniform int u_count;
 
 const float CELLS = ${CELLS.toFixed(1)};
-const float SPEED = ${SPEED.toFixed(3)};
+const float PERIOD = ${PERIOD.toFixed(2)};
+const float SLIDE = ${SLIDE.toFixed(2)};
+const float STEP = ${STEP.toFixed(4)};
 const float VIGNETTE = ${VIGNETTE.toFixed(3)};
+const float FADE = ${FADE.toFixed(3)};
 const float SCALE = 3.0;      // blobs span a few cells
 const float WARP = 0.35;      // distortion of the field
 const float CONTRAST = 8.0;   // most cells saturate; the rest dither
@@ -94,10 +104,11 @@ float snoise(vec2 v) {
 }
 
 // The field at a point, in cell units measured from the top-left: three
-// octaves of noise, warped by a slower one, drifting with time.
+// octaves of noise, warped by a slower one, moved on by a step per pulse.
 float field(vec2 c) {
   vec2 n = c / CELLS;
-  float t = u_time * SPEED;
+  float k = floor(u_time / PERIOD);
+  float t = (k + smoothstep(0.0, 1.0, (u_time - k * PERIOD) / SLIDE)) * STEP;
   vec2 warp = vec2(snoise(n * 1.5 + t * 0.7), snoise(n * 1.5 + vec2(3.7, 9.1) - t * 0.5)) * WARP;
   vec2 q = n * SCALE + warp + vec2(t, t * 0.35);
   float f = 0.6 * snoise(q) + 0.3 * snoise(q * 2.0 + 11.0) + 0.15 * snoise(q * 4.0 + 23.0);
@@ -110,6 +121,10 @@ void main() {
   // Which cell, counted from the top-left like the dither.
   vec2 c = floor(vec2(p.x, u_size.y - p.y) / cell) + 0.5;
   float v = field(c);
+  // Towards the foot the field goes to the page colour, through the dither
+  // levels, so the section below starts on a plain background.
+  float fade = smoothstep(1.0 - FADE, 1.0, (u_size.y - p.y) / u_size.y);
+  v = mix(v, 1.0, fade);
 
   // Ripples: along each ring the field is inverted, so flat cells go dark
   // or light and the ring's soft edges come out as dots.
@@ -129,7 +144,7 @@ void main() {
   vec3 col = mix(u_dark, u_light, step(threshold, v));
 
   vec2 uv = p / u_size - 0.5;
-  col *= 1.0 - VIGNETTE * dot(uv, uv) * 2.0;
+  col *= 1.0 - VIGNETTE * dot(uv, uv) * 2.0 * (1.0 - fade);
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -196,6 +211,7 @@ export default function SlidingBlocks() {
     let last = 0;
     let height = 0;
     let shown = false;
+    let visible = true;
     let lastPx = 0;
     let lastPy = 0;
     let lastPTime = 0;
@@ -241,7 +257,7 @@ export default function SlidingBlocks() {
 
     const frame = (now: number) => {
       raf = 0;
-      if (!renderer) return;
+      if (!renderer || !visible) return;
       // 60 fps is plenty for the ripples; on 120 Hz screens this halves the work.
       if (now - last < 12.5) {
         raf = requestAnimationFrame(frame);
@@ -257,14 +273,18 @@ export default function SlidingBlocks() {
         d.energy *= decay;
         if (d.energy < 0.01 || d.radius > d.maxRadius) drops.splice(i, 1);
       }
-      draw(renderer, (now - start) / 1000);
+      const t = (now - start) / 1000;
+      draw(renderer, t);
+      const phase = t % PERIOD;
       if (drops.length > 0) raf = requestAnimationFrame(frame);
-      else timer = window.setTimeout(wake, IDLE_MS);
+      // Resting (the slide is drawn to its end): sleep until the next pulse.
+      else if (phase >= SLIDE + 0.2) timer = window.setTimeout(wake, (PERIOD - phase) * 1000);
+      else timer = window.setTimeout(wake, SLIDE_MS);
     };
 
     const wake = () => {
       clearTimeout(timer);
-      if (!raf && renderer && !reduceMotion.matches) raf = requestAnimationFrame(frame);
+      if (!raf && renderer && visible && !reduceMotion.matches) raf = requestAnimationFrame(frame);
     };
 
     const run = () => {
@@ -282,10 +302,12 @@ export default function SlidingBlocks() {
       raf = requestAnimationFrame(frame);
     };
 
-    const addDrop = (x: number, y: number, maxRadius: number, energy: number) => {
-      if (reduceMotion.matches) return;
+    // Drops live in canvas coordinates: the canvas scrolls with the hero.
+    const addDrop = (clientX: number, clientY: number, maxRadius: number, energy: number) => {
+      if (reduceMotion.matches || !visible) return;
+      const rect = canvas.getBoundingClientRect();
       if (drops.length >= MAX_DROPS) drops.shift();
-      drops.push({ x, y, radius: 0, maxRadius, energy });
+      drops.push({ x: clientX - rect.left, y: clientY - rect.top, radius: 0, maxRadius, energy });
       wake();
     };
 
@@ -324,6 +346,20 @@ export default function SlidingBlocks() {
       // Paint again right away: the loop may be waiting, and a resized canvas is blank.
       draw(renderer, reduceMotion.matches ? 0 : (performance.now() - start) / 1000);
     };
+    // Draw only while some of the unfaded part is on screen; once the page
+    // has scrolled down to the timeline, nothing visible changes, so stop.
+    const onVisible = (entries: IntersectionObserverEntry[]) => {
+      const e = entries[entries.length - 1];
+      const topOnScreen = e.intersectionRect.top - e.boundingClientRect.top;
+      visible = e.isIntersecting && topOnScreen < (1 - FADE) * e.boundingClientRect.height;
+      if (visible) wake();
+      else {
+        cancelAnimationFrame(raf);
+        clearTimeout(timer);
+        raf = 0;
+        drops.length = 0;
+      }
+    };
     const onLost = (e: Event) => {
       e.preventDefault();
       cancelAnimationFrame(raf);
@@ -343,7 +379,13 @@ export default function SlidingBlocks() {
     window.addEventListener("click", onClick, true);
     window.addEventListener("touchstart", onTouchStart, { capture: true, passive: true });
     window.addEventListener("touchmove", onTouchMove, { capture: true, passive: true });
-    window.addEventListener("resize", onResize);
+    // The canvas follows the hero's height, which fonts and viewports change.
+    const sizes = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(onResize);
+    if (sizes) sizes.observe(canvas);
+    else window.addEventListener("resize", onResize);
+    const steps = Array.from({ length: 21 }, (_, i) => i / 20);
+    const sight = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver(onVisible, { threshold: steps });
+    if (sight) sight.observe(canvas);
     canvas.addEventListener("webglcontextlost", onLost);
     canvas.addEventListener("webglcontextrestored", onRestored);
     reduceMotion.addEventListener?.("change", run);
@@ -359,6 +401,8 @@ export default function SlidingBlocks() {
       window.removeEventListener("touchstart", onTouchStart, true);
       window.removeEventListener("touchmove", onTouchMove, true);
       window.removeEventListener("resize", onResize);
+      sizes?.disconnect();
+      sight?.disconnect();
       canvas.removeEventListener("webglcontextlost", onLost);
       canvas.removeEventListener("webglcontextrestored", onRestored);
       reduceMotion.removeEventListener?.("change", run);
@@ -369,7 +413,7 @@ export default function SlidingBlocks() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 h-full w-full select-none opacity-0 transition-opacity duration-1000 [image-rendering:pixelated]"
+      className="pointer-events-none absolute inset-0 z-0 h-full w-full select-none opacity-0 transition-opacity duration-1000 [image-rendering:pixelated]"
     />
   );
 }
