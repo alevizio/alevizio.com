@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
 
 // The page background, and the dark grey the field dithers towards.
 const LIGHT = "#dedbd1";
-const DARK = "#b5b2a8";
+const DARK = "#c0bdb3";
 const CELLS = 16; // cells across the width
 const DOT = 4; // dither cell, CSS px
 const SPEED = 0.03; // how fast the field drifts
