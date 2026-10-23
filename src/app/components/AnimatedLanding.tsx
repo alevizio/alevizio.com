@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { lazy, Suspense, useState, type ReactNode } from "react";
-import AsciiRain from "./AsciiRain";
+import SlidingBlocks from "./SlidingBlocks";
 import CompanyLogos from "./CompanyLogos";
 import GlobestudioCard from "./GlobestudioCard";
 import SaboteursCard from "./SaboteursCard";
@@ -38,8 +38,8 @@ export default function AnimatedLanding() {
     // overflow-clip, not hidden: hidden would make this box the scroller
     // the project cards stick in, and they would never pin.
     <main className="bg-[#dedbd1] relative w-full h-full min-h-screen overflow-clip" data-name="alevizio.com">
-      {/* ASCII Rain Background — ambient drops + mouse ripples */}
-      <AsciiRain />
+      {/* Sliding grey blocks, drawn on the GPU, with ripples from the mouse */}
+      <SlidingBlocks />
 
       {/* The project cards and the hero: ending this box is what lets the
           card row (below lg) leave with the hero instead of covering the
