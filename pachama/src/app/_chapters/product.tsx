@@ -3,11 +3,7 @@ import landUpload from "@/assets/product/land/1-upload.jpg";
 import landDraw from "@/assets/product/land/2-draw.jpg";
 import landResults from "@/assets/product/land/3-results.jpg";
 import landYield from "@/assets/product/land/4-yield.jpg";
-import monitoringDashboard from "@/assets/product/monitoring-dashboard.jpg";
-import monitoringFireProtanomaly from "@/assets/product/monitoring-fire-protanomaly.jpg";
-import monitoringFire from "@/assets/product/monitoring-fire.jpg";
 import { cn } from "../_components/cn";
-import { Compare } from "../_components/compare";
 import { BoundaryUpload } from "../_components/screens/boundary-upload";
 import { CarbonMonitoring } from "../_components/screens/carbon-monitoring";
 import { EvaluationBook } from "../_components/screens/evaluation-book";
@@ -21,9 +17,9 @@ import { Retirements } from "../_components/screens/retirements";
 import { ScreeningBoard } from "../_components/screens/screening-board";
 import { SourceFlow } from "../_components/screens/source-flow";
 import { SourcingEvent } from "../_components/screens/sourcing-event";
-import { BLEED, HALF, TallShot } from "../_components/shot";
+import { BLEED, TallShot } from "../_components/shot";
 import { Slider } from "../_components/slider";
-import { Band, ChapterDivider, Row, Section } from "../_components/story";
+import { Band, ChapterDivider, Section } from "../_components/story";
 
 /* II · The product, on the product's own light grey: the marketplace and
  * the tools around it, shown as they were (Alejandro cleared everything
@@ -106,31 +102,11 @@ export const Product = () => (
       id="monitoring"
       eyebrow="Monitoring"
       title="Watching over a project"
-      text="After the purchase: carbon monitoring, the project's emissions against its baseline and the forest lost year by year (Manoa's here, on the real data); disturbance monitoring, fire risk by the day; and a dashboard for the rest. The fire reds were checked for colour-blind eyes."
+      text="After the purchase: carbon monitoring, the project's emissions against its baseline and the forest lost year by year, Manoa's here on the real data."
     >
       <div data-reveal="frame">
         <CarbonMonitoring />
       </div>
-      <Row className="mt-6 items-start sm:mt-8">
-        <Compare
-          before={{ src: monitoringFire, alt: "Llanos de Apan's disturbance monitoring: fire risk today, 0 hectares affected, recent fires in red around the project boundary" }}
-          after={{ src: monitoringFireProtanomaly, alt: "The same fire-risk map as someone with protanomaly sees it: the fires turn orange but still stand out" }}
-          beforeLabel="As designed"
-          afterLabel="Protanomaly"
-          control="Compare the fire map as designed with how someone with protanomaly sees it"
-          caption="Fire risk: today, the last 24 hours, the last week. Drag across: with protanomaly, the reds still read."
-          sizes={HALF}
-          imageClassName={SCREEN}
-        />
-        <TallShot
-          src={monitoringDashboard}
-          frameClassName={SCREEN}
-          label="Llanos de Apan's project dashboard, scrollable"
-          sizes={HALF}
-          alt="Llanos de Apan's project dashboard: trees planted, survival, costs, milestones, weather, photos from the field and a risk table"
-          caption="A project's dashboard, from planting to risk."
-        />
-      </Row>
     </Section>
 
     <Section
