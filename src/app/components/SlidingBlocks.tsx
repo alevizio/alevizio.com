@@ -430,11 +430,13 @@ export default function SlidingBlocks() {
     };
   }, []);
 
+  // An explicit height: a canvas is a replaced element, so top and bottom
+  // alone would not stretch it.
   return (
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 -bottom-[320px] z-0 w-full select-none opacity-0 [image-rendering:pixelated]"
+      className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[calc(100%+320px)] w-full select-none opacity-0 [image-rendering:pixelated]"
     />
   );
 }
