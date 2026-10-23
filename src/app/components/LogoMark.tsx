@@ -59,7 +59,10 @@ export const LogoMark = ({ className }: { className?: string }) => {
       onPointerEnter={spin}
       onPointerDown={spin}
     >
-      <path ref={fillRef} d={first.fill} fill="#DEDBD1" />
+      {/* The faces: unpainted, so the background shows through (the hidden
+          lines are exact already), but filled for hit-testing, so hovering
+          inside the mark still spins it. */}
+      <path ref={fillRef} d={first.fill} fill="transparent" />
       <path
         ref={lineRef}
         d={first.lines}
