@@ -17,10 +17,10 @@ export const BanyanHero = ({ id, className }: { id: string; className?: string }
       <p data-reveal className="type-label text-(--tone-label)">
         Chapter III
       </p>
-      <h2 data-reveal className="mt-4 font-display text-[clamp(5rem,13.9vw,12.5rem)] leading-[0.85] font-bold text-bn-heavy uppercase [--reveal-delay:0.08s]">
+      <h2 data-reveal className="type-display mt-4 text-bn-heavy [--reveal-delay:0.08s]">
         Banyan
       </h2>
-      <p data-reveal className="mt-3 text-[clamp(1.75rem,5.56vw,5rem)] leading-none font-medium text-bn-medium [--reveal-delay:0.16s]">
+      <p data-reveal className="mt-3 text-[clamp(1.5rem,3vw,2.5rem)] leading-none font-medium text-bn-medium [--reveal-delay:0.16s]">
         Design system
       </p>
       <p data-reveal className="type-body mt-8 max-w-[32rem] text-(--tone-text) [--reveal-delay:0.24s]">
