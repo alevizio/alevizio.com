@@ -106,7 +106,8 @@ export default function AnimatedLanding() {
             I bring clarity to complex ideas, from early concepts to polished systems used by real people. Previously at{" "}
             <InlineLink href="https://www.linkedin.com/company/pachama/">Pachama</InlineLink>, acquired by{" "}
             <InlineLink href="https://relae.co/">Relae</InlineLink>; now building{" "}
-            <InlineLink href="https://djooni.com">Djooni</InlineLink>. I started and led{" "}
+            <InlineLink href="https://djooni.com">Djooni</InlineLink> and building products at{" "}
+            <InlineLink href="https://www.bocho.com/">Bocho</InlineLink>. I started and led{" "}
             <InlineLink href="https://aerolab.co/">Aerolab</InlineLink>, and on the side I build{" "}
             <InlineLink href="https://saboteurs.app/">videogames</InlineLink> and I’m a{" "}
             <InlineLink href="https://soundcloud.com/alevizio">vinyl{"\u00a0"}DJ</InlineLink>. Originally from Argentina but living in
