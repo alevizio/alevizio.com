@@ -7,7 +7,6 @@ import guidelines68 from "@/assets/brand/guidelines-68.jpg";
 import guidelines83 from "@/assets/brand/guidelines-83.jpg";
 import ecologyEconomy from "@/assets/brand/reveal-ecology-economy.jpg";
 import fromTo from "@/assets/brand/reveal-from-to.jpg";
-import natureRelations from "@/assets/brand/reveal-nature-relations.jpg";
 import websiteHome from "@/assets/brand/website-home.jpg";
 import book from "@/assets/howhow/book-sv.jpg";
 import economy from "@/assets/howhow/economy-sv.jpg";
@@ -23,6 +22,7 @@ import web from "@/assets/howhow/web-l.jpg";
 import zoom from "@/assets/howhow/zoom-l.jpg";
 import { cn } from "../_components/cn";
 import { MarkExplorer } from "../_components/mark-explorer";
+import { NatureRelations } from "../_components/nature-relations";
 import { Moodboard } from "../_components/moodboard";
 import { SeeCarbon } from "../_components/see-carbon";
 import { Palette } from "../_components/palette";
@@ -74,7 +74,7 @@ export const Brand = () => (
       title="From carbon offsetting to Nature Relations"
       text="FNDR's narrative, from the deck that revealed the rebrand inside Pachama: business and nature in one relationship, ecology and economy from the same root."
     >
-      <Shot src={natureRelations} alt="'We call this Nature Relations.' beside a tree drawn in coloured lidar points" caption="The central idea: a new relationship between businesses and nature." bleed />
+      <NatureRelations />
       <Row className="mt-6">
         <Shot src={ecologyEconomy} alt="'Ecology + Economy': a forest and a city plaza joined by a gradient bar, 'studying our home' and 'managing our home'" sizes={HALF} caption="Both words come from oikos, home." />
         <Shot src={fromTo} alt="A from-to list: from singular transactions and carbon offsetting to original action and Nature Relations" sizes={HALF} caption="The shift, from offsetting to Nature Relations." />
