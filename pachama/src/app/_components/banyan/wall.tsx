@@ -1,3 +1,5 @@
+"use client";
+
 import dataDisplay from "@/assets/banyan/wall/data-display.jpg";
 import feedback from "@/assets/banyan/wall/feedback.jpg";
 import forms from "@/assets/banyan/wall/forms.jpg";
@@ -5,11 +7,15 @@ import foundations from "@/assets/banyan/wall/foundations.jpg";
 import overlay from "@/assets/banyan/wall/overlay.jpg";
 import patterns from "@/assets/banyan/wall/patterns.jpg";
 import Image, { type StaticImageData } from "next/image";
+import { useRef } from "react";
 import { cn } from "../cn";
-import { BN } from "./ui";
+import { useDragPan } from "../drag-pan";
+import { Zoom } from "../zoom";
 
 /* Every page of Banyan's documentation, as the Figma lays them out side by
- * side, in its six groups. Each group opens the gallery below on its family. */
+ * side, in its six groups: one strip that starts at the text's edge and
+ * runs off the right of the window. Drag it (or scroll) along; click a
+ * group to see it bigger. */
 const GROUPS: { id: string; label: string; image: StaticImageData; pages: string }[] = [
   { id: "foundations", label: "Foundations", image: foundations, pages: "the cover, getting started, typography, colour and background levels" },
   { id: "patterns", label: "Patterns", image: patterns, pages: "navigation, cards, graphs, accordion, stepper, breadcrumb, tabs and maps" },
@@ -28,22 +34,32 @@ const HEIGHTS = [
 const sizesFor = ({ width, height }: StaticImageData) =>
   HEIGHTS.map(({ min, h }) => `${min ? `(min-width: ${min}px) ` : ""}${Math.round((width / height) * h)}px`).join(", ");
 
-export const DocWall = ({ className }: { className?: string }) => (
-  <div role="region" aria-label="Banyan's documentation, every page" className={cn("overflow-x-auto rounded-[16px] border border-bn-grey-light bg-bn-eggshell p-4 sm:p-6", className)}>
-    <ol className="flex w-max gap-4 sm:gap-6">
-      {GROUPS.map(({ id, label, image, pages }) => (
-        <li key={id}>
-          <a href={`#${id}`} className={cn("group block rounded-[8px]", BN.focus)}>
-            <Image
-              src={image}
-              alt={`Banyan's ${label.toLowerCase()} pages: ${pages}`}
-              sizes={sizesFor(image)}
-              className="h-[260px] w-auto rounded-[8px] sm:h-[400px] lg:h-[520px]"
-            />
-            <span className="mt-3 block text-[14px] font-medium text-bn-heavy underline-offset-4 group-hover:underline">{label}</span>
-          </a>
-        </li>
-      ))}
-    </ol>
-  </div>
-);
+export const DocWall = ({ className }: { className?: string }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  useDragPan(ref);
+  return (
+    <div
+      ref={ref}
+      role="region"
+      aria-label="Banyan's documentation, every page"
+      className={cn(
+        "mr-[calc(50%-50vw)] cursor-grab overflow-x-auto overscroll-x-contain pb-4 [scrollbar-color:rgb(14_37_23/0.25)_transparent] [scrollbar-width:thin] data-dragging:cursor-grabbing data-dragging:select-none",
+        className,
+      )}
+    >
+      <ol className="flex w-max gap-4 pr-16 sm:gap-6">
+        {GROUPS.map(({ id, label, image, pages }) => {
+          const alt = `Banyan's ${label.toLowerCase()} pages: ${pages}`;
+          return (
+            <li key={id}>
+              <Zoom src={image} alt={alt}>
+                <Image src={image} alt={alt} sizes={sizesFor(image)} draggable={false} className="h-[260px] w-auto rounded-[8px] select-none sm:h-[400px] lg:h-[520px]" />
+              </Zoom>
+              <span className="mt-3 block text-[14px] font-medium text-bn-heavy">{label}</span>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+};

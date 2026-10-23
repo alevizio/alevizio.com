@@ -70,7 +70,7 @@ const NAV: readonly NavGroup[] = [
     items: [
       { id: "kit-all", label: "The system" },
       { id: "structure", label: "The structure" },
-      { id: "components", label: "Every component" },
+      { id: "components", label: "The components" },
     ],
   },
   {

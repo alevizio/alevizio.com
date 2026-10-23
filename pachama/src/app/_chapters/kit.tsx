@@ -1,13 +1,15 @@
-import { BanyanCover } from "../_components/banyan/cover";
-import { ComponentGallery } from "../_components/banyan/gallery";
+import { BanyanHero } from "../_components/banyan/hero";
+import { ComponentMarquee } from "../_components/banyan/marquee";
 import { BanyanStructure } from "../_components/banyan/structure";
 import { DocWall } from "../_components/banyan/wall";
+import { cn } from "../_components/cn";
 import { CountUp } from "../_components/count-up";
-import { Band, ChapterDivider, Section } from "../_components/story";
+import { Band, PAGE } from "../_components/story";
 
-/* III · Banyan, the design system Alejandro designed for Pachama's products:
- * its Figma cover and every documentation page up top, then each family
- * rebuilt live from the Figma, in Banyan's own order. */
+/* III · Banyan, the design system Alejandro designed for Pachama's products.
+ * It opens on its own cover, live, which is the chapter's title too; then
+ * the numbers, every documentation page in one strip, the structure, and
+ * a selection of the components on a belt, working. */
 const COUNTS = [
   { value: 37, label: "documented pages" },
   { value: 261, label: "button variants" },
@@ -17,19 +19,12 @@ const COUNTS = [
 
 export const Kit = () => (
   <Band tone="banyan" className="border-t border-rule">
-    <ChapterDivider id="kit" numeral="III" title="Banyan">
-      The design system behind Pachama&rsquo;s products. I designed it and documented every component in Figma; Pachama&rsquo;s engineers built
-      the same components in code. Rebuilt here from the Figma, and&nbsp;working.
-    </ChapterDivider>
+    <BanyanHero id="kit" />
 
-    <Section
-      id="kit-all"
-      eyebrow="The system"
-      title="One library, documented page by page"
-      text="From getting started to the tooltip, every page of the documentation is below, side by side as the Figma lays them out. Each group jumps to its components."
-    >
-      <BanyanCover />
-      <dl data-stagger className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
+    <section id="kit-all" data-scene className={cn(PAGE, "scroll-mt-10")}>
+      {/* The sections' headings are for screen readers: the page shows the work. */}
+      <h3 className="sr-only">The system, documented page by page</h3>
+      <dl data-stagger className="grid grid-cols-2 gap-6 sm:grid-cols-4">
         {COUNTS.map(({ value, label }) => (
           <div key={label} data-reveal className="border-t border-(--tone-line) pt-4">
             <dt className="type-label text-(--tone-label)">{label}</dt>
@@ -39,25 +34,17 @@ export const Kit = () => (
           </div>
         ))}
       </dl>
-      <DocWall className="mt-10" />
-    </Section>
+      <DocWall className="mt-14 sm:mt-20" />
+    </section>
 
-    <Section
-      id="structure"
-      eyebrow="The structure"
-      title="How it's put together"
-      text="The families, the components in each, and how one button multiplies into its variants, with the Figma's own names."
-    >
+    <section id="structure" data-scene className={cn(PAGE, "mt-24 scroll-mt-10 sm:mt-32")}>
+      <h3 className="sr-only">How Banyan is put together</h3>
       <BanyanStructure />
-    </Section>
+    </section>
 
-    <Section
-      id="components"
-      eyebrow="Every component"
-      title="The whole library, live"
-      text="A selection first, at work, then every family from the Figma a chip away, rebuilt and working. Use them: the buttons press, the menus open, the charts draw. The maps have their own chapter, IV."
-    >
-      <ComponentGallery />
-    </Section>
+    <section id="components" data-scene className="mt-24 scroll-mt-10 sm:mt-32">
+      <h3 className="sr-only">The components, working</h3>
+      <ComponentMarquee />
+    </section>
   </Band>
 );

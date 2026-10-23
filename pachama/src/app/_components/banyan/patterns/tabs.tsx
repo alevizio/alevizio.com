@@ -3,12 +3,22 @@
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "../../cn";
 import { BN } from "../ui";
+import { KALIMANTAN, MANOA } from "./content";
 
 /* Banyan's tabs: 40px tall, Matter 16, a 2px heavy line under the
  * selected one on a 2px grey rule; mint on hover (as the docs show it),
  * grey text when disabled; an optional status dot or count badge. The
  * full pattern: arrows, Home and End, disabled tabs skipped. */
 type TabItem = { label: string; panel: ReactNode; disabled?: boolean; status?: boolean; count?: number };
+
+const Panel = ({ children }: { children: string }) => <p className="max-w-prose pt-4 text-[15px] leading-6 text-bn-medium">{children}</p>;
+/** A project's tabs, with the samples the docs use. */
+export const PROJECT_TABS: TabItem[] = [
+  { label: "Summary", panel: <Panel>{`${KALIMANTAN.area} in ${KALIMANTAN.country}, ${KALIMANTAN.type}.`}</Panel> },
+  { label: "Evaluation", status: true, panel: <Panel>{MANOA.about}</Panel> },
+  { label: "Documents", count: 4, panel: <Panel>The project description, its validation and two monitoring reports. Sample files.</Panel> },
+  { label: "Monitoring", disabled: true, panel: <Panel>Not yet.</Panel> },
+];
 
 export const Tabs = ({ items, label, initial = 0, className }: { items: TabItem[]; label: string; initial?: number; className?: string }) => {
   const [selected, setSelected] = useState(initial);
