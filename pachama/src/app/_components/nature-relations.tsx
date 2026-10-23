@@ -25,11 +25,11 @@ export const NatureRelations = ({ className }: { className?: string }) => (
           <svg viewBox={viewBox} aria-hidden className="w-11 shrink-0 fill-white">
             <path d={symbol} />
           </svg>
-          <p data-reveal className="mt-14 max-w-[32rem] text-[22px] leading-[1.3] sm:text-[30px]">
-            Pachama wants to facilitate a new relationship between Businesses and Nature.
-          </p>
-          <p data-reveal className="mt-auto pt-14 font-display text-[64px] leading-[0.92] font-bold [--reveal-delay:0.2s] sm:text-[96px] xl:text-[112px]">
+          <p data-reveal className="mt-14 font-display text-[64px] leading-[0.92] font-bold sm:text-[96px] xl:text-[112px]">
             We call this Nature Relations.
+          </p>
+          <p data-reveal className="mt-auto max-w-[32rem] pt-14 text-[22px] leading-[1.3] [--reveal-delay:0.2s] sm:text-[30px]">
+            Pachama wants to facilitate a new relationship between Businesses and Nature.
           </p>
         </div>
       </div>

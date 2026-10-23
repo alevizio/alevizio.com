@@ -30,13 +30,10 @@ import bottles from "@/assets/world/merch/bottles.jpg";
 import notebook from "@/assets/world/merch/notebook.jpg";
 import originalsCard from "@/assets/world/merch/originals.jpg";
 import shirtForce from "@/assets/world/merch/shirt-force.jpg";
-import shirtPlant from "@/assets/world/merch/shirt-plant.jpg";
-import shirtRestore from "@/assets/world/merch/shirt-restore.jpg";
 import pins from "@/assets/world/pins.jpg";
 import posterOffsite from "@/assets/world/poster-offsite.jpg";
 import retreatSketch from "@/assets/world/retreat-sketch.jpg";
 import seriesBBanner from "@/assets/world/seriesb-banner.jpg";
-import shirtPair from "@/assets/world/shirt-pair.jpg";
 import shirt from "@/assets/world/shirt.jpg";
 import stamp from "@/assets/world/stamp.jpg";
 import treeTrace from "@/assets/world/tree-trace.jpg";
@@ -85,11 +82,8 @@ const DRAFT = "(min-width: 1024px) 22vw, (min-width: 640px) 34vw, 58vw";
 // The trees out in the world, at one height in a sideways row: the shirts,
 // the 2024 notebook and the bottles, from the Brand Assets file.
 const MERCH = [
-  { src: shirtPlant, alt: "Two people in white Pachama shirts: 'Plant native species.' on the front, the six Originals trees on the back" },
   { src: shirtForce, alt: "'Be a force of nature' on the front of a white shirt, the Originals trees on the back" },
-  { src: shirtRestore, alt: "'Restore nature. Remove carbon.' on the front of a white shirt, the trees on the back, on a grey-green ground" },
   { src: shirt, alt: "A white t-shirt with a lidar tree in the spectrum's colours" },
-  { src: shirtPair, alt: "The tree shirt, front and back, on two people" },
   { src: notebook, alt: "The 2024 notebook: a lidar tree in the spectrum's colours on black, flat and as a hardcover on green" },
   { src: bottles, alt: "Two white bottles printed with the lidar tree and the Pachama logo" },
 ];
