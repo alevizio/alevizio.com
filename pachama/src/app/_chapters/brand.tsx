@@ -1,4 +1,3 @@
-import dotGrid from "@/assets/brand/dot-grid.jpg";
 import guidelines1 from "@/assets/brand/guidelines-1.jpg";
 import guidelines13 from "@/assets/brand/guidelines-13.jpg";
 import guidelines26 from "@/assets/brand/guidelines-26.jpg";
@@ -6,12 +5,9 @@ import guidelines46 from "@/assets/brand/guidelines-46.jpg";
 import guidelines6 from "@/assets/brand/guidelines-6.jpg";
 import guidelines68 from "@/assets/brand/guidelines-68.jpg";
 import guidelines83 from "@/assets/brand/guidelines-83.jpg";
-import hexGrid from "@/assets/brand/hex-grid.jpg";
 import ecologyEconomy from "@/assets/brand/reveal-ecology-economy.jpg";
 import fromTo from "@/assets/brand/reveal-from-to.jpg";
-import moodboard from "@/assets/brand/reveal-moodboard.jpg";
 import natureRelations from "@/assets/brand/reveal-nature-relations.jpg";
-import seeCarbon from "@/assets/brand/see-carbon-hero.jpg";
 import websiteHome from "@/assets/brand/website-home.jpg";
 import book from "@/assets/howhow/book-sv.jpg";
 import economy from "@/assets/howhow/economy-sv.jpg";
@@ -27,6 +23,8 @@ import web from "@/assets/howhow/web-l.jpg";
 import zoom from "@/assets/howhow/zoom-l.jpg";
 import { cn } from "../_components/cn";
 import { MarkExplorer } from "../_components/mark-explorer";
+import { Moodboard } from "../_components/moodboard";
+import { SeeCarbon } from "../_components/see-carbon";
 import { Palette } from "../_components/palette";
 import { BLEED, Clip, HALF, Masonry, Shot, TallShot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
@@ -89,12 +87,7 @@ export const Brand = () => (
       title="See carbon in action"
       text="FNDR's strategy put nature and data in the same sentence. How&How turned it into a headline and a way of drawing: the forest, and the carbon in it, made visible."
     >
-      <Shot
-        src={seeCarbon}
-        alt="The new site's hero: 'See carbon in action.' over an aerial view of a river through wetland forest"
-        caption="The site's hero, from the hand-over."
-        bleed
-      />
+      <SeeCarbon />
     </Section>
 
     <Section
@@ -117,9 +110,7 @@ export const Brand = () => (
     >
       <Masonry cols={2}>
         <Clip name="howhow/particles-s" label="'Not just a tree': a tree at sunset dissolving into particles" aspect="aspect-square" />
-        <Shot src={hexGrid} alt="'See carbon in action' beside an aerial forest with a hexagonal mesh draped over it and a counter of tonnes" sizes={HALF} caption="The hex grid." />
         <Clip name="howhow/lidar-sv" label="'Lidar inspired': a tree in lidar points on dark green" aspect={SPLIT} />
-        <Shot src={dotGrid} alt="The same hero with a dot grid draped over the forest in the spectrum's colours" sizes={HALF} caption="The dot grid." />
       </Masonry>
     </Section>
 
@@ -137,13 +128,7 @@ export const Brand = () => (
         <Palette />
         <TypeSpecimen />
       </Row>
-      <Shot
-        src={moodboard}
-        alt="A moodboard of iridescent things: a beetle, a hummingbird, a shell, an insect's eye, a begonia and a rainbow, beside lidar scans of forest"
-        caption="The moodboard: iridescent animals and plants beside lidar scans, where the spectrum came from."
-        className="mt-6"
-      bleed
-      />
+      <Moodboard className="mt-6" />
     </Section>
 
     <Section
