@@ -143,6 +143,133 @@
   background-image: linear-gradient(135deg, var(--color-leaf), var(--color-sky));
 }
 
+/* Motion. Things arrive as they scroll into view: text rises, pictures
+ * open, bars grow from their baseline, badges pop. MotionObserver marks
+ * each [data-reveal] with data-in once it's on screen; the hiding only
+ * applies under html.motion, which the observer sets after showing what's
+ * already in view, so nothing blinks and the page reads without script.
+ * Nothing moves for anyone who has asked their system for less motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .motion [data-reveal] {
+    transition:
+      opacity 0.8s var(--ease-arrive),
+      translate 1s var(--ease-arrive),
+      scale 1.1s var(--ease-arrive),
+      rotate 1.1s var(--ease-arrive),
+      clip-path 1.2s var(--ease-arrive);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  .motion [data-reveal]:not([data-in]) {
+    opacity: 0;
+    translate: 0 1.75rem;
+  }
+  /* Pictures and screens: they open upward from their bottom edge. The
+   * clip comes off once they're open (data-done), so focus rings and
+   * shadows past the edge show again. */
+  .motion [data-reveal="frame"]:not([data-in]) {
+    opacity: 1;
+    translate: 0 2.5rem;
+    clip-path: inset(18% 0 0 0 round 10px);
+  }
+  .motion [data-reveal="frame"][data-in]:not([data-done]) {
+    clip-path: inset(0 0 0 0 round 10px);
+  }
+  /* Stickers land, slightly turned. */
+  .motion [data-reveal="pop"]:not([data-in]) {
+    scale: 0.82;
+    rotate: -6deg;
+    translate: 0 0.75rem;
+  }
+  /* Bars grow from their baseline, lines draw from the left. */
+  .motion [data-reveal="grow-y"],
+  .motion [data-reveal="grow-x"] {
+    transform-box: fill-box;
+    transition-duration: 1.2s;
+  }
+  .motion [data-reveal="grow-y"] {
+    transform-origin: bottom;
+  }
+  .motion [data-reveal="grow-x"] {
+    transform-origin: left;
+  }
+  .motion [data-reveal="grow-y"]:not([data-in]) {
+    opacity: 1;
+    translate: none;
+    scale: 1 0;
+  }
+  .motion [data-reveal="grow-x"]:not([data-in]) {
+    opacity: 1;
+    translate: none;
+    scale: 0 1;
+  }
+
+  /* Siblings follow one another. */
+  .motion [data-stagger] > :nth-child(2) {
+    --reveal-delay: 0.09s;
+  }
+  .motion [data-stagger] > :nth-child(3) {
+    --reveal-delay: 0.18s;
+  }
+  .motion [data-stagger] > :nth-child(4) {
+    --reveal-delay: 0.27s;
+  }
+  .motion [data-stagger] > :nth-child(5) {
+    --reveal-delay: 0.36s;
+  }
+  .motion [data-stagger] > :nth-child(6) {
+    --reveal-delay: 0.45s;
+  }
+  .motion [data-stagger] > :nth-child(n + 7) {
+    --reveal-delay: 0.54s;
+  }
+
+  /* The hero plays once on load: the spectrum draws, then the words. */
+  .arrive {
+    animation: arrive 1.1s var(--ease-arrive) both;
+    animation-delay: var(--arrive-delay, 0s);
+  }
+  .draw {
+    transform-origin: left;
+    animation: draw 1.6s var(--ease-arrive) both;
+  }
+  /* The name settles from wide spacing into its tight set. */
+  .settle {
+    animation: settle 1.5s var(--ease-arrive) both;
+    animation-delay: var(--arrive-delay, 0s);
+  }
+}
+
+@keyframes zoom-open {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    letter-spacing: 0.14em;
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+@keyframes draw {
+  from {
+    scale: 0 1;
+  }
+}
+
+:root {
+  --ease-arrive: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 @layer base {
   html {
     color-scheme: dark;

@@ -21,9 +21,10 @@ const TONES: Record<Tone, string> = {
   // The leaf green is too light for small text on paper; this one reads 5:1.
   paper:
     "bg-paper [--tone-head:var(--color-ink)] [--tone-text:var(--color-body)] [--tone-label:#157a41] [--tone-line:var(--color-ash)] [--tone-fill:rgb(255_255_255/0.6)]",
-  // Banyan's own ground for the kit: white, with its green-black for heads.
+  // Banyan's own ground for the kit: the eggshell its docs set components
+  // on, one surface for the whole chapter, with its green-black for heads.
   banyan:
-    "bg-white [--tone-head:var(--color-bn-heavy)] [--tone-text:var(--color-bn-medium)] [--tone-label:#157a41] [--tone-line:var(--color-bn-grey-light)] [--tone-fill:var(--color-bn-eggshell)]",
+    "bg-bn-eggshell [--bn-surface:var(--color-bn-eggshell)] [--tone-head:var(--color-bn-heavy)] [--tone-text:var(--color-bn-medium)] [--tone-label:#157a41] [--tone-line:var(--color-bn-grey-light)] [--tone-fill:var(--color-bn-eggshell)]",
 };
 
 const tidyNode = (node: ReactNode) => (typeof node === "string" ? tidy(node) : node);
@@ -52,9 +53,19 @@ export const Section = ({
 }) => (
   <section id={id} className={cn("mt-28 scroll-mt-10 sm:mt-40", className)}>
     <div className={PAGE}>
-      {eyebrow ? <p className="type-label text-(--tone-label)">{eyebrow}</p> : null}
-      <h3 className={cn("type-section max-w-[18ch] text-(--tone-head)", eyebrow && "mt-4")}>{tidyNode(title)}</h3>
-      {text ? <p className="type-body mt-5 max-w-[36rem] text-(--tone-text)">{tidyNode(text)}</p> : null}
+      {eyebrow ? (
+        <p data-reveal className="type-label text-(--tone-label)">
+          {eyebrow}
+        </p>
+      ) : null}
+      <h3 data-reveal className={cn("type-section max-w-[18ch] text-(--tone-head) [--reveal-delay:0.08s]", eyebrow && "mt-4")}>
+        {tidyNode(title)}
+      </h3>
+      {text ? (
+        <p data-reveal className="type-body mt-5 max-w-[36rem] text-(--tone-text) [--reveal-delay:0.16s]">
+          {tidyNode(text)}
+        </p>
+      ) : null}
     </div>
     {children ? <div className={cn(PAGE, "mt-12 sm:mt-16")}>{children}</div> : null}
   </section>
@@ -76,10 +87,18 @@ export const ChapterDivider = ({
 }) => (
   <header id={id} className="mt-40 scroll-mt-10 sm:mt-56">
     <div className={PAGE}>
-      <div aria-hidden className="spectrum h-[3px] w-16 rounded-full" />
-      <p className="type-label mt-6 text-(--tone-label)">Chapter {numeral}</p>
-      <h2 className="type-display mt-4 text-(--tone-head)">{tidy(title)}</h2>
-      {children ? <p className="type-body mt-6 max-w-[34rem] text-(--tone-text)">{children}</p> : null}
+      <div aria-hidden data-reveal="grow-x" className="spectrum h-[3px] w-16 rounded-full" />
+      <p data-reveal className="type-label mt-6 text-(--tone-label) [--reveal-delay:0.1s]">
+        Chapter {numeral}
+      </p>
+      <h2 data-reveal className="type-display mt-4 text-(--tone-head) [--reveal-delay:0.18s]">
+        {tidy(title)}
+      </h2>
+      {children ? (
+        <p data-reveal className="type-body mt-6 max-w-[34rem] text-(--tone-text) [--reveal-delay:0.28s]">
+          {children}
+        </p>
+      ) : null}
     </div>
   </header>
 );
@@ -87,6 +106,7 @@ export const ChapterDivider = ({
 /** Two to four pieces side by side from sm up. */
 export const Row = ({ children, cols = 2, className }: { children: ReactNode; cols?: 2 | 3 | 4; className?: string }) => (
   <div
+    data-stagger
     className={cn(
       "grid gap-4 sm:gap-6",
       cols === 2 && "sm:grid-cols-2",

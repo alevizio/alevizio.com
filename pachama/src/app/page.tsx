@@ -6,6 +6,7 @@ import { Kit } from "./_chapters/kit";
 import { Maps } from "./_chapters/maps";
 import { Product } from "./_chapters/product";
 import { World } from "./_chapters/world";
+import { MotionObserver } from "./_components/motion-observer";
 import { type NavGroup, StoryNav } from "./_components/story-nav";
 
 const TITLE = "Pachama — case study — Alejandro Vizio";
@@ -89,7 +90,6 @@ const NAV: readonly NavGroup[] = [
       { id: "baselines", label: "Dynamic baselines" },
       { id: "change", label: "Change over time" },
       { id: "lidar", label: "Lidar" },
-      { id: "map-ui", label: "The map UI" },
     ],
   },
   {
@@ -121,6 +121,7 @@ export default function PachamaCaseStudy() {
         <World />
         <Closing />
       </main>
+      <MotionObserver />
     </>
   );
 }

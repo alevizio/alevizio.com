@@ -21,7 +21,6 @@ import posterEarth from "@/assets/world/poster-earth.jpg";
 import posterForest from "@/assets/world/poster-forest.jpg";
 import posterOffsite from "@/assets/world/poster-offsite.jpg";
 import posterRedwoods from "@/assets/world/poster-redwoods.jpg";
-import retreatArt from "@/assets/world/retreat-art.jpg";
 import retreatSketch from "@/assets/world/retreat-sketch.jpg";
 import seriesBBanner from "@/assets/world/seriesb-banner.jpg";
 import sequoia from "@/assets/world/sequoia-mauve.png";
@@ -29,19 +28,54 @@ import shirtPair from "@/assets/world/shirt-pair.jpg";
 import shirt from "@/assets/world/shirt.jpg";
 import stamp from "@/assets/world/stamp.jpg";
 import treeTrace from "@/assets/world/tree-trace.jpg";
-import { Clip, HALF, QUARTER, Shot, THIRD } from "../_components/shot";
-import { Band, ChapterDivider, Row, Section } from "../_components/story";
+import Image, { type StaticImageData } from "next/image";
+import { cn } from "../_components/cn";
+import { BLEED, Clip, HALF, QUARTER, Shot, THIRD } from "../_components/shot";
+import { Slider } from "../_components/slider";
+import { Band, ChapterDivider, PAGE, Row, Section } from "../_components/story";
+
+// The 2024 booth, both directions, in a row that scrolls sideways.
+const BOOTH = [
+  { src: booth01, alt: "Booth render: 'See carbon in action' over aerial forest, with a Pachama counter" },
+  { src: booth06, alt: "Booth render: the same wall with a river through wetland" },
+  { src: booth02, alt: "Booth render: 'Carbon in action' over a misty forest" },
+  { src: booth05, alt: "Booth render: 'Restoring balance' on a light wall with a rainbow tree" },
+] as const;
+const SLIDE = "(min-width: 1376px) 830px, (min-width: 1024px) 64vw, (min-width: 640px) 72vw, 86vw";
+
+// The poster and its drawing side by side at the same height: their
+// columns follow their shapes (1500 x 2123 and 960 x 956).
+const SAME_HEIGHT = "grid items-start gap-4 sm:grid-cols-[0.7066fr_1.0042fr] sm:gap-6";
+const POSTER = "(min-width: 1376px) 525px, (min-width: 640px) 41vw, 100vw";
 
 // The 2022 offsite's badges: the three teams, then the four values.
-const BADGES = [
+type Badge = { src: StaticImageData; name: string };
+const TEAMS: readonly Badge[] = [
   { src: protocol, name: "Protocol" },
   { src: marketplace, name: "Marketplace" },
   { src: supply, name: "Supply" },
+];
+const VALUES: readonly Badge[] = [
   { src: purpose, name: "Purpose" },
   { src: integrity, name: "Integrity" },
   { src: tenacity, name: "Tenacity" },
   { src: excellence, name: "Excellence" },
 ];
+
+/** A row of badges on the shared sheet, all at one height; they land like
+ *  stickers as they come into view. */
+const BadgeRow = ({ label, badges, className }: { label: string; badges: readonly Badge[]; className?: string }) => (
+  <div className={className}>
+    <p className="type-label text-body">{label}</p>
+    <ul data-stagger className="mt-8 flex flex-wrap items-center justify-around gap-x-8 gap-y-10">
+      {badges.map(({ src, name }) => (
+        <li key={name} data-reveal="pop">
+          <Image src={src} alt={`The ${name} badge`} sizes="(min-width: 640px) 176px, 128px" className="h-32 w-auto sm:h-44" />
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 
 /* V · In the world: the brand off the screen, and the things Alejandro drew
  * for the people inside it. Everything here is in Dropbox /Pachama; the
@@ -53,12 +87,9 @@ export const World = () => (
     </ChapterDivider>
 
     <Section id="booth" eyebrow="Events" title="The 2024 booth" text="Two directions for the stand: See carbon in action, and Restoring balance.">
-      <Row>
-        <Shot src={booth01} alt="Booth render: 'See carbon in action' over aerial forest, with a Pachama counter" sizes={HALF} />
-        <Shot src={booth06} alt="Booth render: the same wall with a river through wetland" sizes={HALF} />
-        <Shot src={booth02} alt="Booth render: 'Carbon in action' over a misty forest" sizes={HALF} />
-        <Shot src={booth05} alt="Booth render: 'Restoring balance' on a light wall with a rainbow tree" sizes={HALF} />
-      </Row>
+      <div data-reveal="frame">
+        <Slider label="The 2024 booth, four renders" slides={BOOTH} sizes={SLIDE} />
+      </div>
     </Section>
 
     <Section
@@ -67,19 +98,22 @@ export const World = () => (
       title="A banner for $55 million"
       text="Drawn for the party when Pachama closed its Series B: redwoods, light through the canopy and every investor's name. The timelapse is the drawing, from the first trunk to the type."
     >
-      <Row className="items-start">
-        <Shot src={seriesBBanner} alt="The Series B banner: '$55M Series B, led by Future Positive', the investors' names, framed by red redwood trunks" sizes={HALF} />
+      <div data-stagger className={SAME_HEIGHT}>
+        <Shot src={seriesBBanner} alt="The Series B banner: '$55M Series B, led by Future Positive', the investors' names, framed by red redwood trunks" sizes={POSTER} />
         <Clip
           name="seriesb-timelapse"
           label="A timelapse of the banner being drawn: trunks, then the canopy and light, then the type"
-          aspect="aspect-square"
+          aspect="aspect-[960/956]"
           caption="The drawing, six times faster."
         />
-      </Row>
-      <Row cols={3} className="mt-6">
-        <Shot src={posterForest} alt="A Series B variation: the type over a pale forest silhouette" sizes={THIRD} />
-        <Shot src={posterRedwoods} alt="A Series B variation in red and green, illustrated redwoods" sizes={THIRD} />
-        <Shot src={posterEarth} alt="A Series B variation in blue and green, like a map of the Earth" sizes={THIRD} />
+      </div>
+      <p data-reveal className="type-label mt-16 text-(--tone-label)">
+        Drafts, April 2022
+      </p>
+      <Row cols={3} className="mt-5">
+        <Shot src={posterForest} alt="A draft: the type over a pale forest silhouette" sizes={THIRD} />
+        <Shot src={posterRedwoods} alt="A draft in red and green, illustrated redwoods" sizes={THIRD} />
+        <Shot src={posterEarth} alt="A draft in blue and green, like a map of the Earth" sizes={THIRD} />
       </Row>
     </Section>
 
@@ -89,10 +123,9 @@ export const World = () => (
       title="Time of renewal"
       text="From a page in the sketchbook to the poster for Mendocino: redwoods, a fire, everyone around it."
     >
-      <Row cols={3} className="items-start">
-        <Shot src={retreatSketch} alt="A sketchbook spread: the retreat poster and badge ideas drawn in pen" sizes={THIRD} caption="The sketchbook." />
-        <Shot src={retreatArt} alt="The retreat illustration without type: people around a campfire among redwoods" sizes={THIRD} caption="The illustration." />
-        <Shot src={posterOffsite} alt="The retreat poster: 'Time of renewal, all-team retreat 2024' over the campfire illustration" sizes={THIRD} caption="The poster." />
+      <Row className="items-start">
+        <Shot src={retreatSketch} alt="A sketchbook spread: the retreat poster and badge ideas drawn in pen" sizes={HALF} caption="The sketchbook." />
+        <Shot src={posterOffsite} alt="The retreat poster: 'Time of renewal, all-team retreat 2024' over the campfire illustration" sizes={HALF} caption="The poster." />
       </Row>
     </Section>
 
@@ -102,13 +135,12 @@ export const World = () => (
       title="A badge for every team and every value"
       text="Protocol, Marketplace and Supply for the teams; Purpose, Integrity, Tenacity and Excellence for what Pachama stood for."
     >
-      <Row cols={4}>
-        {BADGES.map(({ src, name }) => (
-          <div key={name} className="rounded-[10px] bg-sheet p-6 sm:p-8">
-            <Shot src={src} alt={`The ${name} badge`} sizes={QUARTER} imageClassName="rounded-none" />
-          </div>
-        ))}
-      </Row>
+      <div className={cn(BLEED, "bg-sheet py-12 sm:py-16")}>
+        <div className={PAGE}>
+          <BadgeRow label="The teams" badges={TEAMS} />
+          <BadgeRow label="The values" badges={VALUES} className="mt-12 border-t border-rule pt-10" />
+        </div>
+      </div>
     </Section>
 
     <Section
@@ -140,11 +172,11 @@ export const World = () => (
     </Section>
 
     <Section id="field" eyebrow="In the field" title="Corredores de Vida" text="The restoration behind the lidar: farmland and forest in Brazil. Photos: Pachama.">
-      <Row>
-        <Shot src={corredores41} alt="A river between stands of forest, from the air" sizes={HALF} />
-        <Shot src={corredores45} alt="Forest meeting pasture along a lakeshore, from the air" sizes={HALF} />
-        <Shot src={corredores43} alt="Rows of young trees planted across dry farmland" sizes={HALF} />
-        <Shot src={corredores47} alt="A farmstead with a tree nursery, from the air" sizes={HALF} />
+      <Shot src={corredores41} alt="A river between stands of forest, from the air" bleed />
+      <Row cols={3} className="mt-6">
+        <Shot src={corredores45} alt="Forest meeting pasture along a lakeshore, from the air" sizes={THIRD} />
+        <Shot src={corredores43} alt="Rows of young trees planted across dry farmland" sizes={THIRD} />
+        <Shot src={corredores47} alt="A farmstead with a tree nursery, from the air" sizes={THIRD} />
       </Row>
     </Section>
   </Band>

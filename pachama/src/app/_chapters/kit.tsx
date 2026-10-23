@@ -8,16 +8,17 @@ import { Media } from "../_components/banyan/media";
 import { Overlay } from "../_components/banyan/overlay";
 import { Patterns } from "../_components/banyan/patterns";
 import { DocWall } from "../_components/banyan/wall";
+import { CountUp } from "../_components/count-up";
 import { Band, ChapterDivider, Section } from "../_components/story";
 
 /* III · Banyan, the design system Alejandro designed for Pachama's products:
  * its Figma cover and every documentation page up top, then each family
  * rebuilt live from the Figma, in Banyan's own order. */
 const COUNTS = [
-  { value: "37", label: "documented pages" },
-  { value: "261", label: "button variants" },
-  { value: "1,310", label: "icons" },
-  { value: "8", label: "colour ramps" },
+  { value: 37, label: "documented pages" },
+  { value: 261, label: "button variants" },
+  { value: 1310, label: "icons" },
+  { value: 8, label: "colour ramps" },
 ];
 
 export const Kit = () => (
@@ -34,11 +35,13 @@ export const Kit = () => (
       text="From getting started to the tooltip, every page of the documentation is below, side by side as the Figma lays them out. Each group jumps to its components."
     >
       <BanyanCover />
-      <dl className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
+      <dl data-stagger className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
         {COUNTS.map(({ value, label }) => (
-          <div key={label} className="border-t border-(--tone-line) pt-4">
+          <div key={label} data-reveal className="border-t border-(--tone-line) pt-4">
             <dt className="type-label text-(--tone-label)">{label}</dt>
-            <dd className="type-section mt-2 text-(--tone-head)">{value}</dd>
+            <dd className="type-section mt-2 text-(--tone-head)">
+              <CountUp value={value} />
+            </dd>
           </div>
         ))}
       </dl>

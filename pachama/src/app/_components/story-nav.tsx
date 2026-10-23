@@ -58,7 +58,7 @@ export const StoryNav = ({ groups }: { groups: readonly NavGroup[] }) => {
   return (
     <nav
       aria-label="Case study sections"
-      className="fixed top-1/2 right-5 z-40 hidden -translate-y-1/2 xl:block"
+      className="fixed top-1/2 right-1 z-40 hidden -translate-y-1/2 xl:block"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={close}
       onFocus={() => setOpen(true)}
@@ -137,7 +137,7 @@ export const StoryNav = ({ groups }: { groups: readonly NavGroup[] }) => {
         inert={open || undefined}
         onClick={() => setOpen(true)}
         className={cn(
-          "flex flex-col items-end gap-2 rounded-full px-2 py-3 transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157a41]",
+          "flex flex-col items-end gap-2 rounded-full px-1 py-3 transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157a41]",
           open ? "pointer-events-none opacity-0" : "opacity-100",
         )}
       >

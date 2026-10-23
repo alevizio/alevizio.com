@@ -32,7 +32,7 @@ import web from "@/assets/howhow/web-l.jpg";
 import zoom from "@/assets/howhow/zoom-l.jpg";
 import { cn } from "../_components/cn";
 import { Palette } from "../_components/palette";
-import { Clip, HALF, Shot, TallShot, THIRD } from "../_components/shot";
+import { BLEED, Clip, HALF, Masonry, Shot, TallShot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 import { TypeSpecimen } from "../_components/type-specimen";
 
@@ -80,7 +80,7 @@ export const Brand = () => (
       title="From carbon offsetting to Nature Relations"
       text="FNDR's narrative, from the deck that revealed the rebrand inside Pachama: business and nature in one relationship, ecology and economy from the same root."
     >
-      <Shot src={natureRelations} alt="'We call this Nature Relations.' beside a tree drawn in coloured lidar points" caption="The central idea: a new relationship between businesses and nature." />
+      <Shot src={natureRelations} alt="'We call this Nature Relations.' beside a tree drawn in coloured lidar points" caption="The central idea: a new relationship between businesses and nature." bleed />
       <Row className="mt-6">
         <Shot src={ecologyEconomy} alt="'Ecology + Economy': a forest and a city plaza joined by a gradient bar, 'studying our home' and 'managing our home'" sizes={HALF} caption="Both words come from oikos, home." />
         <Shot src={fromTo} alt="A from-to list: from singular transactions and carbon offsetting to original action and Nature Relations" sizes={HALF} caption="The shift, from offsetting to Nature Relations." />
@@ -105,32 +105,37 @@ export const Brand = () => (
       title="Circles and hexagons, a flower and a leaf"
       text="Formal geometry overlapping like a Venn diagram: nature, technology and community, in one gradient from leaf to sky."
     >
-      <Clip name="howhow/logo-l" label="The Pachama logo drawing itself" aspect="aspect-video" />
-      <Row cols={3} className="mt-6">
-        <LogoTile src="/brand/symbol-dark.svg" alt="The Pachama symbol: a flower of circles inside a hexagon, from green to sky" tile="bg-night" logo="w-1/4" />
-        <LogoTile src="/brand/logo-dark.svg" alt="The Pachama logo on the dark green ground" tile="bg-deep" logo="w-3/5" />
-        <LogoTile src="/brand/logo-light.svg" alt="The Pachama logo on white" tile="bg-sheet" logo="w-3/5" />
-      </Row>
-      <Shot
-        src={symbolColourways}
-        alt="The symbol six ways: light, green and gradient on the dark green; dark and gradient on light; dark on lidar green"
-        caption="The symbol on every ground it's allowed on."
-        className="mt-6"
-      />
-      <Shot
-        src={symbolSheet}
-        alt="The symbol's sheet: 'Our beloved mandala that represents earth's mother, the pachamama', its two-colour and one-colour versions on light, dark and green"
-        caption="The symbol: 'our beloved mandala that represents earth's mother, the pachamama.'"
-        className="mt-6"
-      />
-      <Shot
-        src={logoSheet}
-        alt="The logo's sheet: the isologotype's construction, its two-colour gradient from #52F164 to #52D5FF at 45 degrees, and its one-colour versions on light, dark green and lidar green"
-        caption="The logo's versions and colours."
-        className="mt-6"
-      />
-      <Shot src={originalsSheet} alt="The Pachama Originals sub-brand: the symbol beside 'Pachama Originals', in one colour on light, dark and green" caption="Pachama Originals, a sub-brand." className="mt-6" />
-      <Shot src={plusSheet} alt="The Pachama Plus sub-brand: the symbol beside 'Pachama Plus', in one colour on light, dark and green" caption="Pachama Plus, another." className="mt-6" />
+      <Clip name="howhow/logo-l" label="The Pachama logo drawing itself" aspect="aspect-video" bleed />
+      <div data-reveal="frame" className={cn(BLEED, "mt-6 grid sm:grid-cols-3")}>
+        <LogoTile src="/brand/symbol-dark.svg" alt="The Pachama symbol: a flower of circles inside a hexagon, from green to sky" tile="rounded-none bg-night" logo="w-1/4" />
+        <LogoTile src="/brand/logo-dark.svg" alt="The Pachama logo on the dark green ground" tile="rounded-none bg-deep" logo="w-3/5" />
+        <LogoTile src="/brand/logo-light.svg" alt="The Pachama logo on white" tile="rounded-none bg-sheet" logo="w-3/5" />
+      </div>
+      <Masonry cols={2} className="mt-6">
+        <Shot
+          src={symbolColourways}
+          alt="The symbol six ways: light, green and gradient on the dark green; dark and gradient on light; dark on lidar green"
+          caption="The symbol on every ground it's allowed on."
+          sizes={HALF}
+          zoom
+        />
+        <Shot
+          src={symbolSheet}
+          alt="The symbol's sheet: 'Our beloved mandala that represents earth's mother, the pachamama', its two-colour and one-colour versions on light, dark and green"
+          caption="The symbol: 'our beloved mandala that represents earth's mother, the pachamama.'"
+          sizes={HALF}
+          zoom
+        />
+        <Shot
+          src={logoSheet}
+          alt="The logo's sheet: the isologotype's construction, its two-colour gradient from #52F164 to #52D5FF at 45 degrees, and its one-colour versions on light, dark green and lidar green"
+          caption="The logo's versions and colours."
+          sizes={HALF}
+          zoom
+        />
+        <Shot src={originalsSheet} alt="The Pachama Originals sub-brand: the symbol beside 'Pachama Originals', in one colour on light, dark and green" caption="Pachama Originals, a sub-brand." sizes={HALF} zoom />
+        <Shot src={plusSheet} alt="The Pachama Plus sub-brand: the symbol beside 'Pachama Plus', in one colour on light, dark and green" caption="Pachama Plus, another." sizes={HALF} zoom />
+      </Masonry>
     </Section>
 
     <Section
@@ -139,14 +144,12 @@ export const Brand = () => (
       title="Particles, lidar and a mesh over the land"
       text="Trees turned to points, lidar's colours, and grids that drape over the terrain with the carbon counted on top."
     >
-      <Row className="items-start">
+      <Masonry cols={2}>
         <Clip name="howhow/particles-s" label="'Not just a tree': a tree at sunset dissolving into particles" aspect="aspect-square" />
-        <Clip name="howhow/lidar-sv" label="'Lidar inspired': a tree in lidar points on dark green" aspect={SPLIT} />
-      </Row>
-      <Row className="mt-6">
         <Shot src={hexGrid} alt="'See carbon in action' beside an aerial forest with a hexagonal mesh draped over it and a counter of tonnes" sizes={HALF} caption="The hex grid." />
+        <Clip name="howhow/lidar-sv" label="'Lidar inspired': a tree in lidar points on dark green" aspect={SPLIT} />
         <Shot src={dotGrid} alt="The same hero with a dot grid draped over the forest in the spectrum's colours" sizes={HALF} caption="The dot grid." />
-      </Row>
+      </Masonry>
     </Section>
 
     <Section
@@ -168,6 +171,7 @@ export const Brand = () => (
         alt="A moodboard of iridescent things: a beetle, a hummingbird, a shell, an insect's eye, a begonia and a rainbow, beside lidar scans of forest"
         caption="The moodboard: iridescent animals and plants beside lidar scans, where the spectrum came from."
         className="mt-6"
+      bleed
       />
     </Section>
 
@@ -196,20 +200,16 @@ export const Brand = () => (
       title="Out in the world"
       text="Billboards, an exhibition, signage, phones, socials and the people behind the projects."
     >
-      <Shot src={ooh} alt="A billboard on a city building: 'See carbon in action' over aerial forest" />
-      <Row className="mt-6">
-        <Shot src={exhibition} alt="An exhibition room with large screens of lidar trees and the line 'While trees may be temporary'" sizes={HALF} />
-        <Clip name="howhow/socials-l" label="Social posts for the brand, moving" aspect="aspect-video" />
-      </Row>
-      <Row cols={3} className="mt-6 items-start">
+      <Shot src={ooh} alt="A billboard on a city building: 'See carbon in action' over aerial forest" bleed />
+      <Masonry className="mt-6">
+        <Shot src={exhibition} alt="An exhibition room with large screens of lidar trees and the line 'While trees may be temporary'" sizes={THIRD} />
         <Shot src={sign} alt="An acrylic sign: 'Make the invisible visible'" sizes={THIRD} />
+        <Clip name="howhow/socials-l" label="Social posts for the brand, moving" aspect="aspect-video" />
         <Shot src={phone} alt="A hand holding a phone open on 'The new nature of modern business'" sizes={THIRD} />
+        <Shot src={testimonial} alt="A portrait for the brand: a man in a Pachama shirt against a giant tree trunk" sizes={THIRD} />
         <Shot src={economy} alt="An 'Economy' card over a photograph of a farmer among tall plants" sizes={THIRD} />
-      </Row>
-      <Row className="mt-6 items-start">
-        <Shot src={testimonial} alt="A portrait for the brand: a man in a Pachama shirt against a giant tree trunk" sizes={HALF} />
         <Clip name="howhow/services-sv" label="A mangrove tree on its stilt roots at dusk" aspect={SPLIT} />
-      </Row>
+      </Masonry>
     </Section>
 
     <Section
@@ -224,20 +224,16 @@ export const Brand = () => (
         alt="The pachama.com homepage design: 'Restore nature. Remove carbon.' over an aerial river, 'See carbon in action' with a lidar tree and an emissions chart, the companies choosing Pachama, the technology, a BCG quote, resources and the footer"
         caption="The homepage, top to bottom, from the site's Figma. Scroll inside it."
       />
-      <Shot src={web} alt="The new site on a laptop among leaves: 'Restore nature. Remove carbon.'" className="mt-10" />
-      <Row className="mt-6">
+      <Shot src={web} alt="The new site on a laptop among leaves: 'Restore nature. Remove carbon.'" className="mt-10" bleed />
+      <Masonry cols={2} className="mt-6">
         <Clip name="howhow/ui-l" label="The site's map: a satellite view with project cards" aspect="aspect-video" />
         <Shot src={zoom} alt="'Restore nature.' on a frosted card over a forest" sizes={HALF} />
-      </Row>
-      <Row className="mt-6">
-        <Clip name="howhow/locations-l" label="A project card: King County Parks, 65,966 tonnes of CO₂" aspect="aspect-video" />
-        <Clip name="howhow/process-l" label="The process explained, step by step, over a forest" aspect="aspect-video" />
-      </Row>
-      <Row className="mt-6 items-start">
         <Clip name="howhow/dashboard-s" label="The dashboard on screens in an office" aspect="aspect-square" />
+        <Clip name="howhow/locations-l" label="A project card: King County Parks, 65,966 tonnes of CO₂" aspect="aspect-video" />
         <Shot src={technology} alt="'Ambient trees': a lidar tree in a card" sizes={HALF} />
-      </Row>
-      <Clip name="howhow/worldscale" label="Projects across the world, at scale" aspect="aspect-video" className="mt-6" caption="Brand, motion and site by How&How, in collaboration with Pachama." />
+        <Clip name="howhow/process-l" label="The process explained, step by step, over a forest" aspect="aspect-video" />
+      </Masonry>
+      <Clip name="howhow/worldscale" label="Projects across the world, at scale" aspect="aspect-video" className="mt-6" caption="Brand, motion and site by How&How, in collaboration with Pachama." bleed />
     </Section>
 
     <Section
@@ -247,14 +243,14 @@ export const Brand = () => (
       text="Working with How&How and FNDR from Pachama's side: the brief, then the identity carried into the product, the site, the booth and everything printed, all of it set down in the brand guidelines."
     >
       <Row cols={3} className="items-start">
-        <Shot src={guidelines1} alt="The brand guidelines' cover: 'Brand guidelines, version 1.0, December 2023'" sizes={THIRD} caption="Version 1.0, December 2023." />
-        <Shot src={guidelines6} alt="A guidelines page on logo placement: left or centre, aligned to the canvas margins, never on the right" sizes={THIRD} caption="Logo placement." />
-        <Shot src={guidelines13} alt="A guidelines page on the primary palette: lidar green, eggshell, white and pine" sizes={THIRD} caption="The primary palette." />
-        <Shot src={guidelines26} alt="A guidelines page on numbers and eyebrow headings: baseline emissions, project emissions and emission reductions set large in Matter" sizes={THIRD} caption="Numbers and eyebrows." />
-        <Shot src={guidelines46} alt="A guidelines page on technology imagery: ambient trees, landscape scanning and aerial reveal" sizes={THIRD} caption="Technology imagery." />
-        <Shot src={guidelines68} alt="A guidelines page on charts: stacked bars, area lines and rings in the brand's greens and greys" sizes={THIRD} caption="Charting." />
+        <Shot src={guidelines1} alt="The brand guidelines' cover: 'Brand guidelines, version 1.0, December 2023'" sizes={THIRD} caption="Version 1.0, December 2023." zoom />
+        <Shot src={guidelines6} alt="A guidelines page on logo placement: left or centre, aligned to the canvas margins, never on the right" sizes={THIRD} caption="Logo placement." zoom />
+        <Shot src={guidelines13} alt="A guidelines page on the primary palette: lidar green, eggshell, white and pine" sizes={THIRD} caption="The primary palette." zoom />
+        <Shot src={guidelines26} alt="A guidelines page on numbers and eyebrow headings: baseline emissions, project emissions and emission reductions set large in Matter" sizes={THIRD} caption="Numbers and eyebrows." zoom />
+        <Shot src={guidelines46} alt="A guidelines page on technology imagery: ambient trees, landscape scanning and aerial reveal" sizes={THIRD} caption="Technology imagery." zoom />
+        <Shot src={guidelines68} alt="A guidelines page on charts: stacked bars, area lines and rings in the brand's greens and greys" sizes={THIRD} caption="Charting." zoom />
       </Row>
-      <Shot src={guidelines83} alt="A guidelines page on art direction: five categories of photograph, aerial, cinematic, landscape, perspective and detail" caption="Art direction, in five kinds of photograph." className="mt-6" />
+      <Shot src={guidelines83} alt="A guidelines page on art direction: five categories of photograph, aerial, cinematic, landscape, perspective and detail" caption="Art direction, in five kinds of photograph." className="mt-6" zoom />
     </Section>
   </Band>
 );

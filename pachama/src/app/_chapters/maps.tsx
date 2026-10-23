@@ -1,20 +1,17 @@
-import canopyPara from "@/assets/maps/canopy-para.jpg";
 import lidarTerrain from "@/assets/maps/lidar-terrain.jpg";
 import manoaBaseline from "@/assets/maps/manoa-baseline.png";
-import manoaEvaluationMap from "@/assets/maps/manoa-evaluation-map.jpg";
 import manoaReference from "@/assets/maps/manoa-reference.png";
 import ndvi from "@/assets/maps/ndvi.jpg";
 import pointcloud from "@/assets/maps/pointcloud.jpg";
 import sundarbans from "@/assets/maps/sundarbans.jpg";
 import tlsScan from "@/assets/maps/tls-scan.jpg";
-import ucayali from "@/assets/maps/ucayali.jpg";
-import { LiveMap } from "../_components/banyan/maps/live-map";
 import { Clip, HALF, Shot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
 /* IV · The maps, on black like the renders: satellites, lidar and the
- * dynamic baselines, made legible. The imagery is in Dropbox; the map UI is
- * in Figma (link to ask). */
+ * dynamic baselines, made legible. The imagery is in Dropbox. The map's
+ * interface isn't repeated here: it's in the project page (II) and live in
+ * Banyan's maps (III); the Ucayali image is the live map's ground. */
 export const Maps = () => (
   <Band tone="night">
     <ChapterDivider id="maps" numeral="IV" title="The maps">
@@ -22,10 +19,7 @@ export const Maps = () => (
     </ChapterDivider>
 
     <Section id="orbit" eyebrow="From orbit" title="Every project, from space">
-      <Row>
-        <Shot src={sundarbans} alt="Satellite image of the Sundarbans mangrove forest, Bangladesh" sizes={HALF} caption="The Sundarbans, Bangladesh. Deimos Imaging." />
-        <Shot src={ucayali} alt="Satellite image of the Ucayali River winding through the Peruvian Amazon" sizes={HALF} caption="The Ucayali River, Peru. Deimos Imaging." />
-      </Row>
+      <Shot src={sundarbans} alt="Satellite image of the Sundarbans mangrove forest, Bangladesh" caption="The Sundarbans, Bangladesh. Deimos Imaging." bleed />
     </Section>
 
     <Section
@@ -35,7 +29,7 @@ export const Maps = () => (
       text="Heights estimated from satellite data, trained on airborne lidar."
     >
       <Row>
-        <Shot src={canopyPara} alt="A canopy height map of forest in Pará, Brazil, from blue (low) to yellow (tall)" sizes={HALF} caption="Canopy height over Pará, Brazil." />
+        <Clip name="terrain" label="The lidar elevation of Fazenda Vida, Brazil, turning slowly" aspect="aspect-[1600/930]" caption="Fazenda Vida, Brazil: lidar elevation, Corridors of Life." />
         <Shot src={lidarTerrain} alt="A lidar terrain model seen at an angle, coloured from blue to red by height" sizes={HALF} caption="A lidar terrain model, coloured by height." />
       </Row>
     </Section>
@@ -59,8 +53,21 @@ export const Maps = () => (
       </Row>
     </Section>
 
-    <Section id="change" eyebrow="Change over time" title="Green, then less green">
-      <Shot src={ndvi} alt="A vegetation index map in greens, with cleared land showing darker" caption="Vegetation index (NDVI), around 2020." />
+    <Section
+      id="change"
+      eyebrow="Change over time"
+      title="Watching the land change"
+      text="Satellite history, frame by frame: reforestation projects in Uruguay, outlined in red, filling in with green over the years. Beside it, a vegetation index, where cleared land shows darker."
+    >
+      <Row className="items-start">
+        <Clip
+          name="uruguay-timelapse"
+          label="A satellite timelapse of Uruguay: reforestation projects outlined in red grow greener year by year"
+          aspect="aspect-[744/512]"
+          caption="Reforestation in Uruguay, year by year."
+        />
+        <Shot src={ndvi} alt="A vegetation index map in greens, with cleared land showing darker" sizes={HALF} caption="Vegetation index (NDVI), around 2020." />
+      </Row>
     </Section>
 
     <Section id="lidar" eyebrow="Lidar" title="Flying through a restored corridor">
@@ -69,21 +76,9 @@ export const Maps = () => (
         label="A flight through the Corridors of Life point cloud, trees in their own colours"
         aspect="aspect-video"
         caption="The Corridors of Life point cloud, in the trees' own colours."
+        bleed
       />
     </Section>
 
-    <Section
-      id="map-ui"
-      eyebrow="The map UI"
-      title="Layers, legends and time"
-      text="In the product the map sits inside every project's page: the boundary, the loss around it, and the years to play through. Under it, the same parts rebuilt to try."
-    >
-      <Shot
-        src={manoaEvaluationMap}
-        alt="Manoa's tech-verified evaluation: the project boundary in white on satellite imagery, deforestation around it in orange, and a player set to 1996, Project starts"
-        caption="Manoa's tech-verified evaluation, in its project page."
-      />
-      <LiveMap name="The map to try, illustrative" className="mt-10" />
-    </Section>
   </Band>
 );
