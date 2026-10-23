@@ -41,7 +41,15 @@ const col = (i: number) => i * (NODE.w + GAP);
 const COLS = [[3, 4, 5, 6], [6, 5, 4, 3, 2, 1, 0], [0, 1, 2, 3]];
 const mid = (r: number) => ROW[r] + NODE.h / 2;
 const cx = (c: number) => col(c) + NODE.w / 2;
+// The dot's route, through every step's middle; the line itself only runs
+// between the boxes, so nothing shows through them while they fade in.
 const PATH = `M${cx(3)} ${mid(0)}H${cx(6)}V${mid(1)}H${cx(0)}V${mid(2)}H${cx(3)}`;
+const across = (r: number) =>
+  COLS[r]
+    .slice(1)
+    .map((c, k) => (r === 1 ? `M${col(COLS[r][k])} ${mid(r)}H${col(c) + NODE.w}` : `M${col(COLS[r][k]) + NODE.w} ${mid(r)}H${col(c)}`))
+    .join("");
+const LINKS = [across(0), `M${cx(6)} ${ROW[0] + NODE.h}V${ROW[1]}`, across(1), `M${cx(0)} ${ROW[1] + NODE.h}V${ROW[2]}`, across(2)].join("");
 // Where each step's arrow lands, and which way it points.
 const arrows = COLS.flatMap((cols, r) =>
   cols.map((c, k) => {
@@ -107,7 +115,7 @@ export const SourceFlow = ({ className }: { className?: string }) => (
     <figcaption className="sr-only">Source&rsquo;s flow, in three lanes</figcaption>
     {/* From lg: the chart. */}
     <svg viewBox="0 0 1296 452" className="block w-full overflow-visible max-lg:hidden">
-      <path data-reveal="draw" d={PATH} pathLength={1} fill="none" stroke="#0e2517" strokeOpacity={0.35} strokeWidth={1.5} aria-hidden />
+      <path data-reveal="draw" d={LINKS} pathLength={1} fill="none" stroke="#0e2517" strokeOpacity={0.35} strokeWidth={1.5} aria-hidden />
       {arrows.map((a, i) =>
         a ? <path key={i} d={ARROW[a.dir]} transform={`translate(${a.x} ${a.y})`} fill="#0e2517" fillOpacity={0.5} data-reveal className={DELAYS[i]} aria-hidden /> : null,
       )}
