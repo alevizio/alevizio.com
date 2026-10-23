@@ -9,7 +9,6 @@ import { CarbonMonitoring } from "../_components/screens/carbon-monitoring";
 import { EvaluationBook } from "../_components/screens/evaluation-book";
 import { ManoaFlight } from "../_components/screens/manoa-flight";
 import { Insights } from "../_components/screens/insights";
-import { LandSuitability } from "../_components/screens/land-suitability";
 import { OpportunityMap } from "../_components/screens/opportunity-map";
 import { PortfolioDashboard } from "../_components/screens/portfolio";
 import { ProposalModal, SourcingPlanModal } from "../_components/screens/portfolio-modals";
@@ -17,6 +16,7 @@ import { Retirements } from "../_components/screens/retirements";
 import { ScreeningBoard } from "../_components/screens/screening-board";
 import { SourceFlow } from "../_components/screens/source-flow";
 import { SourcingEvent } from "../_components/screens/sourcing-event";
+import { SubmissionPage } from "../_components/screens/submission-page";
 import { BLEED, TallShot } from "../_components/shot";
 import { Slider } from "../_components/slider";
 import { Band, ChapterDivider, Section } from "../_components/story";
@@ -154,12 +154,13 @@ export const Product = () => (
       <p className="type-caption mt-3 text-(--tone-text)">The event page a buyer shares, rebuilt live from the design, and the first steps of a submission.</p>
       <div id="land-suitability" className="mt-16 scroll-mt-10 sm:mt-24">
         <p data-reveal className="type-body max-w-[40rem] text-(--tone-text)">
-          The step it all turns on is land suitability: the developer shares the project&apos;s land and sees, against satellite data, how much of it
-          qualifies and why the rest doesn&apos;t, then adds whatever context the buyer should weigh. Here on three parcels, with the live product&apos;s
-          figures: turn each class off and on, or go back a tab and calculate again.
+          Once a developer opens the link and starts, a submission is the project&apos;s page in four parts: a questionnaire, a commercial
+          proposal, the land&apos;s suitability and the project&apos;s info, then submit. The step it all turns on is the land: share it and
+          see, against satellite data, how much of it qualifies and why the rest doesn&apos;t. Rebuilt live from the Source design, with sample
+          answers: go through it with Next.
         </p>
-        <div data-reveal="frame" className="mt-8 sm:mt-10">
-          <LandSuitability />
+        <div data-reveal className="mt-8 sm:mt-10">
+          <SubmissionPage />
         </div>
       </div>
     </Section>

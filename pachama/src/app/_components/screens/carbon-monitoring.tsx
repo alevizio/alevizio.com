@@ -1,6 +1,7 @@
 import { MdInfoOutline, MdNorthEast } from "react-icons/md";
 import { cn } from "../cn";
 import { CountUp } from "../count-up";
+import { Brazil } from "./brazil-flag";
 import { ForestLossMap } from "./forest-loss-map";
 
 /* Manoa's carbon monitoring, rebuilt live from the Project / Monitoring
@@ -44,14 +45,6 @@ const BENEFIT = [
   { label: "Project emissions", value: 16000000, swatch: "bg-[#ff6159]", minus: true },
   { label: "Climate benefit", value: 4816000, swatch: HATCH, total: true },
 ];
-
-const Brazil = () => (
-  <svg viewBox="0 0 20 14" aria-hidden className="h-3.5 w-5 shrink-0 rounded-[2px]">
-    <rect width="20" height="14" fill="#009c3b" />
-    <path d="M10 1.6 18.2 7 10 12.4 1.8 7Z" fill="#ffdf00" />
-    <circle cx="10" cy="7" r="3.1" fill="#002776" />
-  </svg>
-);
 
 const Chart = () => (
   <figure className="min-w-0">
