@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { cn } from "../cn";
 import { DataTable } from "./data-display/table/table";
 import { Alert } from "./feedback/alert";
-import { ProgressDemo } from "./feedback/demos";
+import { BannerDemo, ProgressDemo } from "./feedback/demos";
 import { BrandRamps, Gradients } from "./foundations/colours";
 import { TypeScale } from "./foundations/type-scale";
 import { CalendarExample } from "./forms/datepicker";
@@ -21,45 +21,40 @@ import { SubmissionCard } from "./patterns/submission-card";
 import { PROJECT_TABS, Tabs } from "./patterns/tabs";
 import { Ticker } from "./ticker";
 
-/* The library on belts: a selection of Banyan's components, cards, graphs,
- * controls, type, colours, tables and icons, passing slowly the two ways so
- * the variety shows without a long page; under them the small parts on
- * their own belts. A belt stops while it's pointed at or focused, and the
- * first copy of each piece works (the copy that closes the loop is only a
- * picture of it). With less motion the belts stand still and scroll. */
-type Piece = { name: string; node: ReactNode; width: string };
-
-// For the components that are cards themselves: a warm tint a step down
-// from the eggshell ground.
-const CARD = "min-w-0 rounded-[24px] border border-[#e6e0cc] bg-[#f5f2e6] p-6 [--bn-surface:#f5f2e6] sm:p-8";
-const Frame = ({ children, className }: { children: ReactNode; className?: string }) => (
-  <div className={cn("rounded-[24px] bg-[#f5f2e6] p-5 ring-1 ring-[#e6e0cc] sm:p-7", className)}>{children}</div>
-);
+/* The library on one belt: a selection of Banyan's components, cards,
+ * graphs, controls, type, colours, tables and icons, packed in columns
+ * like a masonry wall (each column about as tall as the next, so there's
+ * no gap to speak of) and passing slowly, so the variety shows without a
+ * long page. No boxes behind them: just the components, on the ground.
+ * Under it, the small parts on their own belts. The belt stops while it's
+ * pointed at or focused, and the first copy of each piece works (the copy
+ * that closes the loop is only a picture of it). With less motion it
+ * stands still and scrolls. */
+type Column = { name: string; width: string; pieces: ReactNode[] };
 
 const CRUMBS = [{ label: "Projects", href: "#components" }, { label: "Brazil", href: "#components" }, { label: "Agrocortex" }];
 
-const FIRST: Piece[] = [
-  { name: "Project card", width: "w-[19rem]", node: <ProjectCard className="[zoom:0.8]" /> },
-  { name: "Projects by year", width: "w-[36rem]", node: <ProjectsByYear className={CARD} /> },
-  { name: "Checkbox, radio and switch", width: "w-[38rem]", node: <Frame><Choices /></Frame> },
+const COLUMNS: Column[] = [
+  { name: "Project card and gradients", width: "w-[20.5rem]", pieces: [<ProjectCard key="p" className="[zoom:0.8]" />, <Gradients key="g" />] },
   {
-    name: "Tabs and stepper",
-    width: "w-[34rem]",
-    node: (
-      <Frame className="grid gap-8">
+    name: "Graph, choices, tabs and stepper",
+    width: "w-[32rem]",
+    pieces: [
+      <ProjectsByYear key="y" />,
+      <Choices key="c" />,
+      <div key="t" className="grid gap-6">
         <Tabs label={`${KALIMANTAN.name}, project`} items={PROJECT_TABS} />
         <StepperRow steps={LIFECYCLE} current={1} label="Project lifecycle" className="flex-wrap gap-y-3" />
-      </Frame>
-    ),
+      </div>,
+    ],
   },
-  { name: "Highlights card", width: "w-[19rem]", node: <HighlightsCard className="[zoom:0.8]" /> },
-  { name: "Brand colours", width: "w-[34rem]", node: <Frame className="[zoom:0.85]"><BrandRamps /></Frame> },
-  { name: "Portfolio card", width: "w-[24rem]", node: <PortfolioCard className={CARD} /> },
+  { name: "Highlights and submission cards", width: "w-[19rem]", pieces: [<HighlightsCard key="h" className="[zoom:0.8]" />, <SubmissionCard key="s" className="[zoom:0.8]" />] },
+  { name: "Table and inputs", width: "w-[42.5rem]", pieces: [<DataTable key="d" className="[zoom:0.8]" />, <Inputs key="i" />] },
   {
-    name: "Alerts and progress",
-    width: "w-[26rem]",
-    node: (
-      <Frame className="grid gap-6">
+    name: "Alerts, progress, breadcrumb and accordion",
+    width: "w-[24.5rem]",
+    pieces: [
+      <div key="a" className="grid gap-5">
         <Alert tone="success" title="Your project passed screening">
           Diligence starts next. We&rsquo;ll write when the report is ready.
         </Alert>
@@ -67,22 +62,8 @@ const FIRST: Piece[] = [
           Check the shape against the map before you submit.
         </Alert>
         <ProgressDemo />
-      </Frame>
-    ),
-  },
-  { name: "Calendar", width: "w-[22rem]", node: <Frame><CalendarExample /></Frame> },
-  { name: "Submission card", width: "w-[19rem]", node: <SubmissionCard className="[zoom:0.8]" /> },
-];
-
-const SECOND: Piece[] = [
-  { name: "Typography", width: "w-[40rem]", node: <Frame className="[zoom:0.7]"><TypeScale /></Frame> },
-  { name: "Input", width: "w-[38rem]", node: <Frame><Inputs /></Frame> },
-  { name: "Table", width: "w-[46rem]", node: <Frame className="[zoom:0.8]"><DataTable /></Frame> },
-  {
-    name: "Accordion and breadcrumb",
-    width: "w-[28rem]",
-    node: (
-      <Frame className="grid gap-5">
+      </div>,
+      <div key="b" className="grid gap-4">
         <Breadcrumb items={CRUMBS} />
         <AccordionItem title="Location" initiallyOpen>
           <Dropdown label="Country" options={["Brazil", "Peru", "Colombia", "Mexico"]} />
@@ -90,42 +71,53 @@ const SECOND: Piece[] = [
         <AccordionItem title="Project">
           <Dropdown label="Project type" options={["REDD+", "ARR", "IFM"]} />
         </AccordionItem>
-      </Frame>
-    ),
+      </div>,
+    ],
   },
-  { name: "Icons", width: "w-[34rem]", node: <Frame className="[zoom:0.85]"><IconGrid /></Frame> },
-  { name: "Gradients", width: "w-[24rem]", node: <Frame><Gradients /></Frame> },
-  { name: "Select and autocomplete", width: "w-[26rem]", node: <Frame><Selects /></Frame> },
+  {
+    name: "Typography and colours",
+    width: "w-[31rem]",
+    pieces: [
+      <div key="t" className="[zoom:0.55]">
+        <TypeScale />
+      </div>,
+      <div key="b" className="[zoom:0.85]">
+        <BrandRamps />
+      </div>,
+    ],
+  },
+  {
+    name: "Calendar, portfolio and selects",
+    width: "w-[22.5rem]",
+    pieces: [
+      <div key="c" className="[zoom:0.9]">
+        <CalendarExample />
+      </div>,
+      <PortfolioCard key="p" />,
+      <Selects key="s" />,
+    ],
+  },
+  { name: "Icons and banners", width: "w-[31rem]", pieces: [<IconGrid key="i" className="[zoom:0.75]" />, <BannerDemo key="b" />] },
 ];
 
-const Copy = ({ pieces, inert = false }: { pieces: Piece[]; inert?: boolean }) => (
-  <ul aria-hidden={inert || undefined} inert={inert} className="flex shrink-0 items-center gap-6 pr-6">
-    {pieces.map((p) => (
-      <li key={p.name} className={cn("shrink-0", p.width)}>
-        {p.node}
+const Copy = ({ inert = false }: { inert?: boolean }) => (
+  <ul aria-hidden={inert || undefined} inert={inert} className="flex shrink-0 items-start gap-10 pr-10">
+    {COLUMNS.map((column) => (
+      <li key={column.name} className={cn("grid shrink-0 content-start gap-8", column.width)}>
+        {column.pieces}
       </li>
     ))}
   </ul>
 );
 
-const Belt = ({ pieces, label, reverse = false }: { pieces: Piece[]; label: string; reverse?: boolean }) => (
-  <div role="region" aria-label={label} className="group/marquee overflow-hidden motion-reduce:overflow-x-auto">
-    <div
-      className={cn(
-        "flex w-max motion-safe:animate-[belt_160s_linear_infinite] group-focus-within/marquee:[animation-play-state:paused] group-hover/marquee:[animation-play-state:paused]",
-        reverse && "[animation-direction:reverse]",
-      )}
-    >
-      <Copy pieces={pieces} />
-      <Copy pieces={pieces} inert />
-    </div>
-  </div>
-);
-
 export const ComponentMarquee = ({ className }: { className?: string }) => (
-  <div className={cn("grid gap-8 sm:gap-10", className)}>
-    <Belt pieces={FIRST} label="Banyan's cards, graphs and controls, working" />
-    <Belt pieces={SECOND} label="Banyan's type, inputs, table, icons and colours, working" reverse />
+  <div className={cn("grid gap-10 sm:gap-12", className)}>
+    <div role="region" aria-label="Banyan's components, working" className="group/marquee overflow-hidden motion-reduce:overflow-x-auto">
+      <div className="flex w-max motion-safe:animate-[belt_200s_linear_infinite] group-focus-within/marquee:[animation-play-state:paused] group-hover/marquee:[animation-play-state:paused]">
+        <Copy />
+        <Copy inert />
+      </div>
+    </div>
     <Ticker />
   </div>
 );
