@@ -217,8 +217,13 @@ export default function SlidingBlocks() {
       // canvas is scaled up to the screen.
       const scale = dpr / Math.ceil(dpr / 1.5);
       height = canvas.clientHeight;
-      canvas.width = Math.round(canvas.clientWidth * scale);
-      canvas.height = Math.round(height * scale);
+      const width = Math.round(canvas.clientWidth * scale);
+      const bufferHeight = Math.round(height * scale);
+      // Setting the size clears the canvas, so only do it when it changed.
+      if (canvas.width !== width || canvas.height !== bufferHeight) {
+        canvas.width = width;
+        canvas.height = bufferHeight;
+      }
       r.gl.viewport(0, 0, canvas.width, canvas.height);
       r.gl.uniform1f(r.uScale, scale);
       r.gl.uniform1f(r.uDot, 2 * Math.round(2 * scale));
@@ -326,7 +331,8 @@ export default function SlidingBlocks() {
     const onResize = () => {
       if (!renderer) return;
       resize(renderer);
-      if (reduceMotion.matches) draw(renderer, 0);
+      // Paint again right away: the loop may be resting, and a resized canvas is blank.
+      draw(renderer, reduceMotion.matches ? 0 : (performance.now() - start) / 1000);
     };
     const onLost = (e: Event) => {
       e.preventDefault();
