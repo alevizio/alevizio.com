@@ -41,7 +41,6 @@ const NAV: readonly NavGroup[] = [
       { id: "language", label: "The graphic language" },
       { id: "colour-type", label: "Colour and type" },
       { id: "illustration", label: "Illustration" },
-      { id: "brand-book", label: "The brand book" },
       { id: "applications", label: "Applications" },
       { id: "social", label: "Social" },
       { id: "site", label: "The website" },

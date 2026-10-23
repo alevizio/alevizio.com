@@ -1,17 +1,9 @@
-import guidelines1 from "@/assets/brand/guidelines-1.jpg";
-import guidelines13 from "@/assets/brand/guidelines-13.jpg";
-import guidelines26 from "@/assets/brand/guidelines-26.jpg";
-import guidelines46 from "@/assets/brand/guidelines-46.jpg";
-import guidelines6 from "@/assets/brand/guidelines-6.jpg";
-import guidelines68 from "@/assets/brand/guidelines-68.jpg";
-import guidelines83 from "@/assets/brand/guidelines-83.jpg";
 import ecologyEconomy from "@/assets/brand/reveal-ecology-economy.jpg";
 import fromTo from "@/assets/brand/reveal-from-to.jpg";
 import socialEditorial from "@/assets/brand/social/editorial.jpg";
 import socialInfographic from "@/assets/brand/social/infographic.jpg";
 import socialOverview from "@/assets/brand/social/overview.jpg";
 import socialTech from "@/assets/brand/social/tech.jpg";
-import websiteHome from "@/assets/brand/website-home.jpg";
 import book from "@/assets/howhow/book-sv.jpg";
 import economy from "@/assets/howhow/economy-sv.jpg";
 import exhibition from "@/assets/howhow/exhibition-l.jpg";
@@ -21,18 +13,20 @@ import phone from "@/assets/howhow/phone-sv.jpg";
 import sign from "@/assets/howhow/sign-sv.jpg";
 import technology from "@/assets/howhow/technology-l.jpg";
 import testimonial from "@/assets/howhow/testimonial-s.jpg";
-import typePoster from "@/assets/howhow/type-sv.jpg";
-import web from "@/assets/howhow/web-l.jpg";
 import zoom from "@/assets/howhow/zoom-l.jpg";
 import { cn } from "../_components/cn";
+import { GuidelinesWall } from "../_components/guidelines-wall";
+import { HeightGauge } from "../_components/height-gauge";
+import { LaptopScroll } from "../_components/laptop-scroll";
 import { MarkExplorer } from "../_components/mark-explorer";
 import { NatureRelations } from "../_components/nature-relations";
 import { Moodboard } from "../_components/moodboard";
 import { SeeCarbon } from "../_components/see-carbon";
 import { Palette } from "../_components/palette";
 import { Slider } from "../_components/slider";
-import { BLEED, Clip, HALF, Masonry, Shot, TallShot, THIRD } from "../_components/shot";
+import { BLEED, Clip, HALF, Masonry, Shot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
+import { TypePoster } from "../_components/type-poster";
 import { TypeSpecimen } from "../_components/type-specimen";
 
 /** The brand's own SVG on a tile of the ground it was drawn for. */
@@ -144,8 +138,8 @@ export const Brand = () => (
       text="Chromatic Condensed by Colophon for the headlines, in capitals; Matter and Matter Mono by Displaay for text and numbers."
     >
       <Row className="items-start">
-        <Clip name="howhow/colour-sv" label="The palette, animated" aspect={SPLIT} />
-        <Shot src={typePoster} alt="A type poster: 'While trees may be temporary, forests stand the test of time.'" sizes={HALF} />
+        <HeightGauge />
+        <TypePoster />
       </Row>
       <Row className="mt-6">
         <Palette />
@@ -166,23 +160,18 @@ export const Brand = () => (
       </Row>
     </Section>
 
-    <Section id="brand-book" eyebrow="The brand book" title="Beyond carbon" text="The guidelines, bound and on screen.">
-      <Row className="items-start">
-        <Shot src={book} alt="The brand book, 'Beyond carbon', a hardcover on a dark table" sizes={HALF} />
-        <Shot src={ipad} alt="The brand on an iPad lying on plywood" sizes={HALF} />
-      </Row>
-    </Section>
-
     <Section
       id="applications"
       eyebrow="Applications"
       title="Out in the world"
-      text="Billboards, an exhibition, signage, phones, socials and the people behind the projects."
+      text="Billboards, an exhibition, signage, the brand book, phones, an iPad, socials and the people behind the projects."
     >
       <Shot src={ooh} alt="A billboard on a city building: 'See carbon in action' over aerial forest" bleed />
       <Masonry cols={2} className={cn(BLEED, "mt-6 px-4 sm:px-6")}>
         <Shot src={exhibition} alt="An exhibition room with large screens of lidar trees and the line 'While trees may be temporary'" sizes={EDGE_HALF} />
         <Shot src={sign} alt="An acrylic sign: 'Make the invisible visible'" sizes={EDGE_HALF} />
+        <Shot src={book} alt="The brand book, 'Beyond carbon', a hardcover on a dark table" sizes={EDGE_HALF} />
+        <Shot src={ipad} alt="The brand on an iPad lying on plywood" sizes={EDGE_HALF} />
         <Clip name="howhow/socials-l" label="Social posts for the brand, moving" aspect="aspect-video" />
         <Shot src={phone} alt="A hand holding a phone open on 'The new nature of modern business'" sizes={EDGE_HALF} />
         <Shot src={testimonial} alt="A portrait for the brand: a man in a Pachama shirt against a giant tree trunk" sizes={EDGE_HALF} />
@@ -216,13 +205,7 @@ export const Brand = () => (
       title="Restore nature. Remove carbon."
       text="The new pachama.com, designed with How&How: the projects, the science and the numbers, on the same dark ground as everything else."
     >
-      <TallShot
-        src={websiteHome}
-        label="The pachama.com homepage, scrollable"
-        alt="The pachama.com homepage design: 'Restore nature. Remove carbon.' over an aerial river, 'See carbon in action' with a lidar tree and an emissions chart, the companies choosing Pachama, the technology, a BCG quote, resources and the footer"
-        caption="The homepage, top to bottom, from the site's Figma. Scroll inside it."
-      />
-      <Shot src={web} alt="The new site on a laptop among leaves: 'Restore nature. Remove carbon.'" className="mt-10" bleed />
+      <LaptopScroll caption="The homepage, top to bottom, from the site's Figma, on How&How's laptop. Point at it to hold it." />
       <Masonry cols={2} className="mt-6">
         <Clip name="howhow/ui-l" label="The site's map: a satellite view with project cards" aspect="aspect-video" />
         <Shot src={zoom} alt="'Restore nature.' on a frosted card over a forest" sizes={HALF} />
@@ -240,15 +223,7 @@ export const Brand = () => (
       title="Taking it in-house"
       text="Working with How&How and FNDR from Pachama's side: the brief, then the identity carried into the product, the site, the booth and everything printed, all of it set down in the brand guidelines."
     >
-      <Row cols={3} className="items-start">
-        <Shot src={guidelines1} alt="The brand guidelines' cover: 'Brand guidelines, version 1.0, December 2023'" sizes={THIRD} caption="Version 1.0, December 2023." zoom />
-        <Shot src={guidelines6} alt="A guidelines page on logo placement: left or centre, aligned to the canvas margins, never on the right" sizes={THIRD} caption="Logo placement." zoom />
-        <Shot src={guidelines13} alt="A guidelines page on the primary palette: lidar green, eggshell, white and pine" sizes={THIRD} caption="The primary palette." zoom />
-        <Shot src={guidelines26} alt="A guidelines page on numbers and eyebrow headings: baseline emissions, project emissions and emission reductions set large in Matter" sizes={THIRD} caption="Numbers and eyebrows." zoom />
-        <Shot src={guidelines46} alt="A guidelines page on technology imagery: ambient trees, landscape scanning and aerial reveal" sizes={THIRD} caption="Technology imagery." zoom />
-        <Shot src={guidelines68} alt="A guidelines page on charts: stacked bars, area lines and rings in the brand's greens and greys" sizes={THIRD} caption="Charting." zoom />
-      </Row>
-      <Shot src={guidelines83} alt="A guidelines page on art direction: five categories of photograph, aerial, cinematic, landscape, perspective and detail" caption="Art direction, in five kinds of photograph." className="mt-6" zoom />
+      <GuidelinesWall />
     </Section>
   </Band>
 );

@@ -8,19 +8,20 @@ import { PAGE } from "./story";
 import { TreeCloud } from "./tree-cloud";
 
 /* The reveal deck's central slide, "We call this Nature Relations.",
- * rebuilt live from its own parts (the blurred ground, the forest photo and
- * the lidar tree, each at its native size out of the PDF) so it stays sharp:
- * the words in live type, the tree as points that scan in from the ground
- * as it comes into view. The spectrum line between them is sampled from the
- * slide. */
+ * rebuilt live and full screen: the words in live type over the deck's own
+ * blurred ground (smoothed of its compression blocks), the tree as points
+ * that scan in from the ground as it comes into view, in front of redwoods
+ * from Pachama's photo library (the deck's forest photo only exists at
+ * 1920 wide, too small for a full-screen half). The spectrum line between
+ * them is sampled from the slide. */
 const { viewBox, symbol } = MARKS.symbol;
 
 export const NatureRelations = ({ className }: { className?: string }) => (
   <figure className={cn(BLEED, className)}>
     <div className="grid bg-[#0f2917] lg:grid-cols-2">
       <div className="relative overflow-hidden">
-        <Image src={ground} alt="" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
-        <div className="relative flex h-full min-h-[30rem] flex-col p-8 text-white sm:p-12 lg:min-h-[46rem] lg:p-16">
+        <Image src={ground} alt="" fill quality={90} sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+        <div className="relative flex h-full min-h-[30rem] flex-col p-8 text-white sm:p-12 lg:min-h-svh lg:p-16">
           <svg viewBox={viewBox} aria-hidden className="w-11 shrink-0 fill-white">
             <path d={symbol} />
           </svg>
@@ -33,8 +34,8 @@ export const NatureRelations = ({ className }: { className?: string }) => (
         </div>
       </div>
       <div className="relative min-h-[34rem] overflow-hidden lg:min-h-0">
-        <Image src={forest} alt="" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
-        <div aria-hidden className="absolute inset-0 bg-[#0f2917]/35" />
+        <Image src={forest} alt="" fill quality={90} sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(15_41_23/0.55),rgb(15_41_23/0.3)_45%,rgb(15_41_23/0.45))]" />
         <TreeCloud className="absolute inset-0" />
         <span
           aria-hidden
