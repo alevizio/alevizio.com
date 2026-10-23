@@ -51,7 +51,7 @@ export const LandSuitability = ({ className }: { className?: string }) => {
   });
 
   return (
-    <div className={cn("overflow-hidden rounded-[16px] bg-[#343d31] text-white ring-1 ring-black/10 lg:grid lg:grid-cols-[24rem_minmax(0,1fr)]", className)}>
+    <div className={cn("overflow-hidden rounded-[16px] bg-[#4f5440] text-white ring-1 ring-black/10 lg:grid lg:grid-cols-[24rem_minmax(0,1fr)]", className)}>
       <div className="relative aspect-[1447/1158] bg-[#1d2419] lg:order-last lg:aspect-auto lg:min-h-[36rem]">
         <Image src={base} alt="" fill sizes="(min-width: 1376px) 912px, (min-width: 1024px) 66vw, 100vw" placeholder="blur" className="object-cover" />
         {/* The classes scan in from the left when they're reached, and again with each calculation. */}
@@ -69,7 +69,8 @@ export const LandSuitability = ({ className }: { className?: string }) => {
         </div>
       </div>
 
-      <div className="p-5 sm:p-7">
+      {/* The design's olive panel, lighter at the top. */}
+      <div className="bg-[linear-gradient(to_bottom,#5d5b45,#4b523f)] p-5 sm:p-7">
         <div role="tablist" aria-label="Land suitability" className="grid grid-cols-2 border-b border-white/25 text-center">
           {(["upload", "results"] as const).map((t) => (
             <button
@@ -78,7 +79,7 @@ export const LandSuitability = ({ className }: { className?: string }) => {
               role="tab"
               aria-selected={tab === t}
               onClick={() => setTab(t)}
-              className={cn(TAB, tab === t ? "text-white after:bg-white" : "text-white/65 hover:text-white", FOCUS)}
+              className={cn(TAB, tab === t ? "text-white after:bg-white" : "text-white/75 hover:text-white", FOCUS)}
             >
               {t === "upload" ? "Upload boundary" : "Land suitability"}
             </button>
@@ -133,7 +134,7 @@ export const LandSuitability = ({ className }: { className?: string }) => {
                   setSaved(false);
                 }}
                 placeholder="Add commentary here."
-                className={cn("mt-2 block w-full resize-none rounded-[14px] border border-white/60 bg-transparent px-4 py-3 text-[14px] text-white placeholder:text-white/60", FOCUS)}
+                className={cn("mt-2 block w-full resize-none rounded-[14px] border border-white/60 bg-transparent px-4 py-3 text-[14px] text-white placeholder:text-white/70", FOCUS)}
               />
             </label>
             <p className="mt-1 text-[11px] text-white/70">{comment.length}/2000 character count</p>
