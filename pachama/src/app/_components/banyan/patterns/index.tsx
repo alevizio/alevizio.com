@@ -26,7 +26,7 @@ const Panel = ({ children }: { children: string }) => <p className="max-w-prose 
 
 export const Patterns = () => (
   <>
-    <Specimen name="Navigation, the website" span="full" flush note="The top bar on glass. Solutions opens its menu; with less room the bar folds into the menu button." panelClassName="block p-0 sm:p-0 overflow-hidden">
+    <Specimen name="Navigation, the website" span="full" note="The top bar on glass. Solutions opens its menu; with less room the bar folds into the menu button." panelClassName="block p-0 sm:p-0 overflow-hidden">
       <TopNav />
     </Specimen>
     <Specimen name="Navigation, the product" span="full" note="The buyer app's sidebar, at the side of its page: pick a page and the page follows, open a group, or fold it down to its rail." panelClassName="block">

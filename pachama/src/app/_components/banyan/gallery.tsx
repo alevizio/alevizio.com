@@ -13,20 +13,20 @@ import { Patterns } from "./patterns";
 import { Bento } from "./specimen";
 import { BN } from "./ui";
 
-/* Every Banyan component in one bento, the families mixed together. A
- * sticky row of chips narrows it to one family, with that family's line
- * above the cards; All brings everything back. */
-type Family = { id: string; label: string; title: string; text: string; count: number; body: ReactNode };
+/* Every Banyan component on one contact sheet, the families mixed
+ * together. A sticky row of chips narrows it to one family, with that
+ * family's line above the sheet; All brings everything back. */
+type Family = { id: string; label: string; text: string; count: number; body: ReactNode };
 
 const FAMILIES: Family[] = [
-  { id: "foundations", label: "Foundations", title: "Type, colour and the levels things sit on", text: "The type scale, eight colour ramps, the gradients, the colour roles and the four background levels.", count: 5, body: <Foundations /> },
-  { id: "patterns", label: "Patterns", title: "How a page is put together", text: "Navigation, cards, graphs, accordions, steppers, breadcrumbs and tabs: the bigger pieces, built from the smaller ones.", count: 12, body: <Patterns /> },
-  { id: "maps", label: "Maps", title: "Legends, tooltips, a player and pins", text: "What sits on top of the satellite imagery, piece by piece and put together: the legend, the player, the fire alerts, the controls, the minimap globe and the world with its fires.", count: 8, body: <MapKit /> },
-  { id: "forms", label: "Forms", title: "Every control a form needs", text: "Ten controls, from the button to the date picker, in the states the Figma documents.", count: 9, body: <Forms /> },
-  { id: "data-display", label: "Data display", title: "Tables, tags, badges and avatars", text: "How numbers, statuses and people show up.", count: 5, body: <DataDisplay /> },
-  { id: "feedback", label: "Feedback", title: "Alerts, banners, progress and toasts", text: "How the product answers back.", count: 5, body: <Feedback /> },
-  { id: "overlay", label: "Overlay", title: "Menus, modals, popovers and tooltips", text: "What opens on top of a page, and closes again with Escape.", count: 7, body: <Overlay /> },
-  { id: "media", label: "Media", title: "Icons, by their Material names", text: "Google's Material Icons, 1,310 of them in the Figma library, filtered as you type.", count: 1, body: <Media /> },
+  { id: "foundations", label: "Foundations", text: "The type scale, eight colour ramps, the gradients, the colour roles and the four background levels.", count: 5, body: <Foundations /> },
+  { id: "patterns", label: "Patterns", text: "Navigation, cards, graphs, accordions, steppers, breadcrumbs and tabs: the bigger pieces, built from the smaller ones.", count: 12, body: <Patterns /> },
+  { id: "maps", label: "Maps", text: "What sits on top of the satellite imagery, piece by piece and put together: the legend, the player, the fire alerts, the controls, the minimap globe and the world with its fires.", count: 8, body: <MapKit /> },
+  { id: "forms", label: "Forms", text: "Ten controls, from the button to the date picker, in the states the Figma documents.", count: 9, body: <Forms /> },
+  { id: "data-display", label: "Data display", text: "How numbers, statuses and people show up.", count: 5, body: <DataDisplay /> },
+  { id: "feedback", label: "Feedback", text: "How the product answers back.", count: 5, body: <Feedback /> },
+  { id: "overlay", label: "Overlay", text: "What opens on top of a page, and closes again with Escape.", count: 7, body: <Overlay /> },
+  { id: "media", label: "Media", text: "Google's Material Icons, 1,310 of them in the Figma library, filtered as you type.", count: 1, body: <Media /> },
 ];
 const ALL = FAMILIES.reduce((n, f) => n + f.count, 0);
 
@@ -112,16 +112,9 @@ export const ComponentGallery = () => {
         </div>
       </div>
       <div className="mb-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
-        <div aria-live="polite" className="min-h-14">
-          {family ? (
-            <p key={family.id} className="motion-safe:animate-[arrive_0.5s_var(--ease-arrive)_both]">
-              <span className="type-section block text-(--tone-head)">{family.title}</span>
-              <span className="type-body mt-3 block max-w-[40rem] text-(--tone-text)">{family.text}</span>
-            </p>
-          ) : (
-            <p className="type-body max-w-[40rem] text-(--tone-text)">All {ALL} components, from the type scale to the tooltip, live. Pick a family to narrow it down.</p>
-          )}
-        </div>
+        <p aria-live="polite" className="type-body max-w-[40rem] text-(--tone-text)">
+          {family ? `${family.label}: ${family.text}` : `All ${ALL} components, live. Pick a family to narrow the sheet down.`}
+        </p>
         <div role="group" aria-label="The kit's accent" className="flex items-center gap-3">
           <span className="text-[14px] leading-5 text-(--tone-text)">
             Accent: <b className="font-bold text-(--tone-head)">{tint.label}</b>

@@ -58,7 +58,6 @@ export const MapKit = () => {
       <Specimen
         name="The map, put together"
         span="full"
-        flush
         note="Legend entries switch their layer, the player walks the years, the pins show their alerts, Home puts it all back. The fires, the clearing and the boundary are illustrative, over Deimos imagery of the Ucayali."
         panelClassName="block"
       >
