@@ -3,15 +3,20 @@ import ndvi from "@/assets/maps/ndvi.jpg";
 import pointcloud from "@/assets/maps/pointcloud.jpg";
 import sundarbans from "@/assets/maps/sundarbans.jpg";
 import tlsScan from "@/assets/maps/tls-scan.jpg";
+import { SatelliteGlobe } from "../_components/banyan/maps/satellite-globe";
+import { WorldFires } from "../_components/banyan/maps/world-fires";
+import { FieldGallery } from "../_components/field-gallery";
+import { MapLayers } from "../_components/map-layers";
+import { Biodiversity } from "../_components/screens/biodiversity";
 import { DynamicBaseline } from "../_components/screens/dynamic-baseline";
 import { Evaluation } from "../_components/screens/evaluation";
 import { Clip, HALF, Shot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
 /* IV · The maps, on black like the renders: satellites, lidar and the
- * dynamic baselines, made legible. The imagery is in Dropbox. The map's
- * interface isn't repeated here: it's in the project page (II) and live in
- * Banyan's maps (III); the Ucayali image is the live map's ground. */
+ * dynamic baselines, made legible, and the map's own interface, taken
+ * apart and put back together. The imagery is in Dropbox; the Ucayali
+ * image is the live map's ground. */
 export const Maps = () => (
   <Band tone="night">
     <ChapterDivider id="maps" numeral="IV" title="The maps">
@@ -20,6 +25,34 @@ export const Maps = () => (
 
     <Section id="orbit" eyebrow="From orbit" title="Every project, from space">
       <Shot src={sundarbans} alt="Satellite image of the Sundarbans mangrove forest, Bangladesh" caption="The Sundarbans, Bangladesh. Deimos Imaging." bleed />
+    </Section>
+
+    <Section
+      id="on-the-map"
+      eyebrow="On the map"
+      title="Information, laid over the imagery"
+      text="Banyan's map is a stack: the satellite imagery at the bottom, then what the satellites saw, the project's boundary, the alerts and the controls on top. Here it is apart. Scroll, and it goes back together."
+    >
+      <MapLayers caption="Laid flat, it works: switch a layer in the legend, play the years, open an alert, zoom in. The fires, the clearing and the boundary are illustrative, over Deimos imagery of the Ucayali." />
+      <Row className="mt-16 items-center sm:mt-24">
+        <figure>
+          <SatelliteGlobe />
+          <figcaption className="type-caption mt-4 text-center text-(--tone-text)">The minimap: the satellite earth with its fires, in a glow of glacier. Drag it, or send it to a continent.</figcaption>
+        </figure>
+        <figure>
+          <WorldFires />
+          <figcaption className="type-caption mt-3 text-(--tone-text)">Where every map starts: the world, with the year&rsquo;s active fires over it.</figcaption>
+        </figure>
+      </Row>
+    </Section>
+
+    <Section
+      id="biodiversity"
+      eyebrow="Beyond carbon"
+      title="Biodiversity, on the map"
+      text="Evaluation 2.2 added biodiversity: how much a project's land matters to species at risk, scored against the rest of the world, with the species, the risks and the threats behind the score. Rebuilt live from Borneo Peatlands' screens, over the project's own map: go through it part by part, and the map follows."
+    >
+      <Biodiversity />
     </Section>
 
     <Section
@@ -39,14 +72,12 @@ export const Maps = () => (
         <Clip name="terrain" label="The lidar elevation of Fazenda Vida, Brazil, turning slowly" aspect="aspect-[1600/930]" caption="Fazenda Vida, Brazil: lidar elevation, Corridors of Life." />
         <Shot src={lidarTerrain} alt="A lidar terrain model seen at an angle, coloured from blue to red by height" sizes={HALF} caption="A lidar terrain model, coloured by height." />
       </Row>
-    </Section>
-
-    <Section id="point-clouds" eyebrow="Point clouds" title="Every tree, in three dimensions">
-      <Row>
+      <Row className="mt-6 sm:mt-10">
         <Shot src={pointcloud} alt="A photogrammetry point cloud of a forest canopy in purple and orange" sizes={HALF} caption="A photogrammetry point cloud of the canopy." />
         <Shot src={tlsScan} alt="A terrestrial lidar scan seen from the forest floor, trunks rising in blue and green points" sizes={HALF} caption="A terrestrial lidar scan, from the forest floor." />
       </Row>
     </Section>
+
 
     <Section
       id="baselines"
@@ -63,8 +94,8 @@ export const Maps = () => (
       />
       <DynamicBaseline className="mt-20 sm:mt-28" />
       <p data-reveal className="type-body mt-20 max-w-[36rem] text-(--tone-text) sm:mt-28">
-        In the product, it all came down to one screen: Manoa&apos;s evaluation, rebuilt in Banyan from the one it had before the
-        rebrand. Pick a standard, and watch the checks draw.
+        In the product, a baseline had to pass two checks on Manoa&apos;s evaluation, rebuilt here in Banyan from the screen it had
+        before the rebrand: is the reference region suitable, and is the baseline conservative? They draw as they come into view.
       </p>
       <div data-reveal="frame" className="mt-8 sm:mt-10">
         <Evaluation />
@@ -96,6 +127,7 @@ export const Maps = () => (
         caption="The Corridors of Life point cloud, in the trees' own colours."
         bleed
       />
+      <FieldGallery caption="Corredores de Vida, the restoration behind the lidar, in Brazil. Photos: Pachama." className="mt-16 sm:mt-24" />
     </Section>
 
   </Band>

@@ -1,327 +1,247 @@
 "use client";
 
-import hornbill from "@/assets/bio/helmeted-hornbill.jpg";
-import turtle from "@/assets/bio/hawksbill-turtle.jpg";
-import kbaMap from "@/assets/bio/kba-map.jpg";
-import orangutan from "@/assets/bio/bornean-orangutan.jpg";
-import crocodile from "@/assets/bio/siamese-crocodile.jpg";
-import leopardSpot from "@/assets/bio/spotlight-leopard.jpg";
-import orangutanSpot from "@/assets/bio/spotlight-orangutan.jpg";
-import rhino from "@/assets/bio/sumatran-rhinoceros.jpg";
-import pangolin from "@/assets/bio/sunda-pangolin.jpg";
+import closeUp from "@/assets/bio/borneo-detail.jpg";
+import borneo from "@/assets/bio/borneo-map.jpg";
 import Image from "next/image";
-import { useState, type ReactNode } from "react";
-import { MdExpandMore } from "react-icons/md";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { MdArrowBack, MdArrowForward } from "react-icons/md";
+import { Zoom } from "../banyan/maps/controls";
 import { BN } from "../banyan/ui";
 import { cn } from "../cn";
-import { CountUp } from "../count-up";
+import { BLEED } from "../shot";
+import { PAGE } from "../story";
+import { DETAIL, KBA_D, MAP_H, MAP_W, PROJECT_D, PROTECTED_D } from "./biodiversity-layers";
+import { AreasPart, RiskPart, ScorePart, SpeciesPart, SpotlightPart, ThreatsPart, type AreaLayer } from "./biodiversity-parts";
 
-/* Borneo Peatlands' biodiversity, rebuilt live from Evaluation 2.2's
- * screens: the species in the spotlight, the impact score against the rest
- * of the world, extinction risk, the region's threats, the critically
- * endangered species and the key biodiversity areas around the project.
- * Every figure is the screens' own (from IBAT's STAR data); the photos are
- * the ones the screens used. Pick a spotlight; point at a risk or a threat
- * to find it in its chart. */
-const RISKS = [
-  { label: "Critically endangered", share: 0.6, dot: "bg-[#f2605a]", stroke: "#f2605a" },
-  { label: "Endangered", share: 2.3, dot: "bg-[#eda24f]", stroke: "#eda24f" },
-  { label: "Vulnerable", share: 8.4, dot: "bg-[#f9d43c]", stroke: "#f9d43c" },
-  { label: "Near threatened", share: 8.7, dot: "bg-[#a5e5b0]", stroke: "#a5e5b0" },
-  { label: "Low concern", share: 74.4, dot: "bg-[#1db954]", stroke: "#1db954" },
+/* Borneo Peatlands' biodiversity on its own map, and the way through it:
+ * the project on Sentinel-2 imagery, with the key biodiversity area and the
+ * protected area beside it (traced from the product's map and pinned to the
+ * imagery), under the product's biodiversity panel. Each part of the
+ * evaluation is a tab, and the map flies to what that part is about: the
+ * project for its score, closer in for the species in the spotlight, the
+ * landscape for the region's risks, threats and species, the areas around
+ * it with their layers. Drag the map, or zoom it. Rebuilt from Evaluation
+ * 2.2's screens; every figure is theirs (IBAT's STAR data). */
+type View = "project" | "close" | "region" | "areas";
+const PARTS: { id: string; label: string; view: View }[] = [
+  { id: "score", label: "Impact score", view: "project" },
+  { id: "spotlight", label: "Spotlight", view: "close" },
+  { id: "risk", label: "Extinction risk", view: "region" },
+  { id: "threats", label: "Threats", view: "region" },
+  { id: "species", label: "At risk", view: "region" },
+  { id: "areas", label: "Key areas", view: "areas" },
 ];
-
-// Literal classes for Tailwind: each threat's share of the bar, and a red
-// that pales down the list.
-const THREATS = [
-  { label: "Logging & wood harvesting", share: "21.1%", grow: "grow-[21.1]", fill: "bg-[#f45b54]" },
-  { label: "Annual & perennial non-timber crops", share: "21.1%", grow: "grow-[21.1]", fill: "bg-[#f56b64]" },
-  { label: "Hunting & collecting terrestrial animals", share: "17.4%", grow: "grow-[17.4]", fill: "bg-[#f67c75]" },
-  { label: "Fire & fire suppression", share: "5.9%", grow: "grow-[5.9]", fill: "bg-[#f78d87]" },
-  { label: "Marine & freshwater aquaculture", share: "4.5%", grow: "grow-[4.5]", fill: "bg-[#f89d98]" },
-  { label: "Housing & urban areas", share: "4.4%", grow: "grow-[4.4]", fill: "bg-[#f9aeaa]" },
-  { label: "Agricultural & forestry effluents", share: "3.6%", grow: "grow-[3.6]", fill: "bg-[#fabebb]" },
-  { label: "Wood & pulp plantations", share: "3.1%", grow: "grow-[3.1]", fill: "bg-[#fbcecc]" },
-  { label: "Industrial & military effluents", share: "3.1%", grow: "grow-[3.1]", fill: "bg-[#fcdedd]" },
-  { label: "Fishing & harvesting aquatic resources", share: "3%", grow: "grow-[3]", fill: "bg-[#fde9e8]" },
-  { label: "Other", share: "12.3%", grow: "grow-[12.3]", fill: "bg-[#fef4f4]" },
-];
-
-const SPOTLIGHTS = [
-  {
-    name: "Bornean orangutan",
-    latin: "Pongo pygmaeus",
-    status: "Critically endangered",
-    badge: "bg-[#f2605a]",
-    photo: orangutanSpot,
-    alt: "A Bornean orangutan mother, her baby clinging to her side",
-    text: "Found only on Borneo, and heavily threatened by the destruction of its habitat, often for palm oil, and by hunting. The project's tree-nest surveys put its orangutans at 3,385.",
-  },
-  {
-    name: "Bornean clouded leopard",
-    latin: "Neofelis diardi",
-    status: "Vulnerable",
-    badge: "bg-[#f9d43c]",
-    photo: leopardSpot,
-    alt: "A clouded leopard lying along a thick branch",
-    text: "A secretive hunter that needs dense forest to stalk its prey, so reclusive that its numbers are hard to estimate. The project's camera traps have caught clouded leopards at 6% of their locations: they still use the land.",
-  },
-];
-
-const AT_RISK = [
-  { name: "Helmeted hornbill", photo: hornbill },
-  { name: "Sumatran rhinoceros", photo: rhino },
-  { name: "Sunda pangolin", photo: pangolin },
-  { name: "Bornean orangutan", photo: orangutan },
-  { name: "Siamese crocodile", photo: crocodile },
-  { name: "Hawksbill turtle", photo: turtle },
-];
-
-// The two questions the product kept under the score.
-const QUESTIONS = [
-  {
-    ask: "Why does the impact score matter?",
-    answer: "Carbon alone doesn't say what a forest is home to. Two projects can store the same carbon while one shelters species found nowhere else; the score shows a buyer which is which.",
-  },
-  {
-    ask: "How is the impact score calculated?",
-    answer: "From IBAT's STAR metric: for every threatened species, how much of its range falls inside the project and how much easing the threats there would lower its risk of extinction, added up and ranked against everywhere else on Earth.",
-  },
-];
-
-const CARD = "rounded-[14px] bg-white/[0.04] p-5 ring-1 ring-white/10 sm:p-6";
-const HEAD = "text-[18px] leading-6 font-bold";
-const FOCUS = cn(BN.focus, "focus-visible:outline-white");
-const rowLook = (on: boolean) => cn("flex w-full items-center gap-3 text-left transition-colors", on ? "bg-white/10" : "hover:bg-white/6", FOCUS);
-
-/** A list that points into its chart: pressing a row (or hovering it)
- *  picks it, and dims every other part of the chart. */
-const usePick = () => {
-  const [on, setOn] = useState<number | null>(null);
-  const row = (i: number) => ({
-    "aria-pressed": on === i,
-    onClick: () => setOn(on === i ? null : i),
-    onMouseEnter: () => setOn(i),
-    onMouseLeave: () => setOn(null),
-  });
-  const dim = (i: number) => on !== null && on !== i && "opacity-25";
-  return { on, row, dim };
+// What the map frames for each view, in the image's pixels: x0, y0, x1, y1.
+const FRAMES: Record<View, [number, number, number, number]> = {
+  project: [1400, 540, 2080, 1800],
+  close: [1540, 880, 1950, 1500],
+  region: [1300, 250, 3150, 2150],
+  areas: [1450, 300, 3550, 2350],
 };
+const VIEW_LABEL: Record<View, string> = {
+  project: "framed on the project",
+  close: "close in on the project's forest",
+  region: "zoomed out over the landscape around the project",
+  areas: "zoomed out over the project, the key biodiversity area along the coast and Sebangau National Park beside it",
+};
+const ZOOMS = [1, 1.6, 2.5];
+// The panel's width on a wide screen, and the margins around what's framed.
+const PANEL = 448;
+const PAD = 32;
 
-const Card = ({ title, className, children }: { title: string; className?: string; children: ReactNode }) => (
-  <section data-reveal className={cn(CARD, className)}>
-    <h5 className={HEAD}>{title}</h5>
-    {children}
-  </section>
-);
+export const Biodiversity = ({ className }: { className?: string }) => {
+  const [at, setAt] = useState(0);
+  const [zoom, setZoom] = useState(0);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [size, setSize] = useState({ w: 0, h: 0, wide: false });
+  const [shown, setShown] = useState<Record<AreaLayer, boolean>>({ project: true, kba: true, protected: true });
+  const frame = useRef<HTMLDivElement>(null);
+  const layer = useRef<HTMLDivElement>(null);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const drag = useRef<{ x: number; y: number; px: number; py: number } | null>(null);
+  const part = PARTS[at];
 
-// The donut's arcs, from the top clockwise. The shares leave out species
-// with no assessment, so the ring is drawn across the five that have one.
-const R = 46;
-const TOTAL = RISKS.reduce((n, r) => n + r.share, 0);
-const point = (a: number) => `${(60 + R * Math.sin(a)).toFixed(2)} ${(60 - R * Math.cos(a)).toFixed(2)}`;
-const ARCS = RISKS.reduce<{ d: string; end: number }[]>((arcs, r) => {
-  const start = arcs.length ? arcs[arcs.length - 1].end : 0;
-  const end = start + (r.share / TOTAL) * Math.PI * 2;
-  return [...arcs, { d: `M${point(start)} A${R} ${R} 0 ${end - start > Math.PI ? 1 : 0} 1 ${point(end)}`, end }];
-}, []);
+  useEffect(() => {
+    const el = frame.current;
+    if (!el) return;
+    const observer = new ResizeObserver(([entry]) => {
+      const { width: w, height: h } = entry.contentRect;
+      setSize({ w, h, wide: window.matchMedia("(min-width: 1024px)").matches });
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
-const Risks = () => {
-  const { on, row, dim } = usePick();
+  // Fit the part's frame into what the panel leaves of the map, keep the
+  // imagery covering it, and hand the numbers to CSS.
+  useLayoutEffect(() => {
+    const el = layer.current;
+    if (!el || !size.w) return;
+    const [x0, y0, x1, y1] = FRAMES[part.view];
+    const left = size.wide ? PANEL + PAD : PAD;
+    const aw = size.w - left - PAD;
+    const ah = size.h - 2 * PAD;
+    const cover = Math.max(size.w / MAP_W, size.h / MAP_H);
+    const s = Math.max(cover, Math.min(aw / (x1 - x0), ah / (y1 - y0))) * ZOOMS[zoom];
+    const clamp = (v: number, lo: number) => Math.min(0, Math.max(lo, v));
+    const tx = clamp(left + aw / 2 - ((x0 + x1) / 2) * s + pan.x, size.w - MAP_W * s);
+    const ty = clamp(PAD + ah / 2 - ((y0 + y1) / 2) * s + pan.y, size.h - MAP_H * s);
+    el.style.setProperty("--tx", `${tx.toFixed(1)}px`);
+    el.style.setProperty("--ty", `${ty.toFixed(1)}px`);
+    el.style.setProperty("--s", s.toFixed(4));
+  }, [part.view, zoom, pan, size]);
+
+  const go = (i: number) => {
+    setAt((i + PARTS.length) % PARTS.length);
+    setZoom(0);
+    setPan({ x: 0, y: 0 });
+  };
+  const onKey = (e: KeyboardEvent<HTMLButtonElement>) => {
+    const next = { ArrowRight: at + 1, ArrowLeft: at - 1, Home: 0, End: PARTS.length - 1 }[e.key];
+    if (next === undefined) return;
+    e.preventDefault();
+    const i = (next + PARTS.length) % PARTS.length;
+    go(i);
+    tabs.current[i]?.focus();
+  };
+  // Dragging moves the map at once; the flights between parts glide.
+  const onDown = (e: PointerEvent<HTMLDivElement>) => {
+    drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    layer.current?.setAttribute("data-drag", "");
+  };
+  const onMove = (e: PointerEvent<HTMLDivElement>) => {
+    const d = drag.current;
+    if (d) setPan({ x: d.px + e.clientX - d.x, y: d.py + e.clientY - d.y });
+  };
+  const onUp = () => {
+    drag.current = null;
+    layer.current?.removeAttribute("data-drag");
+  };
+
   return (
-    <Card title="Extinction risk" className="lg:col-span-6">
-      <div className="mt-5 grid items-center gap-6 sm:grid-cols-[9rem_1fr]">
-        <svg viewBox="0 0 120 120" aria-hidden className="mx-auto w-36">
-          {ARCS.map((a, i) => (
-            <g key={RISKS[i].label} className={cn("transition-opacity duration-300", dim(i))}>
-              <path data-reveal="draw" pathLength={1} d={a.d} fill="none" stroke={RISKS[i].stroke} strokeWidth={on === i ? 18 : 13} />
-            </g>
-          ))}
-        </svg>
-        <ul className="grid gap-1">
-          {RISKS.map((r, i) => (
-            <li key={r.label}>
-              <button type="button" {...row(i)} className={cn(rowLook(on === i), "rounded-[10px] px-3 py-2 text-[15px] leading-5")}>
-                <span aria-hidden className={cn("h-4 w-1.5 shrink-0 rounded-full", r.dot)} />
-                <span className="flex-1">{r.label}</span>
-                <span className="font-bold tabular-nums">{r.share}%</span>
+    <section aria-label="Borneo Peatlands' biodiversity, on its map" className={cn(BLEED, "bg-[#06100b] text-white", className)}>
+      <div className="relative">
+        <div
+          ref={frame}
+          onPointerDown={onDown}
+          onPointerMove={onMove}
+          onPointerUp={onUp}
+          onPointerCancel={onUp}
+          className="relative h-[62svh] min-h-[22rem] cursor-grab touch-pan-y overflow-hidden active:cursor-grabbing lg:h-[min(54rem,92svh)]"
+        >
+          <div
+            ref={layer}
+            role="img"
+            aria-label={`Borneo Peatlands on a satellite map, ${VIEW_LABEL[part.view]}: the project's outline in white${shown.kba ? ", the key biodiversity area in green" : ""}${shown.protected ? ", the national park in teal" : ""}`}
+            className="absolute top-0 left-0 origin-top-left transition-transform duration-[1300ms] ease-[cubic-bezier(0.65,0,0.35,1)] [transform:translate(var(--tx,0px),var(--ty,0px))_scale(var(--s,0.3))] motion-reduce:transition-none data-drag:transition-none"
+          >
+            <Image src={borneo} alt="" sizes="(min-width: 1024px) 3714px, 1920px" placeholder="blur" quality={90} className="block max-w-none select-none" draggable={false} />
+            <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} aria-hidden className="absolute inset-0 size-full">
+              {/* The close-up, twice as sharp, feathered into the map. */}
+              <defs>
+                <filter id="bio-feather" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="24" />
+                </filter>
+                <mask id="bio-close">
+                  <rect x={DETAIL.x + 48} y={DETAIL.y + 48} width={DETAIL.w - 96} height={DETAIL.h - 96} fill="white" filter="url(#bio-feather)" />
+                </mask>
+              </defs>
+              <image href={closeUp.src} x={DETAIL.x} y={DETAIL.y} width={DETAIL.w} height={DETAIL.h} mask="url(#bio-close)" preserveAspectRatio="none" />
+              <path
+                d={PROTECTED_D}
+                vectorEffect="non-scaling-stroke"
+                className={cn("fill-[#2ec4b6] stroke-[#5fe3d6] [stroke-width:2] transition-opacity duration-700", shown.protected ? (part.view === "areas" ? "opacity-100 [fill-opacity:0.32]" : "opacity-60 [fill-opacity:0.14]") : "opacity-0")}
+              />
+              <path
+                d={KBA_D}
+                vectorEffect="non-scaling-stroke"
+                className={cn("fill-[#5bd16a] stroke-[#86f193] [stroke-width:2] transition-opacity duration-700", shown.kba ? (part.view === "areas" ? "opacity-100 [fill-opacity:0.32]" : "opacity-60 [fill-opacity:0.14]") : "opacity-0")}
+              />
+              <path
+                d={PROJECT_D}
+                fillRule="evenodd"
+                vectorEffect="non-scaling-stroke"
+                className={cn("fill-white stroke-white [fill-opacity:0.16] [stroke-width:2.5] transition-opacity duration-700", shown.project ? "opacity-100" : "opacity-0")}
+              />
+            </svg>
+          </div>
+          <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgb(6_16_11/0.55),transparent_45%)] max-lg:hidden" />
+          <div className="absolute right-4 bottom-4 flex items-end gap-3" onPointerDown={(e) => e.stopPropagation()}>
+            <Zoom onIn={() => setZoom((z) => Math.min(z + 1, ZOOMS.length - 1))} onOut={() => setZoom((z) => Math.max(z - 1, 0))} canIn={zoom < ZOOMS.length - 1} canOut={zoom > 0} />
+          </div>
+        </div>
+
+        {/* The product's panel: over the map on a wide screen, under it on a phone. */}
+        <div className={cn(PAGE, "pointer-events-none lg:absolute lg:inset-x-0 lg:top-0 lg:bottom-0 lg:flex lg:items-center")}>
+          <div className="pointer-events-auto -mt-10 flex max-h-full w-full flex-col overflow-hidden rounded-[20px] bg-[#0b1610]/92 shadow-[0_30px_90px_rgb(0_0_0/0.45)] ring-1 ring-white/12 backdrop-blur-md lg:mt-0 lg:max-h-[calc(100%-4rem)] lg:w-[26rem]">
+            <header className="border-b border-white/10 p-5 sm:p-6">
+              <p className="flex items-center gap-2 text-[13px] leading-4">
+                <svg viewBox="0 0 24 24" aria-hidden className="size-5 rounded-full">
+                  <rect width="24" height="12" fill="#e70011" />
+                  <rect y="12" width="24" height="12" fill="#ffffff" />
+                </svg>
+                <span className="font-bold">Indonesia</span>
+                <span aria-hidden className="h-3 w-px bg-white/40" />
+                149,800 ha
+              </p>
+              <h4 className="mt-2 font-display text-[36px] leading-none font-bold">Borneo Peatlands</h4>
+              <div role="tablist" aria-label="Biodiversity" className="mt-5 grid grid-cols-3 gap-1.5">
+                {PARTS.map((p, i) => (
+                  <button
+                    key={p.id}
+                    ref={(el) => {
+                      tabs.current[i] = el;
+                    }}
+                    type="button"
+                    role="tab"
+                    id={`bio-tab-${p.id}`}
+                    aria-selected={i === at}
+                    aria-controls="bio-part"
+                    tabIndex={i === at ? 0 : -1}
+                    onClick={() => go(i)}
+                    onKeyDown={onKey}
+                    className={cn(
+                      "rounded-[10px] px-2 py-2 text-[13px] leading-4 font-medium transition-colors",
+                      i === at ? "bg-white text-bn-heavy" : "bg-white/6 text-white/85 hover:bg-white/12",
+                      BN.focus,
+                      "focus-visible:outline-white",
+                    )}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </header>
+            <div id="bio-part" role="tabpanel" aria-labelledby={`bio-tab-${part.id}`} tabIndex={0} className={cn("min-h-0 flex-1 overflow-y-auto p-5 [scrollbar-width:thin] sm:p-6", BN.focus, "focus-visible:-outline-offset-2 focus-visible:outline-white")}>
+              <div key={part.id} className="motion-safe:animate-[arrive_0.45s_var(--ease-arrive)_both]">
+                {part.id === "score" ? <ScorePart /> : null}
+                {part.id === "spotlight" ? <SpotlightPart /> : null}
+                {part.id === "risk" ? <RiskPart /> : null}
+                {part.id === "threats" ? <ThreatsPart /> : null}
+                {part.id === "species" ? <SpeciesPart /> : null}
+                {part.id === "areas" ? <AreasPart shown={shown} onToggle={(k) => setShown((v) => ({ ...v, [k]: !v[k] }))} /> : null}
+              </div>
+            </div>
+            <footer className="flex items-center justify-between gap-3 border-t border-white/10 px-5 py-3 sm:px-6">
+              <button type="button" onClick={() => go(at - 1)} className={cn("inline-flex items-center gap-2 rounded-full px-3 py-2 text-[14px] leading-5 text-white/85 hover:bg-white/10", BN.focus, "focus-visible:outline-white")}>
+                <MdArrowBack aria-hidden className="size-4" />
+                {PARTS[(at + PARTS.length - 1) % PARTS.length].label}
               </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="mt-6 border-t border-white/10 pt-5">
-        <p className="flex items-baseline gap-3">
-          <CountUp value={3025} className="font-display text-[40px] leading-none font-bold" />
-          <span className="text-[14px] text-white/75">species recorded in the region</span>
-        </p>
-        <div aria-hidden className="mt-4 flex h-2.5 gap-1">
-          <span data-reveal="grow-x" className="grow-[95] rounded-full bg-[#1db954]" />
-          <span data-reveal="grow-x" className="grow-[5] rounded-full bg-white/80 [--reveal-delay:0.4s]" />
-        </div>
-        <p className="mt-2 flex justify-between text-[13px] text-white/75">
-          <span>
-            Animals <b className="text-white">95%</b>
-          </span>
-          <span>
-            Plants <b className="text-white">5%</b>
-          </span>
-        </p>
-      </div>
-    </Card>
-  );
-};
-
-const Threats = () => {
-  const { on, row, dim } = usePick();
-  return (
-    <Card title="Regional threats" className="lg:col-span-6">
-      <div className="mt-5 grid grid-cols-[2.5rem_1fr] gap-5">
-        <div aria-hidden className="flex flex-col gap-0.5 overflow-hidden rounded-[10px]">
-          {THREATS.map((t, i) => (
-            <span key={t.label} className={cn("min-h-1 transition-opacity duration-300", t.grow, t.fill, dim(i))} />
-          ))}
-        </div>
-        <ul className="grid gap-0.5">
-          {THREATS.map((t, i) => (
-            <li key={t.label}>
-              <button type="button" {...row(i)} className={cn(rowLook(on === i), "rounded-[8px] px-2.5 py-1.5 text-[14px] leading-5")}>
-                <span aria-hidden className={cn("h-3.5 w-1.5 shrink-0 rounded-full", t.fill)} />
-                <span className="flex-1">{t.label}</span>
-                <span className="font-bold tabular-nums">{t.share}</span>
+              <span aria-hidden className="font-mono text-[12px] text-white/60">
+                {at + 1} / {PARTS.length}
+              </span>
+              <button type="button" onClick={() => go(at + 1)} className={cn("inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-[14px] leading-5 hover:bg-white/16", BN.focus, "focus-visible:outline-white")}>
+                {PARTS[(at + 1) % PARTS.length].label}
+                <MdArrowForward aria-hidden className="size-4" />
               </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Card>
-  );
-};
-
-const Spotlight = () => {
-  const [pick, setPick] = useState(0);
-  const s = SPOTLIGHTS[pick];
-  return (
-    <section data-reveal className={cn(CARD, "overflow-hidden p-0 sm:p-0 lg:col-span-7")}>
-      <div className="relative aspect-[860/520] overflow-hidden">
-        {SPOTLIGHTS.map((x, i) => (
-          <Image
-            key={x.name}
-            src={x.photo}
-            alt={i === pick ? x.alt : ""}
-            fill
-            sizes="(min-width: 1024px) 640px, 100vw"
-            className={cn("object-cover transition-opacity duration-500", i === pick ? "opacity-100" : "opacity-0")}
-          />
-        ))}
-        <div role="group" aria-label="Species in the spotlight" className="absolute top-4 left-4 flex flex-wrap gap-1.5 rounded-full bg-black/55 p-1 backdrop-blur-sm">
-          {SPOTLIGHTS.map((x, i) => (
-            <button
-              key={x.name}
-              type="button"
-              aria-pressed={pick === i}
-              onClick={() => setPick(i)}
-              className={cn("rounded-full px-3.5 py-1.5 text-[13px] leading-4 font-bold transition-colors", pick === i ? "bg-white text-bn-heavy" : "text-white hover:bg-white/15", FOCUS)}
-            >
-              {x.name}
-            </button>
-          ))}
+            </footer>
+          </div>
         </div>
       </div>
-      <div key={s.name} aria-live="polite" className="p-5 motion-safe:animate-[arrive_0.5s_var(--ease-arrive)_both] sm:p-6">
-        <span className={cn("inline-block rounded-full px-2.5 py-1 text-[12px] leading-4 font-bold tracking-[0.04em] text-bn-heavy uppercase", s.badge)}>{s.status}</span>
-        <p className="mt-3 font-display text-[36px] leading-none font-bold">{s.name}</p>
-        <p className="mt-1 text-[15px] text-white/70 italic">{s.latin}</p>
-        <p className="mt-3 max-w-[34rem] text-[15px] leading-6 text-white/85">{s.text}</p>
-      </div>
+      <p className={cn(PAGE, "type-caption pt-4 text-(--tone-text) lg:pt-5")}>
+        Each part of the evaluation is a tab, and the map goes where it&rsquo;s about. Drag it or zoom it. Imagery: Sentinel-2 cloudless 2023 by EOX (contains modified Copernicus Sentinel data, CC BY-NC-SA 4.0); the project, the key biodiversity area and the national park traced from Pachama&rsquo;s map of them, from IBAT&rsquo;s data.
+      </p>
     </section>
   );
 };
-
-const Score = () => (
-  <section data-reveal className={cn(CARD, "flex flex-col lg:col-span-5")}>
-    <h5 className={HEAD}>Biodiversity conservation impact</h5>
-    <p className="mt-6 font-display leading-none font-bold">
-      <CountUp value={95} className="text-[96px]" />
-      <span className="text-[44px]">th</span>
-    </p>
-    <p className="mt-2 text-[15px] text-white/75">percentile, worldwide</p>
-    <div className="mt-8">
-      <div className="relative h-3 rounded-full bg-linear-to-r from-[#e6e33a] via-[#1f9e6e] to-[#3b3486]">
-        <span data-run aria-hidden className="absolute top-1/2 left-[95%] size-6 -translate-1/2 rounded-full border-[3px] border-white bg-[#1f9e6e] shadow-[0_2px_10px_rgb(0_0_0/0.5)]" />
-      </div>
-      <p aria-hidden className="mt-3 flex justify-between text-[11px] leading-4 font-bold tracking-[0.08em] text-white/60 uppercase">
-        <span>Very low</span>
-        <span>Medium</span>
-        <span>Very high</span>
-      </p>
-    </div>
-    <p className="mt-6 text-[14px] leading-6 text-white/80">The land ranks among the most critical conservation areas in the world, with a real chance to cut species&apos; risk of extinction.</p>
-    <div className="mt-auto divide-y divide-white/10 border-y border-white/10">
-      {QUESTIONS.map((q) => (
-        <details key={q.ask} className="group py-1">
-          <summary className={cn("flex cursor-pointer list-none items-center justify-between gap-4 rounded-[8px] py-3 text-[15px] leading-5 font-bold [&::-webkit-details-marker]:hidden", FOCUS)}>
-            {q.ask}
-            <MdExpandMore aria-hidden className="size-5 shrink-0 transition-transform group-open:rotate-180" />
-          </summary>
-          <p className="pb-4 text-[14px] leading-6 text-white/80">{q.answer}</p>
-        </details>
-      ))}
-    </div>
-    <p className="mt-4 text-[13px] leading-5 text-white/60">Source: IBAT, STAR</p>
-  </section>
-);
-
-const AtRisk = () => (
-  <Card title="Critically endangered, in the region" className="lg:col-span-7">
-    <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-      {AT_RISK.map((a) => (
-        <li key={a.name}>
-          <span className="group block overflow-hidden rounded-[10px]">
-            <Image src={a.photo} alt="" sizes="(min-width: 1024px) 220px, 45vw" className="aspect-[444/260] w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
-          </span>
-          <span className="mt-2 block text-[14px] leading-5">{a.name}</span>
-        </li>
-      ))}
-    </ul>
-  </Card>
-);
-
-const Areas = () => (
-  <section data-reveal className={cn(CARD, "relative min-h-[22rem] overflow-hidden p-0 sm:p-0 lg:col-span-5")}>
-    <Image src={kbaMap} alt="Borneo Peatlands on a satellite map: the project's outline in white, key biodiversity areas in green and protected areas in teal around it, along the coast" fill sizes="(min-width: 1024px) 520px, 100vw" className="object-cover object-left" />
-    <h5 className={cn(HEAD, "absolute bottom-4 left-4 rounded-[10px] bg-black/60 px-3 py-2 backdrop-blur-sm")}>Key biodiversity areas around it</h5>
-  </section>
-);
-
-export const Biodiversity = ({ className }: { className?: string }) => (
-  <div className={cn("rounded-[16px] bg-[#0b1610] p-4 text-white sm:p-6", className)}>
-    <header className="flex flex-wrap items-end justify-between gap-x-10 gap-y-4 px-1 pb-6 sm:px-2">
-      <div>
-        <p className="flex items-center gap-2 text-[13px] leading-4">
-          <svg viewBox="0 0 24 24" aria-hidden className="size-5 rounded-full">
-            <rect width="24" height="12" fill="#e70011" />
-            <rect y="12" width="24" height="12" fill="#ffffff" />
-          </svg>
-          <span className="font-bold">Indonesia</span>
-          <span aria-hidden className="h-3 w-px bg-white/40" />
-          149,800 ha
-        </p>
-        <h4 className="mt-3 font-display text-[44px] leading-none font-bold sm:text-[56px]">Borneo Peatlands</h4>
-        <p className="mt-4 flex flex-wrap gap-2 text-[12px] leading-4 font-bold tracking-[0.06em] uppercase">
-          <span className="rounded-full bg-white/12 px-3 py-1.5">Verra</span>
-          <span className="rounded-full bg-white/12 px-3 py-1.5">Avoided planned deforestation</span>
-        </p>
-      </div>
-      <p className="max-w-[24rem] text-[15px] leading-6 text-white/80">Protecting the largest remaining peat swamp forest, home to some of the world&apos;s most endangered species.</p>
-    </header>
-    <div className="grid gap-3 sm:gap-4 lg:grid-cols-12">
-      <Spotlight />
-      <Score />
-      <Risks />
-      <Threats />
-      <AtRisk />
-      <Areas />
-    </div>
-  </div>
-);

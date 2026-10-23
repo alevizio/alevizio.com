@@ -23,6 +23,13 @@ const CRUMBS: Crumb[] = [
 ];
 
 const Panel = ({ children }: { children: string }) => <p className="max-w-prose pt-4 text-[15px] leading-6 text-bn-medium">{children}</p>;
+// A project's tabs, here and on the sheet's first look.
+export const PROJECT_TABS = [
+  { label: "Summary", panel: <Panel>{`${KALIMANTAN.area} in ${KALIMANTAN.country}, ${KALIMANTAN.type}.`}</Panel> },
+  { label: "Evaluation", status: true, panel: <Panel>{MANOA.about}</Panel> },
+  { label: "Documents", count: 4, panel: <Panel>The project description, its validation and two monitoring reports. Sample files.</Panel> },
+  { label: "Monitoring", disabled: true, panel: <Panel>Not yet.</Panel> },
+];
 
 export const Patterns = () => (
   <>
@@ -58,15 +65,7 @@ export const Patterns = () => (
       </div>
     </Specimen>
     <Specimen name="Tabs" span="half" note="Arrow keys move between tabs; a dot or a count says something changed." panelClassName="block">
-      <Tabs
-        label={`${KALIMANTAN.name}, project`}
-        items={[
-          { label: "Summary", panel: <Panel>{`${KALIMANTAN.area} in ${KALIMANTAN.country}, ${KALIMANTAN.type}.`}</Panel> },
-          { label: "Evaluation", status: true, panel: <Panel>{MANOA.about}</Panel> },
-          { label: "Documents", count: 4, panel: <Panel>The project description, its validation and two monitoring reports. Sample files.</Panel> },
-          { label: "Monitoring", disabled: true, panel: <Panel>Not yet.</Panel> },
-        ]}
-      />
+      <Tabs label={`${KALIMANTAN.name}, project`} items={PROJECT_TABS} />
     </Specimen>
     <Specimen name="Stepper" span="full" note="A developer's way through Pachama, from screening to earning credits: big, small and with each step's copy." panelClassName="min-w-0 flex-col items-start gap-8">
       <StepperRow steps={LIFECYCLE} current={1} label="Project lifecycle" className="flex-wrap gap-y-3" />

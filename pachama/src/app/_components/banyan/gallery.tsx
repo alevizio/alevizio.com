@@ -5,23 +5,22 @@ import { cn } from "../cn";
 import { DataDisplay } from "./data-display";
 import { Feedback } from "./feedback";
 import { Forms } from "./forms";
+import { Highlights } from "./highlights";
 import { Foundations } from "./foundations";
-import { MapKit } from "./maps";
 import { Media } from "./media";
 import { Overlay } from "./overlay";
 import { Patterns } from "./patterns";
 import { Bento } from "./specimen";
 import { BN } from "./ui";
 
-/* Every Banyan component on one contact sheet, the families mixed
- * together. A sticky row of chips narrows it to one family, with that
- * family's line above the sheet; All brings everything back. */
+/* Banyan on a contact sheet. It opens on a selection, set out and at work
+ * (Highlights); a sticky row of chips swaps it for one family whole, with
+ * that family's line above the sheet, or for everything at once. */
 type Family = { id: string; label: string; text: string; count: number; body: ReactNode };
 
 const FAMILIES: Family[] = [
   { id: "foundations", label: "Foundations", text: "The type scale, eight colour ramps, the gradients, the colour roles and the four background levels.", count: 5, body: <Foundations /> },
   { id: "patterns", label: "Patterns", text: "Navigation, cards, graphs, accordions, steppers, breadcrumbs and tabs: the bigger pieces, built from the smaller ones.", count: 12, body: <Patterns /> },
-  { id: "maps", label: "Maps", text: "What sits on top of the satellite imagery, piece by piece and put together: the legend, the player, the fire alerts, the controls, the minimap globe and the world with its fires.", count: 8, body: <MapKit /> },
   { id: "forms", label: "Forms", text: "Ten controls, from the button to the date picker, in the states the Figma documents.", count: 9, body: <Forms /> },
   { id: "data-display", label: "Data display", text: "How numbers, statuses and people show up.", count: 5, body: <DataDisplay /> },
   { id: "feedback", label: "Feedback", text: "How the product answers back.", count: 5, body: <Feedback /> },
@@ -68,7 +67,7 @@ const TINTS = [
 ];
 
 export const ComponentGallery = () => {
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("highlights");
   const [tint, setTint] = useState(TINTS[0]);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -86,6 +85,7 @@ export const ComponentGallery = () => {
   }, []);
   const family = FAMILIES.find((f) => f.id === filter);
   const shown = family ? [family] : FAMILIES;
+  const highlights = filter === "highlights";
 
   const chip = (on: boolean) =>
     cn(
@@ -101,19 +101,26 @@ export const ComponentGallery = () => {
           aria-label="Show components from"
           className="flex gap-1 overflow-x-auto rounded-full border border-[#e6e0cc] bg-[#fdfbf1]/85 p-1.5 shadow-[0_10px_30px_rgb(14_37_23/0.08)] backdrop-blur-md [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          <button type="button" aria-pressed={!family} onClick={() => setFilter("all")} className={chip(!family)}>
-            All <span className="text-[12px] opacity-75">{ALL}</span>
+          <button type="button" aria-pressed={highlights} onClick={() => setFilter("highlights")} className={chip(highlights)}>
+            Highlights
           </button>
           {FAMILIES.map((f) => (
             <button key={f.id} type="button" aria-pressed={filter === f.id} onClick={() => setFilter(f.id)} className={chip(filter === f.id)}>
               {f.label} <span className="text-[12px] opacity-75">{f.count}</span>
             </button>
           ))}
+          <button type="button" aria-pressed={filter === "all"} onClick={() => setFilter("all")} className={chip(filter === "all")}>
+            Everything <span className="text-[12px] opacity-75">{ALL}</span>
+          </button>
         </div>
       </div>
       <div className="mb-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
         <p aria-live="polite" className="type-body max-w-[40rem] text-(--tone-text)">
-          {family ? `${family.label}: ${family.text}` : `All ${ALL} components, live. Pick a family to narrow the sheet down.`}
+          {family
+            ? `${family.label}: ${family.text}`
+            : highlights
+              ? "A selection from the library, at work: the small parts on a belt, and the controls running themselves until you reach for them. Pick a family for all of it."
+              : `All ${ALL} components, live. Pick a family to narrow the sheet down.`}
         </p>
         <div role="group" aria-label="The kit's accent" className="flex items-center gap-3">
           <span className="text-[14px] leading-5 text-(--tone-text)">
@@ -134,9 +141,7 @@ export const ComponentGallery = () => {
         </div>
       </div>
       <Bento className={tint.vars}>
-        {shown.map((f) => (
-          <Fragment key={f.id}>{f.body}</Fragment>
-        ))}
+        {highlights ? <Highlights /> : shown.map((f) => <Fragment key={f.id}>{f.body}</Fragment>)}
       </Bento>
     </div>
   );

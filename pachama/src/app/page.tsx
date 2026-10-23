@@ -58,7 +58,6 @@ const NAV: readonly NavGroup[] = [
       { id: "buying", label: "Buying" },
       { id: "portfolio", label: "Portfolios" },
       { id: "monitoring", label: "Monitoring" },
-      { id: "biodiversity", label: "Biodiversity" },
       { id: "developers", label: "Developers" },
       { id: "sourcing", label: "Sourcing" },
       { id: "screening", label: "Screening" },
@@ -80,8 +79,9 @@ const NAV: readonly NavGroup[] = [
     title: "The maps",
     items: [
       { id: "orbit", label: "From orbit" },
+      { id: "on-the-map", label: "On the map" },
+      { id: "biodiversity", label: "Biodiversity" },
       { id: "canopy", label: "Canopy height" },
-      { id: "point-clouds", label: "Point clouds" },
       { id: "baselines", label: "Dynamic baselines" },
       { id: "change", label: "Change over time" },
       { id: "lidar", label: "Lidar" },
@@ -98,7 +98,6 @@ const NAV: readonly NavGroup[] = [
       { id: "badges", label: "Badges" },
       { id: "trees", label: "Pachama Originals" },
       { id: "small-things", label: "Small things" },
-      { id: "field", label: "In the field" },
     ],
   },
 ];

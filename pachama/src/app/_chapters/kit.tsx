@@ -55,7 +55,7 @@ export const Kit = () => (
       id="components"
       eyebrow="Every component"
       title="The whole library, live"
-      text="Every family from the Figma, rebuilt and working, in one place. Use them: the buttons press, the menus open, the map plays."
+      text="A selection first, at work, then every family from the Figma a chip away, rebuilt and working. Use them: the buttons press, the menus open, the charts draw. The maps have their own chapter, IV."
     >
       <ComponentGallery />
     </Section>

@@ -5,9 +5,9 @@ import { cn } from "../../cn";
 import { BN } from "../ui";
 
 /* Banyan's minimap globe, live: the satellite earth from the Figma (with
- * its fires) wrapped onto a sphere and drawn per pixel on a canvas, ringed
- * in glacier as the docs draw it. It turns on its own, a drag turns it by
- * hand, and the four buttons fly to the views the Figma shows. */
+ * its fires) wrapped onto a sphere and drawn per pixel on a canvas, in a
+ * soft glacier glow. It turns on its own, a drag turns it by hand, and the
+ * four buttons fly to the views the Figma shows. */
 const VIEWS = [
   { id: "sa", label: "South America", lon: -60, lat: -15 },
   { id: "af", label: "Africa", lon: 20, lat: 2 },
@@ -70,8 +70,9 @@ export const SatelliteGlobe = ({ className }: { className?: string }) => {
     const draw = (t: number) => {
       raf = 0;
       if (!earth || !fires) return;
-      const idle = !drag.on && t - lastInput > 4000;
-      if (!still && idle) target.current = { ...target.current, lon: target.current.lon + 0.05 };
+      // Left alone for a moment, it turns again, about ten degrees a second.
+      const idle = !drag.on && t - lastInput > 1500;
+      if (!still && idle) target.current = { ...target.current, lon: target.current.lon + 0.16 };
       const ease = still ? 1 : 0.08;
       let dLon = target.current.lon - now.lon;
       dLon = ((((dLon + 180) % 360) + 360) % 360) - 180;
@@ -169,7 +170,8 @@ export const SatelliteGlobe = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn("grid w-full justify-items-center gap-5", className)}>
-      <div className="relative aspect-square w-full max-w-[16rem] rounded-full bg-[#0b1630] p-[6px] shadow-[0_0_0_6px_#84e1ff,0_20px_50px_rgb(14_37_23/0.35)]">
+      {/* A soft glow of atmosphere around it, glacier fading into the dark. */}
+      <div className="relative aspect-square w-full max-w-[16rem] rounded-full bg-[#0b1630] shadow-[0_0_24px_4px_rgb(132_225_255/0.45),0_0_80px_24px_rgb(132_225_255/0.16)]">
         <canvas ref={ref} role="img" aria-label={`A satellite globe, turned to ${VIEWS.find((v) => v.id === view)?.label}, with fires in red`} className="block size-full cursor-grab touch-none rounded-full active:cursor-grabbing" />
       </div>
       <div role="group" aria-label="Turn the globe to" className="flex flex-wrap justify-center gap-1.5">
@@ -179,7 +181,7 @@ export const SatelliteGlobe = ({ className }: { className?: string }) => {
             type="button"
             aria-pressed={view === v.id}
             onClick={() => setView(v.id)}
-            className={cn("rounded-full border px-3 py-1 text-[12px] leading-5 font-medium transition-colors", view === v.id ? "border-bn-heavy bg-bn-heavy text-white" : "border-bn-heavy/25 text-bn-heavy hover:bg-bn-heavy/8", BN.focus)}
+            className={cn("rounded-full border px-3 py-1 text-[12px] leading-5 font-medium transition-colors", view === v.id ? "border-white bg-white text-bn-heavy" : "border-white/30 text-white hover:bg-white/10", BN.focus, "focus-visible:outline-white")}
           >
             {v.label}
           </button>

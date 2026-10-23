@@ -26,10 +26,6 @@ import booth01 from "@/assets/world/booth-01.jpg";
 import booth02 from "@/assets/world/booth-02.jpg";
 import booth05 from "@/assets/world/booth-05.jpg";
 import booth06 from "@/assets/world/booth-06.jpg";
-import corredores41 from "@/assets/world/corredores-41.jpg";
-import corredores43 from "@/assets/world/corredores-43.jpg";
-import corredores45 from "@/assets/world/corredores-45.jpg";
-import corredores47 from "@/assets/world/corredores-47.jpg";
 import bottles from "@/assets/world/merch/bottles.jpg";
 import notebook from "@/assets/world/merch/notebook.jpg";
 import originalsCard from "@/assets/world/merch/originals.jpg";
@@ -45,7 +41,7 @@ import shirt from "@/assets/world/shirt.jpg";
 import stamp from "@/assets/world/stamp.jpg";
 import treeTrace from "@/assets/world/tree-trace.jpg";
 import Image, { type StaticImageData } from "next/image";
-import { Clip, HALF, Shot, THIRD } from "../_components/shot";
+import { Clip, HALF, Shot } from "../_components/shot";
 import { Slider } from "../_components/slider";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
@@ -225,15 +221,6 @@ export const World = () => (
         <Row>
           <Shot src={pins} alt="Two hexagon pins of the Pachama mark, one in the spectrum's colours, one in silver" sizes={HALF} />
           <Shot src={stamp} alt="A rubber stamp printing the Nature Positive seal" sizes={HALF} />
-        </Row>
-      </Section>
-
-      <Section id="field" eyebrow="In the field" title="Corredores de Vida" text="The restoration behind the lidar: farmland and forest in Brazil. Photos: Pachama.">
-        <Shot src={corredores41} alt="A river between stands of forest, from the air" bleed />
-        <Row cols={3} className="mt-6">
-          <Shot src={corredores45} alt="Forest meeting pasture along a lakeshore, from the air" sizes={THIRD} />
-          <Shot src={corredores43} alt="Rows of young trees planted across dry farmland" sizes={THIRD} />
-          <Shot src={corredores47} alt="A farmstead with a tree nursery, from the air" sizes={THIRD} />
         </Row>
       </Section>
     </Band>
