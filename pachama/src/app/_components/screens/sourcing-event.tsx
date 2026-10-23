@@ -2,9 +2,10 @@
 
 import landShare from "@/assets/product/source-land-share.jpg";
 import forest from "@/assets/source/event-forest.jpg";
+import symbiosis from "@/assets/source/symbiosis.png";
 import Image from "next/image";
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode, type RefObject } from "react";
-import { MdAdd, MdArrowBack, MdArrowForward, MdCheck, MdClose, MdContentCopy, MdLock, MdOutlineShield } from "react-icons/md";
+import { MdAdd, MdArrowBack, MdArrowForward, MdCheck, MdClose, MdContentCopy, MdLock } from "react-icons/md";
 import { Button } from "../banyan/button";
 import { TextInput } from "../banyan/forms/input";
 import { Select } from "../banyan/forms/select";
@@ -14,12 +15,13 @@ import { cn } from "../cn";
 /* Source's idea, a sourcing event in one link, as a demo in a browser
  * window: the link a buyer shares, the event page it opens (rebuilt live
  * from the design, with its photograph), the dialog that starts a
- * submission, and the step after it, the project's land. Acme stands in for
- * the buyer, as it does in the screens. Copy link copies this section's. */
+ * submission, and the step after it, the project's land. The buyer is
+ * Symbiosis, with its logo, whose RFP Source grew out of (the screens had
+ * Acme). Copy link copies this section's. */
 type Step = "page" | "land";
 const PATH: Record<Step, string> = {
-  page: "/events/acme/reforestation-agroforestry",
-  land: "/events/acme/reforestation-agroforestry/submission/land",
+  page: "/events/symbiosis/reforestation-agroforestry",
+  land: "/events/symbiosis/reforestation-agroforestry/submission/land",
 };
 
 const Flag = ({ children }: { children: ReactNode }) => (
@@ -95,18 +97,14 @@ const EventPage = ({ onSubmit, submitRef }: { onSubmit: () => void; submitRef: R
       <Image src={forest} alt="Forest from above, a red dirt track winding through the canopy" fill sizes="(min-width: 1024px) 640px, 100vw" className="object-cover" />
     </div>
     <div className="p-6 sm:p-10 lg:py-12">
-      <p className="flex items-end gap-1.5 text-bn-heavy">
-        <MdOutlineShield aria-hidden className="size-10" />
-        <span className="font-display text-[40px] leading-none font-bold">Acme</span>
-        <span className="text-[22px] leading-6">corp</span>
-      </p>
+      <Image src={symbiosis} alt="Symbiosis" sizes="200px" className="h-11 w-auto" />
       <p className="mt-10 flex items-center gap-4 font-mono text-[13px] leading-4 tracking-[0.06em] text-bn-heavy uppercase">
         <span className="rounded-[4px] bg-[#e3ece7] px-2.5 py-1.5">Open</span>
         Submit by 5/30/25
       </p>
       <h4 className="mt-5 font-display text-[48px] leading-[1.02] font-bold text-bn-heavy sm:text-[60px]">Reforestation &amp; Agroforestry</h4>
       <p className="mt-5 max-w-[34rem] text-[16px] leading-6 text-bn-heavy">
-        Acme Corp is launching a Request for Proposal (RFP) to source 300,000 tons of high-quality nature-based carbon removal credits. We are seeking projects that demonstrate strong environmental integrity, measurable climate
+        Symbiosis is launching a Request for Proposal (RFP) to source high-quality nature-based carbon removal credits. We are seeking projects that demonstrate strong environmental integrity, measurable climate
         impact, and co-benefits for biodiversity and local communities. Interested developers are invited to submit proposals below.
       </p>
       <Button ref={submitRef} icon={<MdAdd aria-hidden className="size-5" />} iconPosition="trailing" onClick={onSubmit} className="mt-7">

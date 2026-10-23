@@ -1,4 +1,4 @@
-/* A round of submissions to Acme's sourcing event, from the Source Figma's
+/* A round of submissions to a sourcing event, from the Source Figma's
  * Submissions table and Verde Do Bahia's evaluation page. The design's
  * own sample data, with two changes: the three that fail screening are
  * named by their type and place (the design calls them "Example project

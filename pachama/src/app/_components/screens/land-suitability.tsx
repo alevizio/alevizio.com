@@ -159,7 +159,7 @@ export const LandSuitability = ({ className }: { className?: string }) => {
             </h4>
             <p className="mt-2 text-[13px] leading-5 text-white/80">Please upload a spatial file for your project area.</p>
             <p className="mt-5 text-[13px] leading-5 text-white/90">
-              This tool uses satellite data to help us better understand your project area. Acme will use these results as one part of our broader screening and
+              This tool uses satellite data to help us better understand your project area. Symbiosis will use these results as one part of our broader screening and
               diligence process. We will share the results of the analysis and provide you an opportunity to contextualize the findings, and upload supporting
               documentation.
             </p>

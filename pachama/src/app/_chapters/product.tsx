@@ -145,7 +145,7 @@ export const Product = () => (
       id="sourcing"
       eyebrow="Sourcing"
       title="A sourcing event in one link"
-      text="Source generalised what we built for the Symbiosis RFP: any buyer could run its own call for carbon projects, publish what it's looking for in one link, and have developers submit, share their land and see how much of it qualifies. Acme stands in for the buyer. Try it: submit a proposal."
+      text="Source generalised what we built for the Symbiosis RFP: any buyer could run its own call for carbon projects, publish what it's looking for in one link, and have developers submit, share their land and see how much of it qualifies. Shown here with Symbiosis, whose RFP it started from. Try it: submit a proposal."
     >
       <SourceFlow />
       <div data-reveal="frame" className="mt-14 sm:mt-20">
