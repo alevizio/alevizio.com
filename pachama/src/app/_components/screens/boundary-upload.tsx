@@ -146,7 +146,7 @@ export const BoundaryUpload = ({ className }: { className?: string }) => {
   const tab = (active: boolean) => cn("border-b-2 pb-2 transition-colors duration-500", active ? "border-white text-white" : "border-transparent text-white/55");
 
   return (
-    <GlassFrame ref={root} backdrop={forestEdge} className={className} innerClassName="motion-reduce:[&_*]:transition-none lg:grid lg:h-[44rem] lg:grid-cols-[25rem_1fr]">
+    <GlassFrame ref={root} backdrop={forestEdge} rise className={className} innerClassName="motion-reduce:[&_*]:transition-none lg:grid lg:h-[44rem] lg:grid-cols-[25rem_1fr]">
       <div className="flex flex-col gap-6 p-6 lg:order-1 lg:p-8">
         <div>
           <MdArrowBack aria-hidden className="size-6 text-white/80" />
