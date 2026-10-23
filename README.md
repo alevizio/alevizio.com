@@ -12,7 +12,7 @@ Personal portfolio site for Alejandro Vizio, built as a minimal single-page expe
 ## What is in this repo
 
 - A custom animated landing page built with React, Vite, Tailwind CSS, and Motion
-- A background of grey blocks that slide along their rows and columns, drawn on the GPU, with pointer-responsive ripples
+- A background of grey blocks, a slow noise field dithered on the GPU, with pointer-responsive ripples
 - A copy-to-clipboard contact CTA and social profile links
 - Company logo highlights, SEO metadata, Open Graph tags, `llms.txt`, sitemap, and robots configuration
 - The actual source for the live portfolio, not just a static export

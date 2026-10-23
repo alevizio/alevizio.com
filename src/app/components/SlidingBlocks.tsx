@@ -1,18 +1,23 @@
 import { useEffect, useRef } from "react";
 
-// A patchwork of grey blocks that slide along their rows and columns, drawn by
-// the GPU: one fullscreen WebGL triangle and a few microseconds of JavaScript
-// per frame. The mouse leaves ripples that push the blocks aside and fill the
-// ring with halftone dots, using the old ASCII rain's drop physics in pixels.
+// A slow field of noise, quantised to a grid of 16 cells across the screen
+// and dithered between two greys with a 2×2 Bayer screen: flat cells where
+// the field is saturated, dot and checker cells where it is in between, the
+// blobs sliding and shifting as the field drifts. Drawn by the GPU as one
+// fullscreen WebGL triangle. The mouse leaves ripples that invert the field
+// along a ring, with the old ASCII rain's drop physics in pixels.
 
-// Light to dark. The first is the page background, so an empty cell is invisible.
-const TONES = ["#dedbd1", "#cfccc2", "#c0bdb3", "#a9a69d"];
+// The page background, and the dark grey the field dithers towards.
+const LIGHT = "#dedbd1";
+const DARK = "#b5b2a8";
+const CELLS = 16; // cells across the width
+const DOT = 4; // dither cell, CSS px
+const SPEED = 0.03; // how fast the field drifts
+const VIGNETTE = 0.12; // darkening at the corners, 0 to 1
+// With no ripple the only visible changes are cells flipping now and then, so
+// 15 fps looks the same as 60 and costs a quarter. Ripples run at 60.
+const IDLE_MS = 66;
 const MAX_DROPS = 20;
-// The blocks move in bursts: every TICK seconds some bands slide one cell in
-// MOVE seconds, then everything rests and nothing is drawn until the next
-// burst or the next ripple. Drawing is what costs; the shader itself is free.
-const TICK = 3;
-const MOVE = 0.8;
 // The rain measured its drops in 7px-wide characters; same numbers, in px.
 const CHAR = 7;
 
@@ -26,6 +31,7 @@ interface Drop {
 
 interface Renderer {
   gl: WebGLRenderingContext;
+  uSize: WebGLUniformLocation | null;
   uScale: WebGLUniformLocation | null;
   uTime: WebGLUniformLocation | null;
   uDot: WebGLUniformLocation | null;
@@ -43,104 +49,88 @@ precision mediump float;
 #endif
 #define MAX_DROPS ${MAX_DROPS}
 
+uniform vec2 u_size;             // canvas size, CSS px
 uniform float u_scale;           // canvas px per CSS px
 uniform float u_time;            // seconds
-uniform float u_dot;             // halftone period in canvas px, always even
-uniform vec3 u_tones[4];
+uniform float u_dot;             // dither cell, canvas px
+uniform vec3 u_light;
+uniform vec3 u_dark;
 uniform vec4 u_drops[MAX_DROPS]; // x, y (CSS px, origin bottom-left), radius, energy
 uniform int u_count;
 
-const float CELL = 120.0;
-const float TICK = ${TICK.toFixed(2)};
-const float MOVE = ${MOVE.toFixed(2)};
+const float CELLS = ${CELLS.toFixed(1)};
+const float SPEED = ${SPEED.toFixed(3)};
+const float VIGNETTE = ${VIGNETTE.toFixed(3)};
+const float SCALE = 3.0;      // blobs span a few cells
+const float WARP = 0.35;      // distortion of the field
+const float CONTRAST = 8.0;   // most cells saturate; the rest dither
+const float BIAS = 0.04;      // a little more light than dark
 
-float hash(vec2 p) {
-  vec3 q = fract(vec3(p.xyx) * 0.1031);
-  q += dot(q, q.yzx + 33.33);
-  return fract((q.x + q.y) * q.z);
+// 2-D simplex noise (Ian McEwan, Ashima Arts; MIT), about -1 to 1.
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
+float snoise(vec2 v) {
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+  vec2 i = floor(v + dot(v, C.yy));
+  vec2 x0 = v - i + dot(i, C.xx);
+  vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod289(i);
+  vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+  vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
+  m = m * m;
+  m = m * m;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
+  vec3 g;
+  g.x = a0.x * x0.x + h.x * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
 }
 
-// Grid line i sits up to 40% off its regular place, so cells differ in size
-// without summing widths.
-float line(float i, float seed) {
-  return i * CELL + (hash(vec2(mod(i, 64.0), seed)) - 0.5) * 0.8 * CELL;
-}
-
-// Which cell of that 1-D grid holds c.
-float cell(float c, float seed) {
-  float i = floor(c / CELL);
-  if (c < line(i, seed)) return i - 1.0;
-  if (c >= line(i + 1.0, seed)) return i + 1.0;
-  return i;
-}
-
-// How far band b has slid. Band b moves every 3 to 6 ticks, always the same
-// way: the moves it has finished, plus the eased one in progress, if any.
-float slide(float b, float seed) {
-  float every = 3.0 + floor(hash(vec2(b, seed)) * 4.0);
-  float dir = hash(vec2(b, seed + 1.0)) < 0.5 ? -1.0 : 1.0;
-  float tick = floor(u_time / TICK) + floor(hash(vec2(b, seed + 2.0)) * every);
-  float done = floor((tick - 1.0 + every) / every);
-  float eased = smoothstep(0.0, 1.0, fract(u_time / TICK) * TICK / MOVE);
-  float moving = mod(tick, every) == 0.0 ? eased : 0.0;
-  return dir * CELL * (done + moving);
-}
-
-// The block at q in a layer of sliding bands: q.y picks the band, q.x runs
-// along it. 0 empty, 1 mid, 2 dark, 3 light dots, 4 dark dots, 5 checker.
-float kind(vec2 q, float seed, float empty) {
-  float b = cell(q.y, seed);
-  float a = cell(q.x + slide(b, seed + 10.0), seed + 20.0 + b);
-  // Odd cells sometimes join their left neighbour, for wider blocks.
-  if (mod(a, 2.0) == 1.0 && hash(vec2(mod(a, 64.0), b + seed + 30.0)) < 0.4) a -= 1.0;
-  float v = hash(vec2(mod(a, 64.0), b + seed + 40.0));
-  if (v < empty) return 0.0;
-  v = (v - empty) / (1.0 - empty);
-  return v < 0.4 ? 1.0 : v < 0.6 ? 2.0 : v < 0.8 ? 3.0 : v < 0.9 ? 4.0 : 5.0;
-}
-
-vec3 paint(float k, float dots, float checker) {
-  if (k < 0.5) return u_tones[0];
-  if (k < 1.5) return u_tones[1];
-  if (k < 2.5) return u_tones[2];
-  if (k < 3.5) return mix(u_tones[0], u_tones[1], dots);
-  if (k < 4.5) return mix(u_tones[0], u_tones[2], dots);
-  return mix(u_tones[0], u_tones[2], checker);
+// The field at a point, in cell units measured from the top-left: three
+// octaves of noise, warped by a slower one, drifting with time.
+float field(vec2 c) {
+  vec2 n = c / CELLS;
+  float t = u_time * SPEED;
+  vec2 warp = vec2(snoise(n * 1.5 + t * 0.7), snoise(n * 1.5 + vec2(3.7, 9.1) - t * 0.5)) * WARP;
+  vec2 q = n * SCALE + warp + vec2(t, t * 0.35);
+  float f = 0.6 * snoise(q) + 0.3 * snoise(q * 2.0 + 11.0) + 0.15 * snoise(q * 4.0 + 23.0);
+  return 0.5 + f * CONTRAST + BIAS;
 }
 
 void main() {
   vec2 p = gl_FragCoord.xy / u_scale;
+  float cell = max(u_size.x, u_size.y) / CELLS;
+  // Which cell, counted from the top-left like the dither.
+  vec2 c = floor(vec2(p.x, u_size.y - p.y) / cell) + 0.5;
+  float v = field(c);
 
-  // Ripples: each ring pushes the pattern outward and leaves halftone ink.
-  vec2 q = p;
+  // Ripples: along each ring the field is inverted, so flat cells go dark
+  // or light and the ring's soft edges come out as dots.
   float ring = 0.0;
   for (int i = 0; i < MAX_DROPS; i++) {
     if (i >= u_count) break;
     vec4 d = u_drops[i];
-    vec2 dv = p - d.xy;
-    float dist = length(dv);
+    float dist = length(p - d.xy);
     float band = max(1.0 - abs(dist - d.z) * 0.1, (1.0 - abs(dist - d.z + 10.0) * 0.15) * 0.5);
-    float v = max(band, 0.0) * d.w;
-    ring += v;
-    q += dv / max(dist, 1.0) * v * 12.0;
+    ring += max(band, 0.0) * d.w;
   }
-  ring = min(ring, 1.0);
+  v = mix(v, 1.0 - v, min(ring, 1.0));
 
-  // Columns slide up and down over rows that slide sideways.
-  float columns = kind(q.yx, 100.0, 0.75);
-  float rows = kind(q, 200.0, 0.7);
-  float k = columns > 0.5 ? columns : rows;
+  // Ordered dither, a 2×2 Bayer screen fixed to the canvas pixels.
+  vec2 g = mod(floor(gl_FragCoord.xy / u_dot), 2.0);
+  float threshold = (mod(g.x * 2.0 + g.y * 3.0, 4.0) + 0.5) / 4.0;
+  vec3 col = mix(u_dark, u_light, step(threshold, v));
 
-  // The dot screen is fixed to the canvas pixels, so it never shimmers.
-  vec2 g = fract(gl_FragCoord.xy / u_dot);
-  float dots = step(max(g.x, g.y), 0.5);
-  float checker = mod(floor(gl_FragCoord.x * 2.0 / u_dot) + floor(gl_FragCoord.y * 2.0 / u_dot), 2.0);
-  vec3 col = paint(k, dots, checker);
-
-  // Ring ink: dots that grow with the ring's strength, like the rain's
-  // character ramp.
-  float ink = step(max(g.x, g.y), ring) * step(0.06, ring);
-  gl_FragColor = vec4(mix(col, u_tones[3], ink), 1.0);
+  vec2 uv = p / u_size - 0.5;
+  col *= 1.0 - VIGNETTE * dot(uv, uv) * 2.0;
+  gl_FragColor = vec4(col, 1.0);
 }
 `;
 
@@ -182,10 +172,10 @@ function createRenderer(canvas: HTMLCanvasElement): Renderer | null {
   gl.enableVertexAttribArray(aPos);
   gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-  const tones = TONES.reduce<number[]>((all, hex) => all.concat(hexToRgb(hex)), []);
-  gl.uniform3fv(gl.getUniformLocation(program, "u_tones"), new Float32Array(tones));
   const u = (name: string) => gl.getUniformLocation(program, name);
-  return { gl, uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDrops: u("u_drops"), uCount: u("u_count") };
+  gl.uniform3fv(u("u_light"), new Float32Array(hexToRgb(LIGHT)));
+  gl.uniform3fv(u("u_dark"), new Float32Array(hexToRgb(DARK)));
+  return { gl, uSize: u("u_size"), uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDrops: u("u_drops"), uCount: u("u_count") };
 }
 
 export default function SlidingBlocks() {
@@ -213,20 +203,22 @@ export default function SlidingBlocks() {
     const resize = (r: Renderer) => {
       const dpr = window.devicePixelRatio || 1;
       // At most 1.5 canvas px per CSS px, with a whole number of device
-      // pixels per canvas pixel, so the blocks and dots stay crisp when the
+      // pixels per canvas pixel, so the cells and dots stay crisp when the
       // canvas is scaled up to the screen.
       const scale = dpr / Math.ceil(dpr / 1.5);
+      const width = canvas.clientWidth;
       height = canvas.clientHeight;
-      const width = Math.round(canvas.clientWidth * scale);
+      const bufferWidth = Math.round(width * scale);
       const bufferHeight = Math.round(height * scale);
       // Setting the size clears the canvas, so only do it when it changed.
-      if (canvas.width !== width || canvas.height !== bufferHeight) {
-        canvas.width = width;
+      if (canvas.width !== bufferWidth || canvas.height !== bufferHeight) {
+        canvas.width = bufferWidth;
         canvas.height = bufferHeight;
       }
       r.gl.viewport(0, 0, canvas.width, canvas.height);
+      r.gl.uniform2f(r.uSize, width, height);
       r.gl.uniform1f(r.uScale, scale);
-      r.gl.uniform1f(r.uDot, 2 * Math.round(2 * scale));
+      r.gl.uniform1f(r.uDot, Math.round(DOT * scale));
     };
 
     const draw = (r: Renderer, time: number) => {
@@ -250,7 +242,7 @@ export default function SlidingBlocks() {
     const frame = (now: number) => {
       raf = 0;
       if (!renderer) return;
-      // 60 fps is plenty for the blocks; on 120 Hz screens this halves the work.
+      // 60 fps is plenty for the ripples; on 120 Hz screens this halves the work.
       if (now - last < 12.5) {
         raf = requestAnimationFrame(frame);
         return;
@@ -265,11 +257,9 @@ export default function SlidingBlocks() {
         d.energy *= decay;
         if (d.energy < 0.01 || d.radius > d.maxRadius) drops.splice(i, 1);
       }
-      const t = (now - start) / 1000;
-      draw(renderer, t);
-      // Resting and no ripples: sleep until the next burst.
-      if (t % TICK >= MOVE && drops.length === 0) timer = window.setTimeout(wake, (TICK - (t % TICK)) * 1000);
-      else raf = requestAnimationFrame(frame);
+      draw(renderer, (now - start) / 1000);
+      if (drops.length > 0) raf = requestAnimationFrame(frame);
+      else timer = window.setTimeout(wake, IDLE_MS);
     };
 
     const wake = () => {
@@ -331,7 +321,7 @@ export default function SlidingBlocks() {
     const onResize = () => {
       if (!renderer) return;
       resize(renderer);
-      // Paint again right away: the loop may be resting, and a resized canvas is blank.
+      // Paint again right away: the loop may be waiting, and a resized canvas is blank.
       draw(renderer, reduceMotion.matches ? 0 : (performance.now() - start) / 1000);
     };
     const onLost = (e: Event) => {
