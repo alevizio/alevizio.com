@@ -7,6 +7,10 @@ import guidelines68 from "@/assets/brand/guidelines-68.jpg";
 import guidelines83 from "@/assets/brand/guidelines-83.jpg";
 import ecologyEconomy from "@/assets/brand/reveal-ecology-economy.jpg";
 import fromTo from "@/assets/brand/reveal-from-to.jpg";
+import socialEditorial from "@/assets/brand/social/editorial.jpg";
+import socialInfographic from "@/assets/brand/social/infographic.jpg";
+import socialOverview from "@/assets/brand/social/overview.jpg";
+import socialTech from "@/assets/brand/social/tech.jpg";
 import websiteHome from "@/assets/brand/website-home.jpg";
 import book from "@/assets/howhow/book-sv.jpg";
 import economy from "@/assets/howhow/economy-sv.jpg";
@@ -26,6 +30,7 @@ import { NatureRelations } from "../_components/nature-relations";
 import { Moodboard } from "../_components/moodboard";
 import { SeeCarbon } from "../_components/see-carbon";
 import { Palette } from "../_components/palette";
+import { Slider } from "../_components/slider";
 import { BLEED, Clip, HALF, Masonry, Shot, TallShot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 import { TypeSpecimen } from "../_components/type-specimen";
@@ -49,6 +54,19 @@ const SPLIT = "aspect-[1494/1700]";
  * carrying it into everything Pachama made. The hand-over and the stills and
  * loops from how.studio/branding/pachama are How&How's, shown with their
  * permission. */
+// Social: the three kinds of post, in the toolkit's words, and each
+// template's overview from the Brand Assets file.
+const POST_TYPES = [
+  { name: "Editorial", kicker: "Human stories", text: "Article headlines, quotes, events, project features and brand awareness." },
+  { name: "Infographic", kicker: "Proof and results", text: "Explainers, graphs and statistics." },
+  { name: "Tech", kicker: "How we do it", text: "Project mapping, updates and reports, and product vignettes." },
+];
+const TEMPLATES = [
+  { src: socialEditorial, alt: "Editorial posts: 'Building a future-proof nature portfolio', an event card, a quote, 'Restoring balance' and a project spotlight" },
+  { src: socialInfographic, alt: "Infographic posts: a climate action explainer, $23.7 million invested in forest carbon, and a chart of nature as a climate solution" },
+  { src: socialTech, alt: "Tech posts: a project mapped on satellite imagery, the Originals trees, a carbon card and a park's parcels" },
+];
+
 // Half the window: the applications run edge to edge in two columns.
 const EDGE_HALF = "(min-width: 640px) 50vw, 100vw";
 
@@ -171,6 +189,25 @@ export const Brand = () => (
         <Shot src={economy} alt="An 'Economy' card over a photograph of a farmer among tall plants" sizes={EDGE_HALF} />
         <Clip name="howhow/services-sv" label="A mangrove tree on its stilt roots at dusk" aspect={SPLIT} />
       </Masonry>
+    </Section>
+
+    <Section
+      id="social"
+      eyebrow="Social"
+      title="Three kinds of post"
+      text="An audit of Pachama's channels, then a toolkit: seven categories of post, from events and partnerships to product vignettes, each made from one of three templates."
+    >
+      <Shot src={socialOverview} alt="The social toolkit at work: 'Building a future-proof nature portfolio', 'See carbon in action', a project card and a chart" bleed />
+      <ul data-stagger className="mt-14 grid gap-10 sm:grid-cols-3">
+        {POST_TYPES.map((t) => (
+          <li key={t.name} data-reveal>
+            <p className="font-display text-[44px] leading-none font-bold text-(--tone-head)">{t.name}</p>
+            <p className="type-label mt-3 text-(--tone-label)">{t.kicker}</p>
+            <p className="type-body mt-3 text-(--tone-text)">{t.text}</p>
+          </li>
+        ))}
+      </ul>
+      <Slider label="Each template's posts" slides={TEMPLATES} sizes="(min-width: 1024px) 64vw, 86vw" className="mt-12" />
     </Section>
 
     <Section
