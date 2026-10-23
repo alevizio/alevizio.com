@@ -35,7 +35,7 @@ const CRITERIA: { title: string; items: string[] }[] = [
     items: ["Pachama Verified", "Pachama Originals", "Science Based Targets initiative", "ABACUS", "Symbiosis", "CCB Gold", "CCB Triple Gold", "CDM", "Sylvera AAA", "Sylvera BBB", "Sylvera BB", "Sylvera B", "BeZero AAA"],
   },
 ];
-const SCOPES = ["Existing carbon projects", "New carbon projects", "Both"];
+const SCOPES = ["Existing", "New", "Both"];
 
 /** A criterion's chips: take one off, and the plus puts the last one back. */
 const Criterion = ({ title, items }: { title: string; items: string[] }) => {
@@ -95,7 +95,7 @@ export const SourcingPlanModal = ({ className }: { className?: string }) => {
           <h4 className="font-display text-[32px] leading-none font-bold">Create carbon sourcing plan</h4>
           <TextInput label="Carbon sourcing plan name" defaultValue="Nature based carbon procurement plan 2024 to 2030" />
           <fieldset className="grid grid-cols-3 overflow-hidden rounded-[14px] ring-1 ring-bn-grey-dark">
-            <legend className="sr-only">Which projects</legend>
+            <legend className="sr-only">Which carbon projects: existing ones, new ones or both</legend>
             {SCOPES.map((s) => (
               <Radio
                 key={s}
