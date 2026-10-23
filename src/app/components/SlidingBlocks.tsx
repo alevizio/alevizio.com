@@ -49,6 +49,7 @@ interface Renderer {
   uTime: WebGLUniformLocation | null;
   uDot: WebGLUniformLocation | null;
   uDevelop: WebGLUniformLocation | null;
+  uFoot: WebGLUniformLocation | null;
   uDrops: WebGLUniformLocation | null;
   uCount: WebGLUniformLocation | null;
 }
@@ -69,6 +70,7 @@ uniform float u_scale;           // canvas px per CSS px
 uniform float u_time;            // seconds
 uniform float u_dot;             // dither cell, canvas px
 uniform float u_develop;         // the intro, 0 (page colour) to 1 (developed)
+uniform float u_foot;            // the hero's foot, as a share of the canvas height
 uniform vec3 u_light;
 uniform vec3 u_dark;
 uniform vec4 u_drops[MAX_DROPS]; // x, y (CSS px, origin bottom-left), radius, energy
@@ -157,8 +159,12 @@ void main() {
   float threshold = (mod(g.x * 2.0 + g.y * 3.0, 4.0) + 0.5) / 4.0;
   vec3 col = mix(u_dark, u_light, step(threshold, v));
 
+  // The vignette, gone by the hero's foot: past it the field runs under the
+  // timeline, whose pinned labels paint paper and would show as boxes on a
+  // tint.
   vec2 uv = p / u_size - 0.5;
-  col *= 1.0 - VIGNETTE * dot(uv, uv) * 2.0 * (1.0 - fade) * grown;
+  float vignette = 1.0 - smoothstep(1.0 - FADE, u_foot, f.y);
+  col *= 1.0 - VIGNETTE * dot(uv, uv) * 2.0 * vignette * grown;
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -204,7 +210,7 @@ function createRenderer(canvas: HTMLCanvasElement): Renderer | null {
   const u = (name: string) => gl.getUniformLocation(program, name);
   gl.uniform3fv(u("u_light"), new Float32Array(hexToRgb(LIGHT)));
   gl.uniform3fv(u("u_dark"), new Float32Array(hexToRgb(DARK)));
-  return { gl, uSize: u("u_size"), uView: u("u_view"), uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDevelop: u("u_develop"), uDrops: u("u_drops"), uCount: u("u_count") };
+  return { gl, uSize: u("u_size"), uView: u("u_view"), uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDevelop: u("u_develop"), uFoot: u("u_foot"), uDrops: u("u_drops"), uCount: u("u_count") };
 }
 
 export default function SlidingBlocks() {
@@ -252,6 +258,11 @@ export default function SlidingBlocks() {
       r.gl.uniform2f(r.uView, view.clientWidth, view.clientHeight);
       r.gl.uniform1f(r.uScale, scale);
       r.gl.uniform1f(r.uDot, Math.round(DOT * scale));
+      // The hero's foot as a share of the canvas, which runs 320px past it:
+      // the vignette is gone by there. The band is never shorter than half
+      // the fade.
+      const hero = canvas.parentElement?.clientHeight ?? height;
+      r.gl.uniform1f(r.uFoot, Math.max(hero / height, 1 - FADE / 2));
     };
 
     const easeInOut = (x: number) => x * x * (3 - 2 * x);
