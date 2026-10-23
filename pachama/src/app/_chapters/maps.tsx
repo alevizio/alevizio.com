@@ -7,6 +7,7 @@ import { SatelliteGlobe } from "../_components/banyan/maps/satellite-globe";
 import { WorldFires } from "../_components/banyan/maps/world-fires";
 import { FieldGallery } from "../_components/field-gallery";
 import { MapLayers } from "../_components/map-layers";
+import { BaselineSandbox } from "../_components/screens/baseline-sandbox";
 import { Biodiversity } from "../_components/screens/biodiversity";
 import { DynamicBaseline } from "../_components/screens/dynamic-baseline";
 import { Evaluation } from "../_components/screens/evaluation";
@@ -93,6 +94,14 @@ export const Maps = () => (
         bleed
       />
       <DynamicBaseline className="mt-20 sm:mt-28" />
+      <p data-reveal className="type-body mt-20 max-w-[36rem] text-(--tone-text) sm:mt-28">
+        Later the method got a sandbox, DCAB Freemium, for anyone to try: draw a polygon and see its control area matched pixel by pixel, its
+        canopy height over the years and the deduction it forecasts. Rebuilt here on the design&apos;s sample: drag across the blue control
+        pixels, and their matches light up inside the polygon.
+      </p>
+      <div data-reveal="frame" className="mt-8 sm:mt-10">
+        <BaselineSandbox />
+      </div>
       <p data-reveal className="type-body mt-20 max-w-[36rem] text-(--tone-text) sm:mt-28">
         In the product, a baseline had to pass two checks on Manoa&apos;s evaluation, rebuilt here in Banyan from the screen it had
         before the rebrand: is the reference region suitable, and is the baseline conservative? They draw as they come into view.
