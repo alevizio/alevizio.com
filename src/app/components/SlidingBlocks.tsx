@@ -39,6 +39,7 @@ interface Drop {
 interface Renderer {
   gl: WebGLRenderingContext;
   uSize: WebGLUniformLocation | null;
+  uView: WebGLUniformLocation | null;
   uScale: WebGLUniformLocation | null;
   uTime: WebGLUniformLocation | null;
   uDot: WebGLUniformLocation | null;
@@ -57,6 +58,7 @@ precision mediump float;
 #define MAX_DROPS ${MAX_DROPS}
 
 uniform vec2 u_size;             // canvas size, CSS px
+uniform vec2 u_view;             // viewport size, CSS px: sets the cell
 uniform float u_scale;           // canvas px per CSS px
 uniform float u_time;            // seconds
 uniform float u_dot;             // dither cell, canvas px
@@ -117,7 +119,7 @@ float field(vec2 c) {
 
 void main() {
   vec2 p = gl_FragCoord.xy / u_scale;
-  float cell = max(u_size.x, u_size.y) / CELLS;
+  float cell = max(u_view.x, u_view.y) / CELLS;
   // Which cell, counted from the top-left like the dither.
   vec2 c = floor(vec2(p.x, u_size.y - p.y) / cell) + 0.5;
   float v = field(c);
@@ -190,7 +192,7 @@ function createRenderer(canvas: HTMLCanvasElement): Renderer | null {
   const u = (name: string) => gl.getUniformLocation(program, name);
   gl.uniform3fv(u("u_light"), new Float32Array(hexToRgb(LIGHT)));
   gl.uniform3fv(u("u_dark"), new Float32Array(hexToRgb(DARK)));
-  return { gl, uSize: u("u_size"), uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDrops: u("u_drops"), uCount: u("u_count") };
+  return { gl, uSize: u("u_size"), uView: u("u_view"), uScale: u("u_scale"), uTime: u("u_time"), uDot: u("u_dot"), uDrops: u("u_drops"), uCount: u("u_count") };
 }
 
 export default function SlidingBlocks() {
@@ -233,6 +235,9 @@ export default function SlidingBlocks() {
       }
       r.gl.viewport(0, 0, canvas.width, canvas.height);
       r.gl.uniform2f(r.uSize, width, height);
+      // The layout viewport, which phone toolbars do not resize.
+      const view = document.documentElement;
+      r.gl.uniform2f(r.uView, view.clientWidth, view.clientHeight);
       r.gl.uniform1f(r.uScale, scale);
       r.gl.uniform1f(r.uDot, Math.round(DOT * scale));
     };
@@ -382,7 +387,7 @@ export default function SlidingBlocks() {
     // The canvas follows the hero's height, which fonts and viewports change.
     const sizes = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(onResize);
     if (sizes) sizes.observe(canvas);
-    else window.addEventListener("resize", onResize);
+    window.addEventListener("resize", onResize);
     const steps = Array.from({ length: 21 }, (_, i) => i / 20);
     const sight = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver(onVisible, { threshold: steps });
     if (sight) sight.observe(canvas);
