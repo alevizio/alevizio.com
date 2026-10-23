@@ -65,7 +65,7 @@ export const BanyanStructure = ({ className }: { className?: string }) => (
     role="region"
     aria-label="Banyan's structure"
     tabIndex={0}
-    className={cn("bn-tree overflow-x-auto pb-2 text-bn-heavy focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bn-heavy", className)}
+    className={cn("bn-tree no-scrollbar overflow-x-auto pb-2 text-bn-heavy focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bn-heavy", className)}
   >
     <p className="flex items-center gap-3 font-bold">
       Banyan

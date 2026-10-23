@@ -45,7 +45,7 @@ export const DocWall = ({ className }: { className?: string }) => {
       role="region"
       aria-label="Banyan's documentation, every page"
       className={cn(
-        "mx-[calc(50%-50vw)] cursor-grab overflow-x-auto overscroll-x-contain pb-4 [scrollbar-color:rgb(14_37_23/0.25)_transparent] [scrollbar-width:thin] data-dragging:cursor-grabbing data-dragging:select-none",
+        "mx-[calc(50%-50vw)] cursor-grab overflow-x-auto overscroll-x-contain pb-4 no-scrollbar data-dragging:cursor-grabbing data-dragging:select-none",
         className,
       )}
     >

@@ -169,7 +169,7 @@ export const ProposalModal = ({ className }: { className?: string }) => {
           </section>
           <section>
             <h5 className="font-mono text-[13px] font-bold tracking-[0.04em] uppercase">Opportunity</h5>
-            <div className="mt-3 overflow-x-auto rounded-[14px] ring-1 ring-[#d6dad5]">
+            <div className="no-scrollbar mt-3 overflow-x-auto rounded-[14px] ring-1 ring-[#d6dad5]">
               <table className="w-full min-w-[26rem] text-left">
                 <thead className="bg-[#eef1ee] text-[13px] text-bn-medium">
                   <tr>

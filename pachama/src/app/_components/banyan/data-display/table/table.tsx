@@ -70,7 +70,7 @@ export const DataTable = ({ className }: { className?: string }) => {
       <p aria-live="polite" className="text-[14px] leading-5 text-bn-medium">
         {picked.size ? `${picked.size} of ${ROWS.length} selected` : `${rows.length} of ${ROWS.length} vintages`}
       </p>
-      <div role="region" aria-label="Sample credit balances" tabIndex={0} className={cn("overflow-x-auto rounded-2xl border border-bn-line bg-white", BN.focus)}>
+      <div role="region" aria-label="Sample credit balances" tabIndex={0} className={cn("no-scrollbar overflow-x-auto rounded-2xl border border-bn-line bg-white", BN.focus)}>
         <table aria-busy={loading} className="w-full min-w-[46rem] border-collapse">
           <thead className="border-b border-bn-line">
             <tr>

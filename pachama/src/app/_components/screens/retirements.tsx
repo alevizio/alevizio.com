@@ -33,7 +33,7 @@ export const Retirements = ({ className }: { className?: string }) => {
       <section className="rounded-[20px] bg-[#fdfbf1] p-5 text-bn-heavy shadow-[0_24px_80px_rgb(20_26_23/0.12)] ring-1 ring-black/5 sm:p-7 lg:w-[66%]">
         <h4 className="font-display text-[36px] leading-none font-bold">Retirements</h4>
         <p className="mt-2 text-[14px] text-bn-medium">Here you can see all the retirements and download certificates.</p>
-        <div className="mt-5 overflow-x-auto rounded-[14px] border border-[#e3dcc3] bg-white">
+        <div className="no-scrollbar mt-5 overflow-x-auto rounded-[14px] border border-[#e3dcc3] bg-white">
           <table className="w-full min-w-[30rem] text-left text-[14px]">
             <thead className="text-bn-medium">
               <tr className="border-b border-[#ece6d2]">

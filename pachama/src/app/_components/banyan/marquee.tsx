@@ -112,7 +112,7 @@ const Copy = ({ inert = false }: { inert?: boolean }) => (
 
 export const ComponentMarquee = ({ className }: { className?: string }) => (
   <div className={cn("grid gap-10 sm:gap-12", className)}>
-    <div role="region" aria-label="Banyan's components, working" className="group/marquee overflow-hidden motion-reduce:overflow-x-auto">
+    <div role="region" aria-label="Banyan's components, working" className="group/marquee no-scrollbar overflow-hidden motion-reduce:overflow-x-auto">
       <div className="flex w-max motion-safe:animate-[belt_200s_linear_infinite] group-focus-within/marquee:[animation-play-state:paused] group-hover/marquee:[animation-play-state:paused]">
         <Copy />
         <Copy inert />

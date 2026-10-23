@@ -82,7 +82,7 @@ export const Slider = ({
         aria-label={label}
         tabIndex={0}
         className={cn(
-          "mx-[calc(50%-50vw)] flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:gap-6 [&::-webkit-scrollbar]:hidden",
+          "mx-[calc(50%-50vw)] flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain no-scrollbar focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current sm:gap-6",
           GUTTER,
         )}
       >

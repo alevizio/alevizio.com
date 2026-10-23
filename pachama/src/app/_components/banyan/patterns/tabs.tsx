@@ -42,7 +42,7 @@ export const Tabs = ({ items, label, initial = 0, className }: { items: TabItem[
 
   return (
     <div className={className}>
-      <div role="tablist" aria-label={label} onKeyDown={onKey} className="flex overflow-x-auto border-b-2 border-bn-line">
+      <div role="tablist" aria-label={label} onKeyDown={onKey} className="no-scrollbar flex overflow-x-auto border-b-2 border-bn-line">
         {items.map((t, i) => (
           <button
             key={t.label}

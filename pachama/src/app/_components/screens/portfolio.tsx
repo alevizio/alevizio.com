@@ -340,7 +340,7 @@ const Purchases = ({ onRetired }: { onRetired: () => void }) => {
   return (
     <section className="mt-6 rounded-[24px] bg-white p-5 ring-1 ring-[#ece6d2] sm:p-8">
       <h5 className="font-display text-[34px] leading-none font-bold">Projects purchased</h5>
-      <div className="mt-6 overflow-x-auto rounded-[16px] border border-[#e3dcc3]">
+      <div className="no-scrollbar mt-6 overflow-x-auto rounded-[16px] border border-[#e3dcc3]">
         <table className="w-full min-w-[46rem] text-left text-[14px] [&_tbody_tr:last-child]:border-b-0 [&_td]:px-3 [&_th]:px-3">
           <thead className="text-bn-medium">
             <tr className="border-b border-[#ece6d2]">

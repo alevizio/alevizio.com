@@ -202,6 +202,14 @@
   background-image: linear-gradient(90deg, #84e1ff, #81ef9d 22%, #f5e544 40%, #79a3ff 60%, #f185dc 80%, #ff7324);
 }
 
+/* Rows that scroll sideways do it by trackpad, drag or keys, with no bar. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* The mark's gradient, for type and lines. */
 @utility mark-gradient {
   background-image: linear-gradient(135deg, var(--color-leaf), var(--color-sky));

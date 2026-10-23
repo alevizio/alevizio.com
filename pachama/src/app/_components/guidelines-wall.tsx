@@ -54,7 +54,7 @@ export const GuidelinesWall = ({ className }: { className?: string }) => {
         ref={frame}
         role="group"
         aria-label="The brand guidelines' Figma page, every page in place"
-        className="cursor-grab overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-color:rgb(255_255_255/0.22)_transparent] [scrollbar-width:thin] data-dragging:cursor-grabbing data-dragging:select-none"
+        className="cursor-grab overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar data-dragging:cursor-grabbing data-dragging:select-none"
       >
         {/* All of its height shows; the gutter lines the first pages up with the text, with room past the last ones. */}
         <div className={cn("w-max pr-16 pb-4", GUTTER_START)}>

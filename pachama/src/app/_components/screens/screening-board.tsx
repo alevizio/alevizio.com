@@ -120,7 +120,7 @@ export const ScreeningBoard = ({ className }: { className?: string }) => {
       </div>
 
       {/* The board: in the frame from lg up; below, a sideways scroller to the window's edges. */}
-      <div className={cn("mt-4 max-lg:mx-[calc(50%-50vw)] max-lg:overflow-x-auto max-lg:pr-6 max-lg:pb-2 lg:pl-0", GUTTER_START)}>
+      <div className={cn("no-scrollbar mt-4 max-lg:mx-[calc(50%-50vw)] max-lg:overflow-x-auto max-lg:pr-6 max-lg:pb-2 lg:pl-0", GUTTER_START)}>
         <div className="relative min-w-[60rem] lg:min-w-0">
           <div aria-hidden className="grid grid-cols-5">
             {STAGES.map((stage, c) => (
