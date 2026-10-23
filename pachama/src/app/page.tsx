@@ -55,6 +55,7 @@ const NAV: readonly NavGroup[] = [
     items: [
       { id: "marketplace", label: "The marketplace" },
       { id: "project", label: "Project pages" },
+      { id: "criteria", label: "The criteria" },
       { id: "buying", label: "Buying" },
       { id: "portfolio", label: "Portfolios" },
       { id: "monitoring", label: "Monitoring" },
@@ -70,8 +71,8 @@ const NAV: readonly NavGroup[] = [
     title: "Banyan",
     items: [
       { id: "kit-all", label: "The system" },
-      { id: "components", label: "Every component" },
       { id: "structure", label: "The structure" },
+      { id: "components", label: "Every component" },
     ],
   },
   {

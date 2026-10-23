@@ -21,6 +21,7 @@ import { cn } from "../_components/cn";
 import { Compare } from "../_components/compare";
 import { Biodiversity } from "../_components/screens/biodiversity";
 import { BoundaryUpload } from "../_components/screens/boundary-upload";
+import { EvaluationBook } from "../_components/screens/evaluation-book";
 import { Insights } from "../_components/screens/insights";
 import { OpportunityMap } from "../_components/screens/opportunity-map";
 import { SourcingEvent } from "../_components/screens/sourcing-event";
@@ -66,6 +67,15 @@ export const Product = () => (
         alt="Manoa's project page: an aerial hero, the overview with Verra and CCB, a photo gallery, a tech-verified evaluation map of deforestation around the project since 1996, the project story, its impacts on education and biodiversity, its files, and other projects"
         caption="Manoa's page in the product. Scroll inside it."
       />
+    </Section>
+
+    <Section
+      id="criteria"
+      eyebrow="Evaluation 2.2"
+      title="The criteria, in eight pages"
+      text="How Pachama found the highest quality forest carbon projects, written up for buyers: whether the climate benefit is additional, conservative and durable, and what a project does beyond carbon. It turns its own pages while it's in view; the arrows turn them too."
+    >
+      <EvaluationBook />
     </Section>
 
     <Section
