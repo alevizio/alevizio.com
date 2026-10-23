@@ -10,7 +10,7 @@ import manoa from "@/assets/screens/explore-manoa.jpg";
 import nicaforest from "@/assets/screens/explore-nicaforest.jpg";
 import Image, { type StaticImageData } from "next/image";
 import { useMemo, useState } from "react";
-import { MdArrowBack, MdForest, MdPark, MdSearch } from "react-icons/md";
+import { MdClose, MdForest, MdPark, MdSearch } from "react-icons/md";
 import { BN } from "../banyan/ui";
 import { cn } from "../cn";
 import { Globe } from "./globe";
@@ -110,18 +110,22 @@ export const Insights = ({ className }: { className?: string }) => {
   return (
     <div className={cn("overflow-hidden rounded-[16px] bg-[#0b1610] text-white lg:grid lg:h-[44rem] lg:grid-cols-[23rem_1fr]", className)}>
       <div className="flex min-h-0 flex-col gap-5 p-5 sm:p-6">
-        <label className="flex h-12 items-center gap-3 rounded-[12px] border border-white/40 px-4 focus-within:border-white">
-          <MdArrowBack aria-hidden className="size-5 shrink-0" />
+        <div className="flex h-12 items-center gap-3 rounded-full bg-white/8 pr-2 pl-4 ring-1 ring-white/15 transition-shadow focus-within:ring-2 focus-within:ring-white/70">
+          <MdSearch aria-hidden className="size-5 shrink-0 text-white/70" />
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="All projects"
+            placeholder="Search projects"
             aria-label="Search projects"
-            className="min-w-0 flex-1 bg-transparent text-[16px] text-white outline-none placeholder:text-white"
+            className="min-w-0 flex-1 bg-transparent text-[16px] text-white outline-none placeholder:text-white/60 [&::-webkit-search-cancel-button]:appearance-none"
           />
-          <MdSearch aria-hidden className="size-5 shrink-0" />
-        </label>
+          {query ? (
+            <button type="button" aria-label="Clear the search" onClick={() => setQuery("")} className={cn("grid size-8 shrink-0 place-items-center rounded-full text-white/80 hover:bg-white/10", BN.focus, "focus-visible:outline-white")}>
+              <MdClose aria-hidden className="size-4" />
+            </button>
+          ) : null}
+        </div>
         <div className="flex gap-8">
           <p>
             <span className="block text-[14px] leading-5 text-white/70">Projects</span>
