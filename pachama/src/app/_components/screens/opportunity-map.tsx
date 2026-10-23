@@ -55,7 +55,7 @@ const Tally = ({ to, run, prefix = "" }: { to: number; run: string; prefix?: str
     let raf = 0;
     const start = performance.now();
     const step = (now: number) => {
-      const t = Math.min(1, (now - start) / 1100);
+      const t = Math.min(1, Math.max(0, (now - start) / 1100));
       el.textContent = prefix + fmt(to * (1 - (1 - t) ** 3));
       if (t < 1) raf = requestAnimationFrame(step);
     };

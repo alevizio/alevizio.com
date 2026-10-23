@@ -8,14 +8,20 @@ import flyaway from "@/assets/screens/explore-flyaway.jpg";
 import kalimantan from "@/assets/screens/explore-kalimantan.jpg";
 import manoa from "@/assets/screens/explore-manoa.jpg";
 import nicaforest from "@/assets/screens/explore-nicaforest.jpg";
+import aerial from "@/assets/screens/source-aerial.jpg";
 import Image, { type StaticImageData } from "next/image";
 import { useMemo, useState } from "react";
-import { MdClose, MdForest, MdPark, MdSearch } from "react-icons/md";
+import { MdClose, MdOutlineEco, MdOutlineImageSearch, MdOutlineListAlt, MdOutlineMap, MdOutlinePhotoLibrary, MdOutlineSettings, MdPublic, MdSearch } from "react-icons/md";
 import { BN } from "../banyan/ui";
+import { MARKS } from "../brand-marks";
 import { cn } from "../cn";
+import { GlassFrame } from "./glass-frame";
 import { Globe } from "./globe";
 
-/* Insights, rebuilt live from the product's Explore and Insights screens:
+/* Insights, rebuilt live from the product's Explore and Insights screens and
+ * shown the way Source's landing page shows the product: the app in a glass
+ * frame over the hero's aerial photograph, in its dark mode, with its icon
+ * rail. The map turns between a globe and a flat map from its corner.
  * Pachama's projects in a list to search and filter, on a dotted globe that
  * turns to each one. The projects, their countries, types and standards are
  * the ones the product's own screens show, with three Pachama Originals
@@ -31,13 +37,13 @@ type Project = {
   kind: Kind;
   type: string;
   standard?: string;
-  photo?: StaticImageData;
+  photo: StaticImageData;
   lon: number;
   lat: number;
 };
 
 const PROJECTS: Project[] = [
-  { name: "Manoa", country: "Brazil", flag: "br", area: "74,039 ha", kind: "REDD+", type: "Avoided planned deforestation", standard: "Verified Carbon Standard", photo: manoa, lon: -62.6, lat: -9.4 },
+  { name: "Manoa", country: "Brazil", flag: "br", area: "74,039 ha", kind: "REDD+", type: "Avoided planned deforestation", standard: "Verified Carbon Standard", photo: manoa, lon: -62.71, lat: -8.87 },
   { name: "Central Kalimantan Peatlands", country: "Indonesia", flag: "id", area: "47,237 ha", kind: "REDD+", type: "Avoided planned deforestation", standard: "Verified Carbon Standard", photo: kalimantan, lon: 113.5, lat: -2 },
   { name: "Nicaforest", country: "Nicaragua", flag: "ni", area: "486 ha", kind: "ARR", type: "Afforestation, reforestation & revegetation", standard: "Gold Standard", photo: nicaforest, lon: -85.2, lat: 12.9 },
   { name: "Corredores de Vida", country: "Brazil", flag: "br", kind: "ARR", type: "Restoration of farmland into forest corridors", photo: corredores, lon: -52, lat: -21.5 },
@@ -49,11 +55,20 @@ const PROJECTS: Project[] = [
 
 const KINDS: Kind[] = ["REDD+", "ARR"];
 const COUNTRIES = [...new Map(PROJECTS.map((p) => [p.country, p.flag])).entries()];
-const KIND_ICON = { "REDD+": MdForest, ARR: MdPark } as const;
+// The app's rail, as the buyer app has it; Explore is the page shown.
+const RAIL = [
+  { label: "Explore", Icon: MdOutlineImageSearch },
+  { label: "My projects", Icon: MdOutlinePhotoLibrary },
+  { label: "Orders", Icon: MdOutlineListAlt },
+  { label: "Retirement", Icon: MdOutlineEco },
+  { label: "Impact", Icon: MdPublic },
+  { label: "Settings", Icon: MdOutlineSettings },
+];
+const { viewBox, symbol } = MARKS.symbol;
 
 /** Small round flags, like Banyan's country chips. */
 const FlagDot = ({ flag }: { flag: Flag }) => (
-  <svg viewBox="0 0 24 24" aria-hidden className="size-5 shrink-0 rounded-full">
+  <svg viewBox="0 0 24 24" aria-hidden className="size-5 shrink-0 rounded-full ring-1 ring-black/10">
     {flag === "br" ? (
       <>
         <rect width="24" height="24" fill="#229e45" />
@@ -82,9 +97,10 @@ const FlagDot = ({ flag }: { flag: Flag }) => (
   </svg>
 );
 
+// Filters sit on the dark map, glass over it as on the product's maps.
 const chip = (on: boolean) =>
   cn(
-    "flex h-10 items-center gap-2 rounded-[12px] border px-3.5 text-[14px] leading-5 backdrop-blur-md transition-colors",
+    "flex h-10 items-center gap-2 rounded-full border px-3.5 text-[14px] leading-5 backdrop-blur-md transition-colors",
     on ? "border-bn-green bg-bn-green text-bn-heavy" : "border-white/25 bg-black/30 text-white hover:bg-white/10",
     BN.focus,
     "focus-visible:outline-white",
@@ -95,6 +111,7 @@ export const Insights = ({ className }: { className?: string }) => {
   const [kind, setKind] = useState<Kind | null>(null);
   const [country, setCountry] = useState<string | null>(null);
   const [picked, setPicked] = useState(PROJECTS[0].name);
+  const [flat, setFlat] = useState(false);
 
   const shown = useMemo(
     () =>
@@ -108,8 +125,21 @@ export const Insights = ({ className }: { className?: string }) => {
   const current = shown.find((p) => p.name === picked) ?? shown[0];
 
   return (
-    <div className={cn("overflow-hidden rounded-[16px] bg-[#0b1610] text-white lg:grid lg:h-[44rem] lg:grid-cols-[23rem_1fr]", className)}>
+    <GlassFrame backdrop={aerial} className={className} innerClassName="lg:grid lg:h-[44rem] lg:grid-cols-[4.5rem_23rem_1fr]">
+      {/* The app's chrome, for the picture: not a menu here. */}
+      <div aria-hidden className="hidden flex-col items-center gap-2 border-r border-white/10 bg-[#0e1b14] py-5 lg:flex">
+        <svg viewBox={viewBox} className="mb-4 w-8 fill-white">
+          <path d={symbol} />
+        </svg>
+        {RAIL.map(({ label, Icon }) => (
+          <span key={label} className={cn("grid size-11 place-items-center rounded-[12px]", label === "Explore" ? "bg-bn-green/15 text-bn-green" : "text-white/60")}>
+            <Icon className="size-6" />
+          </span>
+        ))}
+      </div>
+
       <div className="flex min-h-0 flex-col gap-5 p-5 sm:p-6">
+        <p className="font-display text-[32px] leading-none font-bold">Explore</p>
         <div className="flex h-12 items-center gap-3 rounded-full bg-white/8 pr-2 pl-4 ring-1 ring-white/15 transition-shadow focus-within:ring-2 focus-within:ring-white/70">
           <MdSearch aria-hidden className="size-5 shrink-0 text-white/70" />
           <input
@@ -138,9 +168,8 @@ export const Insights = ({ className }: { className?: string }) => {
             <span className="block text-[32px] leading-9 font-bold">{new Set(shown.map((p) => p.country)).size}</span>
           </p>
         </div>
-        <ul className="grid min-h-0 gap-3 overflow-y-auto pr-1 [scrollbar-width:thin] max-lg:max-h-[26rem]">
+        <ul className="grid min-h-0 gap-3 overflow-y-auto p-0.5 pr-1 [scrollbar-width:thin] max-lg:max-h-[26rem]">
           {shown.map((p) => {
-            const Icon = KIND_ICON[p.kind];
             const on = current?.name === p.name;
             return (
               <li key={p.name}>
@@ -149,8 +178,8 @@ export const Insights = ({ className }: { className?: string }) => {
                   aria-pressed={on}
                   onClick={() => setPicked(p.name)}
                   className={cn(
-                    "grid w-full grid-cols-[1fr_5.25rem] items-center gap-4 rounded-[14px] p-3 text-left transition-colors motion-safe:animate-[arrive_0.45s_var(--ease-arrive)_both]",
-                    on ? "bg-white/12 ring-1 ring-bn-green ring-inset" : "hover:bg-white/6",
+                    "grid w-full grid-cols-[1fr_5.25rem] items-center gap-4 rounded-[16px] p-3 text-left transition-colors motion-safe:animate-[arrive_0.45s_var(--ease-arrive)_both]",
+                    on ? "bg-white/12 ring-2 ring-bn-green ring-inset" : "bg-white/[0.04] ring-1 ring-white/10 ring-inset hover:bg-white/8",
                     BN.focus,
                     "focus-visible:outline-white",
                   )}
@@ -172,22 +201,16 @@ export const Insights = ({ className }: { className?: string }) => {
                     </span>
                     {p.standard ? <span className="text-[13px] leading-4 text-white/60">{p.standard}</span> : null}
                   </span>
-                  {p.photo ? (
-                    <Image src={p.photo} alt="" sizes="84px" className="aspect-square w-full rounded-[10px] object-cover" />
-                  ) : (
-                    <span aria-hidden className="grid aspect-square w-full place-items-center rounded-[10px] bg-[radial-gradient(circle_at_30%_25%,#2c5a40,#0e2517)]">
-                      <Icon className="size-8 text-bn-green" />
-                    </span>
-                  )}
+                  <Image src={p.photo} alt="" sizes="84px" className="aspect-square w-full rounded-[10px] object-cover" />
                 </button>
               </li>
             );
           })}
-          {shown.length === 0 ? <li className="rounded-[14px] border border-dashed border-white/25 p-6 text-[14px] text-white/75">No project matches. Clear the search or a filter.</li> : null}
+          {shown.length === 0 ? <li className="rounded-[16px] border border-dashed border-white/25 p-6 text-[14px] text-white/75">No project matches. Clear the search or a filter.</li> : null}
         </ul>
       </div>
 
-      <div className="relative min-h-[26rem] overflow-hidden bg-[radial-gradient(ellipse_at_center,#10241a_0%,#050b07_70%)]">
+      <div className="relative min-h-[26rem] overflow-hidden border-white/10 bg-[radial-gradient(ellipse_at_center,#10241a_0%,#050b07_70%)] lg:border-l">
         <div className="absolute inset-x-4 top-4 z-10 flex flex-wrap gap-2">
           <div role="group" aria-label="Filter by type" className="flex flex-wrap gap-2">
             {KINDS.map((k) => (
@@ -206,12 +229,33 @@ export const Insights = ({ className }: { className?: string }) => {
             ))}
           </div>
         </div>
-        <Globe pins={pins} picked={current?.name ?? ""} onPick={setPicked} label={current?.name ?? ""} className="absolute inset-0 top-14" />
+        <Globe pins={pins} picked={current?.name ?? ""} onPick={setPicked} label={current?.name ?? ""} flat={flat} className="absolute inset-0 top-14" />
         <p aria-live="polite" className="sr-only">
           {current ? `${current.name}, ${current.country}` : "No project selected"}
         </p>
-        <p className="pointer-events-none absolute right-4 bottom-4 font-mono text-[11px] tracking-[0.08em] text-white/55 uppercase">Drag to turn the globe</p>
+        <div role="group" aria-label="Map view" className="absolute right-4 bottom-4 z-10 flex rounded-full bg-black/40 p-1 ring-1 ring-white/20 backdrop-blur-md">
+          {[
+            { id: false, label: "Globe", Icon: MdPublic },
+            { id: true, label: "Flat", Icon: MdOutlineMap },
+          ].map(({ id, label, Icon }) => (
+            <button
+              key={label}
+              type="button"
+              aria-pressed={flat === id}
+              onClick={() => setFlat(id)}
+              className={cn(
+                "flex h-9 items-center gap-1.5 rounded-full px-3.5 text-[13px] leading-4 font-medium transition-colors",
+                flat === id ? "bg-white text-bn-heavy" : "text-white/80 hover:text-white",
+                BN.focus,
+                "focus-visible:outline-white",
+              )}
+            >
+              <Icon aria-hidden className="size-4" />
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
+    </GlassFrame>
   );
 };

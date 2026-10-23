@@ -8,14 +8,16 @@ import { cn } from "../cn";
  * lit by how squarely they face you, drawn on a canvas in orthographic
  * projection. Pick a project and the globe turns to it, its land lights up
  * and a ring ripples out from it. Idle, it turns on its own; drag to turn
- * it yourself; click a pin to pick it. Without motion it stays still and
- * jumps to each pick. */
+ * it yourself; click a pin to pick it. Flat, the same dots unroll into a
+ * map centred on where the globe faced, and drag pans it. Without motion
+ * it stays still and jumps to each pick and between the two. */
 export type GlobePin = { id: string; lon: number; lat: number; on: boolean };
 
 const RAD = Math.PI / 180;
 const TILT_LIMIT = 1.05;
 const IDLE_MS = 6000;
 const SPIN = 0.0016;
+const MORPH_MS = 900;
 
 // Low to high, the dots run from pine to lidar green; the glow and the
 // ripple are glacier.
@@ -36,6 +38,7 @@ export const Globe = ({
   picked,
   onPick,
   label,
+  flat = false,
   className,
 }: {
   pins: GlobePin[];
@@ -43,11 +46,13 @@ export const Globe = ({
   onPick: (id: string) => void;
   /** The picked pin's name, shown on the globe. */
   label: string;
+  /** Unrolled into a flat map instead of a globe. */
+  flat?: boolean;
   className?: string;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const labelRef = useRef<HTMLParagraphElement>(null);
-  const state = useRef({ pins, picked, onPick });
+  const state = useRef({ pins, picked, onPick, flat });
   const pickAt = useRef(0);
   const redraw = useRef<() => void>(() => {});
 
@@ -55,9 +60,9 @@ export const Globe = ({
   // ripple and the turn; without motion the loop doesn't run, so draw once.
   useEffect(() => {
     if (state.current.picked !== picked) pickAt.current = performance.now();
-    state.current = { pins, picked, onPick };
+    state.current = { pins, picked, onPick, flat };
     redraw.current();
-  }, [pins, picked, onPick]);
+  }, [pins, picked, onPick, flat]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -94,6 +99,9 @@ export const Globe = ({
     let visible = true;
     const drag = { on: false, moved: false, x: 0, y: 0 };
     let lastInput = 0;
+    // 0 is the globe, 1 the flat map; it eases between them.
+    let morph = state.current.flat ? 1 : 0;
+    let lastNow = 0;
 
     const size = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -106,13 +114,24 @@ export const Globe = ({
       return { w, h, dpr, R: Math.min(w, h) * 0.43, cx: w / 2, cy: h / 2 + h * 0.03 };
     };
 
-    const project = (lam: number, cl: number, sl: number, R: number, cx: number, cy: number) => {
+    // On the globe (orthographic) and on the map (equirectangular, centred
+    // on the globe's longitude, as wide as fits), then the mix of the two.
+    // Dots on the far side come into view as the globe unrolls.
+    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+    const project = (lam: number, cl: number, sl: number, R: number, cx: number, cy: number, w = 0, h = 0) => {
       const d = lam - view.lam;
       const cd = Math.cos(d);
       const sp = Math.sin(view.phi);
       const cp = Math.cos(view.phi);
       const depth = sp * sl + cp * cl * cd;
-      return { depth, x: cx + R * cl * Math.sin(d), y: cy - R * (cp * sl - sp * cl * cd) };
+      const gx = cx + R * cl * Math.sin(d);
+      const gy = cy - R * (cp * sl - sp * cl * cd);
+      const m = ease(morph);
+      if (m <= 0) return { depth, x: gx, y: gy };
+      const half = Math.min(w * 0.46, h * 0.88);
+      const fx = cx + (wrap(d) / Math.PI) * half;
+      const fy = h / 2 - (Math.asin(Math.max(-1, Math.min(1, sl))) / (Math.PI / 2)) * (half / 2);
+      return { depth: depth + (0.72 - depth) * m, x: gx + (fx - gx) * m, y: gy + (fy - gy) * m };
     };
 
     const draw = (now: number) => {
@@ -129,14 +148,20 @@ export const Globe = ({
       }
       const idle = !drag.on && now - Math.max(lastInput, pickAt.current) > IDLE_MS;
       if (!still && idle) target.lam += SPIN;
-      const ease = still ? 1 : 0.07;
-      view.lam += wrap(target.lam - view.lam) * ease;
-      view.phi += (target.phi - view.phi) * ease;
+      const glide = still ? 1 : 0.07;
+      view.lam += wrap(target.lam - view.lam) * glide;
+      view.phi += (target.phi - view.phi) * glide;
+      const goal = state.current.flat ? 1 : 0;
+      const dt = lastNow ? now - lastNow : 16;
+      lastNow = now;
+      morph = still ? goal : morph + Math.sign(goal - morph) * Math.min(Math.abs(goal - morph), dt / MORPH_MS);
+      const m = ease(morph);
 
       const { w, h, dpr, R, cx, cy } = size();
       ctx.clearRect(0, 0, w, h);
 
-      // The body and its atmosphere.
+      // The body and its atmosphere, fading as the globe unrolls.
+      ctx.globalAlpha = 1 - m;
       const halo = ctx.createRadialGradient(cx, cy, R * 0.96, cx, cy, R * 1.2);
       halo.addColorStop(0, "rgba(132,225,255,0.22)");
       halo.addColorStop(1, "rgba(132,225,255,0)");
@@ -149,6 +174,7 @@ export const Globe = ({
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
       ctx.fill();
+      ctx.globalAlpha = 1;
 
       if (lon && cosLat && sinLat) {
         // One pass: project each dot once, bucket it by how squarely it
@@ -162,7 +188,7 @@ export const Globe = ({
         const buckets: number[][] = Array.from({ length: BUCKETS }, () => []);
         const glowing: number[] = [];
         for (let i = 0; i < lon.length; i++) {
-          const q = project(lon[i], cosLat[i], sinLat[i], R, cx, cy);
+          const q = project(lon[i], cosLat[i], sinLat[i], R, cx, cy, w, h);
           if (q.depth <= 0) continue;
           buckets[Math.min(BUCKETS - 1, Math.floor(q.depth * BUCKETS))].push(q.x, q.y);
           if (!pin) continue;
@@ -188,7 +214,7 @@ export const Globe = ({
       let labelAt: { x: number; y: number } | null = null;
       for (const p of list) {
         if (!p.on) continue;
-        const q = project(p.lon * RAD, Math.cos(p.lat * RAD), Math.sin(p.lat * RAD), R, cx, cy);
+        const q = project(p.lon * RAD, Math.cos(p.lat * RAD), Math.sin(p.lat * RAD), R, cx, cy, w, h);
         if (q.depth <= 0.05) continue;
         const isPick = p.id === id;
         if (isPick) {
@@ -214,7 +240,7 @@ export const Globe = ({
         if (labelAt) tag.style.transform = `translate(${labelAt.x}px, ${labelAt.y}px) translate(-50%, calc(-100% - 16px))`;
       }
 
-      if (visible && !document.hidden && !still) raf = requestAnimationFrame(draw);
+      if (visible && !document.hidden && (!still || morph !== goal)) raf = requestAnimationFrame(draw);
     };
     const kick = () => {
       if (!raf) raf = requestAnimationFrame(draw);
@@ -238,7 +264,8 @@ export const Globe = ({
       drag.y = e.clientY;
       const R = Math.min(canvas.clientWidth, canvas.clientHeight) * 0.43;
       target.lam -= dx / R;
-      target.phi = Math.max(-TILT_LIMIT, Math.min(TILT_LIMIT, target.phi + dy / R));
+      // Flat, a drag only pans east and west.
+      if (!state.current.flat) target.phi = Math.max(-TILT_LIMIT, Math.min(TILT_LIMIT, target.phi + dy / R));
       lastInput = performance.now();
       kick();
     };
@@ -248,13 +275,13 @@ export const Globe = ({
       lastInput = performance.now();
       if (drag.moved) return;
       const box = canvas.getBoundingClientRect();
-      const { dpr, R, cx, cy } = size();
+      const { w, h, dpr, R, cx, cy } = size();
       const mx = (e.clientX - box.left) * dpr;
       const my = (e.clientY - box.top) * dpr;
       let best: { id: string; d: number } | null = null;
       for (const p of state.current.pins) {
         if (!p.on) continue;
-        const q = project(p.lon * RAD, Math.cos(p.lat * RAD), Math.sin(p.lat * RAD), R, cx, cy);
+        const q = project(p.lon * RAD, Math.cos(p.lat * RAD), Math.sin(p.lat * RAD), R, cx, cy, w, h);
         if (q.depth <= 0.05) continue;
         const d = Math.hypot(q.x - mx, q.y - my);
         if (d < 22 * dpr && (!best || d < best.d)) best = { id: p.id, d };
@@ -286,7 +313,6 @@ export const Globe = ({
       canvas.removeEventListener("pointercancel", onUp);
     };
   }, []);
-
 
   return (
     <div className={cn("relative", className)}>

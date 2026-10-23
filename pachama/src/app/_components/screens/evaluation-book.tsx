@@ -14,12 +14,14 @@ import { MdArrowBack, MdArrowForward } from "react-icons/md";
 import { cn } from "../cn";
 import { ARROW } from "../slider";
 
-/* Evaluation 2.2, the eight pages Pachama gave buyers, as a little book:
- * four leaves that turn around the spine, the cover alone at the start and
- * the glossary alone at the end, the book sliding over so what's open sits
- * in the middle. It reads itself while it's in view (a leaf every few
- * seconds, then back to the cover), holds while it's pointed at, and the
- * arrows turn it by hand. With less motion it only turns by hand. */
+/* Evaluation 2.2, the eight pages Pachama gave buyers, as a little book
+ * lying on the table, seen from above and to the side (an isometric camera):
+ * four leaves that lift and turn around the spine in 3D, the cover alone at
+ * the start and the glossary alone at the end, the book sliding over so
+ * what's open sits in the middle. It reads itself while it's in view (a
+ * leaf every few seconds, then back to the cover), holds while it's pointed
+ * at, and the arrows turn it by hand. With less motion it only turns by
+ * hand. */
 const LEAVES: { front: StaticImageData; back: StaticImageData; alt: [string, string] }[] = [
   { front: p1, back: p2, alt: ["The cover: Pachama's latest criteria, how we find the highest quality forest carbon projects", "Project Evaluation Criteria 2.2: is the climate benefit additional, conservative and durable, and are there impacts beyond carbon"] },
   { front: p3, back: p4, alt: ["Is the climate benefit additional? Baseline emissions, project emissions and leakage", "Is the climate benefit based on conservative claims? The baseline, the project boundary and leakage"] },
@@ -82,24 +84,28 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
 
   return (
     <div ref={root} className={cn("grid justify-items-center gap-6", className)} onPointerEnter={() => setHeld(true)} onPointerLeave={() => setHeld(false)}>
-      <div className="w-full max-w-[56rem] [perspective:2400px]">
-        <div className={cn("relative aspect-[1224/792] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none", shift)}>
-          {LEAVES.map((leaf, i) => {
-            const isTurned = i < turned;
-            return (
-              <div
-                key={leaf.alt[0]}
-                className={cn(
-                  "absolute inset-y-0 left-1/2 w-1/2 origin-left transition-transform duration-[900ms] ease-[cubic-bezier(0.45,0,0.2,1)] [transform-style:preserve-3d] motion-reduce:transition-none",
-                  isTurned ? "[transform:rotateY(-180deg)]" : "[transform:rotateY(0deg)]",
-                  moving === i ? "z-50" : isTurned ? Z_LEFT[i] : Z_RIGHT[i],
-                )}
-              >
-                <Face src={leaf.front} alt={i === turned ? leaf.alt[0] : ""} />
-                <Face src={leaf.back} alt={i === turned - 1 ? leaf.alt[1] : ""} back />
-              </div>
-            );
-          })}
+      <div className="w-full max-w-[56rem] [perspective:2600px] [perspective-origin:50%_20%]">
+        {/* The camera: the book lies back and turns a little, like a still life on a table. */}
+        <div className="relative [transform-style:preserve-3d] [transform:rotateX(46deg)_rotateZ(-18deg)_scale(0.92)]">
+          <span aria-hidden className="absolute inset-[6%_10%_-4%] rounded-[50%] bg-black/25 blur-2xl [transform:translateZ(-2px)]" />
+          <div className={cn("relative aspect-[1224/792] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] motion-reduce:transition-none", shift)}>
+            {LEAVES.map((leaf, i) => {
+              const isTurned = i < turned;
+              return (
+                <div
+                  key={leaf.alt[0]}
+                  className={cn(
+                    "absolute inset-y-0 left-1/2 w-1/2 origin-left transition-transform duration-[900ms] ease-[cubic-bezier(0.45,0,0.2,1)] [transform-style:preserve-3d] motion-reduce:transition-none",
+                    isTurned ? "[transform:rotateY(-180deg)]" : "[transform:rotateY(0deg)]",
+                    moving === i ? "z-50" : isTurned ? Z_LEFT[i] : Z_RIGHT[i],
+                  )}
+                >
+                  <Face src={leaf.front} alt={i === turned ? leaf.alt[0] : ""} />
+                  <Face src={leaf.back} alt={i === turned - 1 ? leaf.alt[1] : ""} back />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
       <div className="flex items-center gap-3">

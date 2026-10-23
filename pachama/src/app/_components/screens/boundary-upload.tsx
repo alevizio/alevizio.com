@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { MdArrowBack, MdInfoOutline, MdInsertDriveFile, MdReplay, MdUploadFile } from "react-icons/md";
 import { BN } from "../banyan/ui";
 import { cn } from "../cn";
+import { GlassFrame } from "./glass-frame";
 
 /* A developer's boundary, uploaded and assessed, as Source does it: the
  * file comes in, the parcels draw themselves on the satellite, a scan runs
@@ -16,6 +17,9 @@ import { cn } from "../cn";
  * few seconds between runs), starts over when scrolled back to, Upload
  * again runs it at once, and with less motion it opens on the result. */
 type Phase = "idle" | "upload" | "drawn" | "scan" | "results";
+// Behind the glass: a forest's edge against cleared land, the forest-edge
+// clip's own poster.
+const forestEdge = "/video/forest-edge.jpg";
 const TIMELINE: [Phase, number][] = [
   ["upload", 400],
   ["drawn", 2200],
@@ -75,7 +79,7 @@ const Count = ({ to, on, suffix = "" }: { to: number; on: boolean; suffix?: stri
     let raf = 0;
     const start = performance.now();
     const step = (now: number) => {
-      const t = Math.min(1, (now - start) / 1300);
+      const t = Math.min(1, Math.max(0, (now - start) / 1300));
       text.nodeValue = `${Math.round(to * (1 - (1 - t) ** 3)).toLocaleString("en-US")}${suffix}`;
       if (t < 1) raf = requestAnimationFrame(step);
     };
@@ -142,7 +146,7 @@ export const BoundaryUpload = ({ className }: { className?: string }) => {
   const tab = (active: boolean) => cn("border-b-2 pb-2 transition-colors duration-500", active ? "border-white text-white" : "border-transparent text-white/55");
 
   return (
-    <div ref={root} className={cn("overflow-hidden rounded-[16px] bg-[#26302b] text-white motion-reduce:[&_*]:transition-none lg:grid lg:grid-cols-[23rem_1fr]", className)}>
+    <GlassFrame ref={root} backdrop={forestEdge} className={className} innerClassName="motion-reduce:[&_*]:transition-none lg:grid lg:h-[44rem] lg:grid-cols-[25rem_1fr]">
       <div className="flex flex-col gap-6 p-6 lg:order-1 lg:p-8">
         <div>
           <MdArrowBack aria-hidden className="size-6 text-white/80" />
@@ -227,7 +231,7 @@ export const BoundaryUpload = ({ className }: { className?: string }) => {
         </button>
       </div>
 
-      <div className="relative aspect-[1000/585] overflow-hidden bg-black lg:order-2 lg:aspect-auto lg:h-full">
+      <div className="relative aspect-[1000/585] overflow-hidden border-white/10 bg-black lg:order-2 lg:aspect-auto lg:h-full lg:border-l">
         <Image
           src={landMap}
           alt="Satellite imagery of a supplier's land with its boundary drawn: once assessed, suitable land shows in cyan and unsuitable land in orange"
@@ -252,6 +256,6 @@ export const BoundaryUpload = ({ className }: { className?: string }) => {
         </svg>
         {phase === "scan" ? <span aria-hidden className="absolute inset-y-0 -left-1/4 w-1/4 bg-linear-to-r from-transparent via-bn-green/45 to-transparent motion-safe:animate-[scan_1.6s_ease-in-out_forwards]" /> : null}
       </div>
-    </div>
+    </GlassFrame>
   );
 };

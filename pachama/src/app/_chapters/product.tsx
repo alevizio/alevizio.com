@@ -1,33 +1,27 @@
-import appMyProjects from "@/assets/product/app-my-projects.jpg";
-import appOrders from "@/assets/product/app-orders.png";
-import appRetirements from "@/assets/product/app-retirements.png";
-import certificate from "@/assets/product/certificate.jpg";
 import developersIntake from "@/assets/product/developers-intake.jpg";
 import evaluationLoading from "@/assets/product/evaluation-loading.jpg";
 import landUpload from "@/assets/product/land/1-upload.jpg";
 import landDraw from "@/assets/product/land/2-draw.jpg";
 import landResults from "@/assets/product/land/3-results.jpg";
 import landYield from "@/assets/product/land/4-yield.jpg";
-import manoaPage from "@/assets/product/manoa-page.jpg";
 import monitoringCarbon from "@/assets/product/monitoring-carbon.jpg";
 import monitoringDashboard from "@/assets/product/monitoring-dashboard.jpg";
 import monitoringFireProtanomaly from "@/assets/product/monitoring-fire-protanomaly.jpg";
 import monitoringFire from "@/assets/product/monitoring-fire.jpg";
-import portfolioDashboard from "@/assets/product/portfolio-dashboard.jpg";
-import portfolioGlobe from "@/assets/product/portfolio-globe.jpg";
-import portfolioProposal from "@/assets/product/portfolio-proposal.jpg";
-import portfolioSourcingPlan from "@/assets/product/portfolio-sourcing-plan.jpg";
 import sourceEvaluation from "@/assets/product/source-evaluation.jpg";
 import sourceEventSettings from "@/assets/product/source-event-settings.jpg";
 import sourceEvents from "@/assets/product/source-events.jpg";
 import sourceSubmissions from "@/assets/product/source-submissions.jpg";
 import { cn } from "../_components/cn";
 import { Compare } from "../_components/compare";
-import { Biodiversity } from "../_components/screens/biodiversity";
 import { BoundaryUpload } from "../_components/screens/boundary-upload";
 import { EvaluationBook } from "../_components/screens/evaluation-book";
+import { ManoaFlight } from "../_components/screens/manoa-flight";
 import { Insights } from "../_components/screens/insights";
 import { OpportunityMap } from "../_components/screens/opportunity-map";
+import { PortfolioDashboard } from "../_components/screens/portfolio";
+import { ProposalModal, SourcingPlanModal } from "../_components/screens/portfolio-modals";
+import { Retirements } from "../_components/screens/retirements";
 import { SourcingEvent } from "../_components/screens/sourcing-event";
 import { BLEED, HALF, Shot, TallShot } from "../_components/shot";
 import { Slider } from "../_components/slider";
@@ -72,15 +66,9 @@ export const Product = () => (
       id="project"
       eyebrow="Project pages"
       title="Every credit, checked"
-      text="Manoa's page, top to bottom: the forest, its facts and registry, the evaluation on the map, its story and what it does beyond carbon. Its evaluation screen, rebuilt in the new brand, is in the maps chapter."
+      text="A project's page opens on the project itself: from the whole Earth down to Manoa's forest in Rondônia, in 3D, before its facts, its evaluation, its story and what it does beyond carbon. Its evaluation screen, rebuilt in the new brand, is in the maps chapter."
     >
-      <TallShot
-        src={manoaPage}
-        frameClassName={SCREEN}
-        label="Manoa's project page, scrollable"
-        alt="Manoa's project page: an aerial hero, the overview with Verra and CCB, a photo gallery, a tech-verified evaluation map of deforestation around the project since 1996, the project story, its impacts on education and biodiversity, its files, and other projects"
-        caption="Manoa's page in the product. Scroll inside it."
-      />
+      <ManoaFlight />
     </Section>
 
     <Section
@@ -96,23 +84,9 @@ export const Product = () => (
       id="buying"
       eyebrow="Buying"
       title="From order to retirement"
-      text="Orders and retirements, every retirement with a certificate to download, and a buyer's projects with their news."
+      text="Every retirement a buyer makes, with the certificate it issues: pick a row to see its certificate."
     >
-      <Row className="items-start">
-        <Shot zoom src={appOrders} alt="Orders: a table of dates, assets such as Jari 2017 and Manoa 2020, quantities, costs per tonne and status" sizes={HALF} imageClassName={SCREEN} />
-        <Shot zoom src={appRetirements} alt="Retirements: dates, credits such as Manoa 2019 and Jari Para 2020, quantities, status and a Download certificate link on each" sizes={HALF} imageClassName={SCREEN} />
-      </Row>
-      <Row className="mt-6 items-start">
-        <Shot
-          zoom
-          src={certificate}
-          alt="A certificate of authenticity awarded to Just Spices for offsetting 200 tonnes of CO2, from the Kootznoowoo improved forest management project, registered with the American Carbon Registry"
-          sizes={HALF}
-          caption="The certificate a retirement downloads."
-          imageClassName={SCREEN}
-        />
-        <Shot zoom src={appMyProjects} alt="My projects: cards for Manoa and Central Kalimantan Peatlands with their evaluations and monitoring, beside a feed of project updates" sizes={HALF} caption="A buyer's projects, and the news from them." imageClassName={SCREEN} />
-      </Row>
+      <Retirements />
     </Section>
 
     <Section
@@ -121,18 +95,13 @@ export const Product = () => (
       title="A portfolio, planned"
       text="For buyers with a target: what they hold, mapped and broken down by type, cost, registry and verification; a sourcing plan for what's missing; and the proposals that answer it."
     >
-      <TallShot
-        src={portfolioDashboard}
-        frameClassName={SCREEN}
-        label="A buyer's portfolio dashboard, scrollable"
-        alt="A portfolio dashboard: 1,327,912 tCO2e bought at $23.19 on average, charts by year, project types, registries, methodologies and verifications, a globe of the projects and the table of credits purchased"
-        caption="The portfolio, top to bottom. Scroll inside it."
-      />
-      <Row className="mt-6 items-start">
-        <Shot zoom src={portfolioGlobe} alt="The portfolio on a globe: project pins across the Americas beside its breakdowns by type, cost, registry, methodology, verification and location" sizes={HALF} caption="The same portfolio, on the globe." imageClassName={SCREEN} />
-        <Shot zoom src={portfolioSourcingPlan} alt="Create carbon sourcing plan: a name, existing or new projects, and chips for project types, methodologies, registries, regions and third-party verifications" sizes={HALF} caption="A sourcing plan: what to look for, and where." imageClassName={SCREEN} />
-      </Row>
-      <Shot zoom src={portfolioProposal} alt="A proposal on Acme corp's call for proposals: the Choco-Darién Bioregion project and its opportunities by quantity, vintage and price" caption="A supplier's proposal, answering the call." imageClassName={SCREEN} className="mt-6" />
+      <PortfolioDashboard />
+      <p className="type-caption mt-3 text-(--tone-text)">The portfolio, rebuilt live from its Figma with the design&rsquo;s sample figures. Point at a year or a segment to read it, or retire an order.</p>
+      <div className="mt-10 grid items-start gap-6 rounded-[28px] bg-[#25302b] p-3 sm:p-6 lg:grid-cols-2 lg:p-8">
+        <SourcingPlanModal />
+        <ProposalModal />
+      </div>
+      <p className="type-caption mt-3 text-(--tone-text)">A buyer&rsquo;s sourcing plan, what to look for and where, and a supplier&rsquo;s proposal answering it. Rebuilt live with the designs&rsquo; sample values.</p>
     </Section>
 
     <Section
@@ -168,17 +137,6 @@ export const Product = () => (
     </Section>
 
     <Section
-      id="biodiversity"
-      eyebrow="Beyond carbon"
-      title="Biodiversity, scored"
-      text="Evaluation 2.2 added biodiversity: how much a project's land matters to species at risk, scored against the rest of the world, with the species, the risks and the threats behind the score. Rebuilt live from Borneo Peatlands' screens: switch the spotlight, point at a risk or a threat."
-    >
-      <div data-reveal="frame">
-        <Biodiversity />
-      </div>
-    </Section>
-
-    <Section
       id="developers"
       eyebrow="Developers"
       title="Bringing projects in"
@@ -187,8 +145,7 @@ export const Product = () => (
       <div className={cn(BLEED, "mt-2")} data-reveal="frame">
         <OpportunityMap />
       </div>
-      <p className="type-caption mt-3 text-(--tone-text)">Where a forest carbon project could start, and what it could earn. The first opportunity is the design&rsquo;s; the others are samples at its rates. Pick a pin.</p>
-      <BoundaryUpload className="mt-6" />
+      <BoundaryUpload />
       <p className="type-body mt-14 max-w-[40rem] text-(--tone-text)">
         The whole tool, from the supply partner portal: upload or draw the land, see how much of it is eligible and why the rest isn&apos;t, then estimate the credits it could yield.
       </p>
