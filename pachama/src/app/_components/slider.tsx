@@ -16,6 +16,9 @@ export const ARROW =
 // percentage in scroll-padding resolves against the scroller itself.
 const GUTTER =
   "px-[max(1.5rem,calc(50vw-43rem+1.5rem))] scroll-px-[max(1.5rem,calc(50vw-43rem+1.5rem))] sm:px-[max(2.5rem,calc(50vw-43rem+2.5rem))] sm:scroll-px-[max(2.5rem,calc(50vw-43rem+2.5rem))]";
+/** The same gutter on the start side only: for a row that runs to both
+ *  edges of the window with its first item lined up with the text. */
+export const GUTTER_START = "pl-[max(1.5rem,calc(50vw-43rem+1.5rem))] sm:pl-[max(2.5rem,calc(50vw-43rem+2.5rem))]";
 
 /** Pictures in a row that scrolls sideways: one in view, the next peeking
  *  in. It snaps to each picture; the buttons step through, and the row also

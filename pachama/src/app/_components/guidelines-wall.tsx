@@ -6,11 +6,13 @@ import { MdArrowBack, MdArrowForward, MdClose } from "react-icons/md";
 import { cn } from "./cn";
 import { useDragPan } from "./drag-pan";
 import { PAGES, WALL_ASPECT } from "./guidelines-pages";
+import { GUTTER_START } from "./slider";
 
 /* The brand guidelines' Figma page, zoomed out: every page where it sits on
- * the canvas, on the chapter's own ground. It starts at the text's left
- * edge, shows its whole height and runs off the right of the window; drag
- * it (or scroll) along. Click a page (or Enter) to read it big, then move
+ * the canvas, on the chapter's own ground. Its first pages line up with
+ * the text; it shows its whole height and runs to both edges of the
+ * window, so what's panned past is cut by the window; drag it (or scroll)
+ * along. Click a page (or Enter) to read it big, then move
  * through the pages in order with the arrows. The arrow keys also move
  * between pages on the wall, so it's one stop for the Tab key. Each page
  * is its own image, exported from the Figma, so they stay sharp. */
@@ -47,15 +49,15 @@ export const GuidelinesWall = ({ className }: { className?: string }) => {
   const page = open === null ? null : PAGES[open];
 
   return (
-    <figure className={cn("mr-[calc(50%-50vw)]", className)}>
+    <figure className={cn("mx-[calc(50%-50vw)]", className)}>
       <div
         ref={frame}
         role="group"
         aria-label="The brand guidelines' Figma page, every page in place"
         className="cursor-grab overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-color:rgb(255_255_255/0.22)_transparent] [scrollbar-width:thin] data-dragging:cursor-grabbing data-dragging:select-none"
       >
-        {/* All of its height shows; it runs off to the right, with room past the last pages. */}
-        <div className="w-max pr-16 pb-4">
+        {/* All of its height shows; the gutter lines the first pages up with the text, with room past the last ones. */}
+        <div className={cn("w-max pr-16 pb-4", GUTTER_START)}>
           <div className={cn("relative w-[130rem] max-sm:w-[90rem]", WALL_ASPECT)}>
             {PAGES.map((p, i) => (
               <button

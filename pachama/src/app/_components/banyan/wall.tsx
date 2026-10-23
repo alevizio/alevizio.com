@@ -10,11 +10,13 @@ import Image, { type StaticImageData } from "next/image";
 import { useRef } from "react";
 import { cn } from "../cn";
 import { useDragPan } from "../drag-pan";
+import { GUTTER_START } from "../slider";
 import { Zoom } from "../zoom";
 
 /* Every page of Banyan's documentation, as the Figma lays them out side by
- * side, in its six groups: one strip that starts at the text's edge and
- * runs off the right of the window. Drag it (or scroll) along; click a
+ * side, in its six groups: one strip, its first group lined up with the
+ * text, that runs to both edges of the window, so what's panned past is cut
+ * by the window and not the column. Drag it (or scroll) along; click a
  * group to see it bigger. */
 const GROUPS: { id: string; label: string; image: StaticImageData; pages: string }[] = [
   { id: "foundations", label: "Foundations", image: foundations, pages: "the cover, getting started, typography, colour and background levels" },
@@ -43,11 +45,11 @@ export const DocWall = ({ className }: { className?: string }) => {
       role="region"
       aria-label="Banyan's documentation, every page"
       className={cn(
-        "mr-[calc(50%-50vw)] cursor-grab overflow-x-auto overscroll-x-contain pb-4 [scrollbar-color:rgb(14_37_23/0.25)_transparent] [scrollbar-width:thin] data-dragging:cursor-grabbing data-dragging:select-none",
+        "mx-[calc(50%-50vw)] cursor-grab overflow-x-auto overscroll-x-contain pb-4 [scrollbar-color:rgb(14_37_23/0.25)_transparent] [scrollbar-width:thin] data-dragging:cursor-grabbing data-dragging:select-none",
         className,
       )}
     >
-      <ol className="flex w-max gap-4 pr-16 sm:gap-6">
+      <ol className={cn("flex w-max gap-4 pr-16 sm:gap-6", GUTTER_START)}>
         {GROUPS.map(({ id, label, image, pages }) => {
           const alt = `Banyan's ${label.toLowerCase()} pages: ${pages}`;
           return (
