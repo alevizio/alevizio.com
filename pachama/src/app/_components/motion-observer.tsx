@@ -32,6 +32,23 @@ export const MotionObserver = () => {
       if (onScreen(el)) show(el, true);
       else observer.observe(el);
     }
+    // A section is reached once its top is a fifth of the way up the
+    // window; until then its animations wait on their first frame (see
+    // globals.css), so nothing plays out where no one sees it.
+    const scenes = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.setAttribute("data-seen", "");
+          scenes.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "0px 0px -20% 0px" },
+    );
+    for (const el of document.querySelectorAll("[data-scene]")) {
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.8) el.setAttribute("data-seen", "");
+      else scenes.observe(el);
+    }
     document.documentElement.classList.add("motion");
 
     // Mounted later: on screen, it plays after one frame of its hidden
@@ -52,6 +69,7 @@ export const MotionObserver = () => {
     mutations.observe(document.body, { childList: true, subtree: true });
     return () => {
       observer.disconnect();
+      scenes.disconnect();
       mutations.disconnect();
     };
   }, []);

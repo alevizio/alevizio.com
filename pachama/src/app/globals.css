@@ -214,6 +214,13 @@
  * already in view, so nothing blinks and the page reads without script.
  * Nothing moves for anyone who has asked their system for less motion. */
 @media (prefers-reduced-motion: no-preference) {
+  /* Nothing in a section moves before the section is reached: its
+   * animations wait on their first frame until it's on screen. */
+  .motion [data-scene]:not([data-seen]) *,
+  .motion [data-scene]:not([data-seen]) *::before,
+  .motion [data-scene]:not([data-seen]) *::after {
+    animation-play-state: paused;
+  }
   .motion [data-reveal] {
     transition:
       opacity 0.8s var(--ease-arrive),
@@ -389,6 +396,16 @@
   }
 }
 
+/* A gradient drifting across its fill (the mark's, TIME.'s). */
+@keyframes flow {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
 @keyframes arrive {
   from {
     opacity: 0;
@@ -399,6 +416,65 @@
 @keyframes draw {
   from {
     scale: 0 1;
+  }
+}
+
+/* The type poster's nine-second loop: each line rises out of its
+ * baseline, holds, and leaves upward; "temporary" fades away mid-hold and
+ * comes back; the line under it shows between. */
+@keyframes poster-line {
+  0% {
+    translate: 0 105%;
+  }
+  9%,
+  80% {
+    translate: 0 0;
+  }
+  89%,
+  100% {
+    translate: 0 -105%;
+  }
+}
+@keyframes poster-fade {
+  0%,
+  28% {
+    opacity: 1;
+  }
+  40%,
+  52% {
+    opacity: 0.1;
+  }
+  64%,
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes poster-caption {
+  0%,
+  10% {
+    opacity: 0;
+  }
+  18%,
+  78% {
+    opacity: 1;
+  }
+  86%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* A belt of two copies moving one copy's width. */
+@keyframes belt {
+  to {
+    translate: -50% 0;
+  }
+}
+
+/* A path with pathLength="1" and stroke-dasharray 1 drawing itself. */
+@keyframes trace {
+  from {
+    stroke-dashoffset: 1;
   }
 }
 

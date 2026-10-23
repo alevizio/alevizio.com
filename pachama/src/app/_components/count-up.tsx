@@ -24,7 +24,8 @@ export const CountUp = ({ value, className }: { value: number; className?: strin
         observer.disconnect();
         const start = performance.now();
         const step = (now: number) => {
-          const t = Math.min(1, (now - start) / COUNT_MS);
+          // A frame's time can come just before the start: never below zero.
+          const t = Math.min(1, Math.max(0, (now - start) / COUNT_MS));
           text.nodeValue = format(Math.round(value * (1 - (1 - t) ** 3)));
           if (t < 1) raf = requestAnimationFrame(step);
         };

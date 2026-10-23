@@ -52,7 +52,7 @@ export const Section = ({
   children?: ReactNode;
   className?: string;
 }) => (
-  <section id={id} className={cn("mt-28 scroll-mt-10 sm:mt-40", className)}>
+  <section id={id} data-scene className={cn("mt-28 scroll-mt-10 sm:mt-40", className)}>
     <div className={PAGE}>
       {eyebrow ? (
         <p data-reveal className="type-label text-(--tone-label)">
