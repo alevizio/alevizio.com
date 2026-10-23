@@ -17,8 +17,9 @@ type Company = {
   tag?: { text: string; url?: string };
   years?: string;
   // Internal case-study link: replaces the external url on the logo and
-  // shows a cursor-following video preview on hover.
-  caseStudy?: { href: string; video: string; poster?: string; label: string };
+  // shows a cursor-following video preview on hover; its pill opens under
+  // the logo (see CaseStudyPill).
+  caseStudy?: { href: string; video: string; poster?: string; label: string; pill: string };
 };
 
 export const companies: Company[] = [
@@ -36,6 +37,7 @@ export const companies: Company[] = [
       video: "/work/pachama-preview.mp4",
       poster: "/work/pachama-preview-poster.jpg",
       label: "view case study",
+      pill: "case study",
     },
     viewBox: "0 0 239 66",
     paths: [
@@ -132,7 +134,6 @@ export const companies: Company[] = [
     name: "Messa",
     url: "https://messa.ai/",
     height: "h-[26px]",
-    tag: { text: "case study" },
     // Messa product trailer (the "See talent clearly." site walkthrough),
     // encoded to a silent 480p loop; poster is the hero opening frame so the
     // dark card doesn't flash black before the video paints.
@@ -141,6 +142,7 @@ export const companies: Company[] = [
       video: "/work/messa-preview.mp4",
       poster: "/work/messa-preview-poster.jpg",
       label: "view case study",
+      pill: "case study",
     },
     viewBox: "0 0 2786 690",
     paths: [
@@ -164,7 +166,6 @@ export const companies: Company[] = [
     name: "Pausa",
     url: "https://www.pausa.co/",
     height: "h-[30px]",
-    tag: { text: "new case study" },
     // A scroll through the case study (the hero, then a stop in each
     // chapter: the drawing wall, the mark, the pen's marks, the app),
     // a silent 480p loop; the poster is its opening frame.
@@ -173,6 +174,7 @@ export const companies: Company[] = [
       video: "/work/pausa-preview.mp4",
       poster: "/work/pausa-preview-poster.jpg",
       label: "view case study",
+      pill: "new case study",
     },
     viewBox: "0 0 1657.6 512",
     paths: [
@@ -192,15 +194,33 @@ const primary = [1, 6, 2, 4, 3, 5, 8].map((i) => companies[i]); // Planta, Messa
 // Row 2 — companies I've helped build & shape (owner / leadership level).
 const secondary = [0, 7].map((i) => companies[i]); // Pachama, Aerolab
 
-// The pills' text is at 70% ink (5.2:1), like the row labels; their outline
-// keeps its 10% (14% under the 70% opacity).
+// The pills' text is in full ink: at 9px it needs it (the logo above sits
+// at 80%, the pills don't), and their outline is a light 22%.
 const tagClass =
-  "text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-70 border border-[#1E1E1E]/[0.14] rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit";
+  "text-[9px] tracking-[0.05em] text-[#1E1E1E] border border-[#1E1E1E]/[0.22] rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit";
 
 // Tenure segment — outlined to match the tag; attaches as a second segment
 // (the tag's right border serves as the divider, so this drops its left border).
-const yearsClass =
-  "text-[9px] tracking-[0.05em] text-[#1E1E1E] opacity-70 border border-[#1E1E1E]/[0.14] rounded-full px-2 py-0.5 whitespace-nowrap font-['Instrument_Sans',sans-serif] w-fit";
+const yearsClass = tagClass;
+
+// A case study's pill. With a pointer it waits, unseen, as a dot under the
+// logo; pointing at (or focusing) the logo opens it: the dot fades in and
+// its outline stretches into the pill as the words slide in from the left,
+// out of a blur, and an arrow follows them. On touch, with no hover, it's
+// simply there.
+const CaseStudyPill = ({ text }: { text: string }) => (
+  <span className="inline-grid grid-cols-[1fr] rounded-full border border-[#1E1E1E]/[0.22] bg-[#1E1E1E]/[0.04] px-2 py-0.5 [transition:grid-template-columns_600ms_cubic-bezier(0.22,1,0.36,1),opacity_180ms_ease-out,translate_500ms_cubic-bezier(0.22,1,0.36,1)] [@media(hover:hover)]:translate-y-[-3px] [@media(hover:hover)]:grid-cols-[0fr] [@media(hover:hover)]:opacity-0 group-hover:translate-y-0 group-hover:grid-cols-[1fr] group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:grid-cols-[1fr] group-focus-visible:opacity-100 motion-reduce:transition-none">
+    <span className="flex min-w-0 items-center gap-1 overflow-hidden whitespace-nowrap font-['Instrument_Sans',sans-serif] text-[9px] tracking-[0.05em] text-[#1E1E1E] [transition:opacity_300ms_ease-out_140ms,filter_300ms_ease-out_140ms,translate_450ms_cubic-bezier(0.22,1,0.36,1)_140ms] [@media(hover:hover)]:-translate-x-2 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:blur-[2px] group-hover:translate-x-0 group-hover:opacity-100 group-hover:blur-none group-focus-visible:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:blur-none motion-reduce:transition-none">
+      {text}
+      <span
+        aria-hidden
+        className="[transition:translate_400ms_cubic-bezier(0.22,1,0.36,1)_320ms,opacity_200ms_ease-out_320ms] [@media(hover:hover)]:-translate-x-1 [@media(hover:hover)]:opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:transition-none"
+      >
+        &rarr;
+      </span>
+    </span>
+  </span>
+);
 
 const Logo = ({
   company,
@@ -219,7 +239,7 @@ const Logo = ({
   <motion.a
     href={caseStudy ? caseStudy.href : company.url}
     {...(caseStudy ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-    className="group relative opacity-80 hover:opacity-40 transition-opacity"
+    className="group relative"
     title={caseStudy ? `${company.name} — case study` : company.name}
     onPointerEnter={
       caseStudy
@@ -232,10 +252,11 @@ const Logo = ({
     }
     onPointerLeave={caseStudy ? () => setPreviewEntry(null) : undefined}
     initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 0.8, y: 0 }}
+    animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
   >
-    <div className={logoBoxHeight ? `flex ${logoBoxHeight} items-center` : ""}>
+    {/* The logo at 80% ink, fading on hover; the pills under it keep theirs. */}
+    <div className={`opacity-80 transition-opacity duration-300 group-hover:opacity-50 ${logoBoxHeight ? `flex ${logoBoxHeight} items-center` : ""}`}>
       <svg
         viewBox={company.viewBox}
         className={`${company.height} w-auto scale-100 origin-left`}
@@ -254,39 +275,39 @@ const Logo = ({
         )}
       </svg>
     </div>
-    {/* Tenure bubble + tag in one row, absolutely positioned so their width
-        never widens the logo cell (keeps logo columns aligned). A case
-        study's pill waits for the pointer, or keyboard focus, on the logo;
-        touch screens have no hover, so they keep it. */}
-    {(company.years || company.tag) && (
-      <div
-        className={`absolute left-0 top-full mt-2 flex flex-row items-center whitespace-nowrap ${
-          caseStudy ? "transition-opacity [@media(hover:hover)]:opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100" : ""
-        }`}
-      >
-        {company.tag &&
-          (company.tag.url ? (
-            <a
-              href={company.tag.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className={`${tagClass} hover:opacity-100 transition-opacity`}
-            >
-              {company.tag.text}
-            </a>
-          ) : (
-            <span className={tagClass}>{company.tag.text}</span>
-          ))}
-        {company.years && (
-          <span
-            className={`${yearsClass} ${
-              company.tag ? "relative z-10 -ml-2 bg-[#dedbd1]" : ""
-            }`}
-          >
-            {company.years}
-          </span>
+    {/* Tenure bubble + tag in one row, the case study's pill under them, all
+        absolutely positioned so their width never widens the logo cell
+        (keeps logo columns aligned). */}
+    {(company.years || company.tag || caseStudy) && (
+      <div className="absolute left-0 top-full mt-2 grid justify-items-start gap-1.5 whitespace-nowrap">
+        {(company.years || company.tag) && (
+          <div className="flex flex-row items-center whitespace-nowrap">
+            {company.tag &&
+              (company.tag.url ? (
+                <a
+                  href={company.tag.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className={`${tagClass} transition-colors hover:border-[#1E1E1E]/50`}
+                >
+                  {company.tag.text}
+                </a>
+              ) : (
+                <span className={tagClass}>{company.tag.text}</span>
+              ))}
+            {company.years && (
+              <span
+                className={`${yearsClass} ${
+                  company.tag ? "relative z-10 -ml-2 bg-[#dedbd1]" : ""
+                }`}
+              >
+                {company.years}
+              </span>
+            )}
+          </div>
         )}
+        {caseStudy && <CaseStudyPill text={caseStudy.pill} />}
       </div>
     )}
     {caseStudy && (
@@ -337,7 +358,7 @@ const Row = ({
   // so it doesn't leak into the DESKTOP subgrid, where the column gap is
   // inherited from the parent grid and logos snap to shared columns (there,
   // gap-Y spaces the lines a row wraps onto below xl).
-  const hasTags = items.some((c) => c.tag);
+  const hasTags = items.some((c) => c.tag || c.caseStudy);
   return (
     <div
       className={`flex flex-col items-start md:grid md:grid-cols-subgrid md:col-span-full md:items-start ${

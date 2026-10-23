@@ -13,6 +13,9 @@ export type HoverPreviewPoint = { x: number; y: number };
 const CARD_WIDTH = 320;
 const CARD_HEIGHT = 224; // 16:9 video + caption strip
 const CURSOR_OFFSET_X = 28;
+// Clear of the cursor above it, and below it clear of a logo's pills.
+const CURSOR_GAP_Y = 20;
+const CLEAR_BELOW = 72;
 const VIEWPORT_EDGE = 16;
 
 const SPRING = { stiffness: 400, damping: 40, mass: 0.7 };
@@ -26,13 +29,15 @@ const placeCard = (clientX: number, clientY: number) => {
   const x = fitsRight
     ? clientX + CURSOR_OFFSET_X
     : Math.max(VIEWPORT_EDGE, clientX - CURSOR_OFFSET_X - CARD_WIDTH);
+  // Above the cursor, so the logo and the pills under it stay in view; with
+  // no room above, below them instead, clamped to the viewport.
+  const above = clientY - CURSOR_GAP_Y - CARD_HEIGHT;
   return {
     x,
-    // Vertically centered on the cursor, clamped to the viewport.
-    y: Math.min(
-      Math.max(clientY - CARD_HEIGHT / 2, VIEWPORT_EDGE),
-      window.innerHeight - CARD_HEIGHT - VIEWPORT_EDGE
-    ),
+    y:
+      above >= VIEWPORT_EDGE
+        ? above
+        : Math.min(clientY + CLEAR_BELOW, window.innerHeight - CARD_HEIGHT - VIEWPORT_EDGE),
   };
 };
 
