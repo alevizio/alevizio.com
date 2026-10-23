@@ -1,4 +1,10 @@
+import acquired from "@/assets/closing/carbon-direct-pachama.png";
+import Image from "next/image";
 import { Band, PAGE, Section } from "../_components/story";
+
+// Carbon Direct's announcement, where its short link lands now that the
+// company is Relae.
+const ANNOUNCEMENT = "https://relae.co/blog/carbon-direct-acquires-pachama";
 
 // Where Pachama and its brand appeared, newest first. Each link was checked;
 // Fast Company blocks scripts, so its title comes from the list it belongs to.
@@ -72,8 +78,22 @@ export const Closing = () => (
       id="next"
       eyebrow="What happened next"
       title="Acquired by Carbon Direct, now Relae"
-      text="In 2025 Carbon Direct bought Pachama and kept the platform. What I'd keep from five years of it: to write."
-    />
+      text="On 10 November 2025 Carbon Direct bought Pachama and kept the platform. What I'd keep from five years of it: to write."
+    >
+      <a href={ANNOUNCEMENT} target="_blank" rel="noopener noreferrer" data-reveal="frame" className="group block max-w-[40rem]">
+        <span className="block overflow-hidden rounded-[16px] border border-white/10">
+          <Image
+            src={acquired}
+            alt="Carbon Direct + Pachama, the two logos side by side on a dark ground dotted in Pachama's colours"
+            sizes="(min-width: 720px) 640px, 100vw"
+            className="w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+          />
+        </span>
+        <span className="type-caption mt-3 block text-haze underline decoration-white/30 underline-offset-4 transition-colors group-hover:decoration-fog">
+          Read Carbon Direct&apos;s announcement
+        </span>
+      </a>
+    </Section>
 
     <Section id="press" eyebrow="In the press" title="Where Pachama showed up">
       <ul className="border-t border-white/15">
