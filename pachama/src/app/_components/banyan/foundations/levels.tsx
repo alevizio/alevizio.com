@@ -1,6 +1,6 @@
 "use client";
 
-import aerial from "@/assets/world/corredores-41.jpg";
+import aerial from "@/assets/banyan/photos/corredores-07.jpg";
 import Image from "next/image";
 import { useState } from "react";
 import { cn } from "../../cn";
@@ -35,7 +35,7 @@ export const Levels = ({ className }: { className?: string }) => {
           <Tag name="Background" level="level-0" />
           <Card />
           <div className="relative grid h-32 grid-cols-2 overflow-hidden rounded-[12px]">
-            <Image src={aerial} alt="" fill sizes="(min-width: 1024px) 560px, 90vw" className="object-cover" />
+            <Image src={aerial} alt="" fill sizes="(min-width: 1376px) 1100px, 90vw" className="object-cover" />
             <div className="relative bg-bn-glass-4/80 p-4 backdrop-blur-xl">
               <Tag name="Card" level="level-4" onDark />
             </div>

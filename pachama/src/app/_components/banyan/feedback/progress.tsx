@@ -4,6 +4,7 @@ import { cn } from "../../cn";
  * over grey lightest. A native <progress>, so its value is announced. */
 export const Progress = ({ value, label, className }: { value: number; label: string; className?: string }) => (
   <progress
+    data-reveal="grow-x"
     value={value}
     max={100}
     aria-label={label}

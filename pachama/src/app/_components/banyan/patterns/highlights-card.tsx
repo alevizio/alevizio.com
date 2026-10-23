@@ -1,9 +1,9 @@
 "use client";
 
-import corredores41 from "@/assets/world/corredores-41.jpg";
-import corredores43 from "@/assets/world/corredores-43.jpg";
-import corredores45 from "@/assets/world/corredores-45.jpg";
-import corredores47 from "@/assets/world/corredores-47.jpg";
+import corredores03 from "@/assets/banyan/photos/corredores-03.jpg";
+import corredores19 from "@/assets/banyan/photos/corredores-19.jpg";
+import corredores26 from "@/assets/banyan/photos/corredores-26.jpg";
+import corredores31 from "@/assets/banyan/photos/corredores-31.jpg";
 import Image from "next/image";
 import { useState } from "react";
 import { MdArrowLeft, MdArrowRight, MdChevronRight } from "react-icons/md";
@@ -12,12 +12,13 @@ import { BN } from "../ui";
 import { CardFrame } from "./card-parts";
 
 /* A project's highlights, paged: a glass title over the photo, and the
- * pager along the bottom. Corredores de Vida from the air; photos Pachama. */
+ * pager along the bottom. Corredores de Vida on the ground, in photos the
+ * chapter In the world doesn't show; photos Pachama. */
 const SLIDES = [
-  { src: corredores41, alt: "A river between stands of forest, from the air" },
-  { src: corredores45, alt: "Forest meeting pasture along a lakeshore, from the air" },
-  { src: corredores43, alt: "Rows of young trees planted across dry farmland" },
-  { src: corredores47, alt: "A farmstead with a tree nursery, from the air" },
+  { src: corredores03, alt: "A bird on a shrub above the tall grass" },
+  { src: corredores19, alt: "The lake's marshy edge, a bird crossing the sky" },
+  { src: corredores26, alt: "A tractor opening rows for planting" },
+  { src: corredores31, alt: "Cattle grazing beside the forest and the lake" },
 ];
 
 export const HighlightsCard = ({ className }: { className?: string }) => {

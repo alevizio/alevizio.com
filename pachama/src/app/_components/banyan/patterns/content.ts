@@ -1,6 +1,8 @@
-/* What the patterns show: Pachama's own facts and product copy. Manoa's
- * facts come from its evaluation screen; the lifecycle is the supplier
- * product's own copy. Anything else in this family is marked as sample. */
+/* What the patterns show: Pachama's own facts and product copy, spread
+ * across its projects so the same one doesn't repeat. Manoa's facts come
+ * from its evaluation screen, Central Kalimantan's from the buyer's My
+ * projects screen; the lifecycle is the supplier product's own copy.
+ * Anything else in this family is marked as sample. */
 export const MANOA = {
   name: "Manoa",
   country: "Brazil",
@@ -11,6 +13,13 @@ export const MANOA = {
   registryId: "674",
   // The five standards every project on the marketplace is evaluated against.
   about: "Evaluated against Pachama's five standards: accurate, additional, durable, net and beyond carbon.",
+} as const;
+
+export const KALIMANTAN = {
+  name: "Central Kalimantan Peatlands",
+  country: "Indonesia",
+  area: "47,237 hectares",
+  type: "REDD+ Avoided Planned Deforestation",
 } as const;
 
 export const LIFECYCLE = [

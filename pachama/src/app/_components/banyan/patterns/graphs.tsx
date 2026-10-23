@@ -44,21 +44,23 @@ export const ProjectsByYear = ({ className }: { className?: string }) => {
             </text>
           </g>
         ))}
-        {PER_YEAR.map((v, i) => {
-          const year = FIRST + i;
-          return (
-            <rect
-              key={year}
-              x={i * STEP + 3}
-              y={y(v)}
-              width={STEP - 6}
-              height={H - y(v)}
-              rx={2}
-              onMouseEnter={() => setAt(i)}
-              className={cn(year < NOW ? "fill-bn-grey-light" : year === NOW ? "fill-bn-green" : "fill-bn-grey-darkest", at !== null && at !== i && "opacity-60")}
-            />
-          );
-        })}
+        <g data-reveal="grow-y">
+          {PER_YEAR.map((v, i) => {
+            const year = FIRST + i;
+            return (
+              <rect
+                key={year}
+                x={i * STEP + 3}
+                y={y(v)}
+                width={STEP - 6}
+                height={H - y(v)}
+                rx={2}
+                onMouseEnter={() => setAt(i)}
+                className={cn(year < NOW ? "fill-bn-grey-light" : year === NOW ? "fill-bn-green" : "fill-bn-grey-darkest", at !== null && at !== i && "opacity-60")}
+              />
+            );
+          })}
+        </g>
         <text x={0} y={H + 14} className="fill-bn-medium text-[10px]">
           {FIRST}
         </text>
@@ -92,7 +94,7 @@ const StackedBar = ({ label, segments }: { label: string; segments: Segment[] })
   return (
     <div className="mt-4">
       <p className="text-[12px] leading-4 text-bn-medium">{label}</p>
-      <div aria-hidden className="mt-2 flex h-6 gap-px overflow-hidden rounded-[6px]">
+      <div aria-hidden data-reveal="grow-x" className="mt-2 flex h-6 gap-px overflow-hidden rounded-[6px]">
         {segments.map((s) => (
           <span key={s.label} onMouseEnter={() => setHot(s.label)} onMouseLeave={() => setHot(null)} className={cn("transition-opacity", s.grow, s.fill, hot && hot !== s.label && "opacity-40")} />
         ))}

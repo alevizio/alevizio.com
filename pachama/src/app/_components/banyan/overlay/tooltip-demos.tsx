@@ -26,8 +26,8 @@ export const TooltipPositions = () => (
 /* Where they earn their keep: a name cut short in a table, and a field too
  * narrow for what's picked. Hover or tab to them. */
 const ROWS = [
-  { id: "Manoa_2020", name: "Manoa REDD+, avoided planned deforestation, Brazil", vintage: "2020" },
-  { id: "Manoa_2021", name: "Manoa", vintage: "2021" },
+  { id: "Kalimantan_2020", name: "Central Kalimantan Peatlands REDD+, avoided planned deforestation, Indonesia", vintage: "2020" },
+  { id: "Agrocortex_2021", name: "Agrocortex", vintage: "2021" },
 ];
 
 export const TooltipExamples = () => (

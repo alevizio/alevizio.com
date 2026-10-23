@@ -5,13 +5,13 @@ import { Button } from "../button";
 import { Tag } from "./tag";
 
 /* Tags on a project, removable; Reset puts them back. */
-const START = ["REDD+", "Brazil", "Verified Carbon Standard", "Avoided deforestation"];
+const START = ["Reforestation", "Brazil", "Restoration", "Wildlife corridors"];
 
 export const TagDemo = () => {
   const [tags, setTags] = useState(START);
   return (
     <div className="grid w-full justify-items-center gap-6">
-      <ul aria-label="Manoa's tags" className="flex flex-wrap justify-center gap-2">
+      <ul aria-label="Corredores de Vida's tags" className="flex flex-wrap justify-center gap-2">
         {tags.map((t) => (
           <li key={t}>
             <Tag label={t} onDismiss={() => setTags((all) => all.filter((x) => x !== t))} />

@@ -54,7 +54,7 @@ export const IconButtons = () => (
 
 export const Inputs = () => (
   <div className="grid w-full gap-6 sm:grid-cols-2">
-    <TextInput label="Project name" placeholder="Manoa" />
+    <TextInput label="Project name" placeholder="Verde do Bahia" />
     <TextInput label="Search projects" placeholder="Brazil, REDD+…" type="search" leading={<MdSearch aria-hidden className="size-5 text-bn-medium" />} />
     <TextInput label="Credits to retire" inputMode="numeric" defaultValue="1,250" message="In tonnes of CO₂e." />
     <TextInput label="Registry ID" defaultValue="VCS 674" tone="success" message="Matches Manoa." />

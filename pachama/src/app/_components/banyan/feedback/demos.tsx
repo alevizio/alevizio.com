@@ -68,7 +68,7 @@ export const ToastDemo = () => {
 
 const BANNERS: { tone: BannerTone; text: string }[] = [
   { tone: "neutral", text: "The marketplace is moving to a new address next week." },
-  { tone: "success", text: "Manoa passed its 2024 evaluation." },
+  { tone: "success", text: "Credits retired. The certificate is on its way to your inbox." },
   { tone: "warning", text: "Two projects in your portfolio need a new boundary." },
   { tone: "error", text: "We couldn't reach the registry. Try again in a few minutes." },
 ];
@@ -116,7 +116,7 @@ export const ProgressDemo = () => {
       });
     }, 150);
   };
-  const live = value >= 100 ? "Evaluation done" : `Evaluating Manoa, ${value}%`;
+  const live = value >= 100 ? "Evaluation done" : `Evaluating Verde do Bahia, ${value}%`;
   return (
     <div className="grid w-full max-w-md gap-6">
       <Labelled text="Boundary uploaded, 25%">

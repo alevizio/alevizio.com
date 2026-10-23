@@ -22,8 +22,12 @@ const ITEMS: Item[] = [
 
 const ROW = cn("flex w-full items-center gap-2 rounded-[8px] p-3 text-left text-[14px] leading-5 font-medium text-bn-heavy hover:bg-bn-grey-lightest/60", BN.focus);
 
-export const Sidebar = ({ className }: { className?: string }) => {
-  const [page, setPage] = useState("Explore");
+export const Sidebar = ({ onPage, className }: { onPage?: (page: string) => void; className?: string }) => {
+  const [page, setPageState] = useState("Explore");
+  const setPage = (next: string) => {
+    setPageState(next);
+    onPage?.(next);
+  };
   const [open, setOpen] = useState<string[]>(["Impact", "Organization settings"]);
   const [rail, setRail] = useState(false);
   // A page opens itself; a group toggles, or, folded to the rail, unfolds

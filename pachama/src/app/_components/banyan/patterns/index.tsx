@@ -1,12 +1,12 @@
 import { Specimen, SpecimenGrid } from "../specimen";
 import { AccordionItem, Dropdown } from "./accordion";
+import { AppFrame } from "./app-frame";
 import { Breadcrumb, type Crumb } from "./breadcrumb";
-import { LIFECYCLE, MANOA } from "./content";
+import { KALIMANTAN, LIFECYCLE, MANOA } from "./content";
 import { DataPoints } from "./data-points";
 import { PortfolioCard, ProjectsByYear, RegionsCard } from "./graphs";
 import { HighlightsCard } from "./highlights-card";
 import { ProjectCard } from "./project-card";
-import { Sidebar } from "./sidebar";
 import { StepperRow, StepperVertical } from "./stepper";
 import { SubmissionCard } from "./submission-card";
 import { Tabs } from "./tabs";
@@ -18,7 +18,7 @@ import { TopNav } from "./top-nav";
 const CRUMBS: Crumb[] = [
   { label: "Projects", href: "#patterns" },
   { label: "Brazil", href: "#patterns" },
-  { label: MANOA.name },
+  { label: "Agrocortex" },
 ];
 
 const Panel = ({ children }: { children: string }) => <p className="max-w-prose pt-4 text-[15px] leading-6 text-bn-medium">{children}</p>;
@@ -28,8 +28,8 @@ export const Patterns = () => (
     <Specimen name="Navigation, the website" note="The top bar on glass. Solutions opens its menu; with less room the bar folds into the menu button." panelClassName="block p-0 sm:p-0 overflow-hidden">
       <TopNav />
     </Specimen>
-    <Specimen name="Navigation, the product" note="The buyer app's sidebar: pick a page, open a group, or fold it down to its rail." panelClassName="block">
-      <Sidebar />
+    <Specimen name="Navigation, the product" note="The buyer app's sidebar, at the side of its page: pick a page and the page follows, open a group, or fold it down to its rail." panelClassName="block">
+      <AppFrame />
     </Specimen>
     <SpecimenGrid>
       <Specimen name="Project card" note="Manoa as the marketplace lists it: its map, its facts and the evaluation it passed.">
@@ -63,9 +63,9 @@ export const Patterns = () => (
       </Specimen>
       <Specimen name="Tabs" note="Arrow keys move between tabs; a dot or a count says something changed." panelClassName="block">
         <Tabs
-          label={`${MANOA.name}, project`}
+          label={`${KALIMANTAN.name}, project`}
           items={[
-            { label: "Summary", panel: <Panel>{`${MANOA.area} in ${MANOA.country}, ${MANOA.type}.`}</Panel> },
+            { label: "Summary", panel: <Panel>{`${KALIMANTAN.area} in ${KALIMANTAN.country}, ${KALIMANTAN.type}.`}</Panel> },
             { label: "Evaluation", status: true, panel: <Panel>{MANOA.about}</Panel> },
             { label: "Documents", count: 4, panel: <Panel>The project description, its validation and two monitoring reports. Sample files.</Panel> },
             { label: "Monitoring", disabled: true, panel: <Panel>Not yet.</Panel> },
