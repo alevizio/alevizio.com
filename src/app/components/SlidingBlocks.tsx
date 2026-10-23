@@ -13,7 +13,7 @@ import { useEffect, useRef } from "react";
 
 // The page background, and the dark grey the field dithers towards.
 const LIGHT = "#dedbd1";
-const DARK = "#c9c6bc";
+const DARK = "#cfccc2";
 const CELLS = 16; // cells across the width
 const DOT = 4; // dither cell, CSS px
 const PERIOD = 14; // seconds from one slide to the next
