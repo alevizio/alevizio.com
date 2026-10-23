@@ -1,10 +1,8 @@
 import developersIntake from "@/assets/product/developers-intake.jpg";
-import evaluationLoading from "@/assets/product/evaluation-loading.jpg";
 import landUpload from "@/assets/product/land/1-upload.jpg";
 import landDraw from "@/assets/product/land/2-draw.jpg";
 import landResults from "@/assets/product/land/3-results.jpg";
 import landYield from "@/assets/product/land/4-yield.jpg";
-import monitoringCarbon from "@/assets/product/monitoring-carbon.jpg";
 import monitoringDashboard from "@/assets/product/monitoring-dashboard.jpg";
 import monitoringFireProtanomaly from "@/assets/product/monitoring-fire-protanomaly.jpg";
 import monitoringFire from "@/assets/product/monitoring-fire.jpg";
@@ -15,6 +13,7 @@ import sourceSubmissions from "@/assets/product/source-submissions.jpg";
 import { cn } from "../_components/cn";
 import { Compare } from "../_components/compare";
 import { BoundaryUpload } from "../_components/screens/boundary-upload";
+import { CarbonMonitoring } from "../_components/screens/carbon-monitoring";
 import { EvaluationBook } from "../_components/screens/evaluation-book";
 import { ManoaFlight } from "../_components/screens/manoa-flight";
 import { Insights } from "../_components/screens/insights";
@@ -108,10 +107,12 @@ export const Product = () => (
       id="monitoring"
       eyebrow="Monitoring"
       title="Watching over a project"
-      text="After the purchase: carbon monitoring against the baseline, forest loss year by year, fire risk by the day, and a dashboard for the rest. The fire reds were checked for colour-blind eyes."
+      text="After the purchase: carbon monitoring, the project's emissions against its baseline and the forest lost year by year (Manoa's here, on the real data); disturbance monitoring, fire risk by the day; and a dashboard for the rest. The fire reds were checked for colour-blind eyes."
     >
-      <Row className="items-start">
-        <Shot zoom src={monitoringCarbon} alt="Manoa's carbon monitoring: an update on emissions, the total climate benefit of 2,400,000 tCO2e by year, and observed forest loss on the map with a year player" sizes={HALF} caption="Manoa's carbon monitoring." imageClassName={SCREEN} />
+      <div data-reveal="frame">
+        <CarbonMonitoring />
+      </div>
+      <Row className="mt-6 items-start sm:mt-8">
         <Compare
           before={{ src: monitoringFire, alt: "Llanos de Apan's disturbance monitoring: fire risk today, 0 hectares affected, recent fires in red around the project boundary" }}
           after={{ src: monitoringFireProtanomaly, alt: "The same fire-risk map as someone with protanomaly sees it: the fires turn orange but still stand out" }}
@@ -122,8 +123,6 @@ export const Product = () => (
           sizes={HALF}
           imageClassName={SCREEN}
         />
-      </Row>
-      <Row className="mt-6 items-start">
         <TallShot
           src={monitoringDashboard}
           frameClassName={SCREEN}
@@ -132,7 +131,6 @@ export const Product = () => (
           alt="Llanos de Apan's project dashboard: trees planted, survival, costs, milestones, weather, photos from the field and a risk table"
           caption="A project's dashboard, from planting to risk."
         />
-        <Shot zoom src={evaluationLoading} alt="An evaluation page loading: grey skeleton blocks where the header, the tabs and the cards will be" sizes={HALF} caption="Before the data comes in, the page holds its shape." imageClassName={SCREEN} />
       </Row>
     </Section>
 
