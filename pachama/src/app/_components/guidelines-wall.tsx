@@ -9,11 +9,11 @@ import { PAGES, WALL_ASPECT } from "./guidelines-pages";
 
 /* The brand guidelines' Figma page, zoomed out: every page where it sits on
  * the canvas, on the chapter's own ground. It starts at the text's left
- * edge and runs off the right of the window; drag it (or scroll) to look
- * around. Click a page (or Enter) to read it big, then move through the
- * pages in order with the arrows. The arrow keys also move between pages
- * on the wall, so it's one stop for the Tab key. Each page is its own
- * image, exported from the Figma, so they stay sharp. */
+ * edge, shows its whole height and runs off the right of the window; drag
+ * it (or scroll) along. Click a page (or Enter) to read it big, then move
+ * through the pages in order with the arrows. The arrow keys also move
+ * between pages on the wall, so it's one stop for the Tab key. Each page
+ * is its own image, exported from the Figma, so they stay sharp. */
 const RING = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-leaf";
 
 export const GuidelinesWall = ({ className }: { className?: string }) => {
@@ -52,11 +52,11 @@ export const GuidelinesWall = ({ className }: { className?: string }) => {
         ref={frame}
         role="group"
         aria-label="The brand guidelines' Figma page, every page in place"
-        className="h-[min(46rem,78svh)] cursor-grab overflow-auto overscroll-x-contain [scrollbar-color:rgb(255_255_255/0.22)_transparent] [scrollbar-width:thin] data-dragging:cursor-grabbing data-dragging:select-none max-sm:h-[60svh]"
+        className="cursor-grab overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-color:rgb(255_255_255/0.22)_transparent] [scrollbar-width:thin] data-dragging:cursor-grabbing data-dragging:select-none"
       >
-        {/* Room past the last pages, so the wall doesn't end at the window's edge. */}
-        <div className="w-max pr-16 pb-12">
-          <div className={cn("relative w-[170rem] max-sm:w-[110rem]", WALL_ASPECT)}>
+        {/* All of its height shows; it runs off to the right, with room past the last pages. */}
+        <div className="w-max pr-16 pb-4">
+          <div className={cn("relative w-[130rem] max-sm:w-[90rem]", WALL_ASPECT)}>
             {PAGES.map((p, i) => (
               <button
                 key={p.n}
@@ -74,15 +74,13 @@ export const GuidelinesWall = ({ className }: { className?: string }) => {
                   p.at,
                 )}
               >
-                <Image src={`/brand/guidelines/${p.n}.jpg`} alt="" fill sizes="(max-width: 639px) 90px, 140px" className="pointer-events-none object-cover select-none" draggable={false} />
+                <Image src={`/brand/guidelines/${p.n}.jpg`} alt="" fill sizes="(max-width: 639px) 80px, 110px" className="pointer-events-none object-cover select-none" draggable={false} />
               </button>
             ))}
           </div>
         </div>
       </div>
-      <figcaption className="type-caption mt-3 max-w-[48rem] pr-6 text-(--tone-text)">
-        The guidelines file as Figma lays it out, all {PAGES.length} pages. Drag or scroll to look around; click a page to read it.
-      </figcaption>
+      <figcaption className="sr-only">The guidelines file as Figma lays it out, all {PAGES.length} pages. Drag or scroll along it; open a page to read it.</figcaption>
 
       <dialog
         ref={dialog}
