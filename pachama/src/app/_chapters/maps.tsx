@@ -3,6 +3,7 @@ import ndvi from "@/assets/maps/ndvi.jpg";
 import pointcloud from "@/assets/maps/pointcloud.jpg";
 import sundarbans from "@/assets/maps/sundarbans.jpg";
 import tlsScan from "@/assets/maps/tls-scan.jpg";
+import { DynamicBaseline } from "../_components/screens/dynamic-baseline";
 import { Evaluation } from "../_components/screens/evaluation";
 import { Clip, HALF, Shot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
@@ -27,7 +28,14 @@ export const Maps = () => (
       title="Measuring trees from space"
       text="Heights estimated from satellite data, trained on airborne lidar."
     >
-      <Row>
+      <Clip
+        name="canopy-mist"
+        label="A drone glides low over unbroken rainforest canopy, wisps of cloud drifting through the trees"
+        aspect="aspect-[1920/800]"
+        caption="The canopy itself, from a drone, under low cloud."
+        bleed
+      />
+      <Row className="mt-6 sm:mt-10">
         <Clip name="terrain" label="The lidar elevation of Fazenda Vida, Brazil, turning slowly" aspect="aspect-[1600/930]" caption="Fazenda Vida, Brazil: lidar elevation, Corridors of Life." />
         <Shot src={lidarTerrain} alt="A lidar terrain model seen at an angle, coloured from blue to red by height" sizes={HALF} caption="A lidar terrain model, coloured by height." />
       </Row>
@@ -44,9 +52,21 @@ export const Maps = () => (
       id="baselines"
       eyebrow="Dynamic baselines"
       title="A project and its control area"
-      text="Each project matched to similar forest outside it, and the two watched side by side over time. Here, Manoa's evaluation, rebuilt in Banyan from the screen it had before the rebrand: pick a standard, and watch the checks draw."
+      text="A static baseline is a guess, made once, of how much forest a project would otherwise lose. A dynamic one keeps measuring: it finds the forest's twin outside the project, watches the two side by side every year, and counts only the difference."
     >
-      <div data-reveal="frame">
+      <Clip
+        name="forest-edge"
+        label="A drone flies over rainforest to its edge, where pasture still full of stumps runs out to a farm"
+        aspect="aspect-video"
+        caption="Where the forest stops: pasture still full of stumps, from a drone. A baseline puts a number on how fast that edge moves."
+        bleed
+      />
+      <DynamicBaseline className="mt-20 sm:mt-28" />
+      <p data-reveal className="type-body mt-20 max-w-[36rem] text-(--tone-text) sm:mt-28">
+        In the product, it all came down to one screen: Manoa&apos;s evaluation, rebuilt in Banyan from the one it had before the
+        rebrand. Pick a standard, and watch the checks draw.
+      </p>
+      <div data-reveal="frame" className="mt-8 sm:mt-10">
         <Evaluation />
       </div>
     </Section>

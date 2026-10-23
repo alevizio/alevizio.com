@@ -175,6 +175,17 @@
   .motion [data-reveal="frame"][data-in]:not([data-done]) {
     clip-path: inset(0 0 0 0 round 10px);
   }
+  /* Maps fill in from the left, the way a scan would; the clip stays on,
+   * since nothing inside them reaches past their edge. */
+  .motion [data-reveal="sweep"]:not([data-in]) {
+    opacity: 1;
+    translate: none;
+    clip-path: inset(0 100% 0 0 round 10px);
+  }
+  .motion [data-reveal="sweep"][data-in] {
+    clip-path: inset(0 0 0 0 round 10px);
+    transition: clip-path 2.4s cubic-bezier(0.65, 0, 0.35, 1) var(--reveal-delay, 0s);
+  }
   /* Stickers land, slightly turned. */
   .motion [data-reveal="pop"]:not([data-in]) {
     scale: 0.82;

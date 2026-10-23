@@ -48,7 +48,9 @@ export const BaselineChart = ({ className }: { className?: string }) => (
       <div aria-hidden className="mt-2 flex justify-between font-mono text-[11px] leading-none">
         {YEARS.map((yr) => (
           <span key={yr} className={cn(yr === 2016 && "font-bold text-bn-heavy")}>
-            {yr}
+            {/* Two digits on phones, where eight full years run together. */}
+            <span className="sm:hidden">&rsquo;{String(yr).slice(2)}</span>
+            <span className="max-sm:hidden">{yr}</span>
           </span>
         ))}
       </div>
