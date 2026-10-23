@@ -1,6 +1,17 @@
 import acquired from "@/assets/closing/carbon-direct-pachama.png";
 import Image from "next/image";
+import { CountUp } from "../_components/count-up";
 import { Band, PAGE, Section } from "../_components/story";
+
+// The five years in four figures: the rounds as Alejandro remembers the
+// total (the Series A and B amounts are the press below and the Series B
+// banner), the pages Banyan's documentation and the brand guidelines' Figma.
+const NUMBERS = [
+  { value: 5, unit: "years", text: "At Pachama, from product designer to senior product designer, 2020 to 2025." },
+  { value: 90, before: "$", unit: "million raised", text: "Across the seed, the Series A ($15 million, 2021) and the Series B ($55 million, 2022)." },
+  { value: 37, unit: "pages of Banyan", text: "The design system, every component designed and documented in Figma, and built." },
+  { value: 127, unit: "pages of guidelines", text: "The brand set down for everyone, from the logo to the charts and the photographs." },
+];
 
 // Carbon Direct's announcement, where its short link lands now that the
 // company is Relae.
@@ -71,9 +82,25 @@ const PRESS = [
   },
 ];
 
-/* What happened next, the press, the credits and the way back. */
+/* The five years in numbers, what happened next, the press, the credits
+ * and the way back. */
 export const Closing = () => (
   <Band tone="ground" className="border-t border-white/10">
+    <Section id="numbers" eyebrow="In numbers" title="Five years of it">
+      <dl data-stagger className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        {NUMBERS.map(({ value, before, unit, text }) => (
+          <div key={unit} data-reveal className="flex flex-col border-t border-white/15 pt-5">
+            <dt className="type-label order-2 mt-2 text-leaf">{unit}</dt>
+            <dd className="type-display order-1 text-fog">
+              {before}
+              <CountUp value={value} />
+            </dd>
+            <dd className="type-caption order-3 mt-3 max-w-[18rem] text-haze">{text}</dd>
+          </div>
+        ))}
+      </dl>
+    </Section>
+
     <Section
       id="next"
       eyebrow="What happened next"
