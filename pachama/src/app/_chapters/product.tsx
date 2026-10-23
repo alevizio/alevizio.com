@@ -4,6 +4,10 @@ import appRetirements from "@/assets/product/app-retirements.png";
 import certificate from "@/assets/product/certificate.jpg";
 import developersIntake from "@/assets/product/developers-intake.jpg";
 import evaluationLoading from "@/assets/product/evaluation-loading.jpg";
+import landUpload from "@/assets/product/land/1-upload.jpg";
+import landDraw from "@/assets/product/land/2-draw.jpg";
+import landResults from "@/assets/product/land/3-results.jpg";
+import landYield from "@/assets/product/land/4-yield.jpg";
 import manoaPage from "@/assets/product/manoa-page.jpg";
 import monitoringCarbon from "@/assets/product/monitoring-carbon.jpg";
 import monitoringDashboard from "@/assets/product/monitoring-dashboard.jpg";
@@ -26,12 +30,22 @@ import { Insights } from "../_components/screens/insights";
 import { OpportunityMap } from "../_components/screens/opportunity-map";
 import { SourcingEvent } from "../_components/screens/sourcing-event";
 import { BLEED, HALF, Shot, TallShot } from "../_components/shot";
+import { Slider } from "../_components/slider";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 
 /* II · The product, on the product's own light grey: the marketplace and
  * the tools around it, shown as they were (Alejandro cleared everything
  * from Pachama to be shared as is: client and project names included).
  * The components have their own chapter, III. */
+
+// The supply partner portal's eligibility and yield tool, step by step,
+// from the Supply Partner Portal Figma.
+const ASSESS = [
+  { src: landUpload, alt: "Step 1: Where would you like to create a carbon project? Upload a spatial file of the boundary or draw it on the map, in Brazil, Mexico or the USA" },
+  { src: landDraw, alt: "Step 2: drawing the boundary point by point on satellite imagery, then Analyze area" },
+  { src: landResults, alt: "Step 3: the results, the country's eligibility, 90% of the land eligible for planting shown in green on the map, and the carbon credit yield estimate" },
+  { src: landYield, alt: "Step 4: the credit yield questions opened out, with the cumulative yield over the project's years" },
+];
 
 // A screen lifted off the page: a hairline and a soft shadow.
 const SCREEN = "ring-1 ring-black/5 shadow-[0_24px_80px_rgb(20_26_23/0.12)]";
@@ -175,6 +189,17 @@ export const Product = () => (
       </div>
       <p className="type-caption mt-3 text-(--tone-text)">Where a forest carbon project could start, and what it could earn. The first opportunity is the design&rsquo;s; the others are samples at its rates. Pick a pin.</p>
       <BoundaryUpload className="mt-6" />
+      <p className="type-body mt-14 max-w-[40rem] text-(--tone-text)">
+        The whole tool, from the supply partner portal: upload or draw the land, see how much of it is eligible and why the rest isn&apos;t, then estimate the credits it could yield.
+      </p>
+      <Slider
+        label="The eligibility and yield tool, step by step"
+        slides={ASSESS}
+        sizes="(min-width: 1024px) 56rem, 90vw"
+        item="h-64 sm:h-96 lg:h-[34rem]"
+        image="h-full w-auto"
+        className="mt-6"
+      />
       <div className="mt-6">
         <TallShot
           src={developersIntake}

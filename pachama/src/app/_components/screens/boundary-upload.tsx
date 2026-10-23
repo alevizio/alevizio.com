@@ -2,7 +2,7 @@
 
 import landMap from "@/assets/screens/land-map.jpg";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdArrowBack, MdInfoOutline, MdInsertDriveFile, MdReplay, MdUploadFile } from "react-icons/md";
 import { BN } from "../banyan/ui";
 import { cn } from "../cn";
@@ -11,9 +11,10 @@ import { cn } from "../cn";
  * file comes in, the parcels draw themselves on the satellite, a scan runs
  * over the land, and it comes back in colour with what qualifies. The map
  * and the figures are the live product's, for a real supplier project left
- * unnamed; the parcel outlines are traced from that map. It plays once
- * when it's well in view, Replay runs it again, and with less motion it
- * opens on the result. */
+ * unnamed; the parcel outlines are traced from that map. It starts when
+ * it's well in view and loops while it stays there (the result holds a
+ * few seconds between runs), starts over when scrolled back to, Upload
+ * again runs it at once, and with less motion it opens on the result. */
 type Phase = "idle" | "upload" | "drawn" | "scan" | "results";
 const TIMELINE: [Phase, number][] = [
   ["upload", 400],
@@ -21,6 +22,8 @@ const TIMELINE: [Phase, number][] = [
   ["scan", 4000],
   ["results", 5700],
 ];
+// How long the result stays up before the next run.
+const HOLD = 5000;
 const at = (phase: Phase, from: Phase) => TIMELINE.findIndex(([p]) => p === phase) >= TIMELINE.findIndex(([p]) => p === from);
 
 // Traced from the product's map, in its 1000 x 585 frame.
@@ -89,37 +92,51 @@ const Count = ({ to, on, suffix = "" }: { to: number; on: boolean; suffix?: stri
 
 export const BoundaryUpload = ({ className }: { className?: string }) => {
   const root = useRef<HTMLDivElement>(null);
-  const timers = useRef<number[]>([]);
+  const restart = useRef(() => {});
   const [phase, setPhase] = useState<Phase>("idle");
 
-  const play = useCallback(() => {
-    for (const t of timers.current) window.clearTimeout(t);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      timers.current = [window.setTimeout(() => setPhase("results"), 0)];
-      return;
-    }
-    setPhase("idle");
-    timers.current = TIMELINE.map(([p, ms]) => window.setTimeout(() => setPhase(p), ms));
-  }, []);
-
+  // In view (most of it), it runs and loops; out of view, it stops and
+  // resets, so scrolling back starts it again from the upload.
   useEffect(() => {
     const el = root.current;
     if (!el) return;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let timers: number[] = [];
+    let running = false;
+    const stop = () => {
+      for (const t of timers) window.clearTimeout(t);
+      timers = [];
+    };
+    const play = () => {
+      stop();
+      if (still) {
+        timers = [window.setTimeout(() => setPhase("results"), 0)];
+        return;
+      }
+      setPhase("idle");
+      const last = TIMELINE[TIMELINE.length - 1][1];
+      timers = [...TIMELINE.map(([p, ms]) => window.setTimeout(() => setPhase(p), ms)), window.setTimeout(play, last + HOLD)];
+    };
+    restart.current = play;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        observer.disconnect();
-        play();
+        if (entry.intersectionRatio >= 0.45 && !running) {
+          running = true;
+          play();
+        } else if (!entry.isIntersecting && running) {
+          running = false;
+          stop();
+          setPhase("idle");
+        }
       },
-      { threshold: 0.45 },
+      { threshold: [0, 0.45] },
     );
     observer.observe(el);
-    const pending = timers;
     return () => {
       observer.disconnect();
-      for (const t of pending.current) window.clearTimeout(t);
+      stop();
     };
-  }, [play]);
+  }, []);
 
   const land = !at(phase, "scan");
   const tab = (active: boolean) => cn("border-b-2 pb-2 transition-colors duration-500", active ? "border-white text-white" : "border-transparent text-white/55");
@@ -202,7 +219,7 @@ export const BoundaryUpload = ({ className }: { className?: string }) => {
         </p>
         <button
           type="button"
-          onClick={play}
+          onClick={() => restart.current()}
           className={cn("mt-auto inline-flex items-center gap-2 self-start rounded-full border border-white/40 px-4 py-2 text-[14px] leading-5 hover:bg-white/10", BN.focus, "focus-visible:outline-white")}
         >
           <MdReplay aria-hidden className="size-5" />
