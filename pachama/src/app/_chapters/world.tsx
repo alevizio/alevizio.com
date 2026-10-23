@@ -53,8 +53,11 @@ const SLIDE = "(min-width: 1376px) 830px, (min-width: 1024px) 64vw, (min-width: 
 
 // The poster and its drawing side by side at the same height: their
 // columns follow their shapes (1500 x 2123 and 960 x 956).
-const SAME_HEIGHT = "grid items-start gap-4 sm:grid-cols-[0.7066fr_1.0042fr] sm:gap-6";
-const POSTER = "(min-width: 1376px) 525px, (min-width: 640px) 41vw, 100vw";
+// The banner and its timelapse side by side, the same size: the timelapse
+// was exported squeezed into a square, so it's stretched back to the
+// banner's shape.
+const SAME_HEIGHT = "grid items-start gap-4 sm:grid-cols-2 sm:gap-6";
+const POSTER = "(min-width: 1376px) 636px, (min-width: 640px) 50vw, 100vw";
 
 // The Series B banner's drafts, every artboard of the Illustrator file
 // before the final one (one exact repeat left out), in the order drawn.
@@ -144,7 +147,7 @@ export const World = () => (
           <Clip
             name="seriesb-timelapse"
             label="A timelapse of the banner being drawn: trunks, then the canopy and light, then the type"
-            aspect="aspect-[960/956]"
+            aspect="aspect-[1500/2123] object-fill"
             caption="The drawing, six times faster."
           />
         </div>
