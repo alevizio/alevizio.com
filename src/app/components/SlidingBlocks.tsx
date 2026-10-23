@@ -250,10 +250,12 @@ export default function SlidingBlocks() {
 
     const resize = (r: Renderer) => {
       const dpr = window.devicePixelRatio || 1;
-      // At most 1.5 canvas px per CSS px, with a whole number of device
-      // pixels per canvas pixel, so the cells and dots stay crisp when the
-      // canvas is scaled up to the screen.
-      const scale = dpr / Math.ceil(dpr / 1.5);
+      // About one canvas px per CSS px, with a whole number of device pixels
+      // per canvas pixel, so the cells and dots stay crisp when the canvas
+      // is scaled up to the screen. A 3x phone gets a 1x canvas: the dots
+      // are 4 CSS px either way, and its GPU paints less than half the
+      // pixels it would at 1.5x.
+      const scale = dpr / Math.max(1, Math.round(dpr));
       const width = canvas.clientWidth;
       height = canvas.clientHeight;
       const bufferWidth = Math.round(width * scale);
