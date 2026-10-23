@@ -310,10 +310,12 @@ const Row = ({
   items,
   indexOffset,
   logoBoxHeight,
+  className = "",
 }: {
   items: Company[];
   indexOffset: number;
   logoBoxHeight?: string;
+  className?: string;
 }) => {
   // MOBILE (flex stack): tagged rows get a larger vertical gap so the open
   // space below each pill matches the pill-less rows' logo gap. Uses gap-Y only
@@ -325,7 +327,7 @@ const Row = ({
     <div
       className={`flex flex-col items-start md:grid md:grid-cols-subgrid md:col-span-full md:items-start ${
         hasTags ? "gap-y-[82px] pb-7" : "gap-y-14"
-      }`}
+      } ${className}`}
     >
       {items.map((company, index) => (
         <Logo
@@ -364,10 +366,15 @@ export default function CompanyLogos() {
           delay={1.5}
           className="md:col-span-full"
         />
+        {/* A wider column gap than the row above: its pills run under the
+            next column, so Pachama's would otherwise touch Aerolab. A subgrid
+            keeps its own gap, so Pachama stays under Planta and Aerolab moves
+            right by the difference. */}
         <Row
           items={secondary}
           indexOffset={primary.length}
           logoBoxHeight="h-[32px]"
+          className="md:gap-x-28"
         />
       </div>
     </div>
