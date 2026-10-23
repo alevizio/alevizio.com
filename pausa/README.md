@@ -44,5 +44,6 @@ npm run dev
 
 ## Status
 
-**Unlisted (noindex)**, to match the Messa story. The Pausa brand belongs to
-Pausa; this is Alejandro Vizio's write-up of the work.
+Live at [pausa.alevizio.com](https://pausa.alevizio.com) and indexed, like the
+Messa story. The Pausa brand belongs to Pausa; this is Alejandro Vizio's
+write-up of the work.

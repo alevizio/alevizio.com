@@ -3,10 +3,9 @@ import { WORLD } from "./world";
 /*
  * The Messa logo — iso-M mark + wordmark. Paths ported verbatim from
  * messa-landing src/components/Logo.tsx (the client's own component);
- * rendered here under the same arrangement as the licensed fonts:
- * unlisted, noindex, client-approved. Like Messa's cream pages, the
- * icon takes the muted slate accent by default while the wordmark
- * stays ink.
+ * rendered here under the same client-approved arrangement as the
+ * licensed fonts. Like Messa's cream pages, the icon takes the muted
+ * slate accent by default while the wordmark stays ink.
  */
 
 const LOGO_ICON_PATH =

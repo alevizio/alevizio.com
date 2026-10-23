@@ -11,13 +11,11 @@ const TITLE = "Pausa — case study — Alejandro Vizio";
 const DESCRIPTION =
   "Designing Pausa's identity by hand: a tangle, one blue pen, and a highlighter used once per screen. Brand, app, App Store and site, June to August 2026.";
 
-// Served at the root of its own subdomain, like the Messa story. Unlisted
-// (noindex) to match it; flip robots.index when it should be found.
+// Served at the root of its own subdomain, like the Messa story.
 export const metadata: Metadata = {
   metadataBase: new URL("https://pausa.alevizio.com"),
   title: TITLE,
   description: DESCRIPTION,
-  robots: { index: false, follow: false },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,

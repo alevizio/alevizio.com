@@ -57,4 +57,4 @@ Then open [http://localhost:3000](http://localhost:3000).
 
 ## Status
 
-Currently **unlisted (noindex)** until the client launch. The Messa brand and product belong to Messa; this repository is Alejandro Vizio's write-up of the design and engineering work behind their landing page.
+Live at [messa.alevizio.com](https://messa.alevizio.com) and indexed. The Messa brand and product belong to Messa; this repository is Alejandro Vizio's write-up of the design and engineering work behind their landing page.

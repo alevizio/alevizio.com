@@ -53,15 +53,12 @@ import { TimelapseScrubber } from "./timelapse-scrubber";
 import { UnderneathDig } from "./underneath-dig";
 import { Borehole, StratumBlock, SurveyGrid } from "./underneath-strata";
 
-// Served at the root of its own subdomain (messa.alevizio.com). Still
-// noindex — the story stays unlisted until the client launches; flip
-// robots.index to true when you want it discoverable.
+// Served at the root of its own subdomain (messa.alevizio.com).
 export const metadata: Metadata = {
   metadataBase: new URL("https://messa.alevizio.com"),
   title: "Messa — the story — Alejandro Vizio",
   description:
     "Designing and building the Messa landing page: a warm paper world for an AI hiring copilot. Product design and frontend, solo, March to June 2026.",
-  robots: { index: false, follow: false },
   openGraph: {
     title: "Messa — the story — Alejandro Vizio",
     description:
@@ -556,7 +553,7 @@ const MessaCaseStudyPage = () => (
       <article className="relative mx-auto max-w-3xl px-6 pt-24 sm:pt-32">
         <header>
           <p className="inline-flex items-center rounded-full border border-[#E8D9C5] bg-white px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-[#5A6B8F]">
-            The story · Unlisted
+            The story
           </p>
           {/* The brand mark IS the title (client call 2026-06-10); the
            * svg carries aria-label="Messa", which becomes the h1's
@@ -1414,8 +1411,7 @@ const MessaCaseStudyPage = () => (
           <p>
             Three sketches became a place — a factory with weather, a
             typewriter that writes to you, a booking flow that actually
-            books. Messa hasn&apos;t launched yet, so this story ships
-            unlisted. If you found it, you were meant to.
+            books.
           </p>
         </Prose>
 
