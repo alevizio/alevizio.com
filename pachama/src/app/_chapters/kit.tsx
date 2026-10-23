@@ -1,5 +1,6 @@
 import { BanyanCover } from "../_components/banyan/cover";
 import { ComponentGallery } from "../_components/banyan/gallery";
+import { BanyanStructure } from "../_components/banyan/structure";
 import { DocWall } from "../_components/banyan/wall";
 import { CountUp } from "../_components/count-up";
 import { Band, ChapterDivider, Section } from "../_components/story";
@@ -39,6 +40,15 @@ export const Kit = () => (
         ))}
       </dl>
       <DocWall className="mt-10" />
+    </Section>
+
+    <Section
+      id="structure"
+      eyebrow="The structure"
+      title="How it's put together"
+      text="The families, the components in each, and how one button multiplies into its variants, with the Figma's own names."
+    >
+      <BanyanStructure />
     </Section>
 
     <Section

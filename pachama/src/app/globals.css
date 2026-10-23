@@ -95,6 +95,69 @@
   background-image: linear-gradient(75deg, rgb(132 225 255 / 0.5), var(--color-bn-green));
 }
 
+/* Banyan's structure: names in mono joined by lines, as a tree. A name's
+ * children hang from a trunk to its right; each child joins it with a tick,
+ * the first at the name's own line, the last with an elbow. */
+.bn-tree {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 24px;
+}
+.bn-tree li {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding-left: 18px;
+  white-space: nowrap;
+}
+.bn-tree li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 12px;
+  border-top: 1px solid currentColor;
+}
+.bn-tree li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid currentColor;
+}
+.bn-tree li:first-child::after {
+  top: 12px;
+}
+.bn-tree li:last-child::after {
+  bottom: auto;
+  height: 12px;
+}
+.bn-tree li:first-child:last-child::after {
+  display: none;
+}
+.bn-tree li > ul {
+  position: relative;
+  margin-left: 20px;
+}
+.bn-tree li > ul::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 12px;
+  width: 14px;
+  border-top: 1px solid currentColor;
+}
+/* The families hang from the line out of "Banyan": each column's trunk
+ * rises to it. */
+.bn-tree-hang > li:first-child::after {
+  top: -14px;
+}
+.bn-tree-hang > li:first-child:last-child::after {
+  display: block;
+  height: 26px;
+}
+
 /* Headlines set like the brand's: Chromatic Condensed, bold, in capitals, tight. */
 @utility type-display {
   font-family: var(--font-display);
