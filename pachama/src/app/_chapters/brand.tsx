@@ -97,7 +97,9 @@ export const Brand = () => (
       text="Formal geometry overlapping like a Venn diagram: nature, technology and community, in one gradient from leaf to sky."
     >
       <Clip name="howhow/logo-l" label="The Pachama logo drawing itself" aspect="aspect-video" bleed />
-      <div data-reveal="frame" className={cn(BLEED, "mt-6")}>
+      {/* Straight under the logo film, on the same pine: one field, no seam
+       * (so it doesn't open on its own as it arrives). */}
+      <div className={BLEED}>
         <MarkExplorer />
       </div>
     </Section>
