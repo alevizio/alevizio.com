@@ -131,7 +131,8 @@ export const World = () => (
       </ChapterDivider>
 
       <Section id="booth" eyebrow="Events" title="The 2024 booth" text="Two directions for the stand: See carbon in action, and Restoring balance.">
-        <div data-reveal="frame">
+        {/* A plain reveal: the frame's clip would crop the row to the text column until it settled. */}
+        <div data-reveal>
           <Slider label="The 2024 booth, four renders" slides={BOOTH} sizes={SLIDE} />
         </div>
       </Section>
