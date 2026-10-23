@@ -12,7 +12,7 @@ const LIGHT = "#dedbd1";
 const DARK = "#c0bdb3";
 const CELLS = 16; // cells across the width
 const DOT = 4; // dither cell, CSS px
-const SPEED = 0.03; // how fast the field drifts
+const SPEED = 0.015; // how fast the field drifts
 const VIGNETTE = 0.12; // darkening at the corners, 0 to 1
 // With no ripple the only visible changes are cells flipping now and then, so
 // 15 fps looks the same as 60 and costs a quarter. Ripples run at 60.
