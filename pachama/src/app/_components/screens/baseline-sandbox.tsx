@@ -307,7 +307,7 @@ export const BaselineSandbox = ({ className }: { className?: string }) => {
         </div>
         {/* The way on to a real analysis, as the panel ends; on wide screens, where it fits. */}
         <div className="mt-auto rounded-[12px] bg-[#e6f6fb] p-4 text-[#0e2517] max-xl:hidden">
-          <span className="rounded-full bg-[#2b8fb0] px-2 py-0.5 font-mono text-[10px] font-bold text-white uppercase">Pro</span>
+          <span className="rounded-full bg-[#1f6f8b] px-2 py-0.5 font-mono text-[10px] font-bold text-white uppercase">Pro</span>
           <p className="mt-3 text-[16px] leading-5 font-bold">Need insights for your own project area?</p>
           <p className="mt-2 text-[12px] leading-4">We&rsquo;ll run a custom DCAB analysis to support:</p>
           <ul className="mt-1 list-disc pl-4 text-[12px] leading-5">
