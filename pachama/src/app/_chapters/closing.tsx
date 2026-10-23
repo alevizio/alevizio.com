@@ -5,12 +5,13 @@ import { Band, PAGE, Section } from "../_components/story";
 
 // The five years in four figures: the rounds as Alejandro remembers the
 // total (the Series A and B amounts are the press below and the Series B
-// banner), the pages Banyan's documentation and the brand guidelines' Figma.
+// banner), Banyan's components (its 37 documented pages, less the four on
+// foundations) and the projects evaluated, the site's own figure.
 const NUMBERS = [
   { value: 5, unit: "years", text: "At Pachama as senior product designer, 2020 to 2025." },
   { value: 90, before: "$", after: "M", unit: "raised", text: "Across the seed, the Series A ($15 million, 2021) and the Series B ($55 million, 2022)." },
-  { value: 37, unit: "pages of Banyan", text: "The design system, every component designed and documented in Figma, and built." },
-  { value: 127, unit: "pages of guidelines", text: "The brand set down for everyone, from the logo to the charts and the photographs." },
+  { value: 33, unit: "Banyan components", text: "Each one designed and documented in Figma, and built in code by Pachama's engineers." },
+  { value: 150, before: ">", unit: "projects evaluated", text: "Forest carbon projects checked against satellite data before they reached a buyer." },
 ];
 
 // Carbon Direct's announcement, where its short link lands now that the
@@ -106,7 +107,7 @@ export const Closing = () => (
       id="next"
       eyebrow="What happened next"
       title="Acquired by Carbon Direct, now Relae"
-      text="On 10 November 2025 Carbon Direct bought Pachama and kept the platform. What I'd keep from five years of it: carbon is invisible, so the work was making it something people could see, check and trust."
+      text="On 10 November 2025 Carbon Direct bought Pachama and kept the platform. I joined with much of the team, to help bring Pachama's monitoring technology into Carbon Direct's product. What I'd keep from five years of it: carbon is invisible, so the work was making it something people could see, check and trust."
     >
       <a href={ANNOUNCEMENT} target="_blank" rel="noopener noreferrer" data-reveal="frame" className="group block max-w-[40rem]">
         <span className="block overflow-hidden rounded-[16px] border border-white/10">
