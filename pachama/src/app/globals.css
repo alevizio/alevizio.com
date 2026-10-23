@@ -464,6 +464,46 @@
   }
 }
 
+/* The project map: the forests sweep in, then a scan crosses them. The
+ * positions are registered so the masks' gradients can animate. */
+@property --sweep {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: -15%;
+}
+@property --scan {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: -20%;
+}
+@keyframes map-sweep {
+  from {
+    --sweep: -15%;
+  }
+  to {
+    --sweep: 115%;
+  }
+}
+@keyframes map-scan {
+  0% {
+    --scan: -20%;
+  }
+  60%,
+  100% {
+    --scan: 120%;
+  }
+}
+
+/* The aerial reveal's lens: a scan line running down it. */
+@keyframes lens-scan {
+  from {
+    top: -2.5rem;
+  }
+  to {
+    top: 100%;
+  }
+}
+
 /* A belt of two copies moving one copy's width. */
 @keyframes belt {
   to {

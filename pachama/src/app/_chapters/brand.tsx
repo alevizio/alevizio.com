@@ -23,6 +23,7 @@ import { NatureRelations } from "../_components/nature-relations";
 import { Moodboard } from "../_components/moodboard";
 import { SeeCarbon } from "../_components/see-carbon";
 import { Palette } from "../_components/palette";
+import { ProjectMap } from "../_components/project-map";
 import { Slider } from "../_components/slider";
 import { BLEED, Clip, HALF, Masonry, Shot } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
@@ -103,6 +104,7 @@ export const Brand = () => (
       text="FNDR's strategy put nature and data in the same sentence. How&How turned it into a headline and a way of drawing: the forest, and the carbon in it, made visible."
     >
       <SeeCarbon />
+      <ProjectMap className="mt-6 sm:mt-10" />
     </Section>
 
     <Section
