@@ -10,7 +10,7 @@ import manoa from "@/assets/screens/explore-manoa.jpg";
 import nicaforest from "@/assets/screens/explore-nicaforest.jpg";
 import aerial from "@/assets/screens/source-aerial.jpg";
 import Image, { type StaticImageData } from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MdClose, MdOutlineEco, MdOutlineImageSearch, MdOutlineListAlt, MdOutlineMap, MdOutlinePhotoLibrary, MdOutlineSettings, MdPublic, MdSearch } from "react-icons/md";
 import { BN } from "../banyan/ui";
 import { MARKS } from "../brand-marks";
@@ -111,7 +111,30 @@ export const Insights = ({ className }: { className?: string }) => {
   const [kind, setKind] = useState<Kind | null>(null);
   const [country, setCountry] = useState<string | null>(null);
   const [picked, setPicked] = useState(PROJECTS[0].name);
-  const [flat, setFlat] = useState(false);
+  // It opens flat and, once it's well in view, rolls up into the globe
+  // (unless the view was already picked); with less motion, it's the globe.
+  const [flat, setFlat] = useState(true);
+  const box = useRef<HTMLDivElement>(null);
+  const touched = useRef(false);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    let id = 0;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio < 0.5) return;
+        observer.disconnect();
+        const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        id = window.setTimeout(() => !touched.current && setFlat(false), still ? 0 : 700);
+      },
+      { threshold: [0, 0.5] },
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(id);
+    };
+  }, []);
 
   const shown = useMemo(
     () =>
@@ -125,7 +148,7 @@ export const Insights = ({ className }: { className?: string }) => {
   const current = shown.find((p) => p.name === picked) ?? shown[0];
 
   return (
-    <GlassFrame backdrop={aerial} className={className} innerClassName="lg:grid lg:h-[44rem] lg:grid-cols-[4.5rem_23rem_1fr]">
+    <GlassFrame ref={box} backdrop={aerial} className={className} innerClassName="lg:grid lg:h-[44rem] lg:grid-cols-[4.5rem_23rem_1fr]">
       {/* The app's chrome, for the picture: not a menu here. */}
       <div aria-hidden className="hidden flex-col items-center gap-2 border-r border-white/10 bg-[#0e1b14] py-5 lg:flex">
         <svg viewBox={viewBox} className="mb-4 w-8 fill-white">
@@ -242,7 +265,10 @@ export const Insights = ({ className }: { className?: string }) => {
               key={label}
               type="button"
               aria-pressed={flat === id}
-              onClick={() => setFlat(id)}
+              onClick={() => {
+                touched.current = true;
+                setFlat(id);
+              }}
               className={cn(
                 "flex h-9 items-center gap-1.5 rounded-full px-3.5 text-[13px] leading-4 font-medium transition-colors",
                 flat === id ? "bg-white text-bn-heavy" : "text-white/80 hover:text-white",
