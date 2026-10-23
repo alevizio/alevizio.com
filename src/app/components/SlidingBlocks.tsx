@@ -6,7 +6,8 @@ import { useEffect, useRef } from "react";
 // blobs sliding and shifting as the field moves. It moves in pulses, like
 // the reference: every PERIOD seconds it slides on for SLIDE seconds, eased,
 // then rests, and the loop sleeps through the rest. It covers the hero block,
-// fades to the page colour at its foot and scrolls away with it; the loop
+// runs 320px into the timeline, fades to the page colour by then and scrolls
+// away with the hero; the loop
 // stops while the hero is off screen. Drawn by the GPU as one WebGL
 // triangle. The mouse leaves ripples that invert the field along a ring,
 // with the old ASCII rain's drop physics in pixels.
@@ -418,7 +419,7 @@ export default function SlidingBlocks() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-0 h-full w-full select-none opacity-0 transition-opacity duration-1000 [image-rendering:pixelated]"
+      className="pointer-events-none absolute inset-x-0 top-0 -bottom-[320px] z-0 w-full select-none opacity-0 transition-opacity duration-1000 [image-rendering:pixelated]"
     />
   );
 }

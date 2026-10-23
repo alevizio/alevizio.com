@@ -646,9 +646,11 @@ export default function CareerTimeline() {
   return (
     // data-site-nav-inner: Lifeline ends the rail 24px inside this element's
     // right edge, so with the section full width it runs to the window's edge.
-    // Phones: the section is paper, so the ASCII rain (and the ripples a
-    // scrolling thumb leaves) stays in the hero instead of running through
+    // Phones: the section is paper, so the hero's background (and the ripples
+    // a scrolling thumb leaves) stays in the hero instead of running through
     // the lines; it fades in over the 96px above, the gap under the cards.
+    // From md the section is clear and the background's last 320px dissolve
+    // under its first lines.
     <section
       data-site-nav-inner
       aria-labelledby="career-timeline"
