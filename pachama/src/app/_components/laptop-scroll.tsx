@@ -98,15 +98,15 @@ export const LaptopScroll = ({ caption, className }: { caption?: string; classNa
         className="@container relative"
       >
         <Image src={laptop} alt="" sizes="100vw" placeholder="blur" className="h-auto w-full [clip-path:inset(18.5%_0_0_0)]" />
-        {/* The lid alone, to where the photo starts: cut half a pixel inside its
-            rim, which the photo puts at 140 px down, from 350 to 1571 px across,
-            with corners 32 px round (of 1920 x 1080), so none of what's behind
-            it shows. */}
+        {/* The lid alone, to where the photo starts: its top cut just inside the
+            rim (140 px down, of 1920 x 1080), so nothing behind it shows; its
+            sides on the rim's outer edge (349.4 and 1571.9 px across), so they
+            carry on unbroken into the photo below; corners 32 px round. */}
         <Image
           src={laptop}
           alt=""
           sizes="100vw"
-          className="absolute inset-x-0 top-0 h-auto w-full [clip-path:inset(13%_18.15%_80%_18.26%_round_1.67cqw_1.67cqw_0_0)]"
+          className="absolute inset-x-0 top-0 h-auto w-full [clip-path:inset(13%_18.13%_80%_18.2%_round_1.67cqw_1.67cqw_0_0)]"
         />
         <div className="absolute top-[14.58%] left-[19.19%] h-[70.83%] w-[61.67%] overflow-hidden rounded-t-[0.52cqw] bg-[#fbfbf2]">
           <Image
