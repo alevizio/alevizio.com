@@ -15,6 +15,7 @@ import { MdClose, MdOutlineEco, MdOutlineImageSearch, MdOutlineListAlt, MdOutlin
 import { BN } from "../banyan/ui";
 import { MARKS } from "../brand-marks";
 import { cn } from "../cn";
+import { Flag, type Country } from "../flag";
 import { GlassFrame } from "./glass-frame";
 import { Globe } from "./globe";
 
@@ -28,11 +29,10 @@ import { Globe } from "./globe";
  * from their project pages (hectares where the pages agree on them); pins
  * mark each project's region, not its exact site. */
 type Kind = "REDD+" | "ARR";
-type Flag = "br" | "id" | "ni" | "us";
 type Project = {
   name: string;
   country: string;
-  flag: Flag;
+  flag: Country;
   area?: string;
   kind: Kind;
   type: string;
@@ -65,37 +65,6 @@ const RAIL = [
   { label: "Settings", Icon: MdOutlineSettings },
 ];
 const { viewBox, symbol } = MARKS.symbol;
-
-/** Small round flags, like Banyan's country chips. */
-const FlagDot = ({ flag }: { flag: Flag }) => (
-  <svg viewBox="0 0 24 24" aria-hidden className="size-5 shrink-0 rounded-full ring-1 ring-black/10">
-    {flag === "br" ? (
-      <>
-        <rect width="24" height="24" fill="#229e45" />
-        <path d="M12 4.5 21.5 12 12 19.5 2.5 12Z" fill="#f8e509" />
-        <circle cx="12" cy="12" r="4.4" fill="#2b49a3" />
-      </>
-    ) : flag === "id" ? (
-      <>
-        <rect width="24" height="12" fill="#e70011" />
-        <rect y="12" width="24" height="12" fill="#ffffff" />
-      </>
-    ) : flag === "ni" ? (
-      <>
-        <rect width="24" height="24" fill="#0067c6" />
-        <rect y="8" width="24" height="8" fill="#ffffff" />
-      </>
-    ) : (
-      <>
-        <rect width="24" height="24" fill="#ffffff" />
-        {[0, 2, 4, 6, 8, 10, 12].map((k) => (
-          <rect key={k} y={(k * 24) / 13} width="24" height={24 / 13} fill="#b22234" />
-        ))}
-        <rect width="11" height="13" fill="#3c3b6e" />
-      </>
-    )}
-  </svg>
-);
 
 // Filters sit on the dark map, glass over it as on the product's maps.
 const chip = (on: boolean) =>
@@ -209,7 +178,7 @@ export const Insights = ({ className }: { className?: string }) => {
                 >
                   <span className="grid gap-1">
                     <span className="flex items-center gap-2 text-[13px] leading-4">
-                      <FlagDot flag={p.flag} />
+                      <Flag country={p.flag} />
                       <span className="font-bold">{p.country}</span>
                       {p.area ? (
                         <>
@@ -247,7 +216,7 @@ export const Insights = ({ className }: { className?: string }) => {
             {COUNTRIES.map(([name, flag]) => (
               <button key={name} type="button" aria-pressed={country === name} onClick={() => setCountry(country === name ? null : name)} className={chip(country === name)}>
                 {name}
-                <FlagDot flag={flag} />
+                <Flag country={flag} />
               </button>
             ))}
           </div>

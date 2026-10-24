@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
 import { MdClose } from "react-icons/md";
 import { cn } from "../../cn";
 import { BN } from "../ui";
 
 /* Banyan's tag (Figma: Tag, 1059:6910): a soft pill for a keyword, glass
- * level 2 at 30%, in three sizes, with an optional close. */
+ * level 2 at 30%, in three sizes, with an optional close, and room for
+ * something before the label (a country's flag). */
 type Size = "xs" | "sm" | "md";
 
 const SIZE: Record<Size, { pill: string; icon: string }> = {
@@ -15,16 +17,19 @@ const SIZE: Record<Size, { pill: string; icon: string }> = {
 export const Tag = ({
   label,
   size = "md",
+  leading,
   onDismiss,
   className,
 }: {
   label: string;
   size?: Size;
+  leading?: ReactNode;
   /** Makes the tag dismissible: a close button removes it. */
   onDismiss?: () => void;
   className?: string;
 }) => (
   <span className={cn("inline-flex items-center rounded-full bg-bn-glass-2/30 font-medium whitespace-nowrap text-bn-heavy", SIZE[size].pill, className)}>
+    {leading}
     {label}
     {onDismiss ? (
       <button type="button" onClick={onDismiss} aria-label={`Remove ${label}`} className={cn("-m-1 grid place-items-center rounded-full p-1 transition-colors hover:bg-bn-glass-2", BN.focus)}>

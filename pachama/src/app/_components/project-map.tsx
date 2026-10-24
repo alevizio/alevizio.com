@@ -3,8 +3,9 @@
 import forest from "@/assets/brand/map/forest-dots.png";
 import land from "@/assets/brand/map/land-dots.png";
 import Image from "next/image";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "./cn";
+import { Flag, type Country as FlagCode } from "./flag";
 import { BLEED } from "./shot";
 
 /* Where Pachama supported projects, the website's world map: the land in
@@ -14,65 +15,32 @@ import { BLEED } from "./shot";
  * countries drop in one after another; then a scan crosses the forests
  * now and again. On a phone it closes in on the Americas. With less motion
  * it's all simply there. */
-type Country = { name: string; at: string; flag: ReactNode; delay: string };
-
-const Flag = ({ children }: { children: ReactNode }) => (
-  <svg viewBox="0 0 24 24" aria-hidden className="size-[max(22px,2.26cqw)] shrink-0 rounded-full ring-1 ring-black/10">
-    {children}
-  </svg>
-);
+type Country = { name: string; at: string; flag: FlagCode; delay: string };
 // Placed as in the Figma (a 1728 x 862 frame), as literal classes.
 const COUNTRIES: Country[] = [
   {
     name: "United States",
     at: "left-[45.14%] top-[29.47%]",
     delay: "[animation-delay:0.9s]",
-    flag: (
-      <Flag>
-        <rect width="24" height="24" fill="#ffffff" />
-        {[0, 2, 4, 6, 8, 10, 12].map((k) => (
-          <rect key={k} y={(k * 24) / 13} width="24" height={24 / 13} fill="#b22234" />
-        ))}
-        <rect width="11" height="13" fill="#3c3b6e" />
-      </Flag>
-    ),
+    flag: "us",
   },
   {
     name: "Mexico",
     at: "left-[36.46%] top-[47.8%]",
     delay: "[animation-delay:1.15s]",
-    flag: (
-      <Flag>
-        <rect width="8" height="24" fill="#006847" />
-        <rect x="8" width="8" height="24" fill="#ffffff" />
-        <rect x="16" width="8" height="24" fill="#ce1126" />
-        <circle cx="12" cy="12" r="2.6" fill="#8c6b3d" />
-      </Flag>
-    ),
+    flag: "mx",
   },
   {
     name: "Brazil",
     at: "left-[57.29%] top-[62.88%]",
     delay: "[animation-delay:1.4s]",
-    flag: (
-      <Flag>
-        <rect width="24" height="24" fill="#229e45" />
-        <path d="M12 4.5 21.5 12 12 19.5 2.5 12Z" fill="#f8e509" />
-        <circle cx="12" cy="12" r="4.4" fill="#2b49a3" />
-      </Flag>
-    ),
+    flag: "br",
   },
   {
     name: "Argentina",
     at: "left-[43%] top-[77.49%]",
     delay: "[animation-delay:1.65s]",
-    flag: (
-      <Flag>
-        <rect width="24" height="24" fill="#74acdf" />
-        <rect y="8" width="24" height="8" fill="#ffffff" />
-        <circle cx="12" cy="12" r="2.4" fill="#f6b40e" />
-      </Flag>
-    ),
+    flag: "ar",
   },
 ];
 // The dot layers overhang the frame in the Figma: placed the same way, and
@@ -134,7 +102,7 @@ export const ProjectMap = ({ className }: { className?: string }) => {
                 c.delay,
               )}
             >
-              {c.flag}
+              <Flag country={c.flag} className="size-[max(22px,2.26cqw)]" />
               <span className="font-mono text-[max(10px,0.81cqw)] leading-none tracking-[0.08em] whitespace-nowrap text-bn-heavy uppercase">{c.name}</span>
             </p>
           ))}

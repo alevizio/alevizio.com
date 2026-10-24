@@ -4,13 +4,14 @@ import landShare from "@/assets/product/source-land-share.jpg";
 import forest from "@/assets/source/event-forest.jpg";
 import symbiosis from "@/assets/source/symbiosis.png";
 import Image from "next/image";
-import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode, type RefObject } from "react";
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type RefObject } from "react";
 import { MdAdd, MdArrowBack, MdArrowForward, MdCheck, MdClose, MdContentCopy, MdLock } from "react-icons/md";
 import { Button } from "../banyan/button";
 import { TextInput } from "../banyan/forms/input";
 import { Select } from "../banyan/forms/select";
 import { BN } from "../banyan/ui";
 import { cn } from "../cn";
+import { Flag, type Country } from "../flag";
 
 /* Source's idea, a sourcing event in one link, as a demo in a browser
  * window: the link a buyer shares, the event page it opens (rebuilt live
@@ -24,64 +25,12 @@ const PATH: Record<Step, string> = {
   land: "/events/symbiosis/reforestation-agroforestry/submission/land",
 };
 
-const Flag = ({ children }: { children: ReactNode }) => (
-  <svg viewBox="0 0 24 24" aria-hidden className="size-4 shrink-0 rounded-full ring-1 ring-black/10">
-    {children}
-  </svg>
-);
-const COUNTRIES = [
-  {
-    name: "Colombia",
-    flag: (
-      <>
-        <rect width="24" height="12" fill="#fcd116" />
-        <rect y="12" width="24" height="6" fill="#003893" />
-        <rect y="18" width="24" height="6" fill="#ce1126" />
-      </>
-    ),
-  },
-  {
-    name: "Argentina",
-    flag: (
-      <>
-        <rect width="24" height="24" fill="#74acdf" />
-        <rect y="8" width="24" height="8" fill="#ffffff" />
-        <circle cx="12" cy="12" r="2.4" fill="#f6b40e" />
-      </>
-    ),
-  },
-  {
-    name: "Mexico",
-    flag: (
-      <>
-        <rect width="8" height="24" fill="#006847" />
-        <rect x="8" width="8" height="24" fill="#ffffff" />
-        <rect x="16" width="8" height="24" fill="#ce1126" />
-      </>
-    ),
-  },
-  {
-    name: "Brasil",
-    flag: (
-      <>
-        <rect width="24" height="24" fill="#229e45" />
-        <path d="M12 4.5 21.5 12 12 19.5 2.5 12Z" fill="#f8e509" />
-        <circle cx="12" cy="12" r="4.4" fill="#2b49a3" />
-      </>
-    ),
-  },
-  {
-    name: "United States",
-    flag: (
-      <>
-        <rect width="24" height="24" fill="#ffffff" />
-        {[0, 2, 4, 6, 8, 10, 12].map((k) => (
-          <rect key={k} y={(k * 24) / 13} width="24" height={24 / 13} fill="#b22234" />
-        ))}
-        <rect width="11" height="13" fill="#3c3b6e" />
-      </>
-    ),
-  },
+const COUNTRIES: { name: string; flag: Country }[] = [
+  { name: "Colombia", flag: "co" },
+  { name: "Argentina", flag: "ar" },
+  { name: "Mexico", flag: "mx" },
+  { name: "Brasil", flag: "br" },
+  { name: "United States", flag: "us" },
 ];
 const TYPES = ["ARR - Afforestation, Reforestation, Revegetation", "Agroforestry (inclusive of silvopasture)"];
 const EARLIER = [
@@ -114,7 +63,7 @@ const EventPage = ({ onSubmit, submitRef }: { onSubmit: () => void; submitRef: R
       <ul className="mt-3 flex flex-wrap gap-2">
         {COUNTRIES.map((c) => (
           <li key={c.name} className={chip}>
-            <Flag>{c.flag}</Flag>
+            <Flag country={c.flag} className="size-4" />
             {c.name}
           </li>
         ))}

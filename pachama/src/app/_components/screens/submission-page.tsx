@@ -5,7 +5,7 @@ import { MdArrowBack, MdArrowForward, MdCheck, MdCheckCircle, MdPause, MdPlayArr
 import { Button } from "../banyan/button";
 import { BN } from "../banyan/ui";
 import { cn } from "../cn";
-import { Brazil } from "./brazil-flag";
+import { Flag } from "../flag";
 import { LandSuitability } from "./land-suitability";
 import { STAGES } from "./screening-data";
 import { Proposal, ProjectInfo, Questionnaire } from "./submission-parts";
@@ -147,7 +147,7 @@ export const SubmissionPage = ({ className }: { className?: string }) => {
         <p className="flex items-center gap-3 text-[13px]">
           <MdArrowBack aria-hidden className="size-5" />
           <span className="flex items-center gap-1.5">
-            <Brazil /> Brazil
+            <Flag country="br" className="size-4" /> Brazil
           </span>
           <span className="border-l border-bn-grey-light pl-3">10,039 hectares</span>
         </p>

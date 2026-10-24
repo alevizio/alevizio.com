@@ -9,6 +9,7 @@ import { TextInput } from "../banyan/forms/input";
 import { BN } from "../banyan/ui";
 import { MARKS } from "../brand-marks";
 import { cn } from "../cn";
+import { Flag, type Country } from "../flag";
 
 /* The two dialogs the portfolio work turned on, rebuilt live from their
  * Figma and shown on their own: a buyer's carbon sourcing plan (what to
@@ -28,13 +29,27 @@ const CRITERIA: { title: string; items: string[] }[] = [
   { title: "Registries", items: ["Verra", "Gold Standard", "Climate Action Reserve"] },
   {
     title: "Regions",
-    items: ["🇨🇦 Canada", "🇺🇸 USA", "🇲🇽 Mexico", "🇧🇷 Brazil", "🇦🇷 Argentina", "🇵🇾 Paraguay", "🇸🇬 Singapore", "🇰🇪 Kenya", "🇮🇳 India", "🇲🇼 Malawi", "🇨🇩 Democratic Republic of the Congo"],
+    items: ["Canada", "USA", "Mexico", "Brazil", "Argentina", "Paraguay", "Singapore", "Kenya", "India", "Malawi", "Democratic Republic of the Congo"],
   },
   {
     title: "Third-party verifications",
     items: ["Pachama Verified", "Pachama Originals", "Science Based Targets initiative", "ABACUS", "Symbiosis", "CCB Gold", "CCB Triple Gold", "CDM", "Sylvera AAA", "Sylvera BBB", "Sylvera BB", "Sylvera B", "BeZero AAA"],
   },
 ];
+// The regions' tags carry their flags.
+const FLAGS: Record<string, Country> = {
+  Canada: "ca",
+  USA: "us",
+  Mexico: "mx",
+  Brazil: "br",
+  Argentina: "ar",
+  Paraguay: "py",
+  Singapore: "sg",
+  Kenya: "ke",
+  India: "in",
+  Malawi: "mw",
+  "Democratic Republic of the Congo": "cd",
+};
 const SCOPES = ["Existing", "New", "Both"];
 
 /** A criterion's chips: take one off, and the plus puts the last one back. */
@@ -58,7 +73,12 @@ const Criterion = ({ title, items }: { title: string; items: string[] }) => {
       <ul aria-label={title} className="mt-3 flex flex-wrap gap-2">
         {kept.map((item) => (
           <li key={item} className="motion-safe:animate-[arrive_0.35s_var(--ease-arrive)_both]">
-            <Tag label={item} size="sm" onDismiss={() => setKept((k) => k.filter((x) => x !== item))} />
+            <Tag
+              label={item}
+              size="sm"
+              leading={FLAGS[item] ? <Flag country={FLAGS[item]} className="size-4" /> : null}
+              onDismiss={() => setKept((k) => k.filter((x) => x !== item))}
+            />
           </li>
         ))}
         {!kept.length ? <li className="text-[13px] text-bn-medium">Any</li> : null}
@@ -159,7 +179,7 @@ export const ProposalModal = ({ className }: { className?: string }) => {
                     </svg>
                   </span>
                   <span className="rounded-full bg-[#e9edea] px-2 py-0.5 text-[11px] font-medium">VCS 1477</span>
-                  <span aria-hidden>🇨🇴</span> Colombia
+                  <Flag country="co" className="size-4" /> Colombia
                 </span>
                 <span className="font-display text-[24px] leading-7 font-bold">Chocó-Darién Bioregion</span>
                 <span className="text-[13px] text-bn-medium">Avoided unplanned deforestation</span>

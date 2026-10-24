@@ -1,7 +1,7 @@
 import { MdInfoOutline, MdNorthEast } from "react-icons/md";
 import { cn } from "../cn";
 import { CountUp } from "../count-up";
-import { Brazil } from "./brazil-flag";
+import { Flag } from "../flag";
 import { ForestLossMap } from "./forest-loss-map";
 
 /* Manoa's carbon monitoring, rebuilt live from the Project / Monitoring
@@ -118,7 +118,7 @@ export const CarbonMonitoring = ({ className }: { className?: string }) => (
     <h4 className="font-display text-[40px] leading-none font-bold sm:text-[48px]">Manoa</h4>
     <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] leading-5 lg:[&>li+li]:border-l lg:[&>li+li]:border-bn-grey-light lg:[&>li+li]:pl-4">
       <li className="flex items-center gap-2">
-        <Brazil /> Manoa, Brazil
+        <Flag country="br" className="size-4" /> Manoa, Brazil
       </li>
       <li>74,039 hectares</li>
       <li>REDD+ Avoided Planned Deforestation</li>
