@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { MdHome } from "react-icons/md";
 import { cn } from "./cn";
 
 export type NavGroup = {
@@ -13,8 +14,9 @@ export type NavGroup = {
 
 /* The Pausa story's nav, in Pachama's colours: collapsed, a quiet stack of
  * ticks on the right edge, one per chapter, the current one longer and in
- * the leaf green. Hover, focus or a click opens a small card; the chapter
- * you're reading unfolds into its sections. Hidden below xl. */
+ * the leaf green. Hover, focus or a click opens a small card, with a way
+ * back to the hero at its top; the chapter you're reading unfolds into its
+ * sections. Hidden below xl. */
 export const StoryNav = ({ groups }: { groups: readonly NavGroup[] }) => {
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -45,10 +47,8 @@ export const StoryNav = ({ groups }: { groups: readonly NavGroup[] }) => {
   const activeGroup = groups.findIndex((g) => g.items.some((i) => i.id === activeId));
   const openGroup = pinned ?? Math.max(activeGroup, 0);
 
-  const jump = (id: string) => {
-    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    document.getElementById(id)?.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
-  };
+  const smooth = () => !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const jump = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: smooth() ? "smooth" : "auto", block: "start" });
 
   const close = () => {
     setOpen(false);
@@ -77,6 +77,19 @@ export const StoryNav = ({ groups }: { groups: readonly NavGroup[] }) => {
             : "pointer-events-none translate-x-2 opacity-0 motion-reduce:translate-x-0",
         )}
       >
+        <button
+          type="button"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: smooth() ? "smooth" : "auto" });
+            close();
+          }}
+          className="mb-1 flex w-full items-center gap-2 rounded-md px-2 py-1.5 font-mono text-[10px] tracking-[0.18em] text-body uppercase transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#157a41]"
+        >
+          <span className="w-6">
+            <MdHome aria-hidden className="size-3.5" />
+          </span>
+          Back to the top
+        </button>
         {groups.map((group, gi) => (
           <div key={group.title} className={gi > 0 ? "mt-1" : undefined}>
             <button
