@@ -11,7 +11,7 @@ const NUMBERS = [
   { value: 5, unit: "years", text: "At Pachama as senior product designer, 2020 to 2025." },
   { value: 90, before: "$", after: "M", unit: "raised", text: "Across the seed, the Series A ($15 million, 2021) and the Series B ($55 million, 2022)." },
   { value: 33, unit: "Banyan components", text: "Each one designed and documented in Figma, and built in code by Pachama's engineers." },
-  { value: 150, before: ">", unit: "projects evaluated", text: "Forest carbon projects checked against satellite data before they reached a buyer." },
+  { value: 150, before: ">", unit: "projects evaluated", text: "Forest carbon projects checked against satellite data before they reached a buyer, and for Symbiosis's RFP, more than 350 boundaries." },
 ];
 
 // Carbon Direct's announcement, where its short link lands now that the
