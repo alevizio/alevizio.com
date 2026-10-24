@@ -13,11 +13,12 @@ import { getView, setReady, subscribeView, type Band, type View } from "./globe-
  * a 10 m wind field and under 2 m temperature, wrapped on a sphere by the
  * GPU and turning, west to east like the real one. Lit from the upper left
  * with a soft terminator, a mint rim, a soft mint halo past the limb.
- * With intro, it starts flat and wide: a mint graticule, then the map
+ * With intro, it starts flat, higher up: a mint graticule, then the map
  * scans into it behind a mint line, pans a moment, then curls into the
- * sphere as the grid fades, the shading and the halo come up and the
- * turn begins (the shape and the lookup blend from the map's rectangle
- * to the disc, in the shader). Dragging turns it, with a little
+ * sphere where it is and settles down into place as the grid fades, the
+ * shading and the halo come up and the turn begins (the shape, the
+ * lookup and the centre blend from the map's rectangle to the disc, in
+ * the shader). Dragging turns it, with a little
  * inertia, and then the slow turn comes back; a finger turns it too, and
  * still scrolls the page. The page's view (globe-store) picks the band
  * and the colour ramp, and a change crossfades. Thirty frames a second
@@ -58,7 +59,8 @@ const PAD = 26 / 4096; // the maps' overlap at either end, as a share of their w
 const REVEAL_S = 1.0;
 const HOLD_S = 0.7;
 const MORPH_S = 1.6;
-const FLAT = 1.3; // the flat map's width, as a share of the globe's
+const FLAT = 0.75; // the flat map's width, as a share of the globe's
+const FLAT_Y = 0.95; // how far above the globe's centre the flat map sits, in radii
 const INTRO_S = REVEAL_S + HOLD_S + MORPH_S;
 
 const VERTEX = `attribute vec2 a_pos;varying vec2 v_uv;void main(){v_uv=a_pos;gl_Position=vec4(a_pos,0.0,1.0);}`;
@@ -86,6 +88,7 @@ uniform float u_reveal; // the scan, 0 nothing to past 1 the whole map
 const float RADIUS = ${RADIUS.toFixed(3)};
 const float PAD = ${PAD.toFixed(6)};
 const float FLAT = ${FLAT.toFixed(2)};
+const float FLAT_Y = ${FLAT_Y.toFixed(2)};
 const vec3 MINT = vec3(0.627, 1.0, 0.843);
 const float PI = 3.14159265;
 
@@ -104,25 +107,29 @@ vec3 shade(sampler2D field, sampler2D under, float ramp, vec2 uv, vec2 gx, vec2 
 
 void main() {
   vec2 p = v_uv / RADIUS;
-  float r2 = dot(p, p);
+  // The flat map sits FLAT_Y above the globe's centre; the sphere forms
+  // there and comes down into place as it does.
+  vec2 pf = p - vec2(0.0, FLAT_Y);
+  vec2 ps = p - vec2(0.0, FLAT_Y * (1.0 - u_morph));
+  float r2 = dot(ps, ps);
   float r = sqrt(r2);
   // The sphere tipped toward the viewer, then turned. Worked out for every
   // pixel, halo included, so the gradients below see whole quads; past
   // the limb the direction stands in for the normal.
   float z = sqrt(max(1.0 - r2, 0.0));
-  vec3 n = r < 1.0 ? vec3(p, z) : vec3(p / max(r, 1e-4), 0.0);
+  vec3 n = r < 1.0 ? vec3(ps, z) : vec3(ps / max(r, 1e-4), 0.0);
   float ct = cos(u_tilt);
   float st = sin(u_tilt);
   vec3 m = vec3(n.x, n.y * ct - n.z * st, n.y * st + n.z * ct);
   float lonSphere = atan(m.x, m.z);
   float latSphere = asin(clamp(m.y, -1.0, 1.0));
   // The flat map: a rectangle twice as wide as tall, FLAT times the disc's width.
-  float lonFlat = p.x / FLAT * PI;
-  float latFlat = clamp(p.y / FLAT * PI, -0.5 * PI, 0.5 * PI);
+  float lonFlat = pf.x / FLAT * PI;
+  float latFlat = clamp(pf.y / FLAT * PI, -0.5 * PI, 0.5 * PI);
   float lon = mix(lonFlat, lonSphere, u_morph) + u_lon;
   float lat = mix(latFlat, latSphere, u_morph);
   // The shape, from the rectangle to the disc.
-  float d = mix(max(abs(p.x), 2.0 * abs(p.y)) / FLAT, r, u_morph);
+  float d = mix(max(abs(pf.x), 2.0 * abs(pf.y)) / FLAT, r, u_morph);
   float u = fract(lon / (2.0 * PI) + 0.5);
   float v = 0.5 - lat / PI;
   vec2 uv = vec2(PAD + u * (1.0 - 2.0 * PAD), v);
@@ -139,7 +146,7 @@ void main() {
   gy = vec2(duy * (1.0 - 2.0 * PAD), dFdy(v));
 #endif
   // The scan: the map shows up to the line, which glows mint.
-  float across = (p.x / FLAT + 1.0) * 0.5;
+  float across = (pf.x / FLAT + 1.0) * 0.5;
   float shown = smoothstep(u_reveal, u_reveal - 0.12, across);
   float line = exp(-abs(across - u_reveal) * 40.0) * 0.7;
   // The graticule, every thirty degrees, there before the data and gone

@@ -13,9 +13,10 @@ const FACTS = [
 
 /* The page's own globe, live: the product's renders of the world under a
  * wind field and under temperature, wrapped on a sphere by the GPU and
- * turning (Globe), big and centred, whole, halo and all: the hero is a
- * screen tall and the canvas, which carries the halo out to its edge,
- * sits inside it. It opens flat: the map scans
+ * turning (Globe), bigger than the screen: its top and its glow whole
+ * under the hero's top, its sides past the screen's, its lower part
+ * dissolving into the page under the name. It opens flat, higher up,
+ * above the name: the map scans
  * in, pans, and curls into the globe, and then the product's own
  * visualisation panel arrives at the top right to pick the band and the
  * colour ramp. The name sits over its foot on the left, on a fade to the
@@ -28,8 +29,8 @@ export const Hero = () => (
   <header className="bg-night text-mist">
     <div className="relative overflow-hidden bg-black">
       <div className="absolute inset-0">
-        <Globe intro className="absolute top-[48%] left-1/2 h-[96%] -translate-x-1/2 -translate-y-1/2 max-sm:top-[38%] max-sm:h-auto max-sm:w-[100vw]" />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] bg-linear-to-t/srgb from-night from-18% via-night/75 via-55% to-night/0" />
+        <Globe intro className="absolute top-0 left-1/2 w-[112vw] -translate-x-1/2 max-sm:top-[2%] max-sm:w-[170vw]" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[64%] bg-linear-to-t/srgb from-night from-24% via-night/80 via-58% to-night/0" />
       </div>
       <div aria-hidden className="draw pointer-events-none absolute inset-x-0 top-0 h-px bg-mint/70" />
       <div className={cn(PAGE, "pointer-events-none relative z-10 flex min-h-svh flex-col justify-end pt-24 pb-16 sm:pb-24")}>
