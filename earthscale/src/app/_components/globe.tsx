@@ -29,7 +29,13 @@ import { getView, subscribeView, type Band, type View } from "./globe-store";
  * each) and puts the imagery back, so the render's own ramp gives the
  * render exactly. The maps are full equirectangular spheres, 4096 by
  * 2048 with 26 columns of overlap at either end (the seam sits inside
- * continuous encoded data, mid-block), powers of two for the mipmaps. */
+ * continuous encoded data), powers of two for the mipmaps. The GPU picks
+ * a mip level from how fast the texture coordinate changes across the
+ * screen, and at the date line it wraps from 1 to 0, which read as a huge
+ * change and drew a dashed line of the tiniest level down the Pacific; so
+ * the shader hands the sampler the gradients itself, with the wrap taken
+ * out, where the texture-LOD extension allows, and does without mipmaps
+ * where it doesn't. */
 
 const MAPS: Record<Band, { field: string; under: string }> = {
   wind: { field: windField.src, under: windUnder.src },
@@ -48,6 +54,10 @@ const PAD = 26 / 4096; // the maps' overlap at either end, as a share of their w
 const VERTEX = `attribute vec2 a_pos;varying vec2 v_uv;void main(){v_uv=a_pos;gl_Position=vec4(a_pos,0.0,1.0);}`;
 
 const FRAGMENT = `
+#ifdef GRAD
+#extension GL_EXT_shader_texture_lod : enable
+#extension GL_OES_standard_derivatives : enable
+#endif
 precision highp float;
 varying vec2 v_uv;
 uniform sampler2D u_field0;
@@ -67,10 +77,15 @@ const vec3 MINT = vec3(0.627, 1.0, 0.843);
 const float PI = 3.14159265;
 
 // The field set in a ramp, with the imagery put back under it.
-vec3 shade(sampler2D field, sampler2D under, float ramp, vec2 uv) {
+vec3 shade(sampler2D field, sampler2D under, float ramp, vec2 uv, vec2 gx, vec2 gy) {
+#ifdef GRAD
+  float s = texture2DGradEXT(field, uv, gx, gy).r;
+  vec3 rest = texture2DGradEXT(under, uv, gx, gy).rgb * 2.0 - 1.0;
+#else
   float s = texture2D(field, uv).r;
-  vec3 base = texture2D(u_lut, vec2(s, (ramp + 0.5) / 8.0)).rgb;
   vec3 rest = texture2D(under, uv).rgb * 2.0 - 1.0;
+#endif
+  vec3 base = texture2D(u_lut, vec2(s, (ramp + 0.5) / 8.0)).rgb;
   return clamp(base + rest, 0.0, 1.0);
 }
 
@@ -78,23 +93,38 @@ void main() {
   vec2 p = v_uv / RADIUS;
   float r2 = dot(p, p);
   float r = sqrt(r2);
+  // The sphere tipped toward the viewer, then turned. Worked out for every
+  // pixel, halo included, so the gradients below see whole quads.
+  float z = sqrt(max(1.0 - r2, 0.0));
+  vec3 n = vec3(p.x, p.y, z);
+  float ct = cos(u_tilt);
+  float st = sin(u_tilt);
+  vec3 m = vec3(n.x, n.y * ct - n.z * st, n.y * st + n.z * ct);
+  float lon = atan(m.x, m.z) + u_lon;
+  float lat = asin(clamp(m.y, -1.0, 1.0));
+  float u = fract(lon / (2.0 * PI) + 0.5);
+  float v = 0.5 - lat / PI;
+  vec2 uv = vec2(PAD + u * (1.0 - 2.0 * PAD), v);
+  vec2 gx = vec2(0.0);
+  vec2 gy = vec2(0.0);
+#ifdef GRAD
+  // How the coordinate changes across the screen, with the wrap at the
+  // date line taken out: a jump of about one whole turn is not a change.
+  float dux = dFdx(u);
+  dux -= floor(dux + 0.5);
+  float duy = dFdy(u);
+  duy -= floor(duy + 0.5);
+  gx = vec2(dux * (1.0 - 2.0 * PAD), dFdx(v));
+  gy = vec2(duy * (1.0 - 2.0 * PAD), dFdy(v));
+#endif
   // Past the limb: the halo, fading out.
   if (r >= 1.0) {
     float halo = exp(-(r - 1.0) * 7.0) * 0.5;
     gl_FragColor = vec4(MINT * halo, halo);
     return;
   }
-  float z = sqrt(1.0 - r2);
-  vec3 n = vec3(p.x, p.y, z);
-  // The sphere tipped toward the viewer, then turned.
-  float ct = cos(u_tilt);
-  float st = sin(u_tilt);
-  vec3 m = vec3(n.x, n.y * ct - n.z * st, n.y * st + n.z * ct);
-  float lon = atan(m.x, m.z) + u_lon;
-  float lat = asin(clamp(m.y, -1.0, 1.0));
-  vec2 uv = vec2(PAD + fract(lon / (2.0 * PI) + 0.5) * (1.0 - 2.0 * PAD), 0.5 - lat / PI);
-  vec3 col = shade(u_field0, u_under0, u_ramp0, uv);
-  if (u_fade > 0.0) col = mix(col, shade(u_field1, u_under1, u_ramp1, uv), u_fade);
+  vec3 col = shade(u_field0, u_under0, u_ramp0, uv, gx, gy);
+  if (u_fade > 0.0) col = mix(col, shade(u_field1, u_under1, u_ramp1, uv, gx, gy), u_fade);
   // Lit from the upper left with a soft terminator, a little ambient on
   // the night side, the rim in mint.
   vec3 light = normalize(vec3(-0.55, 0.5, 0.65));
@@ -139,7 +169,9 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
     if (!gl) return;
     const program = gl.createProgram();
     if (!program) return;
-    for (const [type, source] of [[gl.VERTEX_SHADER, VERTEX], [gl.FRAGMENT_SHADER, FRAGMENT]] as const) {
+    // Mipmaps only where the shader can pick the level itself (see above).
+    const grad = !!gl.getExtension("EXT_shader_texture_lod") && !!gl.getExtension("OES_standard_derivatives");
+    for (const [type, source] of [[gl.VERTEX_SHADER, VERTEX], [gl.FRAGMENT_SHADER, (grad ? "#define GRAD\n" : "") + FRAGMENT]] as const) {
       const shader = gl.createShader(type);
       if (!shader) return;
       gl.shaderSource(shader, source);
@@ -212,7 +244,7 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      if (mipmaps) {
+      if (mipmaps && grad) {
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
       } else {
