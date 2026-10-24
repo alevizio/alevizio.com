@@ -1,5 +1,6 @@
 "use client";
 
+import bare from "@/assets/screens/land-map-bare.jpg";
 import landMap from "@/assets/screens/land-map.jpg";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -12,7 +13,10 @@ import { GlassFrame } from "./glass-frame";
  * file comes in, the parcels draw themselves on the satellite, a scan runs
  * over the land, and it comes back in colour with what qualifies. The map
  * and the figures are the live product's, for a real supplier project left
- * unnamed; the parcel outlines are traced from that map. It starts when
+ * unnamed; the parcel outlines are traced from that map. Its classes are
+ * baked into that map, so until the results the land shows bare: the same
+ * photo with the parcels' land filled in from around them (nothing of the
+ * boundary shows before it's uploaded). It starts when
  * it's well in view and loops while it stays there (the result holds a
  * few seconds between runs), starts over when scrolled back to, Upload
  * again runs it at once, and with less motion it opens on the result. */
@@ -234,11 +238,18 @@ export const BoundaryUpload = ({ className }: { className?: string }) => {
 
       <div className="relative aspect-[1000/585] overflow-hidden border-white/10 bg-black lg:order-2 lg:aspect-auto lg:h-full lg:border-l">
         <Image
-          src={landMap}
-          alt="Satellite imagery of a supplier's land with its boundary drawn: once assessed, suitable land shows in cyan and unsuitable land in orange"
+          src={bare}
+          alt=""
           sizes="(min-width: 1376px) 920px, (min-width: 1024px) 70vw, 100vw"
           placeholder="blur"
           className={cn("size-full object-cover transition-[filter] duration-[1600ms]", phase === "results" ? "" : "brightness-[0.55] grayscale")}
+        />
+        {/* The assessed land, in colour, comes in with the results. */}
+        <Image
+          src={landMap}
+          alt="Satellite imagery of a supplier's land with its boundary drawn: once assessed, suitable land shows in cyan and unsuitable land in orange"
+          sizes="(min-width: 1376px) 920px, (min-width: 1024px) 70vw, 100vw"
+          className={cn("absolute inset-0 size-full object-cover transition-opacity duration-[1600ms]", phase === "results" ? "opacity-100" : "opacity-0")}
         />
         <svg viewBox="0 0 1000 585" preserveAspectRatio="xMidYMid slice" aria-hidden className="absolute inset-0 size-full">
           {PARCELS.map((d) => (
