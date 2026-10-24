@@ -1,14 +1,17 @@
 "use client";
 
-import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useCallback, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "../../cn";
+import { useBeat } from "../autoplay";
 import { BN } from "../ui";
 import { KALIMANTAN, MANOA } from "./content";
 
 /* Banyan's tabs: 40px tall, Matter 16, a 2px heavy line under the
  * selected one on a 2px grey rule; mint on hover (as the docs show it),
  * grey text when disabled; an optional status dot or count badge. The
- * full pattern: arrows, Home and End, disabled tabs skipped. */
+ * full pattern: arrows, Home and End, disabled tabs skipped. The panels
+ * share one cell, so switching never changes the height; with `demo` (on
+ * the belt) it moves to the next tab every couple of seconds. */
 type TabItem = { label: string; panel: ReactNode; disabled?: boolean; status?: boolean; count?: number };
 
 const Panel = ({ children }: { children: string }) => <p className="max-w-prose pt-4 text-[15px] leading-6 text-bn-medium">{children}</p>;
@@ -20,11 +23,24 @@ export const PROJECT_TABS: TabItem[] = [
   { label: "Monitoring", disabled: true, panel: <Panel>Not yet.</Panel> },
 ];
 
-export const Tabs = ({ items, label, initial = 0, className }: { items: TabItem[]; label: string; initial?: number; className?: string }) => {
+const TAB_MS = 2400;
+// The tabs that can be picked, by index.
+const enabledOf = (items: TabItem[]) => items.flatMap((t, i) => (t.disabled ? [] : [i]));
+
+export const Tabs = ({ items, label, initial = 0, demo = false, className }: { items: TabItem[]; label: string; initial?: number; demo?: boolean; className?: string }) => {
   const [selected, setSelected] = useState(initial);
   const ids = useId();
+  const root = useRef<HTMLDivElement>(null);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
-  const enabled = items.flatMap((t, i) => (t.disabled ? [] : [i]));
+  const enabled = enabledOf(items);
+  const beat = useCallback(
+    (n: number) => {
+      const open = enabledOf(items);
+      setSelected(open[n % open.length]);
+    },
+    [items],
+  );
+  useBeat(root, TAB_MS, beat, demo);
 
   const onKey = (e: KeyboardEvent) => {
     const at = enabled.indexOf(selected);
@@ -41,7 +57,7 @@ export const Tabs = ({ items, label, initial = 0, className }: { items: TabItem[
   };
 
   return (
-    <div className={className}>
+    <div ref={root} className={className}>
       <div role="tablist" aria-label={label} onKeyDown={onKey} className="no-scrollbar flex overflow-x-auto border-b-2 border-bn-line">
         {items.map((t, i) => (
           <button
@@ -72,11 +88,20 @@ export const Tabs = ({ items, label, initial = 0, className }: { items: TabItem[
           </button>
         ))}
       </div>
-      {items.map((t, i) => (
-        <div key={t.label} id={`${ids}p${i}`} role="tabpanel" aria-labelledby={`${ids}t${i}`} hidden={selected !== i} tabIndex={0} className={cn("pt-6", BN.focus)}>
-          {t.panel}
-        </div>
-      ))}
+      <div className="grid">
+        {items.map((t, i) => (
+          <div
+            key={t.label}
+            id={`${ids}p${i}`}
+            role="tabpanel"
+            aria-labelledby={`${ids}t${i}`}
+            tabIndex={0}
+            className={cn("pt-6 [grid-area:1/1]", selected !== i && "invisible", BN.focus)}
+          >
+            {t.panel}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState, useSyncExternalStore } from "react";
 import { MdCalendarToday } from "react-icons/md";
 import { cn } from "../../cn";
+import { useBeat } from "../autoplay";
 import { useDismiss } from "../overlay/use-dismiss";
 import { Calendar } from "./calendar";
 import { IconButton } from "./icon-button";
@@ -83,9 +84,20 @@ export const DatePicker = ({ label = "Planting date", className }: { label?: str
   );
 };
 
+// On the belt it picks a day a beat, round the month.
+const PICKS = [12, 15, 21, 27, 6];
+const PICK_MS = 1500;
+
 /** The Figma's first example, live: October 2021, with the 8th as today. */
 export const CalendarExample = () => {
+  const ref = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState<Date | null>(null);
+  const beat = useCallback((n: number) => setValue(new Date(2021, 9, PICKS[n % PICKS.length])), []);
+  useBeat(ref, PICK_MS, beat);
   const day = new Date(2021, 9, 8);
-  return <Calendar value={value} onChange={setValue} today={day} start={day} />;
+  return (
+    <div ref={ref}>
+      <Calendar value={value} onChange={setValue} today={day} start={day} />
+    </div>
+  );
 };

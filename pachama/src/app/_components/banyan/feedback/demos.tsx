@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useBeat } from "../autoplay";
 import { Button } from "../button";
 import { Banner, type BannerTone } from "./banner";
 import { Progress } from "./progress";
@@ -99,12 +100,27 @@ const Labelled = ({ text, children }: { text: string; children: ReactNode }) => 
   </div>
 );
 
+// On the belt the evaluation runs itself: it fills in three seconds, rests
+// on done for two, and runs again. While it runs on its own it's only
+// motion, hidden from screen readers (they'd hear every step), until
+// someone runs it.
+const RUN_MS = 150;
+const RUN_BEATS = 34;
+
 export const ProgressDemo = () => {
+  const ref = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(0);
+  const [auto, setAuto] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval>>(undefined);
   useEffect(() => () => clearInterval(timer.current), []);
+  const beat = useCallback((n: number) => {
+    setAuto(true);
+    setValue(Math.min(100, (n % RUN_BEATS) * 5));
+  }, []);
+  useBeat(ref, RUN_MS, beat);
   const run = () => {
     clearInterval(timer.current);
+    setAuto(false);
     setValue(0);
     timer.current = setInterval(() => {
       setValue((v) => {
@@ -118,7 +134,7 @@ export const ProgressDemo = () => {
   };
   const live = value >= 100 ? "Evaluation done" : `Evaluating Verde do Bahia, ${value}%`;
   return (
-    <div className="grid w-full max-w-md gap-6">
+    <div ref={ref} className="grid w-full max-w-md gap-6">
       <Labelled text="Boundary uploaded, 25%">
         <Progress value={25} label="Boundary uploaded, 25%" />
       </Labelled>
@@ -126,9 +142,11 @@ export const ProgressDemo = () => {
         <Progress value={60} label="Questionnaire, 60%" />
       </Labelled>
       <div className="grid gap-3">
-        <Labelled text={live}>
-          <Progress value={value} label={live} />
-        </Labelled>
+        <div aria-hidden={auto || undefined}>
+          <Labelled text={live}>
+            <Progress value={value} label={live} />
+          </Labelled>
+        </div>
         <Button hierarchy="secondary" size="sm" onClick={run} className="justify-self-start">
           {value > 0 && value < 100 ? "Restart" : "Run it"}
         </Button>

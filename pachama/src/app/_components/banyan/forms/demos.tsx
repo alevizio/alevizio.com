@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useId, useRef, useState } from "react";
 import { MdAdd, MdArrowForward, MdDelete, MdDownload, MdEdit, MdMoreHoriz, MdSearch } from "react-icons/md";
+import { useBeat } from "../autoplay";
 import { Button } from "../button";
 import { Autocomplete } from "./autocomplete";
 import { Checkbox, Radio, Switch } from "./choice";
@@ -52,16 +53,41 @@ export const IconButtons = () => (
   </div>
 );
 
-export const Inputs = () => (
-  <div className="grid w-full gap-6 sm:grid-cols-2">
-    <TextInput label="Project name" placeholder="Verde do Bahia" />
-    <TextInput label="Search projects" placeholder="Brazil, REDD+…" type="search" leading={<MdSearch aria-hidden className="size-5 text-bn-medium" />} />
-    <TextInput label="Credits to retire" inputMode="numeric" defaultValue="1,250" message="In tonnes of CO₂e." />
-    <TextInput label="Registry ID" defaultValue="VCS 674" tone="success" message="Matches Manoa." />
-    <TextInput label="Work email" type="email" defaultValue="name@acme" tone="error" message="Write the full address, like name@acme.co." />
-    <TextInput label="Organisation" defaultValue="Acme Co." disabled />
-  </div>
-);
+// On the belt, the first two type themselves in turn, half a cycle apart:
+// each types, rests a while, and clears.
+const TYPED = ["Agrocortex", "Brazil, REDD+"];
+const TYPE_MS = 110;
+const TYPE_BEATS = 60;
+const SHOWN_BEATS = 44;
+
+export const Inputs = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [typed, setTyped] = useState(["", ""]);
+  const beat = useCallback((n: number) => {
+    setTyped(TYPED.map((text, i) => {
+      const at = (n + (i * TYPE_BEATS) / 2) % TYPE_BEATS;
+      return at < SHOWN_BEATS ? text.slice(0, at) : "";
+    }));
+  }, []);
+  useBeat(ref, TYPE_MS, beat);
+  return (
+    <div ref={ref} className="grid w-full gap-6 sm:grid-cols-2">
+      <TextInput label="Project name" placeholder="Verde do Bahia" value={typed[0]} onChange={(e) => setTyped(([, search]) => [e.target.value, search])} />
+      <TextInput
+        label="Search projects"
+        placeholder="Brazil, REDD+…"
+        type="search"
+        leading={<MdSearch aria-hidden className="size-5 text-bn-medium" />}
+        value={typed[1]}
+        onChange={(e) => setTyped(([name]) => [name, e.target.value])}
+      />
+      <TextInput label="Credits to retire" inputMode="numeric" defaultValue="1,250" message="In tonnes of CO₂e." />
+      <TextInput label="Registry ID" defaultValue="VCS 674" tone="success" message="Matches Manoa." />
+      <TextInput label="Work email" type="email" defaultValue="name@acme" tone="error" message="Write the full address, like name@acme.co." />
+      <TextInput label="Organisation" defaultValue="Acme Co." disabled />
+    </div>
+  );
+};
 
 export const TextAreas = () => (
   <div className="grid w-full gap-6 sm:grid-cols-2">
@@ -96,12 +122,36 @@ export const Selects = () => {
 };
 
 const STANDARDS = ["Accurate", "Additional", "Durable", "Net", "Beyond carbon"];
+const VINTAGES = ["2021", "2022", "2023"];
+const SWITCHES = [
+  { label: "Alert me when the project changes", size: "md" },
+  { label: "Weekly summary", size: "sm" },
+  { label: "Share with my team", size: "lg" },
+] as const;
+// On the belt, one control a beat, the three kinds in turn: a standard
+// ticked (up to all five, then back one at a time), the vintage moved on,
+// one switch flipped (a Gray code over the three, so only ever one).
+const CHOICE_MS = 1200;
 
 export const Choices = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  // Its own radio group: the belt shows it twice.
+  const vintageName = useId();
   const [picked, setPicked] = useState(["Accurate", "Additional"]);
+  const [vintage, setVintage] = useState(VINTAGES[0]);
+  const [on, setOn] = useState([true, false, false]);
+  const beat = useCallback((n: number) => {
+    const ticks = Math.floor(n / 3) % (2 * STANDARDS.length);
+    setPicked(STANDARDS.slice(0, ticks <= STANDARDS.length ? ticks : 2 * STANDARDS.length - ticks));
+    setVintage(VINTAGES[Math.floor((n + 2) / 3) % VINTAGES.length]);
+    const flips = Math.floor((n + 1) / 3) % 8;
+    const gray = flips ^ (flips >> 1);
+    setOn(SWITCHES.map((_, i) => ((gray >> i) & 1) === 1));
+  }, []);
+  useBeat(ref, CHOICE_MS, beat);
   const all = picked.length === STANDARDS.length;
   return (
-    <div className="grid w-full gap-8 sm:grid-cols-3">
+    <div ref={ref} className="grid w-full gap-8 sm:grid-cols-3">
       <fieldset className="grid content-start gap-3">
         <legend className="mb-3 text-[13px] font-medium text-bn-medium">Checkbox</legend>
         <Checkbox label="Every standard" checked={all} indeterminate={!all && picked.length > 0} onChange={() => setPicked(all ? [] : STANDARDS)} />
@@ -111,16 +161,16 @@ export const Choices = () => {
       </fieldset>
       <fieldset className="grid content-start gap-3">
         <legend className="mb-3 text-[13px] font-medium text-bn-medium">Radio, a vintage</legend>
-        {["2021", "2022", "2023"].map((y, i) => (
-          <Radio key={y} name="banyan-vintage" label={y} defaultChecked={i === 0} />
+        {VINTAGES.map((y) => (
+          <Radio key={y} name={vintageName} label={y} checked={vintage === y} onChange={() => setVintage(y)} />
         ))}
-        <Radio name="banyan-vintage" label="2024, not issued yet" disabled />
+        <Radio name={vintageName} label="2024, not issued yet" disabled />
       </fieldset>
       <fieldset className="grid content-start gap-3">
         <legend className="mb-3 text-[13px] font-medium text-bn-medium">Switch</legend>
-        <Switch label="Alert me when the project changes" defaultChecked />
-        <Switch label="Weekly summary" size="sm" />
-        <Switch label="Share with my team" size="lg" />
+        {SWITCHES.map(({ label, size }, i) => (
+          <Switch key={label} label={label} size={size} checked={on[i]} onChange={() => setOn((o) => o.map((x, j) => (j === i ? !x : x)))} />
+        ))}
       </fieldset>
     </div>
   );

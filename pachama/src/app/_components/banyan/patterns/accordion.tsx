@@ -7,9 +7,23 @@ import { BN } from "../ui";
 
 /* Banyan's accordion (WIP in the Figma): a white card with a bold title
  * and a filled plus; open, the plus turns into a close and the fields
- * show. Each card is a heading with a button, its panel a region. */
-export const AccordionItem = ({ title, children, initiallyOpen = false }: { title: string; children: ReactNode; initiallyOpen?: boolean }) => {
-  const [open, setOpen] = useState(initiallyOpen);
+ * show. Each card is a heading with a button, its panel a region. Given
+ * `open` and `onToggle`, a set of them can keep one open at a time. */
+export const AccordionItem = ({
+  title,
+  children,
+  initiallyOpen = false,
+  open: shown,
+  onToggle,
+}: {
+  title: string;
+  children: ReactNode;
+  initiallyOpen?: boolean;
+  open?: boolean;
+  onToggle?: () => void;
+}) => {
+  const [own, setOwn] = useState(initiallyOpen);
+  const open = shown ?? own;
   const id = useId();
   return (
     <div className="rounded-[24px] border border-bn-grey-light bg-white">
@@ -19,7 +33,7 @@ export const AccordionItem = ({ title, children, initiallyOpen = false }: { titl
           type="button"
           aria-expanded={open}
           aria-controls={`${id}p`}
-          onClick={() => setOpen((o) => !o)}
+          onClick={() => (onToggle ? onToggle() : setOwn((o) => !o))}
           className={cn("flex w-full items-center gap-4 rounded-[24px] p-8 text-left text-[24px] leading-8 font-bold text-bn-heavy", BN.focus)}
         >
           <span className="flex-1">{title}</span>

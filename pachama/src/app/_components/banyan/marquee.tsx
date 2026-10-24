@@ -1,7 +1,8 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useCallback, useRef, useState, type ReactNode } from "react";
 import { cn } from "../cn";
+import { useBeat } from "./autoplay";
 import { DataTable } from "./data-display/table/table";
 import { Alert } from "./feedback/alert";
 import { BannerDemo, ProgressDemo } from "./feedback/demos";
@@ -26,13 +27,51 @@ import { Ticker } from "./ticker";
  * like a masonry wall (each column about as tall as the next, so there's
  * no gap to speak of) and passing slowly, so the variety shows without a
  * long page. No boxes behind them: just the components, on the ground.
- * Under it, the small parts on their own belts. The belt stops while it's
- * pointed at or focused, and the first copy of each piece works (the copy
- * that closes the loop is only a picture of it). With less motion it
- * stands still and scrolls. */
+ * Each one that does something shows it off on its own: the choices tick
+ * and flip, the tabs and the lifecycle move on, the evaluation runs, the
+ * calendar picks days, the accordion swaps, the inputs type (see useBeat:
+ * both copies keep time together). Under it, the small parts on their own
+ * belts. The belt stops while it's pointed at or focused, and the first
+ * copy of each piece works (the copy that closes the loop is only a
+ * picture of it). With less motion it stands still and scrolls. */
 type Column = { name: string; width: string; pieces: ReactNode[] };
 
 const CRUMBS = [{ label: "Projects", href: "#components" }, { label: "Brazil", href: "#components" }, { label: "Agrocortex" }];
+const LIFECYCLE_MS = 1600;
+const ACCORDION_MS = 2600;
+
+/** The lifecycle, a step a beat, to every step done and round again. */
+const Lifecycle = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [current, setCurrent] = useState(1);
+  const beat = useCallback((n: number) => setCurrent(n % (LIFECYCLE.length + 1)), []);
+  useBeat(ref, LIFECYCLE_MS, beat);
+  return (
+    <div ref={ref}>
+      <StepperRow steps={LIFECYCLE} current={current} label="Project lifecycle" className="flex-wrap gap-y-3" />
+    </div>
+  );
+};
+
+/** Two cards, one open at a time, swapping each beat. */
+const Filters = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(0);
+  const beat = useCallback((n: number) => setOpen(n % 2), []);
+  useBeat(ref, ACCORDION_MS, beat);
+  const toggle = (i: number) => () => setOpen((o) => (o === i ? -1 : i));
+  return (
+    <div ref={ref} className="grid gap-4">
+      <Breadcrumb items={CRUMBS} />
+      <AccordionItem title="Location" open={open === 0} onToggle={toggle(0)}>
+        <Dropdown label="Country" options={["Brazil", "Peru", "Colombia", "Mexico"]} />
+      </AccordionItem>
+      <AccordionItem title="Project" open={open === 1} onToggle={toggle(1)}>
+        <Dropdown label="Project type" options={["REDD+", "ARR", "IFM"]} />
+      </AccordionItem>
+    </div>
+  );
+};
 
 const COLUMNS: Column[] = [
   { name: "Project card and gradients", width: "w-[20.5rem]", pieces: [<ProjectCard key="p" className="[zoom:0.8]" />, <Gradients key="g" />] },
@@ -43,8 +82,8 @@ const COLUMNS: Column[] = [
       <ProjectsByYear key="y" />,
       <Choices key="c" />,
       <div key="t" className="grid gap-6">
-        <Tabs label={`${KALIMANTAN.name}, project`} items={PROJECT_TABS} />
-        <StepperRow steps={LIFECYCLE} current={1} label="Project lifecycle" className="flex-wrap gap-y-3" />
+        <Tabs label={`${KALIMANTAN.name}, project`} items={PROJECT_TABS} demo />
+        <Lifecycle />
       </div>,
     ],
   },
@@ -63,15 +102,7 @@ const COLUMNS: Column[] = [
         </Alert>
         <ProgressDemo />
       </div>,
-      <div key="b" className="grid gap-4">
-        <Breadcrumb items={CRUMBS} />
-        <AccordionItem title="Location" initiallyOpen>
-          <Dropdown label="Country" options={["Brazil", "Peru", "Colombia", "Mexico"]} />
-        </AccordionItem>
-        <AccordionItem title="Project">
-          <Dropdown label="Project type" options={["REDD+", "ARR", "IFM"]} />
-        </AccordionItem>
-      </div>,
+      <Filters key="b" />,
     ],
   },
   {
