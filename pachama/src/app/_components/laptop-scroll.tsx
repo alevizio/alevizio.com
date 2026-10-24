@@ -32,6 +32,9 @@ const STOPS = [
 ];
 const MOVE_MS = 1300;
 const HOLD_MS = 1800;
+// It starts as soon as it's landed on: a quarter of it in view, a beat later.
+const START_AT = 0.25;
+const START_MS = 500;
 // Back to the top: a longer hold on the footer, a longer glide up.
 const LAST_HOLD_MS = 2600;
 const RETURN_MS = 2000;
@@ -60,11 +63,11 @@ export const LaptopScroll = ({ caption, className }: { caption?: string; classNa
     const observer = new IntersectionObserver(
       ([entry]) => {
         const was = visible;
-        visible = entry.intersectionRatio >= 0.4;
-        if (visible && !was) wait(HOLD_MS);
+        visible = entry.intersectionRatio >= START_AT;
+        if (visible && !was) wait(START_MS);
         if (!visible) window.clearTimeout(timer);
       },
-      { threshold: [0, 0.4] },
+      { threshold: [0, START_AT] },
     );
     observer.observe(el);
     const hold = () => {
@@ -95,12 +98,15 @@ export const LaptopScroll = ({ caption, className }: { caption?: string; classNa
         className="@container relative"
       >
         <Image src={laptop} alt="" sizes="100vw" placeholder="blur" className="h-auto w-full [clip-path:inset(18.5%_0_0_0)]" />
-        {/* The lid alone, from its top edge (12.6% down, 18.1% to 81.8% across) to where the photo starts. */}
+        {/* The lid alone, to where the photo starts: cut half a pixel inside its
+            rim, which the photo puts at 140 px down, from 350 to 1571 px across,
+            with corners 32 px round (of 1920 x 1080), so none of what's behind
+            it shows. */}
         <Image
           src={laptop}
           alt=""
           sizes="100vw"
-          className="absolute inset-x-0 top-0 h-auto w-full [clip-path:inset(12.55%_18.15%_80%_18.05%_round_1.5cqw_1.5cqw_0_0)]"
+          className="absolute inset-x-0 top-0 h-auto w-full [clip-path:inset(13%_18.15%_80%_18.26%_round_1.67cqw_1.67cqw_0_0)]"
         />
         <div className="absolute top-[14.58%] left-[19.19%] h-[70.83%] w-[61.67%] overflow-hidden rounded-t-[0.52cqw] bg-[#fbfbf2]">
           <Image
