@@ -11,7 +11,7 @@ import nicaforest from "@/assets/screens/explore-nicaforest.jpg";
 import aerial from "@/assets/screens/source-aerial.jpg";
 import Image, { type StaticImageData } from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MdClose, MdOutlineEco, MdOutlineImageSearch, MdOutlineListAlt, MdOutlineMap, MdOutlinePhotoLibrary, MdOutlineSettings, MdPublic, MdSearch } from "react-icons/md";
+import { MdOutlineEco, MdOutlineImageSearch, MdOutlineListAlt, MdOutlineMap, MdOutlinePhotoLibrary, MdOutlineSettings, MdPublic } from "react-icons/md";
 import { BN } from "../banyan/ui";
 import { MARKS } from "../brand-marks";
 import { cn } from "../cn";
@@ -23,7 +23,7 @@ import { Globe } from "./globe";
  * shown the way Source's landing page shows the product: the app in a glass
  * frame over the hero's aerial photograph, in its dark mode, with its icon
  * rail. The map turns between a globe and a flat map from its corner.
- * Pachama's projects in a list to search and filter, on a dotted globe that
+ * Pachama's projects in a list to filter, on a dotted globe that
  * turns to each one. The projects, their countries, types and standards are
  * the ones the product's own screens show, with three Pachama Originals
  * from their project pages (hectares where the pages agree on them); pins
@@ -76,7 +76,6 @@ const chip = (on: boolean) =>
   );
 
 export const Insights = ({ className }: { className?: string }) => {
-  const [query, setQuery] = useState("");
   const [kind, setKind] = useState<Kind | null>(null);
   const [country, setCountry] = useState<string | null>(null);
   const [picked, setPicked] = useState(PROJECTS[0].name);
@@ -105,13 +104,7 @@ export const Insights = ({ className }: { className?: string }) => {
     };
   }, []);
 
-  const shown = useMemo(
-    () =>
-      PROJECTS.filter(
-        (p) => (!kind || p.kind === kind) && (!country || p.country === country) && `${p.name} ${p.country} ${p.type}`.toLowerCase().includes(query.trim().toLowerCase()),
-      ),
-    [query, kind, country],
-  );
+  const shown = useMemo(() => PROJECTS.filter((p) => (!kind || p.kind === kind) && (!country || p.country === country)), [kind, country]);
   const pins = useMemo(() => PROJECTS.map((p) => ({ id: p.name, lon: p.lon, lat: p.lat, on: shown.includes(p) })), [shown]);
   // Keep the pick inside what's shown.
   const current = shown.find((p) => p.name === picked) ?? shown[0];
@@ -132,22 +125,6 @@ export const Insights = ({ className }: { className?: string }) => {
 
       <div className="flex min-h-0 flex-col gap-5 p-5 sm:p-6">
         <p className="font-display text-[32px] leading-none font-bold">Explore</p>
-        <div className="flex h-12 items-center gap-3 rounded-full bg-white/8 pr-2 pl-4 ring-1 ring-white/15 transition-shadow focus-within:ring-2 focus-within:ring-white/70">
-          <MdSearch aria-hidden className="size-5 shrink-0 text-white/70" />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search projects"
-            aria-label="Search projects"
-            className="min-w-0 flex-1 bg-transparent text-[16px] text-white outline-none placeholder:text-white/60 [&::-webkit-search-cancel-button]:appearance-none"
-          />
-          {query ? (
-            <button type="button" aria-label="Clear the search" onClick={() => setQuery("")} className={cn("grid size-8 shrink-0 place-items-center rounded-full text-white/80 hover:bg-white/10", BN.focus, "focus-visible:outline-white")}>
-              <MdClose aria-hidden className="size-4" />
-            </button>
-          ) : null}
-        </div>
         <div className="flex gap-8">
           <p>
             <span className="block text-[14px] leading-5 text-white/70">Projects</span>
@@ -198,7 +175,7 @@ export const Insights = ({ className }: { className?: string }) => {
               </li>
             );
           })}
-          {shown.length === 0 ? <li className="rounded-[16px] border border-dashed border-white/25 p-6 text-[14px] text-white/75">No project matches. Clear the search or a filter.</li> : null}
+          {shown.length === 0 ? <li className="rounded-[16px] border border-dashed border-white/25 p-6 text-[14px] text-white/75">No project matches. Clear a filter.</li> : null}
         </ul>
       </div>
 

@@ -49,7 +49,7 @@ export const Product = () => (
       id="marketplace"
       eyebrow="The marketplace"
       title="Finding a project worth buying"
-      text="Every project and where it is: a list to search and filter on one side, the world on the other. Rebuilt live from the product's Explore and Insights screens with Pachama's projects: filter by type or country, pick one, and the globe turns to it."
+      text="Every project and where it is: a list to filter on one side, the world on the other. Rebuilt live from the product's Explore and Insights screens with Pachama's projects: filter by type or country, pick one, and the globe turns to it."
     >
       {/* A plain reveal: the frame's clip would hold the photo's edges back to the text column until it settled. */}
       <div data-reveal>
