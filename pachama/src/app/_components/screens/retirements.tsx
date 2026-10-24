@@ -12,8 +12,8 @@ import { Zoom } from "../zoom";
  * laid over it, the certificate a retirement issues: the real one Pachama
  * sent Just Spices for 200 tonnes from Kootznoowoo, whose row is the first.
  * The other rows are the screen's samples. Click the certificate, or its
- * row's link, to read it big. Its seal sits on it, from the Certificate
- * Figma. */
+ * row's link, to read it big. Under the table, its seal, from the
+ * Certificate Figma. */
 type Row = { date: string; time?: string; project: string; vintage: number; quantity: number; status: "Retired" | "Pending" };
 const ROWS: Row[] = [
   { date: "2/01/2022", project: "Kootznoowoo", vintage: 2019, quantity: 200, status: "Retired" },
@@ -88,11 +88,12 @@ export const Retirements = ({ className }: { className?: string }) => {
             <Image src={certificate} alt={ALT} sizes="(min-width: 1024px) 620px, 92vw" placeholder="blur" className="block h-auto w-full" />
           </Zoom>
         </div>
-        {/* The certificate's seal, from its Figma, stuck half over its bottom edge, between the registry and the signature. */}
-        <span data-reveal="pop" aria-hidden className="pointer-events-none absolute -bottom-[9%] left-[27%] w-[15%] -rotate-[12deg] drop-shadow-[0_10px_16px_rgb(20_26_23/0.3)] [--reveal-delay:0.45s]">
-          <Image src="/brand/carbon-credit-badge.svg" alt="" width={65} height={85} unoptimized className="block h-auto w-full" />
-        </span>
       </div>
+      {/* The certificate's seal, from its Figma, on its own under the table: straight, at a size its detail reads. */}
+      <p data-reveal className="mt-8 flex items-center gap-5 lg:w-[66%]">
+        <Image src="/brand/carbon-credit-badge.svg" alt="The Carbon Credit Certificate seal: a tree in a green to blue gradient ring" width={104} height={136} unoptimized className="h-[136px] w-[104px] shrink-0" />
+        <span className="max-w-[22rem] text-[14px] leading-5 text-(--tone-text)">The seal on every certificate a retirement issues.</span>
+      </p>
     </div>
   );
 };
