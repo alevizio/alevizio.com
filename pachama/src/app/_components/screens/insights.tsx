@@ -222,7 +222,7 @@ export const Insights = ({ className }: { className?: string }) => {
                     <span className="text-[13px] leading-4 text-white/75">
                       {p.kind} · {p.type}
                     </span>
-                    {p.standard ? <span className="text-[13px] leading-4 text-white/70">{p.standard}</span> : null}
+                    {p.standard ? <span className="text-[13px] leading-4 text-white/80">{p.standard}</span> : null}
                   </span>
                   <Image src={p.photo} alt="" sizes="84px" className="aspect-square w-full rounded-[10px] object-cover" />
                 </button>
