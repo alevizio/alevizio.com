@@ -59,7 +59,7 @@ const NavList = ({
         <span className="w-6">
           <MdHome aria-hidden className="size-3.5" />
         </span>
-        Back to the top
+        Top
       </button>
       {groups.map((group, gi) => (
         <div key={group.title} className={gi > 0 ? "mt-1" : undefined}>
