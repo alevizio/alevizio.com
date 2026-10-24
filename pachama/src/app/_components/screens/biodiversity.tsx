@@ -120,7 +120,7 @@ export const Biodiversity = ({ className }: { className?: string }) => {
   };
 
   return (
-    <section aria-label="Borneo Peatlands' biodiversity, on its map" className={cn(BLEED, "bg-[#06100b] text-white", className)}>
+    <section aria-label="Borneo Peatlands' biodiversity, on its map" className={cn(BLEED, "bg-night text-white", className)}>
       <div className="relative">
         <div
           ref={frame}
