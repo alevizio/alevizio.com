@@ -102,7 +102,8 @@ export const LandSuitability = ({ fill, className }: { fill?: number; className?
             </h4>
             <p className="mt-2 text-[13px] leading-5 text-white/80">Land must be a suitable classification type without recent deforestation.</p>
             <div className="mt-5 flex items-center gap-3">
-              <span className="h-3.5 flex-1 overflow-hidden rounded-full bg-white">
+              {/* A quiet track, as in Assess land, so only the suitable share stands out. */}
+              <span className="h-3.5 flex-1 overflow-hidden rounded-full bg-white/15">
                 <span key={paint} data-reveal="grow-x" className="block h-full w-[35%] rounded-full bg-bn-green" />
               </span>
               <span className="text-[15px] font-bold whitespace-nowrap">{SUITABLE}% suitable</span>
