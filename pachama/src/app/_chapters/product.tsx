@@ -158,7 +158,7 @@ export const Product = () => (
           Once a developer opens the link and starts, a submission is the project&apos;s page in four parts: a questionnaire, a commercial
           proposal, the land&apos;s suitability and the project&apos;s info, then submit. The step it all turns on is the land: share it and
           see, against satellite data, how much of it qualifies and why the rest doesn&apos;t. Rebuilt live from the Source design, with sample
-          answers: go through it with Next.
+          answers. It fills itself in, on a loop; click in it to go through it yourself.
         </p>
         <div data-reveal className="mt-8 sm:mt-10">
           <SubmissionPage />

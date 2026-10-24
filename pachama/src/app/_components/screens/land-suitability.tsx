@@ -13,7 +13,9 @@ import { cn } from "../cn";
  * the buyer. Rebuilt from the Source Figma. The map is the live product's
  * for three parcels, split into its classes so each can be turned off and
  * on; the figures are the product's for those parcels. Calculate results,
- * on the first tab, paints the classes back in. */
+ * on the first tab, paints the classes back in. While the submission plays
+ * itself, `fill` (0 to 1) is how far along this part is: the parcels are
+ * shared, Calculate results is pressed, and the results paint in. */
 type Id = "suitable" | "burn" | "unsuitable" | "deforestation";
 const CLASSES: { id: Id; label: string; ha: number; swatch: string; layer: string; group: 0 | 1 }[] = [
   { id: "suitable", label: "Suitable land classification", ha: 12531, swatch: "bg-[#7cc9d6]", layer: "bg-[#7cc9d6] [mask-image:url(/screens/land/suitable.png)]", group: 0 },
@@ -30,6 +32,8 @@ const ALL_ON: Record<Id, boolean> = { suitable: true, burn: true, unsuitable: tr
 const ha = (n: number) => `${n.toLocaleString("en-US")} ha`;
 const TAB = "relative pb-3 text-[15px] transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5";
 const FOCUS = cn(BN.focus, "focus-visible:outline-white");
+// Playing, how far along the part Calculate results is pressed.
+const CALCULATED = 0.4;
 
 const Eye = ({ on, label, onToggle }: { on: boolean; label: string; onToggle: () => void }) => (
   <button type="button" aria-pressed={on} aria-label={`Show ${label} on the map`} onClick={onToggle} className={cn("grid size-7 place-items-center rounded-full hover:bg-white/10", FOCUS)}>
@@ -37,14 +41,18 @@ const Eye = ({ on, label, onToggle }: { on: boolean; label: string; onToggle: ()
   </button>
 );
 
-export const LandSuitability = ({ className }: { className?: string }) => {
+export const LandSuitability = ({ fill, className }: { fill?: number; className?: string }) => {
   const [tab, setTab] = useState<"upload" | "results">("results");
   const [shown, setShown] = useState(ALL_ON);
   // Each calculation paints the classes in again.
   const [run, setRun] = useState(0);
   const [comment, setComment] = useState("");
   const [saved, setSaved] = useState(false);
-  const results = tab === "results";
+  const playing = fill !== undefined;
+  const open = playing ? (fill < CALCULATED ? "upload" : "results") : tab;
+  const results = open === "results";
+  // What paints the classes in again: each calculation, or the played one.
+  const paint = playing ? open : run;
   const toggle = (ids: Id[]) => setShown((s) => {
     const on = !ids.every((id) => s[id]);
     return { ...s, ...Object.fromEntries(ids.map((id) => [id, on])) };
@@ -55,7 +63,7 @@ export const LandSuitability = ({ className }: { className?: string }) => {
       <div className="relative aspect-[1447/1158] bg-[#1d2419] lg:order-last lg:aspect-auto lg:min-h-[36rem]">
         <Image src={base} alt="" fill sizes="(min-width: 1376px) 912px, (min-width: 1024px) 66vw, 100vw" placeholder="blur" className="object-cover" />
         {/* The classes scan in from the left when they're reached, and again with each calculation. */}
-        <div key={run} data-reveal="sweep" role="img" aria-label={`Three parcels on satellite imagery${results ? `, classified: suitable land in blue, unsuitable in orange, recent deforestation in pink; ${SUITABLE}% suitable` : ", their land shared and not yet classified"}.`} className="absolute inset-0">
+        <div key={paint} data-reveal="sweep" role="img" aria-label={`Three parcels on satellite imagery${results ? `, classified: suitable land in blue, unsuitable in orange, recent deforestation in pink; ${SUITABLE}% suitable` : ", their land shared and not yet classified"}.`} className="absolute inset-0">
           {CLASSES.map((c) => (
             <span
               key={c.id}
@@ -77,24 +85,25 @@ export const LandSuitability = ({ className }: { className?: string }) => {
               key={t}
               type="button"
               role="tab"
-              aria-selected={tab === t}
+              aria-selected={open === t}
               onClick={() => setTab(t)}
-              className={cn(TAB, tab === t ? "text-white after:bg-white" : "text-white/75 hover:text-white", FOCUS)}
+              className={cn(TAB, open === t ? "text-white after:bg-white" : "text-white/75 hover:text-white", FOCUS)}
             >
               {t === "upload" ? "Upload boundary" : "Land suitability"}
             </button>
           ))}
         </div>
 
-        {results ? (
-          <div role="tabpanel" aria-label="Land suitability" className="mt-6">
+        {/* Both tabs in the one cell, so the panel keeps the taller one's height. */}
+        <div className="mt-6 grid">
+          <div role="tabpanel" aria-label="Land suitability" className={cn("[grid-area:1/1]", !results && "invisible")}>
             <h4 className="flex items-center gap-2 font-display text-[26px] leading-none font-bold">
               Results <MdInfoOutline aria-hidden className="size-5" />
             </h4>
             <p className="mt-2 text-[13px] leading-5 text-white/80">Land must be a suitable classification type without recent deforestation.</p>
             <div className="mt-5 flex items-center gap-3">
               <span className="h-3.5 flex-1 overflow-hidden rounded-full bg-white">
-                <span key={run} data-reveal="grow-x" className="block h-full w-[35%] rounded-full bg-bn-green" />
+                <span key={paint} data-reveal="grow-x" className="block h-full w-[35%] rounded-full bg-bn-green" />
               </span>
               <span className="text-[15px] font-bold whitespace-nowrap">{SUITABLE}% suitable</span>
             </div>
@@ -152,8 +161,7 @@ export const LandSuitability = ({ className }: { className?: string }) => {
               )}
             </button>
           </div>
-        ) : (
-          <div role="tabpanel" aria-label="Upload boundary" className="mt-6">
+          <div role="tabpanel" aria-label="Upload boundary" className={cn("[grid-area:1/1]", results && "invisible")}>
             <h4 className="flex items-center gap-2 font-display text-[26px] leading-none font-bold">
               Share your project area <MdInfoOutline aria-hidden className="size-5" />
             </h4>
@@ -173,12 +181,17 @@ export const LandSuitability = ({ className }: { className?: string }) => {
                 setTab("results");
                 setRun((r) => r + 1);
               }}
-              className={cn("mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-bn-green font-mono text-[14px] tracking-[0.04em] text-bn-heavy uppercase hover:bg-bn-green-light", FOCUS)}
+              className={cn(
+                "mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-bn-green font-mono text-[14px] tracking-[0.04em] text-bn-heavy uppercase transition-[background-color,scale] hover:bg-bn-green-light",
+                // Playing, it's pressed just before the results.
+                playing && fill >= CALCULATED - 0.08 && "scale-[0.98] bg-bn-green-light",
+                FOCUS,
+              )}
             >
               Calculate results <MdArrowForward aria-hidden className="size-5" />
             </button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
