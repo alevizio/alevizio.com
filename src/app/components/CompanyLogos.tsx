@@ -29,9 +29,10 @@ export const companies: Company[] = [
     height: "h-[32px]",
     tag: { text: "acquired by Carbon Direct", url: "https://techcrunch.com/2025/11/10/consolidation-begins-to-hit-the-carbon-credit-market/" },
     years: "5+ yrs",
-    // A swipe through the case study (the hero's lidar terrain turning, then
-    // a stop in the brand, the marketplace, Banyan and the point clouds), a
-    // silent 480p loop; the poster is the hero, a second in.
+    // Ten seconds of the case study, filmed live from it: the canopy hero,
+    // See carbon, the dot map, the site, Explore, Manoa, Assess land, the
+    // map layers and the corridor flight; a silent 480p loop, the poster
+    // the canopy.
     caseStudy: {
       href: "/work/pachama",
       video: "/work/pachama-preview.mp4",
