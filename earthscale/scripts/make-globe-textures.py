@@ -18,11 +18,12 @@ from PIL import Image
 
 S, OUT = sys.argv[1], sys.argv[2]
 LUT = np.load(f"{S}/ramps.npy")  # 5 x 256 x 3, 0..255
-# 4096 wide, with the last and first sixteen columns repeated at either
-# end, so the seam sits inside continuous encoded data: a lossy encoder
-# treats an image border differently from the middle, and even half a
-# level showed as a line down the Pacific. The shader reads the inner span.
-PAD = 16
+# 4096 wide, with the last and first 26 columns repeated at either end, so
+# the seam sits inside continuous encoded data and, at column 26, in the
+# middle of a 4 by 4 transform block and a 16 by 16 macroblock: a lossy
+# encoder's border, and its block edges, each showed as a line down the
+# Pacific. The shader reads the inner span.
+PAD = 26
 W, H = 4096 - 2 * PAD, 2048
 smooth = lambda a, b, x: np.clip((x - a) / (b - a), 0, 1) ** 2 * (3 - 2 * np.clip((x - a) / (b - a), 0, 1))
 

@@ -28,8 +28,8 @@ import { getView, subscribeView, type Band, type View } from "./globe-store";
  * the field in the chosen ramp (ramps.png, the product's five, one row
  * each) and puts the imagery back, so the render's own ramp gives the
  * render exactly. The maps are full equirectangular spheres, 4096 by
- * 2048 with sixteen columns of overlap at either end (the seam sits
- * inside continuous encoded data), powers of two for the mipmaps. */
+ * 2048 with 26 columns of overlap at either end (the seam sits inside
+ * continuous encoded data, mid-block), powers of two for the mipmaps. */
 
 const MAPS: Record<Band, { field: string; under: string }> = {
   wind: { field: windField.src, under: windUnder.src },
@@ -43,7 +43,7 @@ const FRAME_MS = 33;
 const FADE_MS = 700; // a band or ramp change
 const SETTLE_S = 1.2; // after a drag, how long the turn takes to settle into the spin
 const VELOCITY_MAX = 3; // radians per second, from a flick
-const PAD = 16 / 4096; // the maps' overlap at either end, as a share of their width
+const PAD = 26 / 4096; // the maps' overlap at either end, as a share of their width
 
 const VERTEX = `attribute vec2 a_pos;varying vec2 v_uv;void main(){v_uv=a_pos;gl_Position=vec4(a_pos,0.0,1.0);}`;
 
