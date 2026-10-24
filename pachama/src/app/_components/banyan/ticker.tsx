@@ -9,8 +9,8 @@ import { IconButton } from "./forms/icon-button";
 
 /* The kit's smallest pieces on a slow belt, two rows passing each other:
  * buttons, badges, tags, avatars. A picture of them (the working ones are
- * in their families), so it's inert; pointing at it stops the belt, and
- * with less motion it stands still. */
+ * in their families), so it's inert; it keeps moving under the pointer,
+ * and with less motion it stands still. */
 const PEOPLE = [
   { name: "Alejandro Vizio", initials: "AV" },
   { name: "Acme Co.", initials: "AC" },
@@ -50,7 +50,7 @@ const LOWER: ReactNode[] = [
 // Two copies side by side, each with its gap after it, so half the width
 // is exactly one copy and the loop has no seam.
 const Belt = ({ items, reverse = false }: { items: ReactNode[]; reverse?: boolean }) => (
-  <div className={cn("flex w-max motion-safe:animate-[belt_70s_linear_infinite] group-hover/belt:[animation-play-state:paused]", reverse && "[animation-direction:reverse]")}>
+  <div className={cn("flex w-max motion-safe:animate-[belt_70s_linear_infinite]", reverse && "[animation-direction:reverse]")}>
     {[0, 1].map((copy) => (
       <div key={copy} className="flex shrink-0 items-center gap-5 pr-5">
         {items}
@@ -60,7 +60,7 @@ const Belt = ({ items, reverse = false }: { items: ReactNode[]; reverse?: boolea
 );
 
 export const Ticker = ({ className }: { className?: string }) => (
-  <figure className={cn("group/belt min-w-0", className)}>
+  <figure className={cn("min-w-0", className)}>
     <figcaption className="sr-only">Banyan&rsquo;s buttons, badges, tags and avatars, passing on two rows.</figcaption>
     <div aria-hidden inert className="grid gap-5 overflow-hidden py-2 [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)]">
       <Belt items={UPPER} />

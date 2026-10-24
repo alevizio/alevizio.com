@@ -31,9 +31,10 @@ import { Ticker } from "./ticker";
  * and flip, the tabs and the lifecycle move on, the evaluation runs, the
  * calendar picks days, the accordion swaps, the inputs type (see useBeat:
  * both copies keep time together). Under it, the small parts on their own
- * belts. The belt stops while it's pointed at or focused, and the first
- * copy of each piece works (the copy that closes the loop is only a
- * picture of it). With less motion it stands still and scrolls. */
+ * belts. The belt keeps moving under the pointer, and stops only while
+ * something in it has the keyboard's focus; the first copy of each piece
+ * works (the copy that closes the loop is only a picture of it). With
+ * less motion it stands still and scrolls. */
 type Column = { name: string; width: string; pieces: ReactNode[] };
 
 const CRUMBS = [{ label: "Projects", href: "#components" }, { label: "Brazil", href: "#components" }, { label: "Agrocortex" }];
@@ -144,7 +145,7 @@ const Copy = ({ inert = false }: { inert?: boolean }) => (
 export const ComponentMarquee = ({ className }: { className?: string }) => (
   <div className={cn("grid gap-10 sm:gap-12", className)}>
     <div role="region" aria-label="Banyan's components, working" className="group/marquee no-scrollbar overflow-hidden motion-reduce:overflow-x-auto">
-      <div className="flex w-max motion-safe:animate-[belt_200s_linear_infinite] group-focus-within/marquee:[animation-play-state:paused] group-hover/marquee:[animation-play-state:paused]">
+      <div className="flex w-max motion-safe:animate-[belt_200s_linear_infinite] group-focus-within/marquee:[animation-play-state:paused]">
         <Copy />
         <Copy inert />
       </div>
