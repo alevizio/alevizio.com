@@ -261,10 +261,6 @@ export const SeeCarbon = ({ className }: { className?: string }) => {
           );
         })}
       </div>
-      <figcaption className={cn(PAGE, "type-caption mt-3 text-(--tone-text)")}>
-        The site&rsquo;s hero from the hand-over, rebuilt in live type over its original photograph, with its storytelling slide&rsquo;s data points: the
-        same marsh as Pachama&rsquo;s data draws it glows into view and drifts across, and the site&rsquo;s figures appear where it passes.
-      </figcaption>
     </figure>
   );
 };

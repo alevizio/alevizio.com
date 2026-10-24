@@ -128,8 +128,9 @@ export const Brand = () => (
       title="See carbon in action"
       text="FNDR's strategy put nature and data in the same sentence. How&How turned it into a headline and a way of drawing: the forest, and the carbon in it, made visible."
     >
+      {/* The dot map runs straight on from the photo, no gap between. */}
       <SeeCarbon />
-      <ProjectMap className="mt-6 sm:mt-10" />
+      <ProjectMap />
     </Section>
 
     <Section
