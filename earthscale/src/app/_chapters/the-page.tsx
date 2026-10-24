@@ -4,14 +4,21 @@ import explore from "@/assets/page/explore.webp";
 import menu from "@/assets/page/menu.webp";
 import mobile from "@/assets/page/mobile.webp";
 import proof from "@/assets/page/proof.webp";
-import serve from "@/assets/page/serve.webp";
 import tablet from "@/assets/page/tablet.webp";
 import team from "@/assets/page/team.webp";
 import who from "@/assets/page/who.webp";
 import wide from "@/assets/page/wide.webp";
+import { Pipeline } from "../_components/pipeline";
 import { Screens } from "../_components/screens";
 import { Shot } from "../_components/shot";
 import { Band, ChapterDivider, Section } from "../_components/story";
+
+// The serve section's three features, as the page words them.
+const FEATURES = [
+  { n: "01", title: "High-Performance Tile Serving", text: "Optimize your data for low latency tile-serving at scale, right where it lives, boosting performance and avoiding egress costs. Fully compatible with frameworks like Mapbox GL, Leaflet, and Cesium." },
+  { n: "02", title: "Zero Copy, Optimized in Minutes", text: "Connect your geospatial data sources for high-performance serving in seconds. Native support for multi-dimensional datasets included. Supports on-demand reading and task optimized caching." },
+  { n: "03", title: "Seamless Integration via API & Python Client", text: "Register and query datasets programmatically through a robust API or Python client. Fetch pixel-level values, time series, and more, ready to plug into your applications and workflows." },
+];
 
 const SCREENS = [
   { src: wide, alt: "The landing page at 2500 pixels wide", label: "2500 wide", sizes: "(min-width: 1024px) 25vw, 50vw" },
@@ -50,9 +57,20 @@ export const ThePage = () => (
       id="serve"
       eyebrow="Serve"
       title="Three features and the pipeline"
-      text="Serve Data at Scale, Instantly: tile serving, zero-copy optimisation, and the API and Python client, next to a diagram that doubles as the documentation. Cloud storage and a database feed the client, and the client returns a tile source any map library can read."
+      text="Serve Data at Scale, Instantly: tile serving, zero-copy optimisation, and the API and Python client, next to a diagram that doubles as the documentation. Cloud storage and a database feed the client, and the client returns a tile source any map library can read. The diagram runs here as it runs on the page."
     >
-      <Shot src={serve} alt="The section Serve Data at Scale, Instantly: three numbered features on the left, and on the right a diagram from cloud storage and a database down to a Python window and the tile source it returns" caption="The serve section, with the pipeline." zoom />
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
+        <ol data-stagger className="hairline self-start rounded-[10px] p-6 sm:p-8">
+          {FEATURES.map(({ n, title, text }) => (
+            <li key={n} data-reveal className="border-t border-rule py-6 first:border-t-0 first:pt-0 last:pb-0">
+              <p className="type-label text-haze">{n}</p>
+              <p className="mt-3 font-sans text-xl leading-snug text-mint">{title}</p>
+              <p className="type-caption mt-2 text-(--tone-text)">{text}</p>
+            </li>
+          ))}
+        </ol>
+        <Pipeline />
+      </div>
     </Section>
 
     <Section

@@ -430,3 +430,35 @@
     text-wrap: pretty;
   }
 }
+
+/* Earthscale's panels and pictures: a cursor blinking in a field, the
+ * point where the pipeline's sources join, and a picture drifting across
+ * its frame, each in its own direction (--drift-x, --drift-y). */
+@keyframes es-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes es-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.7);
+  }
+}
+
+@keyframes es-drift {
+  from {
+    translate: 0 0;
+    scale: 1.14;
+  }
+  to {
+    translate: var(--drift-x, -3%) var(--drift-y, -2%);
+    scale: 1.22;
+  }
+}

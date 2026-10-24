@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { MdExpandMore } from "react-icons/md";
 import { cn } from "./cn";
 import { tidy } from "./tidy";
 
@@ -50,12 +49,8 @@ export const Section = ({
 }) => (
   <section id={id} data-scene className={cn("mt-28 scroll-mt-10 sm:mt-40", className)}>
     <div className={PAGE}>
-      {eyebrow ? (
-        <p data-reveal className="type-label text-(--tone-label)">
-          {eyebrow}
-        </p>
-      ) : null}
-      <h3 data-reveal className={cn("type-section max-w-[18ch] text-(--tone-head) [--reveal-delay:0.08s]", eyebrow && "mt-4")}>
+      {eyebrow ? <Tag className="[--reveal-delay:0s]">{eyebrow}</Tag> : null}
+      <h3 data-reveal className={cn("type-section max-w-[18ch] text-(--tone-head) [--reveal-delay:0.08s]", eyebrow && "mt-5")}>
         {tidyNode(title)}
       </h3>
       {text ? (
@@ -68,9 +63,16 @@ export const Section = ({
   </section>
 );
 
-/** A chapter break: a node in the page's mint, a line dropping from it,
- *  then the number, the title at display size and one line under it,
- *  centred. */
+/** The page's tag: a mono label in a hairline pill, the way the landing
+ *  page heads every section (Who, Production, Development). */
+export const Tag = ({ children, className }: { children: ReactNode; className?: string }) => (
+  <p data-reveal="pop" className={cn("inline-flex min-h-8 items-center rounded-full border border-(--tone-line) px-3.5 py-1.5 type-label text-(--tone-label)", className)}>
+    {children}
+  </p>
+);
+
+/** A chapter break, the way the landing page opens a section: the tag,
+ *  then the title at display size and one line under it, centred. */
 export const ChapterDivider = ({
   numeral,
   title,
@@ -83,22 +85,15 @@ export const ChapterDivider = ({
   /** The one line under the title. */
   children?: ReactNode;
 }) => {
-  const colour = "bg-mint";
   return (
     <header id={id} className="mt-32 scroll-mt-10 sm:mt-44">
       <div className={cn(PAGE, "flex flex-col items-center text-center")}>
-        <span aria-hidden data-reveal="pop" className={cn("grid size-10 place-items-center rounded-full text-night", colour)}>
-          <MdExpandMore className="size-6" />
-        </span>
-        <span aria-hidden data-reveal="drop" className={cn("h-20 w-0.5 sm:h-28 [--reveal-delay:0.15s]", colour)} />
-        <p data-reveal className="type-label mt-6 text-(--tone-label) [--reveal-delay:0.3s]">
-          Chapter {numeral}
-        </p>
-        <h2 data-reveal className="type-display mt-4 text-(--tone-head) [--reveal-delay:0.38s]">
+        <Tag>Chapter {numeral}</Tag>
+        <h2 data-reveal className="type-display mt-6 text-(--tone-head) [--reveal-delay:0.12s]">
           {tidy(title)}
         </h2>
         {children ? (
-          <p data-reveal className="type-body mt-6 max-w-[36rem] text-(--tone-text) [--reveal-delay:0.48s]">
+          <p data-reveal className="type-body mt-6 max-w-[36rem] text-(--tone-text) [--reveal-delay:0.24s]">
             {children}
           </p>
         ) : null}

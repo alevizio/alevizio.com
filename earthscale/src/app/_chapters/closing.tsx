@@ -1,58 +1,33 @@
+import { Globe } from "../_components/globe";
 import { Band, PAGE, Section } from "../_components/story";
 
-// Where the page can still be seen. The archive's copy from May 2025 is the
-// page as it shipped; earthscale.ai today is the company's next story.
-const LINKS = [
-  {
-    label: "The page as it shipped",
-    title: "earthscale.ai in May 2025, in the Internet Archive",
-    href: "https://web.archive.org/web/20250519164401/https://www.earthscale.ai/",
-    year: "2025",
-  },
-  {
-    label: "Earthscale today",
-    title: "earthscale.ai, rebuilt around AI and Earth data",
-    href: "https://www.earthscale.ai/",
-    year: "2026",
-  },
-];
-
-/* What happened next, where to see it, the credits and the way back. */
+/* What happened next, the credits, and the planet's limb rising under them
+ * with its glow, turning, the way the landing page ends. */
 export const Closing = () => (
-  <Band tone="paper">
+  <Band tone="night" className="pb-0 sm:pb-0">
     <Section
       id="live"
       eyebrow="What happened next"
       title="Live in May 2025"
-      text="The page went live at earthscale.ai in May 2025, as designed, and ran through the year. By September the headline had moved on, to AI-Ready Infrastructure for Geospatial Data, on the same page; by the end of the year Earthscale had rebuilt the site around a new story, AI and Earth data. The archive keeps the page as it shipped."
-    >
-      <ul className="border-t border-(--tone-line)">
-        {LINKS.map(({ label, title, href, year }) => (
-          <li key={href} className="border-b border-(--tone-line)">
-            <a href={href} target="_blank" rel="noopener noreferrer" className="group grid gap-1 py-5 sm:grid-cols-[12rem_1fr_auto] sm:items-baseline sm:gap-6">
-              <span className="type-label text-(--tone-label)">{label}</span>
-              <span className="type-body text-(--tone-head) underline decoration-transparent underline-offset-4 transition-colors group-hover:decoration-current">
-                {title}
-              </span>
-              <span className="type-label text-(--tone-text)">{year}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </Section>
+      text="The page went live at earthscale.ai in May 2025, as designed, and ran through the year. By September the headline had moved on, to AI-Ready Infrastructure for Geospatial Data, on the same page; by the end of the year Earthscale had rebuilt the site around a new story, AI and Earth data. The Internet Archive keeps the page as it shipped."
+    />
 
-    <footer className="mt-28 sm:mt-40">
+    <footer className="relative mt-28 overflow-hidden sm:mt-40">
       <div className={PAGE}>
-        <div aria-hidden className="h-px w-full bg-(--tone-line)" />
-        <p className="type-label mt-8 text-(--tone-text)">Credits</p>
-        <p className="type-caption mt-3 max-w-[48rem] text-(--tone-head)">
+        <div aria-hidden className="h-px w-full bg-rule" />
+        <p className="type-label mt-8 text-haze">Credits</p>
+        <p className="type-caption mt-3 max-w-[48rem] text-mist">
           Design: Alejandro Vizio. Product, pictures and copy: Earthscale, with Felix Dorrek, Noah Golmant, Bernhard
           Stadlbauer and Samuel. Type: PP Neue Machina by Pangram Pangram, IBM Plex Mono by IBM. The Earthscale name,
           mark and product belong to Earthscale; this is a write-up of the design work.
         </p>
-        <a href="https://alevizio.com" className="type-caption mt-8 inline-block text-(--tone-head) underline decoration-current/40 underline-offset-4 hover:decoration-current">
+        <a href="https://alevizio.com" className="type-caption relative z-10 mt-8 inline-block text-mist underline decoration-mist/30 underline-offset-4 hover:decoration-mist">
           alevizio.com
         </a>
+      </div>
+      <div aria-hidden className="relative mt-10 h-[20rem] sm:h-[24rem]">
+        <div className="absolute inset-x-0 bottom-0 h-full bg-[radial-gradient(60%_90%_at_50%_100%,rgb(43_65_62/0.9),rgb(15_19_19/0)_72%)]" />
+        <Globe className="absolute top-[calc(100%+80vw)] left-1/2 h-[250vw] w-[250vw] -translate-x-1/2 -translate-y-1/2" />
       </div>
     </footer>
   </Band>

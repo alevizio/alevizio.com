@@ -1,6 +1,3 @@
-import gui from "@/assets/components/gui.webp";
-import register from "@/assets/components/register.webp";
-import terminal from "@/assets/components/terminal.webp";
 import pageHero from "@/assets/page/hero.webp";
 import exploration from "@/assets/process/exploration.webp";
 import study1 from "@/assets/studies/01.webp";
@@ -9,9 +6,13 @@ import study3 from "@/assets/studies/03.webp";
 import study4 from "@/assets/studies/04.webp";
 import study5 from "@/assets/studies/05.webp";
 import study6 from "@/assets/studies/06.webp";
+import { Drift } from "../_components/drift";
+import { Explorer } from "../_components/explorer";
 import { Palette } from "../_components/palette";
+import { Register } from "../_components/register";
 import { Shot, TallShot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
+import { Thread } from "../_components/thread";
 import { TypeSpecimen } from "../_components/type-specimen";
 
 // Renders out of the product, each a dataset on the map, as they sat in the file.
@@ -36,11 +37,11 @@ export const Look = () => (
       id="studies"
       eyebrow="The imagery"
       title="The product as the picture"
-      text="The page needed a picture of Earth data, and Earthscale makes them. Wind fields, sea temperature, a delta in false colour, the world’s surface in viridis: renders out of the product itself, so nothing on the page is stock."
+      text="The page needed a picture of Earth data, and Earthscale makes them. Wind fields, sea temperature, a delta in false colour, the world’s surface in viridis: renders out of the product itself, so nothing on the page is stock. They keep moving here, as the data does."
     >
       <Row cols={3}>
-        {STUDIES.map(({ src, alt }) => (
-          <Shot key={alt} src={src} alt={alt} sizes={THIRD} zoom />
+        {STUDIES.map(({ src, alt }, i) => (
+          <Drift key={alt} src={src} alt={alt} index={i} sizes={THIRD} />
         ))}
       </Row>
     </Section>
@@ -85,11 +86,20 @@ export const Look = () => (
       id="components"
       eyebrow="The pieces"
       title="Tags, hairlines and windows"
-      text="Pill tags in mono, cards drawn with a single hairline, code in windows with three dots, and the product’s own panels drawn for the page: the layers and catalogue, a visualisation being edited, pixel information with a time series, and the four steps of registering a dataset."
+      text="Pill tags in mono, cards drawn with a single hairline, code in windows with three dots, and the product’s own panels drawn for the page: the layers and their time, a visualisation being edited, pixel information with its time series, registering a dataset in four steps, and a comment on a tile. Here they are rebuilt, and they work the way the page shows them working."
     >
-      <Shot src={gui} alt="Five product panels on dark: the layers list, the data catalogue, the visualisation editor, a context menu and a pixel information panel with a time-series chart" caption="The product's panels, as drawn for the page." zoom />
-      <Shot src={terminal} alt="Two code windows: registering a Zarr dataset with the Python client, and the tile source it returns for a map library" className="mt-4 sm:mt-6" caption="The client, and what it returns." zoom />
-      <Shot src={register} alt="The register dataset dialog in four steps: URL, access, metadata and visualisation" className="mt-4 sm:mt-6" caption="Registering a dataset, step by step." zoom />
+      <Explorer />
+      <p className="type-caption mt-3 text-(--tone-text)">The explorer: the layers come in, the time runs and the map steps on, the ramp changes, the time series draws.</p>
+      <Row className="mt-10 sm:mt-14">
+        <div>
+          <Register />
+          <p className="type-caption mt-3 text-(--tone-text)">Registering a dataset: the URL, the access check, the name, the visualisation.</p>
+        </div>
+        <div>
+          <Thread />
+          <p className="type-caption mt-3 text-(--tone-text)">A comment on a tile, answered.</p>
+        </div>
+      </Row>
     </Section>
   </Band>
 );
