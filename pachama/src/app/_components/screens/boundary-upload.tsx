@@ -187,7 +187,8 @@ export const BoundaryUpload = ({ className }: { className?: string }) => {
             </p>
             <p className="text-[14px] leading-5 text-white/75">Land must be a suitable classification type without recent deforestation.</p>
             <div className="flex items-center gap-4">
-              <span className="h-3 flex-1 overflow-hidden rounded-full bg-white">
+              {/* The track as dark as the upload's, so only the suitable share stands out. */}
+              <span className="h-3 flex-1 overflow-hidden rounded-full bg-white/15">
                 <span className={cn("block h-full rounded-full bg-bn-green transition-[width] duration-[1300ms] ease-out", phase === "results" ? "w-[35%]" : "w-0")} />
               </span>
               <span className="text-[15px] leading-5 font-bold">
