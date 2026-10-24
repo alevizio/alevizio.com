@@ -1,25 +1,15 @@
-import oldSite from "@/assets/before/old-site.webp";
 import wireframe from "@/assets/process/wireframe.webp";
 import { Notes } from "../_components/notes";
 import { TallShot } from "../_components/shot";
 import { Band, ChapterDivider, Section } from "../_components/story";
 
-/* Chapter I: the site Earthscale had, what they asked for, and the page in
- * boxes before any colour. */
+/* Chapter I: what Earthscale asked for, and the page in boxes before any
+ * colour. */
 export const Start = () => (
   <Band tone="ground">
     <ChapterDivider id="start" numeral="I" title="Where it started">
-      A geospatial developer platform, built by four people who had built Pachama’s, with a site that said little about it.
+      A geospatial developer platform, built by four people who had built Pachama’s, and a page to say so.
     </ChapterDivider>
-
-    <Section
-      id="before"
-      eyebrow="The site before"
-      title="A platform page that said little about the product"
-      text="Earthscale’s first site: a headline, a satellite picture, and two rows of feature cards with the same risk table in every one. The product, a map with layers, parcels and a Python client, was nowhere on the page."
-    >
-      <TallShot src={oldSite} alt="Earthscale's previous website, scrolling: a light hero with a satellite image, then dark sections titled Testing & QA and Deployment with three identical cards each" label="The previous site" caption="The site in early 2025, as it was in the file. Scroll it." />
-    </Section>
 
     <Section
       id="brief"

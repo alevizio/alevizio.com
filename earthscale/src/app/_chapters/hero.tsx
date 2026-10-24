@@ -32,7 +32,7 @@ export const Hero = () => (
         <p className="type-label arrive text-mint [--arrive-delay:0.15s]">Case study · 2025</p>
         <h1 className="type-display settle mt-5 [--arrive-delay:0.25s]">Earthscale</h1>
         <p className="type-body arrive mt-6 max-w-[38rem] text-text [--arrive-delay:0.55s]">
-          A landing page for a developer platform for Earth intelligence: the site before, the structure, the look, and the
+          A landing page for a developer platform for Earth intelligence: the brief, the structure, the look, and the
           page that shipped, on every&nbsp;screen.
         </p>
       </div>

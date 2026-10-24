@@ -5,18 +5,20 @@ import { useEffect, useRef } from "react";
 import { cn } from "./cn";
 
 /* Earthscale's globe, live: the product's own render of the world under a
- * wind field, in viridis, wrapped on a sphere by the GPU and turning. Lit
- * from the upper left, a mint rim, a soft mint halo past the limb, and the
- * wind breathes: the lookup drifts a little with time, so the field moves
- * on the surface. Thirty frames a second while it's on screen, nothing
- * while it isn't; one still frame for anyone who has asked for less
- * motion. Where there is no WebGL the still behind the canvas stays. */
+ * wind field, in viridis, wrapped on a sphere by the GPU and turning, west
+ * to east like the real one. Lit from the upper left with a soft
+ * terminator, a mint rim, a soft mint halo past the limb. Thirty frames a
+ * second while it's on screen, nothing while it isn't; one still frame for
+ * anyone who has asked for less motion. Where there is no WebGL the canvas
+ * stays clear and the page's own black shows.
+ *
+ * The map (src/assets/hero/world.webp) is the render resampled from its
+ * Web Mercator crop to a full equirectangular sphere, 4096 by 2048: the
+ * missing stretch of the Pacific is filled from reflections of its edges,
+ * the poles blend to the edge rows' colour, and it wraps without a seam
+ * (scripts/make-globe-texture.py makes it). A power of two, so it can
+ * repeat and have mipmaps. */
 
-// The map covers these latitudes: Greenland's north at the top, the
-// Southern Ocean at the bottom, no Antarctica. It is not a power of two,
-// so it clamps at its edges and the shader wraps the longitude itself.
-const LAT_TOP = 83;
-const LAT_BOTTOM = -62;
 const SPIN = 0.045; // radians per second, west to east
 const TILT = 0.42; // radians, the north pole toward the viewer
 const RADIUS = 0.74; // the disc's radius as a share of the canvas's half size: the rest is halo
@@ -30,8 +32,6 @@ varying vec2 v_uv;
 uniform sampler2D u_map;
 uniform float u_time;
 uniform float u_aa;
-const float LAT_TOP = ${LAT_TOP.toFixed(1)};
-const float LAT_BOTTOM = ${LAT_BOTTOM.toFixed(1)};
 const float SPIN = ${SPIN.toFixed(4)};
 const float TILT = ${TILT.toFixed(3)};
 const float RADIUS = ${RADIUS.toFixed(3)};
@@ -54,13 +54,12 @@ void main() {
   float ct = cos(TILT);
   float st = sin(TILT);
   vec3 m = vec3(n.x, n.y * ct - n.z * st, n.y * st + n.z * ct);
-  float lon = atan(m.x, m.z) + u_time * SPIN;
-  float lat = degrees(asin(clamp(m.y, -1.0, 1.0)));
-  float u = fract(lon / (2.0 * PI) + 0.5);
-  float v = clamp((LAT_TOP - lat) / (LAT_TOP - LAT_BOTTOM), 0.0, 1.0);
-  // The wind breathes: the lookup drifts a little, so the field moves.
-  vec2 flow = vec2(sin(v * 18.0 + u_time * 0.35), cos(u * 22.0 - u_time * 0.3)) * 0.003;
-  vec3 col = texture2D(u_map, vec2(u, v) + flow).rgb;
+  // Turning west to east: a fixed point on screen sees longitudes go down.
+  float lon = atan(m.x, m.z) - u_time * SPIN;
+  float lat = asin(clamp(m.y, -1.0, 1.0));
+  float u = lon / (2.0 * PI) + 0.5;
+  float v = 0.5 - lat / PI;
+  vec3 col = texture2D(u_map, vec2(u, v)).rgb;
   // Lit from the upper left with a soft terminator, a little ambient on
   // the night side, the rim in mint.
   vec3 light = normalize(vec3(-0.55, 0.5, 0.65));
@@ -143,16 +142,27 @@ export const Globe = ({ className }: { className?: string }) => {
       if (!raf && ready && visible && !reduceMotion.matches) raf = requestAnimationFrame(frame);
     };
 
-    // The map, as the page already serves it.
+    // The map, as the page already serves it. A GPU that can't take a
+    // texture this wide gets it at half size, through a canvas.
     const image = new Image();
     image.onload = () => {
+      const max = gl.getParameter(gl.MAX_TEXTURE_SIZE) as number;
+      let source: TexImageSource = image;
+      if (image.width > max) {
+        const small = document.createElement("canvas");
+        small.width = image.width / 2;
+        small.height = image.height / 2;
+        small.getContext("2d")?.drawImage(image, 0, 0, small.width, small.height);
+        source = small;
+      }
       const texture = gl.createTexture();
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, source);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.generateMipmap(gl.TEXTURE_2D);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       ready = true;
       resize();

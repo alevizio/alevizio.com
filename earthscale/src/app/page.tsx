@@ -9,7 +9,7 @@ import { type NavGroup, StoryNav } from "./_components/story-nav";
 
 const TITLE = "Earthscale — case study — Alejandro Vizio";
 const DESCRIPTION =
-  "A landing page for a developer platform for Earth intelligence: the site before, the structure, the look, and the page that shipped in 2025.";
+  "A landing page for a developer platform for Earth intelligence: the brief, the structure, the look, and the page that shipped in 2025.";
 
 // Served at the root of its own subdomain, like the Pachama, Messa and Pausa stories.
 export const metadata: Metadata = {
@@ -32,7 +32,6 @@ const NAV: readonly NavGroup[] = [
     numeral: "I",
     title: "Where it started",
     items: [
-      { id: "before", label: "The site before" },
       { id: "brief", label: "The brief" },
       { id: "wireframe", label: "The structure" },
     ],
