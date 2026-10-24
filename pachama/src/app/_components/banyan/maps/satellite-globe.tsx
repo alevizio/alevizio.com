@@ -7,7 +7,8 @@ import { BN } from "../ui";
 /* Banyan's minimap globe, live: the satellite earth from the Figma (with
  * its fires) wrapped onto a sphere and drawn per pixel on a canvas, in a
  * soft glacier glow. It turns on its own, a drag turns it by hand, and the
- * four buttons fly to the views the Figma shows. */
+ * four buttons fly to the views the Figma shows. The globe and the buttons
+ * can be placed apart (globeClassName, pillsClassName), for a big globe. */
 const VIEWS = [
   { id: "sa", label: "South America", lon: -60, lat: -15 },
   { id: "af", label: "Africa", lon: 20, lat: 2 },
@@ -17,8 +18,11 @@ const VIEWS = [
 type ViewId = (typeof VIEWS)[number]["id"];
 
 const RAD = Math.PI / 180;
-const TEX_W = 1024;
-const TEX_H = 512;
+const TEX_W = 2048;
+const TEX_H = 1024;
+// The canvas's own size, at most: a big globe is drawn at this and scaled
+// up, which the texture's detail allows, so every frame stays quick.
+const MAX_PX = 760;
 
 const loadPixels = (src: string) =>
   new Promise<Uint8ClampedArray>((resolve, reject) => {
@@ -36,7 +40,7 @@ const loadPixels = (src: string) =>
     img.src = src;
   });
 
-export const SatelliteGlobe = ({ className }: { className?: string }) => {
+export const SatelliteGlobe = ({ className, globeClassName, pillsClassName }: { className?: string; globeClassName?: string; pillsClassName?: string }) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const [view, setView] = useState<ViewId>("sa");
   const target = useRef<{ lon: number; lat: number }>({ lon: VIEWS[0].lon, lat: VIEWS[0].lat });
@@ -80,7 +84,7 @@ export const SatelliteGlobe = ({ className }: { className?: string }) => {
       now.lat += (target.current.lat - now.lat) * ease;
 
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      const size = Math.round(canvas.clientWidth * dpr);
+      const size = Math.min(MAX_PX, Math.round(canvas.clientWidth * dpr));
       if (canvas.width !== size || canvas.height !== size) {
         canvas.width = size;
         canvas.height = size;
@@ -171,10 +175,10 @@ export const SatelliteGlobe = ({ className }: { className?: string }) => {
   return (
     <div className={cn("grid w-full justify-items-center gap-5", className)}>
       {/* A soft glow of atmosphere around it, glacier fading into the dark. */}
-      <div className="relative aspect-square w-full max-w-[16rem] rounded-full bg-[#0b1630] shadow-[0_0_24px_4px_rgb(132_225_255/0.45),0_0_80px_24px_rgb(132_225_255/0.16)]">
+      <div className={cn("relative aspect-square w-full max-w-[16rem] rounded-full bg-[#0b1630] shadow-[0_0_24px_4px_rgb(132_225_255/0.45),0_0_80px_24px_rgb(132_225_255/0.16)]", globeClassName)}>
         <canvas ref={ref} role="img" aria-label={`A satellite globe, turned to ${VIEWS.find((v) => v.id === view)?.label}, with fires in red`} className="block size-full cursor-grab touch-none rounded-full active:cursor-grabbing" />
       </div>
-      <div role="group" aria-label="Turn the globe to" className="flex flex-wrap justify-center gap-1.5">
+      <div role="group" aria-label="Turn the globe to" className={cn("flex flex-wrap justify-center gap-1.5", pillsClassName)}>
         {VIEWS.map((v) => (
           <button
             key={v.id}

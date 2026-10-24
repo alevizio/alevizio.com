@@ -4,14 +4,14 @@ import pointcloud from "@/assets/maps/pointcloud.jpg";
 import sundarbans from "@/assets/maps/sundarbans.jpg";
 import tlsScan from "@/assets/maps/tls-scan.jpg";
 import { SatelliteGlobe } from "../_components/banyan/maps/satellite-globe";
-import { WorldFires } from "../_components/banyan/maps/world-fires";
 import { FieldGallery } from "../_components/field-gallery";
 import { MapLayers } from "../_components/map-layers";
 import { BaselineSandbox } from "../_components/screens/baseline-sandbox";
 import { Biodiversity } from "../_components/screens/biodiversity";
 import { DynamicBaseline } from "../_components/screens/dynamic-baseline";
-import { Clip, HALF, Shot } from "../_components/shot";
-import { Band, ChapterDivider, Row, Section } from "../_components/story";
+import { cn } from "../_components/cn";
+import { BLEED, Clip, HALF, Shot } from "../_components/shot";
+import { Band, ChapterDivider, PAGE, Row, Section } from "../_components/story";
 
 /* IV · The maps, on black like the renders: satellites, lidar and the
  * dynamic baselines, made legible, and the map's own interface, taken
@@ -34,16 +34,24 @@ export const Maps = () => (
       text="Banyan's map is a stack: the satellite imagery at the bottom, then what the satellites saw, the project's boundary, the alerts and the controls on top. Here it is apart. Scroll, and it goes back together."
     >
       <MapLayers caption="Laid flat, it works: switch a layer in the legend, play the years, open an alert, zoom in. The fires, the clearing and the boundary are illustrative, over Deimos imagery of the Ucayali." />
-      <Row className="mt-16 items-center sm:mt-24">
-        <figure>
-          <SatelliteGlobe />
-          <figcaption className="type-caption mt-4 text-center text-(--tone-text)">The minimap: the satellite earth with its fires, in a glow of glacier. Drag it, or send it to a continent.</figcaption>
-        </figure>
-        <figure>
-          <WorldFires />
-          <figcaption className="type-caption mt-3 text-(--tone-text)">Where every map starts: the world, with the year&rsquo;s active fires over it.</figcaption>
-        </figure>
-      </Row>
+      {/* The minimap, big: cropped by the window's left edge, over the flat map every map starts from. */}
+      <figure className={cn(BLEED, "mt-16 sm:mt-24")}>
+        <div className="relative h-[min(50rem,88svh)] min-h-[32rem] overflow-hidden bg-[#050b14]">
+          {/* eslint-disable-next-line @next/next/no-img-element -- the Figma's satellite world, a static texture behind the globe */}
+          <img src="/screens/earth.jpg" alt="" className="absolute inset-0 size-full object-cover opacity-45" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- the year's fires over it */}
+          <img src="/screens/fires.png" alt="" className="absolute inset-0 size-full object-cover opacity-80 mix-blend-screen [filter:hue-rotate(-40deg)_saturate(3)] motion-safe:animate-pulse" />
+          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_18%_50%,rgb(5_11_20/0.2),rgb(5_11_20/0.78)_70%)]" />
+          <SatelliteGlobe
+            className="absolute inset-0 block"
+            globeClassName="absolute top-1/2 left-0 w-[min(46rem,86svh)] max-w-none -translate-x-[30%] -translate-y-1/2 max-sm:w-[120vw]"
+            pillsClassName="absolute right-4 bottom-6 left-4 justify-start gap-3 sm:right-auto sm:left-[max(2.5rem,calc(50vw-43rem+2.5rem))] [&>button]:px-4 [&>button]:py-1.5 [&>button]:text-[13px]"
+          />
+        </div>
+        <figcaption className={cn(PAGE, "type-caption mt-4 text-(--tone-text)")}>
+          The minimap, the satellite earth with its fires in a glow of glacier, over the flat world every map starts from. Drag it, or send it to a continent.
+        </figcaption>
+      </figure>
     </Section>
 
     <Section
