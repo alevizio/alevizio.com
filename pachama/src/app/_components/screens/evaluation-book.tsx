@@ -22,8 +22,9 @@ import { ARROW } from "../slider";
  * leaf every few seconds, then back to the cover), holds while it's pointed
  * at, and the arrows turn it by hand. It arrives flat, facing you, and the
  * page holds still for a moment while the scroll lays it down into that
- * camera; once it's down, it starts reading. With less motion it's already
- * down, doesn't hold the page, and only turns by hand. */
+ * camera; the cover opens as soon as that scroll starts, and it reads on
+ * from there. With less motion it's already down, doesn't hold the page,
+ * and only turns by hand. */
 const LEAVES: { front: StaticImageData; back: StaticImageData; alt: [string, string] }[] = [
   { front: p1, back: p2, alt: ["The cover: Pachama's latest criteria, how we find the highest quality forest carbon projects", "Project Evaluation Criteria 2.2: is the climate benefit additional, conservative and durable, and are there impacts beyond carbon"] },
   { front: p3, back: p4, alt: ["Is the climate benefit additional? Baseline emissions, project emissions and leakage", "Is the climate benefit based on conservative claims? The baseline, the project boundary and leakage"] },
@@ -44,7 +45,8 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
   const root = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const camera = useRef<HTMLDivElement>(null);
-  const [down, setDown] = useState(false);
+  // Set as soon as the scroll starts laying it down: the cover opens then.
+  const [begun, setBegun] = useState(false);
   const [turned, setTurned] = useState(0);
   const [moving, setMoving] = useState<number | null>(null);
   const [held, setHeld] = useState(false);
@@ -68,12 +70,19 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
     // With less motion it never reads on its own, so there's nothing to wait for.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
+    let opened = false;
     const update = () => {
       raf = 0;
       const r = track.getBoundingClientRect();
       const t = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - window.innerHeight)));
       cam.style.setProperty("--tilt", smooth(t).toFixed(4));
-      if (t > 0.98) setDown(true);
+      // The first page opens the moment the scroll starts, no wait.
+      if (t > 0.02 && !opened) {
+        opened = true;
+        setBegun(true);
+        setMoving(0);
+        setTurned((n) => (n === 0 ? 1 : n));
+      }
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -97,7 +106,7 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
   // Reading on its own: a leaf at a time, then a beat on the glossary and
   // back to the cover.
   useEffect(() => {
-    if (!inView || !down || held || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!inView || !begun || held || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = window.setTimeout(
       () => {
         setMoving(turned >= last ? null : turned);
@@ -106,7 +115,7 @@ export const EvaluationBook = ({ className }: { className?: string }) => {
       turned === last ? TURN_MS * 1.5 : TURN_MS,
     );
     return () => window.clearTimeout(id);
-  }, [inView, down, held, turned, last]);
+  }, [inView, begun, held, turned, last]);
 
   useEffect(() => {
     if (moving === null) return;
