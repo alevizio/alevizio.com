@@ -7,7 +7,6 @@ import { Maps } from "./_chapters/maps";
 import { Product } from "./_chapters/product";
 import { World } from "./_chapters/world";
 import { MotionObserver } from "./_components/motion-observer";
-import { HomeButton } from "./_components/home-button";
 import { type NavGroup, StoryNav } from "./_components/story-nav";
 
 const TITLE = "Pachama — case study — Alejandro Vizio";
@@ -108,7 +107,6 @@ export default function PachamaCaseStudy() {
   return (
     <>
       <StoryNav groups={NAV} />
-      <HomeButton />
       <main className="flex-1 overflow-x-clip">
         <Hero />
         <Brand />
