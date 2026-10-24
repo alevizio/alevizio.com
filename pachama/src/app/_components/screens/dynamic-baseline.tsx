@@ -13,11 +13,18 @@ import { MANOA_D, STEP_MAP } from "./step-map";
  * carbon monitoring page, clearing in red), and the control areas of its
  * placebos, scattered where there's no project. Each step's number takes
  * its layer's colour. The first and third sit on the region's map
- * (Sentinel-2, 2016), the first with Manoa's boundary in the ring's hole;
+ * (Sentinel-2, 2016) with Manoa's boundary, in the ring's hole in the first;
  * Pachama's exports carry no coordinates, so the ring is set on Manoa at
  * DCAB's 30 km inner radius and the patches at the same scale, by eye. */
 const MEDIA = "relative aspect-[1176/620] overflow-hidden rounded-[10px] bg-[#06100b]";
 const SIZES = "(min-width: 1024px) 720px, 100vw";
+
+/** Manoa's boundary, in white, on the region's map. */
+const ManoaBoundary = () => (
+  <svg viewBox={`0 0 ${STEP_MAP.w} ${STEP_MAP.h}`} preserveAspectRatio="xMidYMid slice" aria-hidden className="absolute inset-0 size-full">
+    <path d={MANOA_D} fill="none" stroke="#ffffff" strokeWidth={2} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+  </svg>
+);
 
 /** A layer of Pachama's dots on the region's map. */
 const OnMap = ({ layer, alt }: { layer: StaticImageData; alt: string }) => (
@@ -66,9 +73,7 @@ export const DynamicBaseline = ({ className }: { className?: string }) => (
         media={
           <div data-reveal="sweep" className={MEDIA}>
             <OnMap layer={ring} alt="Manoa's control area on the map: a ring of matched pixels of forest, in yellow, around the project's boundary" />
-            <svg viewBox={`0 0 ${STEP_MAP.w} ${STEP_MAP.h}`} preserveAspectRatio="xMidYMid slice" aria-hidden className="absolute inset-0 size-full">
-              <path d={MANOA_D} fill="none" stroke="#ffffff" strokeWidth={2} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
-            </svg>
+            <ManoaBoundary />
             <span className="type-label absolute top-1/2 left-1/2 -translate-1/2 rounded-full border border-white/20 bg-black/60 px-2 py-1 text-fog sm:px-3 sm:py-1.5">
               Manoa
             </span>
@@ -99,7 +104,8 @@ export const DynamicBaseline = ({ className }: { className?: string }) => (
         text="The same matching, run on forest with no project: placebos. Their control areas, the blue patches, should lose what the forest inside them loses. Any gap between them is the method's own error."
         media={
           <div data-reveal="frame" className={MEDIA}>
-            <OnMap layer={placebos} alt="Placebos' control areas on the map: thousands of matched pixels of forest, in blue, in patches where there's no project" />
+            <OnMap layer={placebos} alt="Placebos' control areas on the map: thousands of matched pixels of forest, in blue, in patches away from Manoa's boundary" />
+            <ManoaBoundary />
           </div>
         }
       />
