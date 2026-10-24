@@ -13,7 +13,9 @@ import { PAGE } from "./story";
  * on each section, then back up to the top. Pointing at it holds it where it
  * is; off screen it waits; with less motion it rests on the hero. The
  * screen's place in the photo (1920 x 1080) is measured from it, and the
- * notch drawn back over the page. */
+ * notch drawn back over the page. The photo starts a little below the
+ * laptop, so the lid's top edge rises above it: a second copy of the photo
+ * shows only the lid there. */
 
 // Where each stop puts the top of the screen, as a share of the page's
 // height: a section at a time, the last the bottom of the page (the screen
@@ -84,14 +86,22 @@ export const LaptopScroll = ({ caption, className }: { caption?: string; classNa
   }, []);
 
   return (
-    <figure data-reveal="frame" className={cn(BLEED, className)}>
+    // Pulled up by the empty band the cut leaves over the lid.
+    <figure data-reveal="frame" className={cn(BLEED, "-mt-[6vw]", className)}>
       <div
         ref={ref}
         role="img"
         aria-label="The new pachama.com on a laptop among leaves, scrolling through the homepage: 'Restore nature. Remove carbon.' over an aerial river, 'See carbon in action' with a lidar tree and an emissions chart, the companies choosing Pachama, the technology, a BCG quote, resources and the footer"
         className="@container relative"
       >
-        <Image src={laptop} alt="" sizes="100vw" placeholder="blur" className="h-auto w-full" />
+        <Image src={laptop} alt="" sizes="100vw" placeholder="blur" className="h-auto w-full [clip-path:inset(18.5%_0_0_0)]" />
+        {/* The lid alone, from its top edge (12.6% down, 18.1% to 81.8% across) to where the photo starts. */}
+        <Image
+          src={laptop}
+          alt=""
+          sizes="100vw"
+          className="absolute inset-x-0 top-0 h-auto w-full [clip-path:inset(12.55%_18.15%_80%_18.05%_round_1.5cqw_1.5cqw_0_0)]"
+        />
         <div className="absolute top-[14.58%] left-[19.19%] h-[70.83%] w-[61.67%] overflow-hidden rounded-t-[0.52cqw] bg-[#fbfbf2]">
           <Image
             src={home}
