@@ -1,18 +1,26 @@
 "use client";
 
 import { cn } from "./cn";
-import { BANDS, setView, useGlobeView } from "./globe-store";
+import { BANDS, setView, useGlobeReady, useGlobeView } from "./globe-store";
 import { RAMPS } from "./ramps";
 
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint";
 
 /* The product's visualisation panel, driving the globe: the band, and the
  * colour ramp it is set in. A band opens in its own ramp, the one the
- * render came in. */
+ * render came in. It arrives once the globe has, after its intro. */
 export const GlobeControls = ({ className }: { className?: string }) => {
   const view = useGlobeView();
+  const ready = useGlobeReady();
   return (
-    <div className={cn("rounded-[12px] border border-rule bg-card/80 p-4 text-mist shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-md", className)}>
+    <div
+      inert={!ready || undefined}
+      className={cn(
+        "rounded-[12px] border border-rule bg-card/80 p-4 text-mist shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-md transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        ready ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+        className,
+      )}
+    >
       <p className="font-mono text-[11px] tracking-[0.02em]">Editing Visualization</p>
       <p className="mt-3 font-mono text-[9.5px] tracking-[0.04em] text-haze">Band</p>
       <div role="group" aria-label="Band" className="mt-1.5 flex gap-1 rounded-md border border-rule p-0.5">
@@ -43,7 +51,6 @@ export const GlobeControls = ({ className }: { className?: string }) => {
         ))}
       </div>
       <p className="mt-2 font-sans text-[11px]">{RAMPS[view.ramp].name}</p>
-      <p className="mt-3 font-mono text-[9.5px] tracking-[0.04em] text-haze">Drag the globe to turn it</p>
     </div>
   );
 };

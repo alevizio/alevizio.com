@@ -7,20 +7,24 @@ import windField from "@/assets/globe/wind-field.webp";
 import windUnder from "@/assets/globe/wind-under.webp";
 import { useEffect, useRef } from "react";
 import { cn } from "./cn";
-import { getView, subscribeView, type Band, type View } from "./globe-store";
+import { getView, setReady, subscribeView, type Band, type View } from "./globe-store";
 
 /* Earthscale's globe, live: the product's own renders of the world, under
  * a 10 m wind field and under 2 m temperature, wrapped on a sphere by the
  * GPU and turning, west to east like the real one. Lit from the upper left
  * with a soft terminator, a mint rim, a soft mint halo past the limb.
- * Dragging turns it, with a little inertia, and then the slow turn comes
- * back; a finger turns it too, and still scrolls the page. The page's
- * view (globe-store) picks the band and the colour ramp, and a change
- * crossfades. Thirty frames a second while it's on screen and moving,
- * sixty under the pointer, nothing while it isn't; one still frame for
- * anyone who has asked for less motion, which dragging still turns.
- * Where there is no WebGL the canvas stays clear and the page's own black
- * shows.
+ * With intro, it starts flat and wide: a mint graticule, then the map
+ * scans into it behind a mint line, pans a moment, then curls into the
+ * sphere as the grid fades, the shading and the halo come up and the
+ * turn begins (the shape and the lookup blend from the map's rectangle
+ * to the disc, in the shader). Dragging turns it, with a little
+ * inertia, and then the slow turn comes back; a finger turns it too, and
+ * still scrolls the page. The page's view (globe-store) picks the band
+ * and the colour ramp, and a change crossfades. Thirty frames a second
+ * while it's on screen and moving, sixty under the pointer and through
+ * the intro, nothing while it isn't; one still frame for anyone who has
+ * asked for less motion, which dragging still turns. Where there is no
+ * WebGL the canvas stays clear and the page's own black shows.
  *
  * Each render comes as two maps (scripts/make-globe-textures.py): the
  * field, where along its ramp each pixel sat, and the imagery under it,
@@ -50,6 +54,12 @@ const FADE_MS = 700; // a band or ramp change
 const SETTLE_S = 1.2; // after a drag, how long the turn takes to settle into the spin
 const VELOCITY_MAX = 3; // radians per second, from a flick
 const PAD = 26 / 4096; // the maps' overlap at either end, as a share of their width
+// The intro: the map scans in, holds, then curls into the globe.
+const REVEAL_S = 1.0;
+const HOLD_S = 0.7;
+const MORPH_S = 1.6;
+const FLAT = 1.3; // the flat map's width, as a share of the globe's
+const INTRO_S = REVEAL_S + HOLD_S + MORPH_S;
 
 const VERTEX = `attribute vec2 a_pos;varying vec2 v_uv;void main(){v_uv=a_pos;gl_Position=vec4(a_pos,0.0,1.0);}`;
 
@@ -71,8 +81,11 @@ uniform float u_fade;
 uniform float u_lon;
 uniform float u_tilt;
 uniform float u_aa;
+uniform float u_morph;  // 0 the flat map, 1 the globe
+uniform float u_reveal; // the scan, 0 nothing to past 1 the whole map
 const float RADIUS = ${RADIUS.toFixed(3)};
 const float PAD = ${PAD.toFixed(6)};
+const float FLAT = ${FLAT.toFixed(2)};
 const vec3 MINT = vec3(0.627, 1.0, 0.843);
 const float PI = 3.14159265;
 
@@ -94,14 +107,22 @@ void main() {
   float r2 = dot(p, p);
   float r = sqrt(r2);
   // The sphere tipped toward the viewer, then turned. Worked out for every
-  // pixel, halo included, so the gradients below see whole quads.
+  // pixel, halo included, so the gradients below see whole quads; past
+  // the limb the direction stands in for the normal.
   float z = sqrt(max(1.0 - r2, 0.0));
-  vec3 n = vec3(p.x, p.y, z);
+  vec3 n = r < 1.0 ? vec3(p, z) : vec3(p / max(r, 1e-4), 0.0);
   float ct = cos(u_tilt);
   float st = sin(u_tilt);
   vec3 m = vec3(n.x, n.y * ct - n.z * st, n.y * st + n.z * ct);
-  float lon = atan(m.x, m.z) + u_lon;
-  float lat = asin(clamp(m.y, -1.0, 1.0));
+  float lonSphere = atan(m.x, m.z);
+  float latSphere = asin(clamp(m.y, -1.0, 1.0));
+  // The flat map: a rectangle twice as wide as tall, FLAT times the disc's width.
+  float lonFlat = p.x / FLAT * PI;
+  float latFlat = clamp(p.y / FLAT * PI, -0.5 * PI, 0.5 * PI);
+  float lon = mix(lonFlat, lonSphere, u_morph) + u_lon;
+  float lat = mix(latFlat, latSphere, u_morph);
+  // The shape, from the rectangle to the disc.
+  float d = mix(max(abs(p.x), 2.0 * abs(p.y)) / FLAT, r, u_morph);
   float u = fract(lon / (2.0 * PI) + 0.5);
   float v = 0.5 - lat / PI;
   vec2 uv = vec2(PAD + u * (1.0 - 2.0 * PAD), v);
@@ -117,25 +138,39 @@ void main() {
   gx = vec2(dux * (1.0 - 2.0 * PAD), dFdx(v));
   gy = vec2(duy * (1.0 - 2.0 * PAD), dFdy(v));
 #endif
-  // Past the limb: the halo, fading out.
-  if (r >= 1.0) {
-    float halo = exp(-(r - 1.0) * 7.0) * 0.5;
+  // The scan: the map shows up to the line, which glows mint.
+  float across = (p.x / FLAT + 1.0) * 0.5;
+  float shown = smoothstep(u_reveal, u_reveal - 0.12, across);
+  float line = exp(-abs(across - u_reveal) * 40.0) * 0.7;
+  // The graticule, every thirty degrees, there before the data and gone
+  // once it's a globe.
+  float dl = abs(fract(lon / (PI / 6.0) + 0.5) - 0.5) * (PI / 6.0);
+  float dt = abs(fract(lat / (PI / 6.0) + 0.5) - 0.5) * (PI / 6.0);
+  float grat = max(smoothstep(0.012, 0.004, dl), smoothstep(0.012, 0.004, dt)) * 0.3 * (1.0 - u_morph);
+  // Past the edge: the halo, there once it's a globe, fading out.
+  float bloom = smoothstep(0.5, 1.0, u_morph);
+  if (d >= 1.0) {
+    float halo = exp(-(d - 1.0) * 7.0) * 0.5 * bloom;
     gl_FragColor = vec4(MINT * halo, halo);
     return;
   }
   vec3 col = shade(u_field0, u_under0, u_ramp0, uv, gx, gy);
   if (u_fade > 0.0) col = mix(col, shade(u_field1, u_under1, u_ramp1, uv, gx, gy), u_fade);
   // Lit from the upper left with a soft terminator, a little ambient on
-  // the night side, the rim in mint.
+  // the night side, the rim in mint: the globe's light, coming up with it.
   vec3 light = normalize(vec3(-0.55, 0.5, 0.65));
   float day = smoothstep(-0.3, 0.5, dot(n, light));
   float rim = pow(1.0 - z, 3.0);
-  col = col * (0.16 + 1.0 * day) + MINT * rim * 0.45;
-  // The limb itself, a pixel of anti-aliasing against the halo.
+  col = mix(col, col * (0.16 + 1.0 * day) + MINT * rim * 0.45, u_morph);
+  // The data as far as the scan has shown it, the line, and the grid over
+  // all of it: premultiplied, with the coverage of whichever is there.
+  vec3 inner = col * shown + MINT * line + MINT * grat;
+  float cover = max(max(shown, line), grat);
+  // The edge itself, a pixel of anti-aliasing against the halo.
   // Premultiplied, like the halo: the limb blends into it.
-  float edge = smoothstep(1.0, 1.0 - u_aa, r);
-  float haloAtEdge = 0.5;
-  gl_FragColor = vec4(mix(MINT * haloAtEdge, col, edge), mix(haloAtEdge, 1.0, edge));
+  float edge = smoothstep(1.0, 1.0 - u_aa, d);
+  float haloAtEdge = 0.5 * bloom;
+  gl_FragColor = vec4(mix(MINT * haloAtEdge, inner, edge), mix(haloAtEdge, cover, edge));
 }
 `;
 
@@ -159,7 +194,7 @@ const clamp = (x: number, lo: number, hi: number) => Math.min(Math.max(x, lo), h
 const easeInOut = (x: number) => x * x * (3 - 2 * x);
 const same = (a: View, b: View) => a.band === b.band && a.ramp === b.ramp;
 
-export const Globe = ({ interactive = true, className }: { interactive?: boolean; className?: string }) => {
+export const Globe = ({ interactive = true, intro = false, className }: { interactive?: boolean; intro?: boolean; className?: string }) => {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -176,10 +211,17 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
       if (!shader) return;
       gl.shaderSource(shader, source);
       gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error("Globe shader:", gl.getShaderInfoLog(shader));
+        return;
+      }
       gl.attachShader(program, shader);
     }
     gl.linkProgram(program);
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error("Globe program:", gl.getProgramInfoLog(program));
+      return;
+    }
     gl.useProgram(program);
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
@@ -199,6 +241,8 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
     const uLon = u("u_lon");
     const uTilt = u("u_tilt");
     const uAa = u("u_aa");
+    const uMorph = u("u_morph");
+    const uReveal = u("u_reveal");
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -218,6 +262,9 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
     let coming: View | null = null;
     let fadeStart = 0;
     let wanted = 0;
+    // The intro: when it began, or none.
+    let introAt = intro && !reduceMotion.matches ? -1 : 0;
+    const introRunning = () => introAt !== 0;
 
     // A GPU that can't take a map this wide gets it at half size, through a canvas.
     const textures = new Map<string, WebGLTexture>();
@@ -292,6 +339,20 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
         gl.uniform1f(uFade, easeInOut(fade));
         if (fade >= 1) finishFade();
       }
+      // The intro's clock starts at the first frame.
+      if (introAt < 0) introAt = now;
+      let morph = 1;
+      let reveal = 2;
+      if (introAt > 0) {
+        const age = (now - introAt) / 1000;
+        reveal = Math.min(age / REVEAL_S, 1) * 1.15;
+        morph = easeInOut(clamp((age - REVEAL_S - HOLD_S) / MORPH_S, 0, 1));
+        if (age >= INTRO_S) introAt = 0;
+      }
+      // Once it's a globe, the page may put its controls up.
+      if (intro && !introRunning()) setReady();
+      gl.uniform1f(uMorph, morph);
+      gl.uniform1f(uReveal, reveal);
       gl.uniform1f(uLon, lon);
       gl.uniform1f(uTilt, tilt);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -301,14 +362,21 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
     const frame = (now: number) => {
       raf = 0;
       if (!ready || !visible) return;
-      // Thirty frames a second are plenty for the turn; the pointer gets them all.
-      if (now - last < FRAME_MS && !dragging) {
+      // Thirty frames a second are plenty for the turn; the pointer and
+      // the intro get them all.
+      if (now - last < FRAME_MS && !dragging && !introRunning()) {
         raf = requestAnimationFrame(frame);
         return;
       }
       const dt = Math.min((now - last) / 1000, 0.1);
       last = now;
-      if (!dragging) {
+      if (introRunning()) {
+        // The flat map pans, and the turn comes up with the globe.
+        const age = introAt > 0 ? (now - introAt) / 1000 : 0;
+        const morph = easeInOut(clamp((age - REVEAL_S - HOLD_S) / MORPH_S, 0, 1));
+        velocity = -SPIN * (0.6 + 0.4 * morph);
+        lon += velocity * dt;
+      } else if (!dragging) {
         // After a flick the turn settles into the spin, or, with less
         // motion asked for, comes to rest.
         const rest = reduceMotion.matches ? 0 : -SPIN;
@@ -316,7 +384,7 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
         lon += velocity * dt;
       }
       draw(now);
-      const moving = dragging || coming !== null || Math.abs(velocity) > 0.0005;
+      const moving = dragging || coming !== null || introRunning() || Math.abs(velocity) > 0.0005;
       if (moving) raf = requestAnimationFrame(frame);
     };
     const wake = () => {
@@ -368,6 +436,7 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
     let pt = 0;
     const onDown = (e: PointerEvent) => {
       if (e.pointerType === "mouse" && e.button !== 0) return;
+      if (introRunning()) return;
       dragging = true;
       canvas.setPointerCapture(e.pointerId);
       canvas.classList.add("cursor-grabbing");
@@ -440,13 +509,13 @@ export const Globe = ({ interactive = true, className }: { interactive?: boolean
       canvas.removeEventListener("pointerup", onUp);
       canvas.removeEventListener("pointercancel", onUp);
     };
-  }, [interactive]);
+  }, [interactive, intro]);
 
   return (
     <canvas
       ref={ref}
       aria-hidden="true"
-      className={cn("block aspect-square opacity-0 transition-opacity duration-1000 select-none data-ready:opacity-100", interactive && "cursor-grab touch-pan-y", className)}
+      className={cn("block aspect-square opacity-0 transition-opacity duration-300 select-none data-ready:opacity-100", interactive && "cursor-grab touch-pan-y", className)}
     />
   );
 };

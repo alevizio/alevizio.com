@@ -13,23 +13,21 @@ const FACTS = [
 
 /* The page's own globe, live: the product's renders of the world under a
  * wind field and under temperature, wrapped on a sphere by the GPU and
- * turning (Globe), big and off to the right so its limb and its halo arc
- * through the screen, as the landing page's hero cropped its planet. It
- * turns under the pointer, and the product's own visualisation panel sits
- * over it to pick the band and the colour ramp. Where there is no WebGL
- * the black and the gradients stay, and the name holds the hero. The name
- * sits over it on the left, a mint hairline draws across the top as the
- * words arrive, and the hero dissolves into the page's green where the
- * facts begin. The gradients interpolate in sRGB: in oklab WebKit paints
- * the transparent end dark. The text column lets the pointer through to
- * the globe; only the panel takes it. */
+ * turning (Globe), big and centred, whole. It opens flat: the map scans
+ * in, pans, and curls into the globe, and then the product's own
+ * visualisation panel arrives at the top right to pick the band and the
+ * colour ramp. The name sits over its foot on the left, on a fade to the
+ * page's green, a mint hairline draws across the top as the words
+ * arrive. Where there is no WebGL the black and the fade stay, and the
+ * name holds the hero. The fade interpolates in sRGB: in oklab WebKit
+ * paints the transparent end dark. The text column lets the pointer
+ * through to the globe; only the panel takes it. */
 export const Hero = () => (
   <header className="bg-night text-mist">
     <div className="relative overflow-hidden bg-black">
       <div className="absolute inset-0">
-        <Globe className="absolute top-[52%] left-[77%] h-[146%] -translate-x-1/2 -translate-y-1/2 max-sm:top-[30%] max-sm:left-[76%] max-sm:h-[118%]" />
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-linear-to-r/srgb from-black from-8% via-black/35 via-45% to-black/0" />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-linear-to-t/srgb from-night via-night/70 to-night/0" />
+        <Globe intro className="absolute top-[47%] left-1/2 h-[126%] -translate-x-1/2 -translate-y-1/2 max-sm:top-[40%] max-sm:h-auto max-sm:w-[132vw]" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] bg-linear-to-t/srgb from-night from-18% via-night/75 via-55% to-night/0" />
       </div>
       <div aria-hidden className="draw pointer-events-none absolute inset-x-0 top-0 h-px bg-mint/70" />
       <div className={cn(PAGE, "pointer-events-none relative z-10 flex min-h-[88svh] flex-col justify-end pt-24 pb-16 sm:pb-24")}>
@@ -39,7 +37,7 @@ export const Hero = () => (
           A landing page for a developer platform for Earth intelligence: the brief, the structure, the look, and the
           page that shipped, on every&nbsp;screen.
         </p>
-        <GlobeControls className="arrive pointer-events-auto mt-10 w-full max-w-[20rem] [--arrive-delay:0.9s] sm:absolute sm:right-10 sm:bottom-24 sm:mt-0" />
+        <GlobeControls className="pointer-events-auto mt-10 w-full max-w-[20rem] sm:absolute sm:top-20 sm:right-10 sm:mt-0" />
       </div>
     </div>
     <dl data-stagger className={cn(PAGE, "grid gap-x-6 gap-y-8 pt-14 pb-20 sm:grid-cols-2 sm:pb-28 lg:grid-cols-4")}>
