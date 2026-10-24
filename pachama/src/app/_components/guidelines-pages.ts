@@ -1,7 +1,8 @@
 /* The brand guidelines' Figma page, every numbered page on it: where it
  * sits on the wall (literal classes, percentages of a canvas 37993 x 22580
  * Figma px, starting at the first page) and its shape, for the bigger
- * view of /brand/guidelines/<n>.jpg. In page order. */
+ * view of /brand/guidelines/<n>.jpg. In page order. Number 43 isn't a page
+ * but a dot-grid tile left over the grid overlay page, so it's left out. */
 export const WALL_ASPECT = "aspect-[37993/22580]";
 // A page's share of the canvas width, for the images' sizes.
 export const PAGE_SHARE = 0.05054;
@@ -46,7 +47,6 @@ export const PAGES: { n: number; box: string; at: string }[] = [
   { n: 40, box: "aspect-[1920/1080]", at: "left-[44.727%] top-[31.417%] w-[5.054%] h-[4.783%]" },
   { n: 41, box: "aspect-[1920/1080]", at: "left-[5.667%] top-[37.750%] w-[5.054%] h-[4.783%]" },
   { n: 42, box: "aspect-[1920/1080]", at: "left-[11.247%] top-[37.750%] w-[5.054%] h-[4.783%]" },
-  { n: 43, box: "aspect-[831/969]", at: "left-[16.119%] top-[37.998%] w-[2.187%] h-[4.291%]" },
   { n: 44, box: "aspect-[1920/1080]", at: "left-[16.772%] top-[37.750%] w-[5.054%] h-[4.783%]" },
   { n: 45, box: "aspect-[1920/1080]", at: "left-[0.000%] top-[44.553%] w-[5.054%] h-[4.783%]" },
   { n: 46, box: "aspect-[1920/1080]", at: "left-[5.667%] top-[44.553%] w-[5.054%] h-[4.783%]" },
