@@ -5,6 +5,7 @@ import tablet from "@/assets/page/tablet.webp";
 import team from "@/assets/page/team.webp";
 import wide from "@/assets/page/wide.webp";
 import { Anatomy } from "../_components/anatomy";
+import { LaptopScroll } from "../_components/laptop-scroll";
 import { Screens } from "../_components/screens";
 import { Shot } from "../_components/shot";
 import { Band, ChapterDivider, Section } from "../_components/story";
@@ -17,13 +18,23 @@ const SCREENS = [
   { src: mobile, alt: "The landing page at 420 pixels wide, a phone", label: "420, phone", sizes: "(min-width: 1024px) 25vw, 50vw" },
 ];
 
-/* Chapter III: the page, section by section, each taken apart into its
- * pieces, then the page at every width, and its second page. */
+/* Chapter III: the page whole, on a laptop, then section by section, each
+ * taken apart into its pieces, then the page at every width, and its
+ * second page. */
 export const ThePage = () => (
   <Band tone="ground">
     <ChapterDivider id="page" numeral="III" title="The page">
-      Seven sections, each taken apart into its pieces, then the page at four widths.
+      The page whole, then its seven sections taken apart into their pieces, then the page at four widths.
     </ChapterDivider>
+
+    <Section
+      id="whole"
+      eyebrow="The whole page"
+      title="Developer Tools for Earth Intelligence"
+      text="The landing page at 1440, from the file, top to bottom. It stops on each of its seven sections, the ones taken apart below."
+    >
+      <LaptopScroll caption="The page from the file, on a laptop. Point at it to hold it." />
+    </Section>
 
     {SECTIONS.map(({ id, eyebrow, title, text, ...anatomy }) => (
       <Section key={id} id={id} eyebrow={eyebrow} title={title} text={text}>
