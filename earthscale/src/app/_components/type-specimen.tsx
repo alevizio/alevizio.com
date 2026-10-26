@@ -1,72 +1,64 @@
 import type { ReactNode } from "react";
+
 import { cn } from "./cn";
 
-/* The page's two faces, set live in the real fonts, each with its job: PP
- * Neue Machina at every size from the headline down, plain and tight; IBM
- * Plex Mono, spaced and in capitals, for buttons, tags and the fine print.
- * They arrive in turn as the card comes into view: the headline word by
- * word, then the rest. */
-const HEADLINE = ["Developer", "Tools", "for", "Earth", "Intelligence"];
-// Literal classes for Tailwind: a beat between the headline's words.
-const WORD_DELAYS = ["[--reveal-delay:0s]", "[--reveal-delay:0.07s]", "[--reveal-delay:0.14s]", "[--reveal-delay:0.21s]", "[--reveal-delay:0.28s]"];
+/* The page's two faces and where they come from: the file's ten desktop
+ * text styles, set live in the real fonts with the page's own words in
+ * them, each labelled with its name and size as the file has them. PP
+ * Neue Machina carries eight, IBM Plex Mono the two in capitals. The rows
+ * arrive one after another as the cards come into view. */
+type Style = { name: string; size: number; sample: string; className: string };
 
-const FACES: { name: string; use: string; sample: ReactNode; className: string }[] = [
-  {
-    name: "PP Neue Machina Regular, 72",
-    use: "The headline",
-    sample: HEADLINE.map((word, i) => (
-      <span key={word} data-reveal className={cn("inline-block", WORD_DELAYS[i])}>
-        {word}&nbsp;
-      </span>
-    )),
-    className: "font-sans text-[clamp(2.5rem,5.5vw,4.5rem)] leading-none tracking-[-0.02em] text-mist",
-  },
-  {
-    name: "PP Neue Machina Regular, 28",
-    use: "The line under it, in mint",
-    sample: (
-      <span data-reveal className="block [--reveal-delay:0.4s]">
-        Build next-gen geospatial products with cloud-native tools.
-      </span>
-    ),
-    className: "font-sans text-[clamp(1.25rem,2.2vw,1.75rem)] leading-[1.4] tracking-[-0.02em] text-mint",
-  },
-  {
-    name: "PP Neue Machina Regular, 20 and 16",
-    use: "Text",
-    sample: (
-      <span data-reveal className="block max-w-[40rem] [--reveal-delay:0.5s]">
-        Spin up high-performance services for raster &amp; vector data in minutes, explore complex large scale datasets with a
-        click, and ship faster, confidently.
-      </span>
-    ),
-    className: "font-sans text-xl leading-[1.4] text-mist",
-  },
-  {
-    name: "IBM Plex Mono Regular, 16 and 14",
-    use: "Buttons, tags and the fine print, in capitals",
-    sample: (
-      <span data-reveal className="flex flex-wrap items-center gap-4 [--reveal-delay:0.6s]">
-        <span className="inline-flex h-12 items-center gap-2 rounded-full bg-mint pr-4 pl-6 text-base text-night">
+const MACHINA: Style[] = [
+  { name: "h1", size: 72, sample: "Developer Tools for Earth Intelligence", className: "text-[clamp(2.5rem,6vw,4.5rem)] leading-none text-mist" },
+  { name: "h2", size: 50, sample: "Serve Data at Scale, Instantly", className: "text-[clamp(2rem,4.2vw,3.125rem)] leading-none tracking-[-0.02em] text-mist" },
+  { name: "h3", size: 32, sample: "A Visual Explorer for your Data", className: "text-[clamp(1.5rem,2.7vw,2rem)] leading-none tracking-[-0.02em] text-mist" },
+  { name: "Subtitle 1", size: 28, sample: "Build next-gen geospatial products with cloud-native tools.", className: "text-[1.75rem] leading-[1.4] tracking-[-0.02em] text-mint" },
+  { name: "Subtitle 2", size: 24, sample: "Teams building with geospatial data.", className: "text-2xl leading-[1.4] tracking-[-0.02em] text-mint" },
+  { name: "Body 1", size: 20, sample: "Earthscale gave us the building blocks to turn satellite imagery into real-time insights.", className: "text-xl leading-[1.4] text-mist" },
+  { name: "Body 2", size: 16, sample: "Spin up high-performance services for raster & vector data in minutes.", className: "text-base leading-[1.4] text-text" },
+  { name: "Body 3", size: 14, sample: "Enter your email...", className: "text-sm leading-none text-text" },
+];
+
+const PLEX: Style[] = [
+  { name: "Button", size: 16, sample: "Get Started", className: "text-base leading-[1.1] text-mist" },
+  { name: "Caption", size: 14, sample: "Copyright © 2025 Earthscale", className: "text-sm uppercase leading-[1.1] text-mist" },
+];
+
+const Face = ({ name, from, styles, mono = false, children }: { name: string; from: string; styles: Style[]; mono?: boolean; children?: ReactNode }) => (
+  <div className="hairline rounded-[10px] bg-night p-6 sm:p-8">
+    <p data-reveal className="type-body text-mist">
+      {name}
+    </p>
+    <p data-reveal className="type-label mt-2 text-haze [--reveal-delay:0.06s]">
+      {from}
+    </p>
+    <ol data-stagger className="mt-8 border-b border-rule">
+      {styles.map(({ name: style, size, sample, className }) => (
+        <li key={style} data-reveal className="grid gap-x-6 gap-y-2 border-t border-rule py-5 sm:grid-cols-[1fr_auto]">
+          <p className={cn(mono ? "font-mono" : "font-sans", className)}>{sample}</p>
+          <p className="type-label whitespace-nowrap text-haze sm:pt-1 sm:text-right">
+            {style} · {size}
+          </p>
+        </li>
+      ))}
+    </ol>
+    {children}
+  </div>
+);
+
+export const TypeSpecimen = () => (
+  <div className="grid items-start gap-4 sm:gap-6 lg:grid-cols-[3fr_2fr]">
+    <Face name="PP Neue Machina" from="Pangram Pangram, Montréal · Mathieu Desjardins, 2019 · eight styles" styles={MACHINA} />
+    <Face name="IBM Plex Mono" from="IBM with Bold Monday · Mike Abbink, 2017 · open source · two styles" styles={PLEX} mono>
+      <p className="type-label mt-8 text-haze">In use</p>
+      <p data-reveal className="mt-4 flex flex-wrap items-center gap-4 font-mono [--reveal-delay:0.2s]">
+        <span className="inline-flex h-12 items-center gap-2 rounded-full bg-mint pr-5 pl-6 text-base text-night">
           Get Started <span aria-hidden>→</span>
         </span>
         <span className="hairline inline-flex h-9 items-center rounded-full px-4 text-xs uppercase tracking-[0.02em] text-mist">For teams</span>
         <span className="text-sm uppercase tracking-[0.02em] text-dim">Copyright © 2025 Earthscale</span>
-      </span>
-    ),
-    className: "font-mono",
-  },
-];
-
-export const TypeSpecimen = () => (
-  <div className="hairline grid content-start gap-10 rounded-[10px] bg-night p-6 sm:p-10">
-    {FACES.map(({ name, use, sample, className }) => (
-      <div key={name}>
-        <p className="type-label text-haze">
-          {name} · {use}
-        </p>
-        <p className={cn("mt-4", className)}>{sample}</p>
-      </div>
-    ))}
+      </p>
+    </Face>
   </div>
 );

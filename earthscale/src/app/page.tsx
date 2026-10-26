@@ -41,11 +41,11 @@ const NAV: readonly NavGroup[] = [
     numeral: "II",
     title: "The look",
     items: [
+      { id: "type", label: "Type" },
+      { id: "colour", label: "Colour" },
       { id: "studies", label: "The imagery" },
       { id: "exploration", label: "A first pass" },
       { id: "direction", label: "The hero" },
-      { id: "type", label: "Type" },
-      { id: "colour", label: "Colour" },
       { id: "components", label: "The pieces" },
     ],
   },

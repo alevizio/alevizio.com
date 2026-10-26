@@ -34,6 +34,24 @@ export const Look = () => (
     </ChapterDivider>
 
     <Section
+      id="type"
+      eyebrow="Type"
+      title="Neue Machina and Plex Mono"
+      text="Two faces, set live here. PP Neue Machina, from Pangram Pangram in Montréal, at every size from the 72px headline to the 14px fine print, plain and tight. IBM Plex Mono, IBM’s own open source mono, in capitals for buttons, tags and captions, the way a terminal would set them. The file’s ten text styles, with the page’s own words in them."
+    >
+      <TypeSpecimen />
+    </Section>
+
+    <Section
+      id="colour"
+      eyebrow="Colour"
+      title="Dark green, pale green, and the data’s own ramps"
+      text="Four greens, by the names the file gives them: one so dark it reads as black for the page, a pale one for text, a mint for anything to press and a grey one for captions. The rest of the colour is the data’s: the five ramps the product offers for a raster, the perceptually uniform maps science reads data by, four made for matplotlib in 2015 and cividis in 2018. The same patch of wind, through each one."
+    >
+      <Palette />
+    </Section>
+
+    <Section
       id="studies"
       eyebrow="The imagery"
       title="The product as the picture"
@@ -67,24 +85,6 @@ export const Look = () => (
       text="The hero that stayed: the planet under a wind field, cropped to its edge, and the headline over it, Developer Tools for Earth Intelligence. One picture of what the data is, the email field, and the product below."
     >
       <Shot src={pageHero} alt="The final hero: the headline Developer Tools for Earth Intelligence over a globe wrapped in a green wind field, with an email field and a mint Get Started button" caption="The hero at 1440 wide." zoom />
-    </Section>
-
-    <Section
-      id="type"
-      eyebrow="Type"
-      title="Neue Machina and Plex Mono"
-      text="Pangram Pangram’s PP Neue Machina at every size, plain and tight, from the 72px headline to 14px captions. IBM Plex Mono in capitals for buttons, tags and the fine print, the way a terminal would set them. Two faces, set live here."
-    >
-      <TypeSpecimen />
-    </Section>
-
-    <Section
-      id="colour"
-      eyebrow="Colour"
-      title="Dark green, pale green, and the data’s own ramps"
-      text="A green so dark it reads as black for the page, a pale green for text, and a mint for anything to press. The rest of the colour comes from the pictures: the ramps scientists use to read data, viridis, plasma, inferno, magma and cividis, run through the hero and every screen."
-    >
-      <Palette />
     </Section>
 
     <Section
