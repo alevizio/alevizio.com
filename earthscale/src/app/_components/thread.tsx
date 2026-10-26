@@ -6,9 +6,9 @@ import { cn } from "./cn";
 import { Panel, PanelTitle } from "./panel";
 import { useLoop } from "./use-loop";
 
-/* A comment on a tile, as the page shows it, playing itself: Felix flags
- * the tile, Noah answers, Felix thanks him, and a reply starts. Then it
- * starts over. */
+/* A comment on a tile, as the page shows it, playing itself: the green pin
+ * lands, Felix flags the tile, Noah answers, Felix thanks him, and a reply
+ * starts. Then it starts over. */
 const MESSAGES = [
   { who: "Felix Dorrek", initial: "F", when: "8 hrs ago", text: "There's something weird about this tile" },
   { who: "Noah", initial: "N", when: "2 hrs ago", text: "I'm not 100% what it is but I'll have a look" },
@@ -25,9 +25,9 @@ export const Thread = ({ className }: { className?: string }) => {
   const sent = step >= 4;
 
   return (
-    <div ref={ref} className={cn("relative pl-7", className)}>
-      <span className="absolute top-0 left-0 grid size-6 place-items-center rounded-[6px] bg-mint text-night">
-        <MdOutlineChat className="size-3.5" />
+    <div ref={ref} className={cn("relative pl-11", className)}>
+      <span className={cn("absolute top-0 left-0 grid size-8 origin-bottom-left place-items-center rounded-full rounded-bl-none bg-green text-night transition-[scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]", step === 0 ? "scale-50 opacity-0" : "scale-100 opacity-100")}>
+        <MdOutlineChat className="size-4" />
       </span>
       <Panel className="p-5">
         <PanelTitle right={<><MdMoreVert className="size-3.5" /><MdCheckCircleOutline className="size-3.5" /><MdClose className="size-3.5" /></>}>Comment</PanelTitle>
@@ -46,12 +46,12 @@ export const Thread = ({ className }: { className?: string }) => {
         </ul>
         <div className="mt-4 flex items-center gap-3">
           <span className="grid size-6 shrink-0 place-items-center rounded-full bg-mint font-mono text-[9px] text-night">N</span>
-          <span className="flex h-8 flex-1 items-center justify-between rounded-md border border-rule px-2.5 font-sans text-[11px]">
+          <span className="flex min-h-8 flex-1 items-center justify-between gap-2 rounded-md border border-rule px-2.5 py-1.5 font-sans text-[11px]">
             <span className={cn("transition-colors duration-500", typing || sent ? "text-mist" : "text-haze")}>
               {typing || sent ? "Looks like a stitching seam, re-running the tiles" : "Reply"}
               {typing ? <span className="ml-px inline-block h-3 w-px bg-mint align-middle motion-safe:animate-[es-blink_1s_steps(2)_infinite]" /> : null}
             </span>
-            <span className={cn("grid size-5 place-items-center rounded-full transition-colors duration-300", sent ? "bg-mint text-night" : "bg-mist/15 text-haze")}>
+            <span className={cn("grid size-5 shrink-0 place-items-center rounded-full transition-colors duration-300", sent ? "bg-mint text-night" : "bg-mist/15 text-haze")}>
               <MdArrowUpward className="size-3" />
             </span>
           </span>

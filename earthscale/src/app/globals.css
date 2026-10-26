@@ -167,6 +167,13 @@
     transform: perspective(1400px) rotateX(-14deg) translateY(2.5rem);
   }
 
+  /* Marks over a picture come up in place. */
+  .motion [data-reveal="mark"]:not([data-in]) {
+    opacity: 0;
+    translate: none;
+    scale: 0.94;
+  }
+
   /* A line drops from the node above it. */
   .motion [data-reveal="drop"] {
     transform-origin: top;
@@ -448,6 +455,28 @@
 /* Earthscale's panels and pictures: a cursor blinking in a field, the
  * point where the pipeline's sources join, and a picture drifting across
  * its frame, each in its own direction (--drift-x, --drift-y). */
+/* A glow breathing in and out, the closing button's. */
+@keyframes es-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 18px rgb(160 255 215 / 0.16);
+  }
+  50% {
+    box-shadow: 0 0 48px rgb(160 255 215 / 0.42);
+  }
+}
+
+/* A glow under the planet's limb, rising and falling. */
+@keyframes es-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @keyframes es-blink {
   50% {
     opacity: 0;

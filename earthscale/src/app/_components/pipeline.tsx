@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { MdOutlineCloud, MdOutlineStorage } from "react-icons/md";
+import { FiDatabase } from "react-icons/fi";
 import { cn } from "./cn";
 import { useLoop } from "./use-loop";
 
@@ -24,7 +24,7 @@ const JS = ["sources: {", "  myRaster: {", "    type: 'raster',", "    tiles: ["
 const STEPS = [900, 1400, 2600, 1400, 2400, 1800] as const;
 
 const Window = ({ children, className, on }: { children: ReactNode; className?: string; on: boolean }) => (
-  <div className={cn("rounded-[10px] border border-rule bg-night/90 p-4 font-mono text-[10.5px] leading-[1.6] text-mist shadow-[0_24px_60px_rgba(0,0,0,0.45)] transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] sm:text-[11.5px]", on ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0", className)}>
+  <div className={cn("min-w-0 overflow-hidden rounded-[10px] border border-rule bg-night/90 p-4 font-mono text-[9.5px] leading-[1.6] text-mist shadow-[0_24px_60px_rgba(0,0,0,0.45)] transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] sm:text-[11.5px]", on ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0", className)}>
     <div className="mb-3 flex gap-1.5 border-b border-rule pb-3">
       <span className="size-2 rounded-full bg-mist/25" />
       <span className="size-2 rounded-full bg-mist/25" />
@@ -49,17 +49,17 @@ export const Pipeline = ({ className }: { className?: string }) => {
   const tiles = step >= 4;
 
   return (
-    <div ref={ref} className={cn("relative grid gap-0", className)}>
+    <div ref={ref} className={cn("relative grid min-w-0 grid-cols-[minmax(0,1fr)] gap-0", className)}>
       {/* The sources and the line down. */}
       <div className="relative mx-auto flex w-full max-w-[26rem] justify-between">
-        <Source label="Cloud Storage" icon={<MdOutlineCloud className="size-4" />} />
-        <Source label="Database" icon={<MdOutlineStorage className="size-4" />} />
+        <Source label="Cloud Storage" icon={<FiDatabase className="size-4" />} />
+        <Source label="Database" icon={<FiDatabase className="size-4" />} />
       </div>
       <svg viewBox="0 0 416 72" className="mx-auto block w-full max-w-[26rem]" aria-hidden>
         <path d="M60 0 V36 H208 M356 0 V36 H208 M208 36 V72" fill="none" stroke="rgb(230 246 231 / 0.18)" strokeWidth="1" />
         <path d="M60 0 V36 H208 V72" fill="none" stroke="#a0ffd7" strokeWidth="1" pathLength={1} strokeDasharray="1" strokeDashoffset={joined ? 0 : 1} className="transition-[stroke-dashoffset] duration-[1200ms] ease-out" />
         <path d="M356 0 V36 H208 V72" fill="none" stroke="#a0ffd7" strokeWidth="1" pathLength={1} strokeDasharray="1" strokeDashoffset={joined ? 0 : 1} className="transition-[stroke-dashoffset] duration-[1200ms] ease-out" />
-        <circle r="3.5" fill="#2bff73" className={cn("transition-opacity duration-300", running ? "opacity-100" : "opacity-0")} style={{ offsetPath: "path('M208 30 V72')", offsetDistance: running ? "100%" : "0%", transition: running ? "offset-distance 1.2s linear, opacity 0.3s" : "opacity 0.3s" }} />
+        <circle cx="208" cy="30" r="3.5" fill="#2bff73" className={cn(running ? "translate-y-[42px] opacity-100 transition-[translate,opacity] duration-[1200ms] ease-linear" : "translate-y-0 opacity-0 transition-opacity duration-300")} />
         <circle cx="208" cy="36" r="3" fill="#2bff73" className="motion-safe:animate-[es-pulse_2.4s_ease-in-out_infinite]" />
       </svg>
       <Window on={joined} className="mx-auto w-full max-w-[26rem]">
@@ -78,7 +78,7 @@ export const Pipeline = ({ className }: { className?: string }) => {
       </Window>
       <svg viewBox="0 0 416 56" className="mx-auto block w-full max-w-[26rem]" aria-hidden>
         <path d="M208 0 V56" fill="none" stroke="rgb(230 246 231 / 0.18)" strokeWidth="1" />
-        <circle r="3.5" fill="#2bff73" className={cn("transition-opacity duration-300", step === 3 ? "opacity-100" : "opacity-0")} style={{ offsetPath: "path('M208 0 V56')", offsetDistance: step === 3 ? "100%" : "0%", transition: step === 3 ? "offset-distance 1.2s linear, opacity 0.3s" : "opacity 0.3s" }} />
+        <circle cx="208" cy="0" r="3.5" fill="#2bff73" className={cn(step === 3 ? "translate-y-[56px] opacity-100 transition-[translate,opacity] duration-[1200ms] ease-linear" : "translate-y-0 opacity-0 transition-opacity duration-300")} />
       </svg>
       <Window on={tiles} className="w-full sm:ml-[18%] sm:w-[82%]">
         {JS.map((line, i) => (

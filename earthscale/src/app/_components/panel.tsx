@@ -43,3 +43,16 @@ export const Button = ({ children, primary = false, className }: { children: Rea
     {children}
   </span>
 );
+
+/** Text that types itself in, character by character, when on. */
+export const Typed = ({ text, on, className }: { text: string; on: boolean; className?: string }) => (
+  <span className={cn("relative inline-block overflow-hidden whitespace-nowrap align-bottom", className)}>
+    <span className="invisible">{text}</span>
+    <span
+      className="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap transition-[width] ease-[steps(40,end)]"
+      style={{ width: on ? "100%" : "0%", transitionDuration: on ? "1600ms" : "0ms" }}
+    >
+      {text}
+    </span>
+  </span>
+);

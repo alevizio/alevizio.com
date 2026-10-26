@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { MdArrowBack, MdArrowForward, MdCheck, MdClose, MdRefresh } from "react-icons/md";
 import { cn } from "./cn";
-import { Button, Label, Panel, PanelTitle, Select, Slider } from "./panel";
+import { Button, Label, Panel, PanelTitle, Select, Slider, Typed } from "./panel";
 import { CHIPS } from "./ramps";
 import { useLoop } from "./use-loop";
 
@@ -16,19 +16,6 @@ const STAGES = ["URL", "Access", "Metadata", "Visualization"];
 const STEPS = [2200, 900, 1800, 1000, 2000, 2400, 1600] as const;
 const URL_TEXT = "gs://earthscale-public/datasets/raster/hles_tanzania/";
 const NAME_TEXT = "Sentinel2 Nvidi 37mbu (Demo)";
-
-/** Text that types itself in, character by character, when on. */
-const Typed = ({ text, on, className }: { text: string; on: boolean; className?: string }) => (
-  <span className={cn("relative inline-block overflow-hidden whitespace-nowrap align-bottom", className)}>
-    <span className="invisible">{text}</span>
-    <span
-      className="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap transition-[width] ease-[steps(40,end)]"
-      style={{ width: on ? "100%" : "0%", transitionDuration: on ? "1600ms" : "0ms" }}
-    >
-      {text}
-    </span>
-  </span>
-);
 
 export const Register = ({ className }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -47,7 +34,7 @@ export const Register = ({ className }: { className?: string }) => {
               <span className={cn("grid size-4 shrink-0 place-items-center rounded-full border transition-colors duration-500", done(i) ? "border-mint bg-mint text-night" : i === stage ? "border-mint text-mint" : "border-rule text-haze")}>
                 {done(i) ? <MdCheck className="size-3" /> : null}
               </span>
-              <span className={cn("transition-colors duration-500", i <= stage ? "text-mist" : "text-haze")}>{name}</span>
+              <span className={cn("transition-colors duration-500", i <= stage ? "text-mist" : "text-haze", i !== stage && "max-sm:hidden")}>{name}</span>
               {i < STAGES.length - 1 ? <span className={cn("ml-1 h-px flex-1 transition-colors duration-700", done(i) ? "bg-mint" : "bg-rule")} /> : null}
             </li>
           ))}

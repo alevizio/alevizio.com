@@ -1,4 +1,3 @@
-import pageHero from "@/assets/page/hero.webp";
 import exploration from "@/assets/process/exploration.webp";
 import study1 from "@/assets/studies/01.webp";
 import study2 from "@/assets/studies/02.webp";
@@ -6,12 +5,9 @@ import study3 from "@/assets/studies/03.webp";
 import study5 from "@/assets/studies/05.webp";
 import study6 from "@/assets/studies/06.webp";
 import { Drift } from "../_components/drift";
-import { Explorer } from "../_components/explorer";
 import { Palette } from "../_components/palette";
-import { Register } from "../_components/register";
-import { HALF, Shot, TallShot, THIRD } from "../_components/shot";
+import { HALF, TallShot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
-import { Thread } from "../_components/thread";
 import { TypeSpecimen } from "../_components/type-specimen";
 
 // Renders out of the product, each a dataset on the map, as they sat in the file.
@@ -25,8 +21,8 @@ const WORLD = [
   { src: study6, alt: "Sea and land temperature across the world, in plasma: orange seas, purple poles" },
 ];
 
-/* Chapter II: the pictures, the first lit pass, the hero that stayed, and
- * the type, colour and pieces the page is made of. */
+/* Chapter II: the type and colour the page is made of and where they come
+ * from, then its pictures and the first lit pass. */
 export const Look = () => (
   <Band tone="night">
     <ChapterDivider id="look" numeral="II" title="The look">
@@ -76,35 +72,6 @@ export const Look = () => (
       text="The first lit version put the product front and centre: a satellite map with the layers panel, a comment thread and a parcel outline, cyan on black. It was right about the dark ground and the green, and wrong about the hero: a screenshot asked the visitor to read before the page had said anything."
     >
       <TallShot src={exploration} alt="The first lit exploration of the page, scrolling: a map interface as the hero, then the sections in cyan on black" label="The first lit pass" caption="The exploration, from the file. Scroll it." />
-    </Section>
-
-    <Section
-      id="direction"
-      eyebrow="The hero"
-      title="Earth first, then the tools"
-      text="The hero that stayed: the planet under a wind field, cropped to its edge, and the headline over it, Developer Tools for Earth Intelligence. One picture of what the data is, the email field, and the product below."
-    >
-      <Shot src={pageHero} alt="The final hero: the headline Developer Tools for Earth Intelligence over a globe wrapped in a green wind field, with an email field and a mint Get Started button" caption="The hero at 1440 wide." zoom />
-    </Section>
-
-    <Section
-      id="components"
-      eyebrow="The pieces"
-      title="Tags, hairlines and windows"
-      text="Pill tags in mono, cards drawn with a single hairline, code in windows with three dots, and the product’s own panels drawn for the page: the layers and their time, a visualisation being edited, pixel information with its time series, registering a dataset in four steps, and a comment on a tile. Here they are rebuilt, and they work the way the page shows them working."
-    >
-      <Explorer />
-      <p className="type-caption mt-3 text-(--tone-text)">The explorer: the layers come in, the time runs and the map steps on, the ramp changes, the time series draws.</p>
-      <Row className="mt-10 sm:mt-14">
-        <div>
-          <Register />
-          <p className="type-caption mt-3 text-(--tone-text)">Registering a dataset: the URL, the access check, the name, the visualisation.</p>
-        </div>
-        <div>
-          <Thread />
-          <p className="type-caption mt-3 text-(--tone-text)">A comment on a tile, answered.</p>
-        </div>
-      </Row>
     </Section>
   </Band>
 );
