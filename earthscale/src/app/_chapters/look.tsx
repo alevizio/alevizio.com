@@ -3,24 +3,24 @@ import exploration from "@/assets/process/exploration.webp";
 import study1 from "@/assets/studies/01.webp";
 import study2 from "@/assets/studies/02.webp";
 import study3 from "@/assets/studies/03.webp";
-import study4 from "@/assets/studies/04.webp";
 import study5 from "@/assets/studies/05.webp";
 import study6 from "@/assets/studies/06.webp";
 import { Drift } from "../_components/drift";
 import { Explorer } from "../_components/explorer";
 import { Palette } from "../_components/palette";
 import { Register } from "../_components/register";
-import { Shot, TallShot, THIRD } from "../_components/shot";
+import { HALF, Shot, TallShot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
 import { Thread } from "../_components/thread";
 import { TypeSpecimen } from "../_components/type-specimen";
 
 // Renders out of the product, each a dataset on the map, as they sat in the file.
-const STUDIES = [
+const CLOSE = [
   { src: study1, alt: "Night-time lights over a coastline, in deep blue and teal, in Earthscale's map" },
   { src: study2, alt: "A river delta in false colour, yellow channels across blue land" },
   { src: study3, alt: "A wind field over the ocean, in greens, rendered in Earthscale" },
-  { src: study4, alt: "The same delta cropped to an oval, as it would sit under a headline" },
+];
+const WORLD = [
   { src: study5, alt: "The world's surface under a wind field, in viridis" },
   { src: study6, alt: "Sea and land temperature across the world, in plasma: orange seas, purple poles" },
 ];
@@ -40,8 +40,13 @@ export const Look = () => (
       text="The page needed a picture of Earth data, and Earthscale makes them. Wind fields, sea temperature, a delta in false colour, the world’s surface in viridis: renders out of the product itself, so nothing on the page is stock. They keep moving here, as the data does."
     >
       <Row cols={3}>
-        {STUDIES.map(({ src, alt }, i) => (
+        {CLOSE.map(({ src, alt }, i) => (
           <Drift key={alt} src={src} alt={alt} index={i} sizes={THIRD} />
+        ))}
+      </Row>
+      <Row className="mt-4 sm:mt-6">
+        {WORLD.map(({ src, alt }, i) => (
+          <Drift key={alt} src={src} alt={alt} index={i + 3} sizes={HALF} aspect="aspect-[16/9]" />
         ))}
       </Row>
     </Section>
