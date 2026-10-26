@@ -1,7 +1,6 @@
-import wireframe from "@/assets/process/wireframe.webp";
 import { Notes } from "../_components/notes";
-import { TallShot } from "../_components/shot";
 import { Band, ChapterDivider, Section } from "../_components/story";
+import { WireStack } from "../_components/wire-stack";
 
 /* Chapter I: what Earthscale asked for, and the page in boxes before any
  * colour. */
@@ -24,9 +23,9 @@ export const Start = () => (
       id="wireframe"
       eyebrow="The structure"
       title="Nine sections, in grey"
-      text="The page in boxes before any colour: a hero with the product behind it and an email field, the logos, who it’s for, deploy, then test and explore, the ask, and a footer that repeats it. The order held to the end; the hero and the two feature sections changed the most."
+      text="The page in boxes before any colour, taken apart. The order held to the end; the hero and the two feature sections changed the most."
     >
-      <TallShot src={wireframe} alt="The landing page as a grey wireframe, scrolling: hero with an email field, a logos row, two cards, three feature cards, three more, a closing call to action and a footer" label="The wireframe" caption="The desktop wireframe. Scroll it." />
+      <WireStack />
     </Section>
   </Band>
 );
