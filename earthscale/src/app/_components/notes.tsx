@@ -1,61 +1,96 @@
-import { cn } from "./cn";
+import type { ReactNode } from "react";
 
-/* The brief, as it came: notes Earthscale left in the Figma, word for word.
- * The line about who the product is for and the section they wanted room
- * for, then the two lists of features, one for what the page should show
- * and one for what a developer gets. */
-const NOTES: { title?: string; lines: string[] }[] = [
-  {
-    lines: ["Earthscale is built for product, data, and engineering teams working with Earth observation and remote sensing data."],
-  },
-  {
-    lines: [
-      "We’d need a section for customer logos and/or testimonials. We might not launch with it right away but would like to have something in place where we can simply drop in the content when ready.",
-    ],
-  },
-  {
-    title: "Key features",
-    lines: [
-      "Register and visualize any geospatial dataset in seconds",
-      "On-the fly serving for immediate cost-effective visualization",
-      "Optimized datasets for high-performance and large scale overviews",
-      "Discover relevant data assets through an organization wide data catalog",
-      "Spatial filtering",
-      "Search by name",
-      "Organize datasets into maps",
-      "Leave geo-tagged comments to flag issues",
-      "Fetch band and time-series values for any given pixel",
-      "Organize maps into projects (coming soon)",
-      "Compute zonal statistics (coming soon)",
-      "Python client & API",
-      "Registering datasets",
-      "Creating maps (coming soon)",
-    ],
-  },
-  {
-    title: "Key features, for developers",
-    lines: [
-      "Register and style geospatial dataset and receive x/y/z tile-server urls compatible with any major frontend mapping framework (e.g. Mapbox GL)",
-      "On-the fly serving for immediate cost-effective visualization",
-      "Optimized datasets for high-performance and large scale overviews",
-      "Available through python client, API or Earthscale’s user interface",
-      "Request pixel level time-series and band information via API or python client to use in your own application for serving to end users",
-    ],
-  },
+import { cn } from "./cn";
+import { Tag } from "./story";
+
+/* The brief, as Earthscale left it in the Figma, cut down to the list: who
+ * the platform is for, what it does, what a developer gets, and the one
+ * section they wanted room for. The features are pills, not sentences. */
+type Item = { text: string; soon?: boolean };
+
+const WHO = "Product, data and engineering teams working with Earth observation and remote sensing data.";
+
+const FEATURES: Item[] = [
+  { text: "Any dataset, registered in seconds" },
+  { text: "Serving on the fly" },
+  { text: "Optimized overviews at scale" },
+  { text: "Organization-wide catalog" },
+  { text: "Spatial filtering" },
+  { text: "Search by name" },
+  { text: "Datasets into maps" },
+  { text: "Geo-tagged comments" },
+  { text: "Band and time series per pixel" },
+  { text: "Python client and API" },
+  { text: "Maps into projects", soon: true },
+  { text: "Zonal statistics", soon: true },
 ];
 
-export const Notes = ({ className }: { className?: string }) => (
-  <div data-stagger className={cn("grid gap-4 sm:grid-cols-2 sm:gap-6", className)}>
-    {NOTES.map(({ title, lines }, i) => (
-      <div key={i} data-reveal className="hairline flex flex-col rounded-[10px] bg-(--tone-fill) p-6">
-        <p className="type-label text-(--tone-label)">Earthscale, in the file</p>
-        {title ? <p className="type-caption mt-5 text-(--tone-head)">{title}</p> : null}
-        <ul className={cn("type-caption text-(--tone-text)", title ? "mt-2" : "mt-5", lines.length > 1 && "list-disc space-y-1.5 pl-4")}>
-          {lines.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ul>
-      </div>
+const DEVELOPERS: Item[] = [
+  { text: "x/y/z tile URLs, Mapbox GL ready" },
+  { text: "Python client, API or the UI" },
+  { text: "Pixel time series in your own app" },
+  { text: "Register datasets from code" },
+  { text: "Create maps from code", soon: true },
+];
+
+const ROOM = "Customer logos and testimonials, to drop in when ready.";
+
+/* The pills land one after another, left to right. Tailwind only sees
+ * classes written out, so the wave is a list. */
+const WAVE = [
+  "[--reveal-delay:0s]",
+  "[--reveal-delay:0.05s]",
+  "[--reveal-delay:0.1s]",
+  "[--reveal-delay:0.15s]",
+  "[--reveal-delay:0.2s]",
+  "[--reveal-delay:0.25s]",
+  "[--reveal-delay:0.3s]",
+  "[--reveal-delay:0.35s]",
+  "[--reveal-delay:0.4s]",
+  "[--reveal-delay:0.45s]",
+  "[--reveal-delay:0.5s]",
+  "[--reveal-delay:0.55s]",
+];
+
+const Pills = ({ items }: { items: Item[] }) => (
+  <ul className="flex flex-wrap gap-2">
+    {items.map(({ text, soon }, i) => (
+      <li key={text}>
+        <Tag className={cn(WAVE[Math.min(i, WAVE.length - 1)], "text-(--tone-head)", soon && "border-dashed text-(--tone-text)")}>
+          {text}
+          {soon ? " · soon" : null}
+        </Tag>
+      </li>
     ))}
+  </ul>
+);
+
+const Row = ({ label, children }: { label: string; children: ReactNode }) => (
+  <div className="grid gap-4 py-7 first:pt-0 last:pb-0 sm:grid-cols-[9rem_1fr] sm:gap-x-10 sm:py-8">
+    <p data-reveal className="type-label pt-2 text-(--tone-label)">
+      {label}
+    </p>
+    {children}
+  </div>
+);
+
+export const Notes = ({ className }: { className?: string }) => (
+  <div className={cn("divide-y divide-(--tone-line)", className)}>
+    <Row label="Who it’s for">
+      <p data-reveal className="type-body max-w-[34rem] text-(--tone-head) [--reveal-delay:0.08s]">
+        {WHO}
+      </p>
+    </Row>
+    <Row label="What it does">
+      <Pills items={FEATURES} />
+    </Row>
+    <Row label="For developers">
+      <Pills items={DEVELOPERS} />
+    </Row>
+    <Row label="Room for">
+      <p data-reveal className="type-body max-w-[34rem] text-(--tone-text) [--reveal-delay:0.08s]">
+        {ROOM}
+      </p>
+    </Row>
   </div>
 );

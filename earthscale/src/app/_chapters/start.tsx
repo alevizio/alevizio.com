@@ -15,7 +15,7 @@ export const Start = () => (
       id="brief"
       eyebrow="The brief"
       title="What the page had to say"
-      text="Felix and Noah wrote down who the platform is for and what it does, as a list of features, twice: once as the product sees it and once as a developer would. Their notes, as they came, in the file."
+      text="Felix and Noah wrote down who the platform is for and what it does, as a list of features, twice: once as the product sees it and once as a developer would. Their notes from the file, boiled down to the list."
     >
       <Notes />
     </Section>
