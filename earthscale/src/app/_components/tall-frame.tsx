@@ -2,15 +2,18 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
-/** How far, and how long, the frame dips to show it scrolls. Under five
- *  seconds, so it needs no pause control. */
+/** How far, and how long, the frame dips to show it scrolls, and how long
+ *  a glide takes. Under five seconds, so they need no pause control. */
 const NUDGE_PX = 360;
 const NUDGE_MS = 3600;
+const GLIDE_MS = 1800;
 
 /** The scrolling frame of a page too long to show whole. The first time
  *  it's well in view it scrolls down a little and back, to say there's
- *  more; touching it, scrolling it or focusing it cancels that. */
-export const TallFrame = ({ label, className, children }: { label: string; className?: string; children: ReactNode }) => {
+ *  more; with glideTo it scrolls down to that point instead and stays, as
+ *  a share of its width, since what it holds scales with it. Touching it,
+ *  scrolling it or focusing it cancels either. */
+export const TallFrame = ({ label, glideTo, className, children }: { label: string; glideTo?: number; className?: string; children: ReactNode }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,12 +32,17 @@ export const TallFrame = ({ label, className, children }: { label: string; class
       ([entry]) => {
         if (!entry.isIntersecting || cancelled) return;
         observer.disconnect();
-        const depth = Math.min(NUDGE_PX, frame.scrollHeight - frame.clientHeight);
+        const room = frame.scrollHeight - frame.clientHeight;
+        // The dip goes down and comes back; the glide eases down and stays.
+        const move =
+          glideTo === undefined
+            ? { depth: Math.min(NUDGE_PX, room), ms: NUDGE_MS, at: (t: number) => Math.sin(Math.PI * t) ** 2 }
+            : { depth: Math.min(glideTo * frame.clientWidth, room), ms: GLIDE_MS, at: (t: number) => (1 - Math.cos(Math.PI * t)) / 2 };
         const start = performance.now();
         const step = (now: number) => {
           if (cancelled) return;
-          const t = Math.min(1, (now - start) / NUDGE_MS);
-          frame.scrollTop = depth * Math.sin(Math.PI * t) ** 2;
+          const t = Math.min(1, (now - start) / move.ms);
+          frame.scrollTop = move.depth * move.at(t);
           if (t < 1) raf = requestAnimationFrame(step);
         };
         raf = requestAnimationFrame(step);
@@ -47,7 +55,7 @@ export const TallFrame = ({ label, className, children }: { label: string; class
       observer.disconnect();
       for (const name of interactions) frame.removeEventListener(name, cancel);
     };
-  }, []);
+  }, [glideTo]);
 
   return (
     <div ref={ref} role="region" aria-label={label} tabIndex={0} className={className}>

@@ -477,6 +477,49 @@
   }
 }
 
+/* The first pass's hero: the front map wiped off to the right, the scan
+ * line riding the wipe's edge, the ring of a click, and a field lighting
+ * as it's picked. */
+@keyframes es-wipe {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+@keyframes es-scan-x {
+  from {
+    left: 0;
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes es-ripple {
+  from {
+    opacity: 0.9;
+    scale: 0.3;
+  }
+  to {
+    opacity: 0;
+    scale: 1.5;
+  }
+}
+
+@keyframes es-flash {
+  35% {
+    fill-opacity: 0.85;
+  }
+}
+
 @keyframes es-blink {
   50% {
     opacity: 0;

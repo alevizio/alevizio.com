@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { MdExpandMore } from "react-icons/md";
 import { cn } from "./cn";
+import { Caret } from "./ui";
 
 /* The product's panel, as the page draws it: a hairline card on the
  * card green, mono labels, a title row, and the controls inside it. */
@@ -44,8 +45,9 @@ export const Button = ({ children, primary = false, className }: { children: Rea
   </span>
 );
 
-/** Text that types itself in, character by character, when on. */
-export const Typed = ({ text, on, className }: { text: string; on: boolean; className?: string }) => (
+/** Text that types itself in, character by character, when on; with
+ *  caret, the cursor rides the end of it. */
+export const Typed = ({ text, on, caret = false, className }: { text: string; on: boolean; caret?: boolean; className?: string }) => (
   <span className={cn("relative inline-block overflow-hidden whitespace-nowrap align-bottom", className)}>
     <span className="invisible">{text}</span>
     <span
@@ -53,6 +55,7 @@ export const Typed = ({ text, on, className }: { text: string; on: boolean; clas
       style={{ width: on ? "100%" : "0%", transitionDuration: on ? "1600ms" : "0ms" }}
     >
       {text}
+      {caret ? <Caret className="absolute top-1/2 right-0 ml-0 h-3 -translate-y-1/2" /> : null}
     </span>
   </span>
 );

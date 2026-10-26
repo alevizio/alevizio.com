@@ -1,10 +1,11 @@
-import exploration from "@/assets/process/exploration.webp";
+import firstPass from "@/assets/process/first/rest.webp";
 import study1 from "@/assets/studies/01.webp";
 import study2 from "@/assets/studies/02.webp";
 import study3 from "@/assets/studies/03.webp";
 import study5 from "@/assets/studies/05.webp";
 import study6 from "@/assets/studies/06.webp";
 import { Drift } from "../_components/drift";
+import { FirstPassHero } from "../_components/first-pass-hero";
 import { Palette } from "../_components/palette";
 import { HALF, TallShot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
@@ -71,7 +72,14 @@ export const Look = () => (
       title="The map as the hero"
       text="The first lit version put the product front and centre: a satellite map with the layers panel, a comment thread and a parcel outline, cyan on black. It was right about the dark ground and the green, and wrong about the hero: a screenshot asked the visitor to read before the page had said anything."
     >
-      <TallShot src={exploration} alt="The first lit exploration of the page, scrolling: a map interface as the hero, then the sections in cyan on black" label="The first lit pass" caption="The exploration, from the file. Scroll it." />
+      <TallShot
+        src={firstPass}
+        alt="The rest of the first lit pass, under its hero: the sections in cyan on black"
+        label="The first lit pass"
+        lead={<FirstPassHero />}
+        glideTo={530 / 1440}
+        caption="The exploration, from the file, its hero playing. The four data sets take turns on the map, then a field gets a comment and an answer. Scroll it for the rest."
+      />
     </Section>
   </Band>
 );

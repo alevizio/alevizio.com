@@ -64,13 +64,16 @@ export const BLEED = "mx-[calc(50%-50vw)]";
 
 /** A page too long to show whole: it scrolls inside its own frame, which
  *  takes keyboard focus so the arrow keys scroll it too, and dips once to
- *  show there's more (TallFrame). */
+ *  show there's more (TallFrame). A lead goes live above the picture, the
+ *  page's top playing, and glideTo takes the frame down to it. */
 export const TallShot = ({
   src,
   alt,
   label,
   caption,
   sizes = "(min-width: 1376px) 1296px, 100vw",
+  lead,
+  glideTo,
   frameClassName,
 }: {
   src: StaticImageData;
@@ -79,13 +82,18 @@ export const TallShot = ({
   label: string;
   caption?: ReactNode;
   sizes?: string;
+  lead?: ReactNode;
+  /** Where the frame scrolls to and stays, as a share of its width. */
+  glideTo?: number;
   frameClassName?: string;
 }) => (
   <figure data-reveal="frame">
     <TallFrame
       label={label}
+      glideTo={glideTo}
       className={cn("h-[80vh] max-h-[56rem] overflow-y-auto rounded-[10px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current", frameClassName)}
     >
+      {lead}
       <Image src={src} alt={alt} sizes={sizes} placeholder="blur" className="h-auto w-full" />
     </TallFrame>
     {caption ? <figcaption className="type-caption mt-3 text-(--tone-text)">{caption}</figcaption> : null}
