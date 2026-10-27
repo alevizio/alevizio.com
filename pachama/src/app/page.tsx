@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   authors: [{ name: "Alejandro Vizio", url: "https://alevizio.com" }],
+  // Proves ownership to Google Search Console (property https://pachama.alevizio.com/). Keep it.
+  verification: { google: "PM8upxbw_R3VN07zSBXP0IiFrkVjIQWIdtiW_YbIGC8" },
   // alevizio.com/work/pachama redirects here, so this is the one address to index.
   alternates: { canonical: "/" },
   openGraph: {
