@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, IBM_Plex_Mono, Inter, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
+import { SiteAnalytics } from "./_components/site-analytics";
 
 /* Pausa's four faces, each with one job (brand book, "Type"):
  * Source Serif 4 is the voice (entries, headlines, the call-out),
@@ -52,7 +53,10 @@ export default function RootLayout({
       lang="en"
       className={`${serif.variable} ${hand.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <SiteAnalytics group="Pausa case study" />
+      </body>
     </html>
   );
 }
