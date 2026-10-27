@@ -18,13 +18,36 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://pachama.alevizio.com"),
   title: TITLE,
   description: DESCRIPTION,
+  authors: [{ name: "Alejandro Vizio", url: "https://alevizio.com" }],
+  // alevizio.com/work/pachama redirects here, so this is the one address to index.
+  alternates: { canonical: "/" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
+    url: "/",
     type: "article",
     images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Pachama: how people see forest carbon." }],
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: ["/og.jpg"] },
+};
+
+// What the page is, for search engines and AI answers: a case study by Alejandro, about Pachama.
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Pachama: designing how people see forest carbon",
+  description: DESCRIPTION,
+  url: "https://pachama.alevizio.com/",
+  image: "https://pachama.alevizio.com/og.jpg",
+  inLanguage: "en",
+  author: {
+    "@type": "Person",
+    name: "Alejandro Vizio",
+    url: "https://alevizio.com",
+    jobTitle: "Product and brand designer",
+  },
+  about: { "@type": "Organization", name: "Pachama", url: "https://pachama.com" },
+  isPartOf: { "@type": "WebSite", name: "Alejandro Vizio", url: "https://alevizio.com" },
 };
 
 // The nav mirrors the chapters: each id is a section on the page.
@@ -106,6 +129,10 @@ const NAV: readonly NavGroup[] = [
 export default function PachamaCaseStudy() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD).replace(/</g, "\\u003c") }}
+      />
       <StoryNav groups={NAV} />
       <main className="flex-1 overflow-x-clip">
         <Hero />

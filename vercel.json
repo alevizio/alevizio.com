@@ -5,17 +5,17 @@
     {
       "source": "/work/messa",
       "destination": "https://messa.alevizio.com",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/work/pausa",
       "destination": "https://pausa.alevizio.com",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/work/pachama",
       "destination": "https://pachama.alevizio.com",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/",
