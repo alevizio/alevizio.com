@@ -5,9 +5,8 @@ import tablet from "@/assets/page/tablet.webp";
 import team from "@/assets/page/team.webp";
 import wide from "@/assets/page/wide.webp";
 import { Anatomy } from "../_components/anatomy";
-import { LaptopScroll } from "../_components/laptop-scroll";
 import { Screens } from "../_components/screens";
-import { Shot } from "../_components/shot";
+import { Clip, Shot } from "../_components/shot";
 import { Band, ChapterDivider, Section } from "../_components/story";
 import { SECTIONS } from "./page-anatomy";
 
@@ -18,9 +17,9 @@ const SCREENS = [
   { src: mobile, alt: "The landing page at 420 pixels wide, a phone", label: "420, phone", sizes: "(min-width: 1024px) 25vw, 50vw" },
 ];
 
-/* Chapter III: the page whole, on a laptop, then section by section, each
- * taken apart into its pieces, then the page at every width, and its
- * second page. */
+/* Chapter III: the page whole, on a display in a meadow, then section by
+ * section, each taken apart into its pieces, then the page at every width,
+ * and its second page. */
 export const ThePage = () => (
   <Band tone="ground">
     <ChapterDivider id="page" numeral="III" title="The page">
@@ -33,7 +32,12 @@ export const ThePage = () => (
       title="Developer Tools for Earth Intelligence"
       text="The landing page at 1440, from the file, top to bottom. It stops on each of its seven sections, the ones taken apart below."
     >
-      <LaptopScroll caption="The page from the file, on a laptop. Point at it to hold it." />
+      <Clip
+        name="page/meadow"
+        label="Earthscale's landing page on a display in a meadow, scrolling top to bottom: Developer Tools for Earth Intelligence over a globe, the logos and a quote, who it's for, serving and exploring data, the catalog, and the closing ask"
+        aspect="aspect-video"
+        caption="The page from the file, on a display in a meadow."
+      />
     </Section>
 
     {SECTIONS.map(({ id, eyebrow, title, text, ...anatomy }) => (
