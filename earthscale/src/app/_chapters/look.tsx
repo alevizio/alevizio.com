@@ -6,7 +6,7 @@ import study5 from "@/assets/studies/05.webp";
 import study6 from "@/assets/studies/06.webp";
 import { Drift } from "../_components/drift";
 import { FirstPassHero } from "../_components/first-pass-hero";
-import { KitBelt } from "../_components/kit-belt";
+import { KitGrid } from "../_components/kit-grid";
 import { Palette } from "../_components/palette";
 import { HALF, TallShot, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
@@ -53,9 +53,9 @@ export const Look = () => (
       id="kit"
       eyebrow="The kit"
       title="Every piece, working"
-      text="The file’s components, built and running on one belt. The button and the field go through their states, the panels play, the comment gets its answer and the data gets registered. The small parts pass underneath."
+      text="The file’s components, built and working, in a ruled grid like the page’s own cards. A field gets picked on the map and its values come in, and each of the other pieces does its one thing as the grid comes into view."
     >
-      <KitBelt />
+      <KitGrid />
     </Section>
 
     <Section

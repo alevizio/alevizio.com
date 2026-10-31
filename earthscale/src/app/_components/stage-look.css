@@ -1,0 +1,122 @@
+/* Earthscale's look for the Stageshow stages (src/stageshow/kit): the
+   page's greens, lines and type over the kit's dark theme. Unlayered, so it
+   wins over the kit's own layer. */
+.look-earthscale .ss-stage {
+  --ss-font: var(--font-machina), ui-sans-serif, system-ui, sans-serif;
+  --ss-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --ss-canvas: #0f1313;
+  --ss-surface: #1a2120;
+  --ss-chrome: #151b1a;
+  --ss-raised: #222b29;
+  --ss-fill: #2c3533;
+  --ss-well: #0b0e0e;
+  --ss-line: rgb(230 246 231 / 0.12);
+  --ss-line-faint: rgb(230 246 231 / 0.06);
+  --ss-text-strong: #e6f6e7;
+  --ss-text: #c3cdc6;
+  --ss-text-faint: #9aa49d;
+  --ss-icon: #9aa49d;
+  --ss-icon-faint: #4f5a55;
+  --ss-accent: #a0ffd7;
+  --ss-accent-soft: rgb(160 255 215 / 0.16);
+  --ss-accent-text: #a0ffd7;
+  --ss-success: #2bff73;
+  background: transparent;
+}
+
+/* The page tour: the landing page in a browser, 1040 wide on a 1200 stage,
+   inset from the top and running off the bottom. */
+.es-tour .ss-stage .tour-window {
+  position: absolute;
+  left: 80px;
+  top: 48px;
+  width: 1040px;
+  height: 760px;
+  box-shadow: var(--ss-shadow-hero);
+}
+.es-tour .ss-stage .tour-window .ss-window__body,
+.es-tour .ss-stage .tour-page {
+  display: flex;
+  flex-direction: column;
+  background: #0f1313;
+}
+.es-tour .ss-stage .tour-page {
+  flex: 1;
+}
+
+/* On a phone: the phone page in an iPhone, a gutter from the top and the
+   left, running off the bottom. */
+.es-tour .ss-stage .tour-phone {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+}
+.es-tour .ss-stage .tour-phone-page {
+  position: absolute;
+  inset: 62px 0 0;
+}
+
+/* Every stage masks what runs past it. */
+.look-earthscale .ss-stage {
+  overflow: hidden;
+}
+
+/* The kit grid: one rounded box, the rules its own colour showing through
+   1px gaps between the cells. Three columns wide, two in a narrower
+   column, one on a phone; each row as tall as its pictures want. */
+.es-kit {
+  container-type: inline-size;
+}
+.es-kit .kit-grid {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid rgb(230 246 231 / 0.12);
+  border-radius: 18px;
+  background: rgb(230 246 231 / 0.12);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "explore" "ramps" "pipe" "signup" "icons";
+}
+@container (min-width: 640px) {
+  .es-kit .kit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 470px 360px 300px 230px;
+    grid-template-areas: "explore explore" "ramps pipe" "signup signup" "icons icons";
+  }
+}
+@container (min-width: 1000px) {
+  .es-kit .kit-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: 470px 330px 230px;
+    grid-template-areas: "explore explore ramps" "pipe signup signup" "icons icons icons";
+  }
+}
+.es-kit .kit-cell {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  background: #121817;
+}
+.es-kit .kit-cell--explore { grid-area: explore; --pic: 380px; }
+.es-kit .kit-cell--ramps { grid-area: ramps; --pic: 260px; }
+.es-kit .kit-cell--pipe { grid-area: pipe; --pic: 230px; }
+.es-kit .kit-cell--signup { grid-area: signup; --pic: 160px; }
+.es-kit .kit-cell--icons { grid-area: icons; --pic: 120px; }
+.es-kit .kit-copy {
+  max-width: 34rem;
+  padding: 26px 28px 20px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.45;
+  color: #9aa49d;
+}
+.es-kit .kit-copy strong {
+  font-weight: inherit;
+  color: #e6f6e7;
+}
+.es-kit .kit-pic {
+  position: relative;
+  flex: 1;
+  min-height: var(--pic);
+}

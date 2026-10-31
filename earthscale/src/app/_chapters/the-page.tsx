@@ -5,7 +5,7 @@ import tablet from "@/assets/page/tablet.webp";
 import team from "@/assets/page/team.webp";
 import wide from "@/assets/page/wide.webp";
 import { Anatomy } from "../_components/anatomy";
-import { LaptopScroll } from "../_components/laptop-scroll";
+import { PageTour } from "../_components/page-tour";
 import { Screens } from "../_components/screens";
 import { Shot } from "../_components/shot";
 import { Band, ChapterDivider, Section } from "../_components/story";
@@ -18,7 +18,7 @@ const SCREENS = [
   { src: mobile, alt: "The landing page at 420 pixels wide, a phone", label: "420, phone", sizes: "(min-width: 1024px) 25vw, 50vw" },
 ];
 
-/* Chapter III: the page whole, on a laptop, then section by section, each
+/* Chapter III: the page whole, in a browser, then section by section, each
  * taken apart into its pieces, then the page at every width, and its
  * second page. */
 export const ThePage = () => (
@@ -31,9 +31,9 @@ export const ThePage = () => (
       id="whole"
       eyebrow="The whole page"
       title="Developer Tools for Earth Intelligence"
-      text="The landing page at 1440, from the file, top to bottom. It stops on each of its seven sections, the ones taken apart below."
+      text="The landing page at 1440, from the file, top to bottom, through the seven sections taken apart below."
     >
-      <LaptopScroll caption="The page from the file, on a laptop. Point at it to hold it." />
+      <PageTour caption="Someone signs up in the hero, then reads down past the explorer to the closing ask." />
     </Section>
 
     {SECTIONS.map(({ id, eyebrow, title, text, ...anatomy }) => (
