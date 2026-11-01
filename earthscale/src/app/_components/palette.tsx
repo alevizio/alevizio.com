@@ -5,14 +5,16 @@ import plasma from "@/assets/colour/wind-plasma.webp";
 import viridis from "@/assets/colour/wind-viridis.webp";
 import { cn } from "./cn";
 import { Drift } from "./drift";
+import { RampGlobe } from "./ramp-globe";
 import { RAMPS } from "./ramps";
 
 /* The palette and where it comes from. First the four greens, by the names
  * the file gives them (Greeg is the file's own spelling of the mint). Then
  * the data's colour: the five ramps the product offers for a raster, the
  * perceptually uniform maps science reads data by, each shown on the same
- * patch of wind over the North Atlantic, rendered through it. The swatches
- * fill from the bottom, the tiles drift, and the ramps keep flowing. */
+ * patch of wind over the North Atlantic, rendered through it, and beside
+ * each ramp the whole world in it, turning. The swatches fill from the
+ * bottom, the tiles drift, and the ramps keep flowing. */
 const SWATCHES = [
   { name: "Dark Green", hex: "#0f1313", role: "The page", swatch: "bg-night ring-1 ring-mist/15" },
   { name: "Light Green", hex: "#e6f6e7", role: "Text", swatch: "bg-mist" },
@@ -50,7 +52,10 @@ export const Palette = () => (
       {RAMPS.map(({ name, css }, i) => (
         <div key={name}>
           <Drift src={TILES[i].src} alt={`The same wind field over the North Atlantic, rendered in ${name}`} index={i} sizes={SIZES} />
-          <div data-reveal="grow-x" className={cn("mt-4 h-2.5 rounded-full bg-[length:200%_100%] motion-safe:animate-[flow_9s_ease-in-out_infinite_alternate]", css, RAMP_DELAYS[i])} />
+          <div className="mt-4 flex items-center gap-3">
+            <RampGlobe ramp={i} className="-my-2 -ml-1.5 size-11 shrink-0" />
+            <div data-reveal="grow-x" className={cn("h-2.5 flex-1 rounded-full bg-[length:200%_100%] motion-safe:animate-[flow_9s_ease-in-out_infinite_alternate]", css, RAMP_DELAYS[i])} />
+          </div>
           <p className="type-caption mt-3 text-(--tone-head)">{name}</p>
           <p className="type-label text-(--tone-text)">{TILES[i].from}</p>
         </div>
