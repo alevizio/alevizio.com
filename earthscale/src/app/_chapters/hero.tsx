@@ -3,7 +3,7 @@ import { Globe } from "../_components/globe";
 import { GlobeControls } from "../_components/globe-controls";
 import { PAGE } from "../_components/story";
 
-// The facts strip under the hero. Draft wording, to confirm.
+// The facts strip under the hero, confirmed by Ale.
 const FACTS = [
   { label: "Role", value: "Product and brand designer" },
   { label: "Timeline", value: "Spring 2025" },
