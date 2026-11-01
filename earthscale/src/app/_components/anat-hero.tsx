@@ -6,24 +6,10 @@ import { cn } from "./cn";
 import { Typed } from "./panel";
 import { Caret, Cta, Field, Pointer, type CtaState } from "./ui";
 import { useLoop } from "./use-loop";
-import { WORDMARK_LETTERS, WORDMARK_MARK, WORDMARK_VIEWBOX } from "./wordmark-paths";
 
-/* The hero's pieces, moving: the wordmark with its mark turning, the button
- * through the four states the file draws for it, the headline arriving word
- * by word, and the email field through its states. */
-
-export const Wordmark = ({ className }: { className?: string }) => (
-  <svg viewBox={WORDMARK_VIEWBOX} role="img" aria-label="Earthscale" className={cn("h-auto w-full max-w-[16rem] text-mist", className)}>
-    <g className="origin-center [transform-box:fill-box] motion-safe:animate-[spin_18s_linear_infinite]">
-      {WORDMARK_MARK.map((d, i) => (
-        <path key={i} d={d} fill="currentColor" />
-      ))}
-    </g>
-    {WORDMARK_LETTERS.map((d, i) => (
-      <path key={i} d={d} fill="currentColor" />
-    ))}
-  </svg>
-);
+/* The hero's pieces, moving: the button through the four states the file
+ * draws for it, the headline arriving word by word, and the email field
+ * through its states. The wordmark has a file of its own (wordmark.tsx). */
 
 const STATES: { state: CtaState; name: string }[] = [
   { state: "default", name: "Default" },

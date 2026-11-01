@@ -13,6 +13,7 @@ import {
 import { cn } from "./cn";
 import { RAMPS } from "./ramps";
 import { SignupField, type SignupPhase } from "./signup-field";
+import { MARK, MARK_VIEWBOX } from "./wordmark-paths";
 
 /* The kit grid's other tiles. Each picture does one small thing, once, as
  * the grid comes into view, a beat after the one before it in reading
@@ -53,7 +54,6 @@ export const RampsStage = ({ width, height }: Slot) => (
 
 /** The serve diagram, cut to its bones: two sources join into Earthscale
  *  and come out as tiles. The lines draw, then the tiles arrive. */
-const MARK = "M2.49597 12.0103C3.22824 11.1572 4.67841 10.7693 6.73207 11.1703C8.74693 11.5638 11.1142 12.6897 13.3144 14.4945C14.2396 15.2534 15.049 16.0616 15.7318 16.8826C16.4335 16.7305 17.0791 16.5366 17.6565 16.3118C16.7982 15.1854 15.7424 14.0899 14.5214 13.0883C12.1271 11.1242 9.4793 9.83491 7.09992 9.37025C4.75934 8.91316 2.43617 9.22417 1.05752 10.8303C-0.321123 12.4365 -0.231015 14.7271 0.635886 16.9011C1.51716 19.1112 3.2758 21.4364 5.67009 23.4004C8.06437 25.3644 10.7122 26.6538 13.0916 27.1184C15.4321 27.5755 17.7553 27.2645 19.134 25.6583C20.2806 24.3225 20.4112 22.5131 19.924 20.6912C19.3618 20.9291 18.7691 21.1397 18.1515 21.3216C18.4896 22.711 18.2845 23.7922 17.6955 24.4784C16.9632 25.3315 15.5131 25.7194 13.4594 25.3183C11.4446 24.9249 9.07726 23.799 6.87708 21.9942C4.67691 20.1894 3.13167 18.1059 2.38541 16.2344C1.62477 14.3269 1.76369 12.8634 2.49597 12.0103Z";
 const Chip = ({ children, className }: { children: ReactNode; className?: string }) => (
   <span className={cn("absolute inline-flex h-9 items-center gap-2 rounded-md border border-rule bg-card px-3 font-mono text-[11px] whitespace-nowrap text-mist", className)}>{children}</span>
 );
@@ -81,8 +81,10 @@ export const PipeStage = ({ width, height }: Slot) => {
             <path d={`M${mid} 124 V146`} fill="none" stroke="#a0ffd7" pathLength={1} strokeDasharray="1" style={draw(s.on, 700)} />
           </svg>
           <span className="absolute grid size-8 place-items-center rounded-full border border-rule bg-card text-mist" style={{ left: mid - 16, top: 92 }}>
-            <svg viewBox="0 0 24 27.31" className="size-4" aria-hidden>
-              <path d={MARK} fill="currentColor" />
+            <svg viewBox={MARK_VIEWBOX} className="size-4" aria-hidden>
+              {MARK.map((d) => (
+                <path key={d} d={d} fill="currentColor" fillRule="evenodd" />
+              ))}
             </svg>
           </span>
           <Chip className={cn("top-[146px] left-1/2 -translate-x-1/2 transition-[translate,opacity] duration-700 will-change-transform", ARRIVE, s.on ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0")}>{"{z}/{x}/{y}.webp"}</Chip>

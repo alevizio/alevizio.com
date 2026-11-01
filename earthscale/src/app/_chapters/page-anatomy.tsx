@@ -9,7 +9,7 @@ import who from "@/assets/page/anat/03-who.webp";
 import type { StaticImageData } from "next/image";
 import type { Mark, Piece } from "../_components/anatomy";
 import { AskLine } from "../_components/anat-ask";
-import { ButtonStates, EmailLoop, Headline, Wordmark } from "../_components/anat-hero";
+import { ButtonStates, EmailLoop, Headline } from "../_components/anat-hero";
 import { LogosRow, Quote } from "../_components/anat-proof";
 import { FeatureList } from "../_components/anat-serve";
 import { TagRoll, WhoCards } from "../_components/anat-who";
@@ -22,6 +22,7 @@ import { PixelPanel } from "../_components/pixel-panel";
 import { Register } from "../_components/register";
 import { SubMenu } from "../_components/sub-menu";
 import { Thread } from "../_components/thread";
+import { Wordmark } from "../_components/wordmark";
 
 /* The landing page, section by section, as the chapter takes it apart: each
  * section's sheet from the file, the marks over it in the page's pixels, and
@@ -45,7 +46,7 @@ export const SECTIONS: Taken[] = [
       { n: 5, x: 960, y: 150, w: 440, h: 600 },
     ],
     pieces: [
-      { n: 1, title: "The wordmark", note: "The mark and the name, from the file’s SVG. Here the mark turns.", children: <Wordmark className="mx-auto" /> },
+      { n: 1, title: "The wordmark", note: "The mark and the name, from the file’s SVG. The mark is one ring at three angles; here it draws, then turns into place.", children: <Wordmark className="mx-auto" /> },
       { n: 2, title: "Get Started", note: "Mint, 48 high, Plex Mono 16, and the four states the file draws for it.", children: <ButtonStates /> },
       { n: 3, title: "The headline", note: "The h1 in pale green, and Subtitle 1 under it in mint.", children: <Headline /> },
       { n: 4, title: "The email field", note: "Glass over the planet, 420 wide, the button inside, through the states the file draws: empty, typed into, sent, adding, added.", wide: true, children: <EmailLoop className="mx-auto max-w-[420px]" /> },

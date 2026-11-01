@@ -1,5 +1,5 @@
 import { MdArrowForward } from "react-icons/md";
-import { WORDMARK_LETTERS, WORDMARK_MARK, WORDMARK_VIEWBOX } from "./wordmark-paths";
+import { MARK, MARK_IN_WORDMARK, WORDMARK_LETTERS, WORDMARK_VIEWBOX } from "./wordmark-paths";
 
 /* The first pass's top as the file sets it (Navigation 10:1863, the
  * headline 10:1806, the field 10:1809), still while the map under it
@@ -8,8 +8,13 @@ export const FirstPassTop = () => (
   <>
     <div className="absolute inset-x-0 top-0 flex h-[78px] items-center justify-between bg-night/50 px-20 shadow-[0_24px_55px_rgba(160,255,215,0.1)] backdrop-blur-[20px]">
       <svg viewBox={WORDMARK_VIEWBOX} aria-hidden className="h-[34.947px] w-[180px] text-white">
-        {[...WORDMARK_MARK, ...WORDMARK_LETTERS].map((d, i) => (
-          <path key={i} d={d} fill="currentColor" />
+        <g transform={MARK_IN_WORDMARK}>
+          {MARK.map((d) => (
+            <path key={d} d={d} fill="currentColor" fillRule="evenodd" />
+          ))}
+        </g>
+        {WORDMARK_LETTERS.map((d) => (
+          <path key={d} d={d} fill="currentColor" />
         ))}
       </svg>
       <div className="flex items-center gap-4 text-[14px] leading-none text-white">
