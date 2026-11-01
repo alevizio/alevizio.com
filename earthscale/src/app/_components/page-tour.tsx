@@ -41,13 +41,16 @@ const PHONE_EXPLORE = Math.round(4820 * NARROW);
 const PHONE_BOTTOM = Math.round(7574 * NARROW) - 812;
 const PHONE_REST = { x: 300, y: 330 };
 
+// The camera's push in and back out; it holds a beat at the layers panel.
+const CAMERA = 900;
+
 // How both scenes open: into the field, the email typed.
 async function typeEmail(a: Act<S>) {
-  await a.wait(900);
+  await a.wait(600);
   a.mark("type");
   await a.click({ at: "field", x: 0.3, y: 0.55 });
   await a.set({ focus: true });
-  await a.type("email", EMAIL, { interval: 70 });
+  await a.type("email", EMAIL, { interval: 55 });
   await a.wait(300);
   a.mark("send");
 }
@@ -58,27 +61,27 @@ async function readToTheAsk(a: Act<S>, bottom: number) {
   a.mark("ask");
   await a.snap({ email: "", phase: "idle" });
   await a.scroll("page", bottom);
-  await a.wait(1300);
-  await a.scroll("page", 0, { duration: 1300 });
+  await a.wait(800);
+  await a.scroll("page", 0, { duration: 1100 });
 }
 
 async function wide(a: Act<S>) {
   await typeEmail(a);
   await a.click({ at: "cta", x: 0.84, y: 0.62 });
   await a.set({ phase: "adding" });
-  await a.wait(900);
+  await a.wait(800);
   await a.set({ phase: "added", focus: false });
   await a.move({ x: 860, y: 300 });
-  await a.wait(1600);
+  await a.wait(1000);
   a.mark("explore");
   await a.scroll("page", EXPLORE);
-  await a.wait(500);
+  await a.wait(200);
   await a.set({ zoom: a.rect("layers") });
-  await a.wait(2000);
+  await a.wait(CAMERA + 600);
   await a.set({ zoom: null });
-  await a.wait(900);
+  await a.wait(CAMERA - 100);
   await readToTheAsk(a, BOTTOM);
-  await a.wait(600);
+  await a.wait(400);
 }
 
 async function narrow(a: Act<S>) {
@@ -87,15 +90,15 @@ async function narrow(a: Act<S>) {
   // The finger lifts: nothing stays under it.
   await a.move(PHONE_REST);
   await a.set({ phase: "adding" });
-  await a.wait(900);
+  await a.wait(800);
   await a.set({ phase: "added", focus: false });
-  await a.wait(1600);
+  await a.wait(1000);
   a.mark("explore");
   await a.scroll("page", PHONE_EXPLORE);
-  await a.wait(2000);
+  await a.wait(1400);
   await readToTheAsk(a, PHONE_BOTTOM);
   await a.move(PHONE_REST);
-  await a.wait(600);
+  await a.wait(400);
 }
 
 /** The hero's field, live over the picture of it, drawn at the file's size
@@ -112,7 +115,7 @@ const HeroField = ({ s, box, scale, small = false }: { s: S; box: typeof FIELD; 
 const BrowserTour = () => (
   <Stage<S> width={1200} height={700} theme="dark" fidelity="realistic" initial={initial} poster={poster} script={wide} cursor={{ at: { x: 860, y: 300 }, style: "real" }} className="look-earthscale es-tour">
     {(s) => (
-      <Camera focus={s.zoom} max={1.8}>
+      <Camera focus={s.zoom} max={1.8} duration={CAMERA}>
         <Window url="earthscale.ai" urlShape="pill" nav className="tour-window">
           <Scroll name="page" className="tour-page" data-crop>
             <div className="relative" style={{ height: Math.round(5393 * WIDE) }}>
