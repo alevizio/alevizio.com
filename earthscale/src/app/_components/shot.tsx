@@ -1,61 +1,7 @@
-import Image, { type StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 import { cn } from "./cn";
 import { PAGE } from "./story";
 import { VideoLoop } from "./video-loop";
-import { Zoom } from "./zoom";
-
-/** One picture, statically imported (so its size is known and it fades in
- *  from a blurred placeholder), with an optional line under it. It opens
- *  upward as it scrolls into view (data-reveal="frame"); with zoom, a
- *  click shows it bigger. */
-export const Shot = ({
-  src,
-  alt,
-  caption,
-  sizes = "(min-width: 1376px) 1296px, 100vw",
-  priority = false,
-  zoom = false,
-  bleed = false,
-  className,
-  imageClassName,
-}: {
-  src: StaticImageData;
-  alt: string;
-  caption?: ReactNode;
-  /** How wide it shows, for the optimiser; the default is the page width. */
-  sizes?: string;
-  priority?: boolean;
-  /** A click opens it bigger. */
-  zoom?: boolean;
-  /** Edge to edge across the window, unboxed; the caption stays on the page. */
-  bleed?: boolean;
-  className?: string;
-  imageClassName?: string;
-}) => {
-  const image = (
-    <Image
-      src={src}
-      alt={alt}
-      sizes={bleed ? "100vw" : sizes}
-      priority={priority}
-      placeholder="blur"
-      className={cn("h-auto w-full", bleed ? "rounded-none" : "rounded-[10px]", imageClassName)}
-    />
-  );
-  return (
-    <figure data-reveal="frame" className={cn(bleed && BLEED, className)}>
-      {zoom ? (
-        <Zoom src={src} alt={alt}>
-          {image}
-        </Zoom>
-      ) : (
-        image
-      )}
-      {caption ? <figcaption className={cn("type-caption mt-3 text-(--tone-text)", bleed && PAGE)}>{caption}</figcaption> : null}
-    </figure>
-  );
-};
 
 /** Out of the page's column to the window's edges. Margins, not a
  *  transform, so it doesn't fight the reveal's translate. */

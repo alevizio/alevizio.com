@@ -2,13 +2,11 @@ import desktop from "@/assets/page/desktop.webp";
 import menu from "@/assets/page/menu.webp";
 import mobile from "@/assets/page/mobile.webp";
 import tablet from "@/assets/page/tablet.webp";
-import team from "@/assets/page/team.webp";
 import wide from "@/assets/page/wide.webp";
 import { KitGrid } from "../_components/kit-grid";
 import { PageTour } from "../_components/page-tour";
 import { Screens } from "../_components/screens";
 import { SectionTabs } from "../_components/section-tabs";
-import { Shot } from "../_components/shot";
 import { Band, ChapterDivider, Section } from "../_components/story";
 import { SECTIONS } from "./page-anatomy";
 
@@ -22,7 +20,7 @@ const SCREENS = [
 
 /* Chapter III: the page whole, on a laptop, then the kit it's built from,
  * then its sections taken apart, one at a time under a row of tabs, then the
- * page at every width, each on its device, and its second page. */
+ * page at every width, each on its device. */
 export const ThePage = () => (
   <Band tone="ground">
     <ChapterDivider id="page" numeral="III" title="The page">
@@ -63,15 +61,6 @@ export const ThePage = () => (
       text="The same page at 2500, 1440, 1024 and 420 wide. Two cards become one column, the diagram stacks under the features, the panels crop to the phone’s edge, and the hero keeps the planet. Each page scrolls, and the last phone has its menu open."
     >
       <Screens screens={SCREENS} />
-    </Section>
-
-    <Section
-      id="team"
-      eyebrow="The second page"
-      title="The team"
-      text="One more page in the same system, for the four founders: a who tag, a line about them, and four hairline cards with a photo, a name, a role in mono and a LinkedIn mark. The same ask and footer close it."
-    >
-      <Shot src={team} alt="The team page: Our team, four cards with photos and biographies of Felix Dorrek, Noah Golmant, Bernhard Stadlbauer and Samuel, then the closing call to action" caption="The team page at 1440 wide." zoom />
     </Section>
   </Band>
 );

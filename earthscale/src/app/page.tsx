@@ -56,7 +56,6 @@ const NAV: readonly NavGroup[] = [
       { id: "kit", label: "The kit" },
       { id: "sections", label: "Section by section" },
       { id: "screens", label: "Every width" },
-      { id: "team", label: "The team" },
     ],
   },
   {
