@@ -36,6 +36,7 @@ export const Look = () => (
       text="Four greens, by the names the file gives them: one so dark it reads as black for the page, a pale one for text, a mint for anything to press and a grey one for captions. The rest of the colour is the data’s: the five ramps the product offers for a raster, the perceptually uniform maps science reads data by, four made for matplotlib in 2015 and cividis in 2018. The same patch of wind, through each one."
     >
       <Palette />
+      <p className="type-label mt-8 text-(--tone-text) max-md:hidden">Press 1 to 5 to paint the globes in them.</p>
     </Section>
 
     <Section

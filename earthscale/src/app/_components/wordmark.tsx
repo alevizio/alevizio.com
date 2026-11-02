@@ -49,6 +49,17 @@ const along = (f: number) => {
 };
 
 const LOOP = 9200;
+// Five clicks within this long, and the rings spin apart and back, the
+// loop held meanwhile where the mark and the name are whole.
+const CLICKS_MS = 1600;
+const BURST_MS = 1800;
+const BURST_AT = 6400;
+// How far each ring flies out, toward its own side, as it spins.
+const APART = [
+  [-1.4, 3.7, 1],
+  [0.2, 0.1, -1],
+  [-1.5, -3.7, 1],
+] as const;
 const clamp = (x: number) => Math.min(1, Math.max(0, x));
 const from = (t: number, at: number, ms: number) => clamp((t - at) / ms);
 const inOut = (x: number) => (x < 0.5 ? 4 * x ** 3 : 1 - (-2 * x + 2) ** 3 / 2);
@@ -101,6 +112,15 @@ const paint = ({ rings, tints, motion, exact, glows, glints, comet, letters }: P
 export const Wordmark = ({ markOnly = false, className }: { markOnly?: boolean; className?: string }) => {
   const ref = useRef<SVGSVGElement>(null);
   const id = useId().replace(/[^\w-]/g, "");
+  const burst = useRef<(() => void) | null>(null);
+  const clicks = useRef<number[]>([]);
+  const click = () => {
+    const now = performance.now();
+    clicks.current = [...clicks.current.filter((t) => now - t < CLICKS_MS), now];
+    if (clicks.current.length < 5) return;
+    clicks.current = [];
+    burst.current?.();
+  };
 
   useEffect(() => {
     const svg = ref.current;
@@ -109,9 +129,29 @@ export const Wordmark = ({ markOnly = false, className }: { markOnly?: boolean; 
     const parts: Parts = { rings: all("ring"), tints: all("tint"), motion: all("motion")[0], exact: all("exact")[0], glows: all("glow"), glints: all("glint"), comet: all("comet")[0], letters: all("letter") };
     let raf = 0;
     let start = 0;
+    let held = 0;
     const frame = (now: number) => {
-      paint(parts, (now - start) % LOOP);
+      if (held && now >= held) {
+        start = now - BURST_AT;
+        held = 0;
+      }
+      paint(parts, held ? BURST_AT : (now - start) % LOOP);
       raf = requestAnimationFrame(frame);
+    };
+    burst.current = () => {
+      if (held) return;
+      held = performance.now() + BURST_MS;
+      [...parts.exact.children].forEach((ring, k) => {
+        const [dx, dy, turn] = APART[k];
+        ring.animate(
+          [
+            { transform: "translate(0, 0) rotate(0deg) scale(1)" },
+            { transform: `translate(${dx}px, ${dy}px) rotate(${turn * 200}deg) scale(1.12)`, offset: 0.45 },
+            { transform: `translate(0, 0) rotate(${turn * 360}deg) scale(1)` },
+          ],
+          { duration: BURST_MS - 200, delay: k * 90, easing: "cubic-bezier(0.65, 0, 0.35, 1)" },
+        );
+      });
     };
     // It plays from the start each time it comes into view.
     const seen = new IntersectionObserver(
@@ -125,13 +165,14 @@ export const Wordmark = ({ markOnly = false, className }: { markOnly?: boolean; 
     );
     seen.observe(svg);
     return () => {
+      burst.current = null;
       seen.disconnect();
       cancelAnimationFrame(raf);
     };
   }, []);
 
   return (
-    <svg ref={ref} viewBox={markOnly ? MARK_VIEWBOX : WORDMARK_VIEWBOX} role="img" aria-label="Earthscale" className={cn("overflow-visible text-mist", !markOnly && "h-auto w-full max-w-[20rem]", className)}>
+    <svg ref={ref} viewBox={markOnly ? MARK_VIEWBOX : WORDMARK_VIEWBOX} role="img" aria-label="Earthscale" onClick={click} className={cn("overflow-visible text-mist", !markOnly && "h-auto w-full max-w-[20rem]", className)}>
       <defs>
         {MARK.map((d, k) => (
           <clipPath key={d} id={`${id}-ring${k}`}>
@@ -152,7 +193,7 @@ export const Wordmark = ({ markOnly = false, className }: { markOnly?: boolean; 
         ))}
         <g data-exact>
           {MARK.map((d) => (
-            <path key={d} d={d} fill="currentColor" fillRule="evenodd" />
+            <path key={d} d={d} fill="currentColor" fillRule="evenodd" className="origin-center [transform-box:fill-box]" />
           ))}
         </g>
         <g data-motion opacity={0} fill="none">

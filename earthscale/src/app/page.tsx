@@ -7,6 +7,7 @@ import { ThePage } from "./_chapters/the-page";
 import { Cursor } from "./_components/cursor";
 import { MotionObserver } from "./_components/motion-observer";
 import { Parallax } from "./_components/parallax";
+import { RampKeys } from "./_components/ramp-keys";
 import { type NavGroup, StoryNav } from "./_components/story-nav";
 
 const TITLE = "Earthscale — case study — Alejandro Vizio";
@@ -83,6 +84,7 @@ export default function EarthscaleCaseStudy() {
       <MotionObserver />
       <Cursor />
       <Parallax />
+      <RampKeys />
     </>
   );
 }
