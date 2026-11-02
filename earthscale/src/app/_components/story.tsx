@@ -41,10 +41,22 @@ const Words = ({ children }: { children: ReactNode }) => {
     ));
 };
 
+// The band colours, for the fades between bands.
+const FADE_FROM: Record<Tone, string> = { night: "from-night", ground: "from-ground", paper: "from-paper" };
+const FADE_TO: Record<Tone, string> = { night: "to-night", ground: "to-ground", paper: "to-paper" };
+const FADE = "pointer-events-none absolute inset-x-0 -z-10 h-[min(40vh,24rem)]";
+
 /** A full-width band of one tone. flow-root keeps its first child's top
- *  margin inside it, so the colour runs all the way up. */
-export const Band = ({ tone = "ground", className, children }: { tone?: Tone; className?: string; children: ReactNode }) => (
-  <div className={cn("flow-root pb-28 sm:pb-40", TONES[tone], className)}>{children}</div>
+ *  margin inside it, so the colour runs all the way up. With from or to,
+ *  it fades in from the band above or out into the one below, behind its
+ *  content, so one chapter's colour turns into the next as the page
+ *  scrolls instead of switching at an edge. */
+export const Band = ({ tone = "ground", from, to, className, children }: { tone?: Tone; from?: Tone; to?: Tone; className?: string; children: ReactNode }) => (
+  <div className={cn("relative isolate flow-root pb-28 sm:pb-40", TONES[tone], className)}>
+    {from ? <div aria-hidden className={cn(FADE, "top-0 bg-linear-to-b to-transparent", FADE_FROM[from])} /> : null}
+    {to ? <div aria-hidden className={cn(FADE, "bottom-0 bg-linear-to-b from-transparent", FADE_TO[to])} /> : null}
+    {children}
+  </div>
 );
 
 /** One section: label, head, a short text, then the work below it. */

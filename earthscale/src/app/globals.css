@@ -572,3 +572,38 @@
     filter: blur(4px);
   }
 }
+
+/* Continuous transitions (view transitions). A picture grows out of the
+   page into its dialog and back (zoom.tsx): the dialog's own entrance is
+   left out, and both ends fill the moving box. A nav jump crosses over
+   (story-nav.tsx): the page left fades as the one landed on rises in. */
+html[data-vt="zoom"] dialog[open] {
+  animation: none;
+  background: transparent;
+}
+::view-transition-group(zoom) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(zoom),
+::view-transition-new(zoom) {
+  height: 100%;
+  object-fit: cover;
+}
+html[data-vt="jump"]::view-transition-old(root) {
+  animation: 0.3s ease-in both vt-leave;
+}
+html[data-vt="jump"]::view-transition-new(root) {
+  animation: 0.65s cubic-bezier(0.22, 1, 0.36, 1) both vt-rise;
+}
+@keyframes vt-leave {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-rise {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+}

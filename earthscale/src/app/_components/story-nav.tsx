@@ -26,7 +26,15 @@ const EASE = "duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]";
 const PAST_HERO = 0.8;
 const NUDGE_PX = 6;
 const smooth = () => !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const jump = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: smooth() ? "smooth" : "auto", block: "start" });
+// A jump crosses over to where it lands, the page there rising in as the
+// one left fades (a view transition); without them, it scrolls there.
+const jump = (id: string) => {
+  const to = document.getElementById(id);
+  if (!to) return;
+  if (!smooth() || !document.startViewTransition) return to.scrollIntoView({ behavior: smooth() ? "smooth" : "auto", block: "start" });
+  document.documentElement.dataset.vt = "jump";
+  void document.startViewTransition(() => to.scrollIntoView({ behavior: "instant", block: "start" })).finished.finally(() => delete document.documentElement.dataset.vt);
+};
 const toTop = () => window.scrollTo({ top: 0, behavior: smooth() ? "smooth" : "auto" });
 
 /** One tick a chapter, the current one longer and green. */

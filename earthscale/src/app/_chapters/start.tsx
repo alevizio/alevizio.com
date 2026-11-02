@@ -9,7 +9,7 @@ import { WireStack } from "../_components/wire-stack";
  * Held upright, a phone gets it the width of the screen instead, since a
  * full-height crop of a wide film would lose the display. */
 export const Start = () => (
-  <Band tone="ground">
+  <Band tone="ground" from="night" to="night">
     <ChapterDivider id="start" numeral="I" title="Where it started">
       A geospatial developer platform, built by four people who had built Pachama’s, and a page to say so.
     </ChapterDivider>

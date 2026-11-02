@@ -27,7 +27,7 @@ const SCREENS = [
  * bento, then its serve section playing, then the page at every width,
  * each on its device. */
 export const ThePage = () => (
-  <Band tone="ground">
+  <Band tone="ground" to="night">
     <ChapterDivider id="page" numeral="III" title="The page">
       The page whole, its type and the kit it’s built from, its seven sections taken apart, then the page at four widths.
     </ChapterDivider>
