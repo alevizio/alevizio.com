@@ -1,15 +1,13 @@
 "use client";
 
 import { useRef } from "react";
-import { MdCheck, MdErrorOutline } from "react-icons/md";
 import { cn } from "./cn";
-import { Typed } from "./panel";
-import { Caret, Cta, Field, Pointer, type CtaState } from "./ui";
+import { Cta, Pointer, type CtaState } from "./ui";
 import { useLoop } from "./use-loop";
 
 /* The hero's pieces, moving: the button through the four states the file
- * draws for it, the headline arriving word by word, and the email field
- * through its states. The wordmark has a file of its own (wordmark.tsx). */
+ * draws for it, and the headline arriving word by word. The wordmark has a
+ * file of its own (wordmark.tsx), and the email field is the kit's. */
 
 const STATES: { state: CtaState; name: string }[] = [
   { state: "default", name: "Default" },
@@ -72,39 +70,6 @@ export const Headline = () => {
       <p className={cn("mt-4 font-sans text-[clamp(1.0625rem,1.4vw,1.375rem)] leading-[1.4] tracking-[-0.02em] text-mint", RISE, state)} style={{ transitionDelay: on ? "560ms" : "0ms" }}>
         Build next-gen geospatial products with cloud-native tools.
       </p>
-    </div>
-  );
-};
-
-const EMAIL = "felix@gmail.com";
-// Empty, typed into, sent, adding, then added, or the error.
-const FIELD_STEPS = [1400, 2000, 600, 1400, 2400] as const;
-
-const Spinner = () => <span className="size-5 rounded-full border-2 border-night/25 border-t-night motion-safe:animate-spin" />;
-
-export const EmailLoop = ({ ends = "added", className }: { ends?: "added" | "error"; className?: string }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const step = useLoop(ref, FIELD_STEPS);
-  const end = step === 4;
-  const added = end && ends === "added";
-  const label = step === 3 ? "Adding" : end ? (added ? "Added" : "Error") : "Get Started";
-  const icon = step === 3 ? <Spinner /> : added ? <MdCheck aria-hidden className="size-5" /> : end ? <MdErrorOutline aria-hidden className="size-5" /> : undefined;
-
-  return (
-    <div ref={ref} className={cn("w-full", className)}>
-      <Field>
-        <span className="relative min-w-0 flex-1 font-sans text-[14px] leading-none text-mist">
-          <span className={cn("absolute inset-y-0 left-0 flex items-center transition-opacity duration-300", step === 0 ? "opacity-50" : "opacity-0")}>Enter your email...</span>
-          <span className={cn("block truncate transition-opacity duration-300", added || step === 0 ? "opacity-0" : "opacity-100")}>
-            <Typed text={EMAIL} on={step >= 1} />
-            {step === 1 ? <Caret /> : null}
-          </span>
-          <span className={cn("absolute inset-y-0 left-0 flex items-center transition-opacity duration-300", added ? "opacity-100" : "opacity-0")}>Email added!</span>
-        </span>
-        <Cta state={step === 2 ? "pressed" : "default"} icon={icon}>
-          {label}
-        </Cta>
-      </Field>
     </div>
   );
 };

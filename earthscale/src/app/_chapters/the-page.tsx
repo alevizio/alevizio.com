@@ -6,11 +6,13 @@ import wide from "@/assets/page/wide.webp";
 import { KitGrid } from "../_components/kit-grid";
 import { PageTour } from "../_components/page-tour";
 import { Screens } from "../_components/screens";
-import { SectionTabs } from "../_components/section-tabs";
+import { SectionBento } from "../_components/section-bento";
+import { SectionMarquee } from "../_components/section-marquee";
 import { ServeLive } from "../_components/serve-live";
-import { Band, ChapterDivider, Section } from "../_components/story";
+import { cn } from "../_components/cn";
+import { Band, ChapterDivider, PAGE, Section } from "../_components/story";
 import { TypeSpecimen } from "../_components/type-specimen";
-import { SECTIONS } from "./page-anatomy";
+import { SHEETS, TILES } from "./page-anatomy";
 
 const SCREENS = [
   { src: wide, alt: "The landing page at 2500 pixels wide, on a monitor", label: "2500 wide", kind: "monitor" },
@@ -21,9 +23,9 @@ const SCREENS = [
 ] as const;
 
 /* Chapter III: the page whole, on a laptop, then its type and the kit it's
- * built from, then its sections taken apart, one at a time under a row of
- * tabs, then its serve section playing, then the page at every width, each
- * on its device. */
+ * built from, then its sections going by in a row and their pieces in a
+ * bento, then its serve section playing, then the page at every width,
+ * each on its device. */
 export const ThePage = () => (
   <Band tone="ground">
     <ChapterDivider id="page" numeral="III" title="The page">
@@ -61,10 +63,12 @@ export const ThePage = () => (
       id="sections"
       eyebrow="Section by section"
       title="Seven sections, taken apart"
-      text="Pick one: its sheet from the file with its pieces marked, then each piece rebuilt and working under its number."
-    >
-      <SectionTabs sections={SECTIONS} />
-    </Section>
+      text="The seven sections as the file has them, going by, then their pieces, rebuilt and working as they come into view."
+    />
+    <SectionMarquee sheets={SHEETS} className="mt-12 sm:mt-16" />
+    <div className={cn(PAGE, "mt-12 sm:mt-16")}>
+      <SectionBento tiles={TILES} />
+    </div>
 
     <Section
       id="serve-live"

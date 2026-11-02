@@ -2,41 +2,9 @@
 
 import { useRef } from "react";
 import { cn } from "./cn";
-import { LOGOS } from "./page-paths";
 import { useLoop } from "./use-loop";
 
-/* The proof's pieces: the logos lit one after another, then settling as the
- * file has them, Pachama bright and the other two at 30%; and the quote
- * arriving word by word over its name and role. */
-
-// All dim, each lit in turn, then as the file has them.
-const LOGO_STEPS = [900, 1000, 1000, 1000, 2800] as const;
-const LOGO_W = ["w-[30%]", "w-[22%]", "w-[20%]"];
-
-export const LogosRow = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const step = useLoop(ref, LOGO_STEPS);
-
-  return (
-    <div ref={ref}>
-      <p className="font-sans text-[15px] leading-[1.4] text-mint">Powering leading Earth Intelligence companies, hear it from them:</p>
-      <ul className="mt-6 flex items-center justify-between gap-4" aria-label="Pachama, Linear and Vercel">
-        {LOGOS.map(({ name, viewBox, d, ...rest }, i) => {
-          const fillRule = "fillRule" in rest ? rest.fillRule : undefined;
-          const lit = step === i + 1 || (step === 4 && i === 0);
-          const asFile = step === 4 && i > 0;
-          return (
-            <li key={name} className={LOGO_W[i]}>
-              <svg viewBox={viewBox} aria-hidden className={cn("h-auto w-full text-mist transition-opacity duration-500", lit ? "opacity-100" : asFile ? "opacity-30" : "opacity-15")}>
-                <path d={d} fill="currentColor" fillRule={fillRule} clipRule={fillRule} />
-              </svg>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-};
+/* The proof's quote, arriving word by word over its name and role. */
 
 const QUOTE = "Earthscale gave us the building blocks to turn satellite imagery into real-time insights.".split(" ");
 // Gone, then in and held: it rests in.

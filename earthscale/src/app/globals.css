@@ -543,3 +543,10 @@
     scale: 1.22;
   }
 }
+
+/* A row that goes by: two copies end to end, moved one copy's length. */
+@keyframes es-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}

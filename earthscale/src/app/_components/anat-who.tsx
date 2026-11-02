@@ -5,43 +5,8 @@ import { cn } from "./cn";
 import { ICON_ORGS, ICON_TEAMS } from "./page-paths";
 import { useLoop } from "./use-loop";
 
-/* The who section's pieces: the tag rolling through the labels the page
- * gives it, and the two cards building themselves: the lines draw, the
+/* The who section's two cards building themselves: the lines draw, the
  * cross turns in at the corner, the icons draw, the words come in. */
-
-const TAGS = ["Who", "For teams", "For organizations", "Production", "Development"];
-const TAG_STEPS = [1700, 1700, 1700, 1700, 1700] as const;
-
-export const TagRoll = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const step = useLoop(ref, TAG_STEPS);
-  const before = (step + TAGS.length - 1) % TAGS.length;
-
-  return (
-    <div ref={ref} className="grid justify-items-center gap-5">
-      <span className="relative inline-grid h-[34px] items-center overflow-hidden rounded-full border border-mist/30 px-5 font-mono text-[14px] leading-none text-mist uppercase">
-        <span className="invisible col-start-1 row-start-1">For organizations</span>
-        {TAGS.map((tag, i) => (
-          <span
-            key={tag}
-            aria-hidden={i !== step}
-            className={cn(
-              "col-start-1 row-start-1 text-center transition-[translate,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-              i === step ? "translate-y-0 opacity-100" : i === before ? "-translate-y-6 opacity-0" : "translate-y-6 opacity-0",
-            )}
-          >
-            {tag}
-          </span>
-        ))}
-      </span>
-      <span className="flex gap-1.5" aria-hidden>
-        {TAGS.map((tag, i) => (
-          <span key={tag} className={cn("h-px w-4 transition-colors duration-500", i === step ? "bg-mint" : "bg-mist/20")} />
-        ))}
-      </span>
-    </div>
-  );
-};
 
 const CARDS = [
   { tag: "For teams", title: "Teams building with geospatial data.", text: "Spin up high-performance services for raster & vector data in minutes.", icon: ICON_TEAMS },
