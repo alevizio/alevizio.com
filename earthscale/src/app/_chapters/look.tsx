@@ -22,9 +22,10 @@ const WORLD = [
 ];
 
 /* Chapter II: the type and colour the page is made of and where they come
- * from, then its pictures and the first lit pass. */
+ * from, then its pictures and the first lit pass, whose map runs the width
+ * of the screen and fades out where the chapter ends. */
 export const Look = () => (
-  <Band tone="night">
+  <Band tone="night" className="pb-0 sm:pb-0">
     <ChapterDivider id="look" numeral="II" title="The look">
       Dark, green and made of the product’s own pictures.
     </ChapterDivider>
@@ -70,13 +71,12 @@ export const Look = () => (
       eyebrow="A first pass"
       title="The map as the hero"
       text="The first lit version put the product front and centre: a satellite map with the layers panel, a comment thread and a parcel outline, cyan on black. It was right about the dark ground and the green, and wrong about the hero: a screenshot asked the visitor to read before the page had said anything."
-    >
-      <figure data-reveal="frame">
-        <FirstPassHero className="rounded-[10px]" />
-        <figcaption className="type-caption mt-3 text-(--tone-text)">
-          The exploration, from the file, its hero playing. The four data sets take turns on the map, then a field gets a comment and an answer.
-        </figcaption>
+    />
+    {/* Clipped, so the map's rise as it comes in stays inside the chapter. */}
+    <div className="mt-12 overflow-clip sm:mt-16">
+      <figure data-reveal="frame" className="mx-auto max-w-[120rem]">
+        <FirstPassHero />
       </figure>
-    </Section>
+    </div>
   </Band>
 );
