@@ -144,6 +144,7 @@ const PhoneNav = ({ groups, activeId, activeGroup }: Spy) => {
         type="button"
         aria-label="Sections"
         aria-haspopup="dialog"
+        data-magnetic
         inert={!shown || undefined}
         onClick={open}
         className={cn(
@@ -265,6 +266,7 @@ export const StoryNav = ({ groups }: { groups: readonly NavGroup[] }) => {
         <button
           type="button"
           aria-label="Open case study navigation"
+          data-magnetic
           aria-hidden={open || undefined}
           inert={open || undefined}
           onClick={() => setOpen(true)}

@@ -4,6 +4,7 @@ import { Hero } from "./_chapters/hero";
 import { Look } from "./_chapters/look";
 import { Start } from "./_chapters/start";
 import { ThePage } from "./_chapters/the-page";
+import { Cursor } from "./_components/cursor";
 import { MotionObserver } from "./_components/motion-observer";
 import { type NavGroup, StoryNav } from "./_components/story-nav";
 
@@ -79,6 +80,7 @@ export default function EarthscaleCaseStudy() {
         <Closing />
       </main>
       <MotionObserver />
+      <Cursor />
     </>
   );
 }

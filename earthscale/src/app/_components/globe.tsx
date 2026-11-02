@@ -522,6 +522,7 @@ export const Globe = ({ interactive = true, intro = false, className }: { intera
     <canvas
       ref={ref}
       aria-hidden="true"
+      data-cursor={interactive ? "Drag" : undefined}
       className={cn("block aspect-square opacity-0 transition-opacity duration-300 select-none data-ready:opacity-100", interactive && "cursor-grab touch-pan-y", className)}
     />
   );

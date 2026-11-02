@@ -64,7 +64,7 @@ export const AutoFrame = ({ label, period, phase = 0, className, children }: { l
   }, [period, phase]);
 
   return (
-    <div ref={ref} tabIndex={0} aria-label={label} className={className}>
+    <div ref={ref} tabIndex={0} aria-label={label} data-cursor="Scroll" className={className}>
       {children}
     </div>
   );

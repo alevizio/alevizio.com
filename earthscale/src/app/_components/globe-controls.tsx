@@ -29,6 +29,7 @@ export const GlobeControls = ({ className }: { className?: string }) => {
             key={band.id}
             type="button"
             aria-pressed={view.band === band.id}
+            data-magnetic
             onClick={() => setView({ band: band.id, ramp: band.ramp })}
             className={cn("flex-1 rounded-[4px] px-2 py-1.5 font-mono text-[10px] tracking-[0.06em] uppercase transition-colors", FOCUS, view.band === band.id ? "bg-mist/12 text-mist" : "text-haze hover:text-mist")}
           >
@@ -43,6 +44,7 @@ export const GlobeControls = ({ className }: { className?: string }) => {
             key={ramp.name}
             type="button"
             aria-pressed={view.ramp === i}
+            data-magnetic
             aria-label={ramp.name}
             title={ramp.name}
             onClick={() => setView({ ramp: i })}

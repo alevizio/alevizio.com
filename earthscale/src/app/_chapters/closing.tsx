@@ -21,7 +21,7 @@ export const Closing = () => (
           Stadlbauer and Samuel. Type: PP Neue Machina by Pangram Pangram, IBM Plex Mono by IBM. The Earthscale name,
           mark and product belong to Earthscale; this is a write-up of the design work.
         </p>
-        <a href="https://alevizio.com" className="type-caption relative z-10 mt-8 inline-block text-mist underline decoration-mist/30 underline-offset-4 hover:decoration-mist">
+        <a href="https://alevizio.com" data-magnetic className="type-caption relative z-10 mt-8 inline-block text-mist underline decoration-mist/30 underline-offset-4 hover:decoration-mist">
           alevizio.com
         </a>
       </div>

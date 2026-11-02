@@ -16,6 +16,7 @@ export const Zoom = ({ src, alt, children }: { src: StaticImageData; alt: string
       <button
         type="button"
         aria-label={`Enlarge: ${alt}`}
+        data-cursor="Open"
         onClick={() => dialog.current?.showModal()}
         className="group/zoom relative block w-full cursor-zoom-in rounded-[10px] text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
       >
