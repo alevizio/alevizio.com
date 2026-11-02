@@ -24,15 +24,22 @@
   background: transparent;
 }
 
-/* The page tour: the landing page in a browser, 1040 wide on a 1200 stage,
-   inset from the top and running off the bottom. */
+/* The page tour: the landing page in a browser filling a laptop's screen,
+   1040 by 650, the laptop whole on a 1200 stage (its screen is 0.892 of
+   its width). */
+.es-tour .ss-stage .tour-laptop {
+  position: absolute;
+  left: 17px;
+  top: 24px;
+  width: 1166px;
+}
 .es-tour .ss-stage .tour-window {
   position: absolute;
-  left: 80px;
-  top: 48px;
-  width: 1040px;
-  height: 760px;
-  box-shadow: var(--ss-shadow-hero);
+  inset: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
 }
 .es-tour .ss-stage .tour-window .ss-window__body,
 .es-tour .ss-stage .tour-page {

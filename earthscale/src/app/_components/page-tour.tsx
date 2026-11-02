@@ -4,13 +4,14 @@ import desktop from "@/assets/page/desktop.webp";
 import mobile from "@/assets/page/mobile.webp";
 import { Camera, Phone, Scroll, Stage, Window, type Act, type Rect } from "@/stageshow/kit";
 import Image from "next/image";
+import { Laptop } from "./devices";
 import { SignupField, type SignupPhase } from "./signup-field";
 import { useMounted } from "./use-mounted";
 import "./stage-look.css";
 
 /* The whole landing page, the way a product shot shows it (Stageshow, after
- * its full-width hero): the page from the file in a browser, inset from the
- * top and running off the bottom. Someone signs up in the hero, the field
+ * its full-width hero): the page from the file in a browser on a laptop's
+ * screen, the whole laptop on the stage. Someone signs up in the hero, the field
  * going through the states the file draws for it; then they read down, the
  * camera pushing in on the explorer's layers panel, too small to read at
  * this size, and on to the closing ask, and scroll back up. On a phone it is
@@ -24,15 +25,17 @@ const initial: S = { focus: false, email: "", phase: "idle", zoom: null };
 // The still: signed up, the hero whole.
 const poster: S = { focus: false, email: EMAIL, phase: "added", zoom: null };
 
-// The page is 1440 by 5393 in the file; the browser shows it 1040 wide.
+// The page is 1440 by 5393 in the file; the browser shows it 1040 wide, on
+// a 16 by 10 screen, under its 38 px bar.
 const WIDE = 1040 / 1440;
+const VIEW = 650 - 38;
 // The hero's field in the file, and the explorer's layers panel.
 const FIELD = { x: 81, y: 474, w: 420, h: 63 };
 const LAYERS = { x: 35, y: 3530, w: 292, h: 444 };
 // Scroll offsets at the browser's scale: the explorer's panels in view, and
 // the foot of the page, with the closing ask.
 const EXPLORE = Math.round(3380 * WIDE);
-const BOTTOM = Math.round(5393 * WIDE) - 722;
+const BOTTOM = Math.round(5393 * WIDE) - VIEW;
 
 // The phone page is 420 wide in the file; the iPhone's screen is 402.
 const NARROW = 402 / 420;
@@ -113,18 +116,20 @@ const HeroField = ({ s, box, scale, small = false }: { s: S; box: typeof FIELD; 
 );
 
 const BrowserTour = () => (
-  <Stage<S> width={1200} height={700} theme="dark" fidelity="realistic" initial={initial} poster={poster} script={wide} cursor={{ at: { x: 860, y: 300 }, style: "real" }} className="look-earthscale es-tour">
+  <Stage<S> width={1200} height={770} theme="dark" fidelity="realistic" initial={initial} poster={poster} script={wide} cursor={{ at: { x: 860, y: 300 }, style: "real" }} className="look-earthscale es-tour">
     {(s) => (
       <Camera focus={s.zoom} max={1.8} duration={CAMERA}>
-        <Window url="earthscale.ai" urlShape="pill" nav className="tour-window">
-          <Scroll name="page" className="tour-page" data-crop>
-            <div className="relative" style={{ height: Math.round(5393 * WIDE) }}>
-              <Image src={desktop} alt="" sizes="1100px" className="block h-auto w-full" />
-              <HeroField s={s} box={FIELD} scale={WIDE} />
-              <span data-target="layers" className="absolute" style={{ left: LAYERS.x * WIDE, top: LAYERS.y * WIDE, width: LAYERS.w * WIDE, height: LAYERS.h * WIDE }} />
-            </div>
-          </Scroll>
-        </Window>
+        <Laptop className="tour-laptop">
+          <Window url="earthscale.ai" urlShape="pill" nav className="tour-window">
+            <Scroll name="page" className="tour-page" data-crop>
+              <div className="relative" style={{ height: Math.round(5393 * WIDE) }}>
+                <Image src={desktop} alt="" sizes="1100px" className="block h-auto w-full" />
+                <HeroField s={s} box={FIELD} scale={WIDE} />
+                <span data-target="layers" className="absolute" style={{ left: LAYERS.x * WIDE, top: LAYERS.y * WIDE, width: LAYERS.w * WIDE, height: LAYERS.h * WIDE }} />
+              </div>
+            </Scroll>
+          </Window>
+        </Laptop>
       </Camera>
     )}
   </Stage>
@@ -151,9 +156,9 @@ export const PageTour = ({ caption, className }: { caption?: string; className?:
     <figure data-reveal="frame" className={className}>
       <div
         role="img"
-        aria-label="Earthscale's landing page in a browser: someone types an email into the hero's field and presses Get Started, the field confirms it, then the page scrolls down to the visual explorer, its layers panel comes up close, and on to the closing ask"
+        aria-label="Earthscale's landing page in a browser on a laptop: someone types an email into the hero's field and presses Get Started, the field confirms it, then the page scrolls down to the visual explorer, its layers panel comes up close, and on to the closing ask"
       >
-        <div className="max-sm:hidden">{mounted ? <BrowserTour /> : <div className="aspect-[1200/700]" />}</div>
+        <div className="max-sm:hidden">{mounted ? <BrowserTour /> : <div className="aspect-[1200/770]" />}</div>
         <div className="sm:hidden">{mounted ? <PhoneTour /> : <div className="mx-auto aspect-[358/600] max-w-[358px]" />}</div>
       </div>
       {caption ? <figcaption className="type-caption mt-3 text-(--tone-text)">{caption}</figcaption> : null}

@@ -27,7 +27,7 @@ import { Wordmark } from "../_components/wordmark";
 /* The landing page, section by section, as the chapter takes it apart: each
  * section's sheet from the file, the marks over it in the page's pixels, and
  * the pieces rebuilt under it. */
-type Taken = { id: string; eyebrow: string; title: string; text: string; sheet: StaticImageData; alt: string; height: number; marks: Mark[]; pieces: Piece[] };
+export type Taken = { id: string; eyebrow: string; title: string; text: string; sheet: StaticImageData; alt: string; height: number; marks: Mark[]; pieces: Piece[] };
 
 export const SECTIONS: Taken[] = [
   {

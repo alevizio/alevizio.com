@@ -1,33 +1,51 @@
 import Image, { type StaticImageData } from "next/image";
-import { cn } from "./cn";
+import type { ComponentType, ReactNode } from "react";
 import { AutoFrame } from "./auto-frame";
+import { cn } from "./cn";
+import { Handset, Laptop, Monitor, Tablet } from "./devices";
 
-/** The page at its widths, side by side, each scrolling itself in its own
- *  frame, down and back, out of step with the others: the widest first,
- *  the phone last. The frames share one height, so the phone's page, four
- *  times as long as it is wide, reads as the long scroll it is. */
+/** The page at its widths, each in the device it's made for, side by side
+ *  and standing on one line: a monitor for the widest, then a laptop, a
+ *  tablet and a phone, each about as large against the others as its page
+ *  is wide. Each scrolls its own page, down and back, out of step with the
+ *  others; a still one (the phone's menu) just shows its screen. On a
+ *  narrow screen the row is wider than it and moves sideways. */
+export type Kind = "monitor" | "laptop" | "tablet" | "phone";
+
+const DEVICES: Record<Kind, { Frame: ComponentType<{ className?: string; children: ReactNode }>; width: string; sizes: string }> = {
+  monitor: { Frame: Monitor, width: "w-[37%]", sizes: "(min-width: 1376px) 510px, (min-width: 768px) 38vw, 290px" },
+  laptop: { Frame: Laptop, width: "w-[27.5%]", sizes: "(min-width: 1376px) 350px, (min-width: 768px) 27vw, 200px" },
+  tablet: { Frame: Tablet, width: "w-[14.5%]", sizes: "(min-width: 1376px) 190px, (min-width: 768px) 15vw, 110px" },
+  phone: { Frame: Handset, width: "w-[7.6%]", sizes: "(min-width: 1376px) 100px, (min-width: 768px) 8vw, 60px" },
+};
 const PERIODS = [26000, 30000, 34000, 40000];
 const PHASES = [0, 7000, 13000, 21000];
-export const Screens = ({
-  screens,
-  className,
-}: {
-  screens: { src: StaticImageData; alt: string; label: string; sizes: string }[];
-  className?: string;
-}) => (
-  <div data-stagger className={cn("grid gap-4 sm:gap-6", screens.length === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-2", className)}>
-    {screens.map(({ src, alt, label, sizes }, i) => (
-      <figure key={label} data-reveal="frame">
-        <AutoFrame
-          label={`${label}, scrolling`}
-          period={PERIODS[i % PERIODS.length]}
-          phase={PHASES[i % PHASES.length]}
-          className="hairline no-scrollbar h-[70vh] max-h-[48rem] overflow-y-auto rounded-[10px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
-        >
-          <Image src={src} alt={alt} sizes={sizes} placeholder="blur" className="h-auto w-full" />
-        </AutoFrame>
-        <figcaption className="type-label mt-3 text-(--tone-text)">{label}</figcaption>
-      </figure>
-    ))}
+
+export const Screens = ({ screens, className }: { screens: readonly { src: StaticImageData; alt: string; label: string; kind: Kind; still?: boolean }[]; className?: string }) => (
+  <div className={cn("no-scrollbar -mx-6 overflow-x-auto px-6 sm:-mx-10 sm:px-10 md:mx-0 md:overflow-visible md:px-0", className)}>
+    <div data-stagger className="flex min-w-[50rem] items-end justify-between md:min-w-0">
+      {screens.map(({ src, alt, label, kind, still }, i) => {
+        const { Frame, width, sizes } = DEVICES[kind];
+        return (
+          <figure key={label} data-reveal="frame" className={width}>
+            <Frame>
+              {still ? (
+                <Image src={src} alt={alt} sizes={sizes} placeholder="blur" className="size-full object-cover object-top" />
+              ) : (
+                <AutoFrame
+                  label={`${label}, scrolling`}
+                  period={PERIODS[i % PERIODS.length]}
+                  phase={PHASES[i % PHASES.length]}
+                  className="no-scrollbar h-full overflow-y-auto focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-mint"
+                >
+                  <Image src={src} alt={alt} sizes={sizes} placeholder="blur" className="h-auto w-full" />
+                </AutoFrame>
+              )}
+            </Frame>
+            <figcaption className="type-label mt-4 text-(--tone-text)">{label}</figcaption>
+          </figure>
+        );
+      })}
+    </div>
   </div>
 );

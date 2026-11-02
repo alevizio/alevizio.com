@@ -4,27 +4,29 @@ import mobile from "@/assets/page/mobile.webp";
 import tablet from "@/assets/page/tablet.webp";
 import team from "@/assets/page/team.webp";
 import wide from "@/assets/page/wide.webp";
-import { Anatomy } from "../_components/anatomy";
+import { KitGrid } from "../_components/kit-grid";
 import { PageTour } from "../_components/page-tour";
 import { Screens } from "../_components/screens";
+import { SectionTabs } from "../_components/section-tabs";
 import { Shot } from "../_components/shot";
 import { Band, ChapterDivider, Section } from "../_components/story";
 import { SECTIONS } from "./page-anatomy";
 
 const SCREENS = [
-  { src: wide, alt: "The landing page at 2500 pixels wide", label: "2500 wide", sizes: "(min-width: 1024px) 25vw, 50vw" },
-  { src: desktop, alt: "The landing page at 1440 pixels wide", label: "1440 wide", sizes: "(min-width: 1024px) 25vw, 50vw" },
-  { src: tablet, alt: "The landing page at 1024 pixels wide, a tablet", label: "1024, tablet", sizes: "(min-width: 1024px) 25vw, 50vw" },
-  { src: mobile, alt: "The landing page at 420 pixels wide, a phone", label: "420, phone", sizes: "(min-width: 1024px) 25vw, 50vw" },
-];
+  { src: wide, alt: "The landing page at 2500 pixels wide, on a monitor", label: "2500 wide", kind: "monitor" },
+  { src: desktop, alt: "The landing page at 1440 pixels wide, on a laptop", label: "1440 wide", kind: "laptop" },
+  { src: tablet, alt: "The landing page at 1024 pixels wide, on a tablet", label: "1024, tablet", kind: "tablet" },
+  { src: mobile, alt: "The landing page at 420 pixels wide, on a phone", label: "420, phone", kind: "phone" },
+  { src: menu, alt: "The phone menu: Team, Contact and a Get Started button over the top of the hero", label: "Its menu", kind: "phone", still: true },
+] as const;
 
-/* Chapter III: the page whole, in a browser, then section by section, each
- * taken apart into its pieces, then the page at every width, and its
- * second page. */
+/* Chapter III: the page whole, on a laptop, then the kit it's built from,
+ * then its sections taken apart, one at a time under a row of tabs, then the
+ * page at every width, each on its device, and its second page. */
 export const ThePage = () => (
   <Band tone="ground">
     <ChapterDivider id="page" numeral="III" title="The page">
-      The page whole, then its seven sections taken apart into their pieces, then the page at four widths.
+      The page whole, the kit it’s built from, its seven sections taken apart, then the page at four widths.
     </ChapterDivider>
 
     <Section
@@ -36,22 +38,31 @@ export const ThePage = () => (
       <PageTour caption="Someone signs up in the hero, then reads down past the explorer to the closing ask." />
     </Section>
 
-    {SECTIONS.map(({ id, eyebrow, title, text, ...anatomy }) => (
-      <Section key={id} id={id} eyebrow={eyebrow} title={title} text={text}>
-        <Anatomy id={id} {...anatomy} />
-      </Section>
-    ))}
+    <Section
+      id="kit"
+      eyebrow="The kit"
+      title="Every piece, working"
+      text="The file’s components, built and working, in a ruled grid like the page’s own cards. A field gets picked on the map and its values come in, and each of the other pieces does its one thing as the grid comes into view."
+    >
+      <KitGrid />
+    </Section>
+
+    <Section
+      id="sections"
+      eyebrow="Section by section"
+      title="Seven sections, taken apart"
+      text="Pick one: its sheet from the file with its pieces marked, then each piece rebuilt and working under its number."
+    >
+      <SectionTabs sections={SECTIONS} />
+    </Section>
 
     <Section
       id="screens"
       eyebrow="Every width"
       title="Wide, desktop, tablet, phone"
-      text="The same page at 2500, 1440, 1024 and 420 wide. Two cards become one column, the diagram stacks under the features, the panels crop to the phone’s edge, and the hero keeps the planet. Each one scrolls."
+      text="The same page at 2500, 1440, 1024 and 420 wide. Two cards become one column, the diagram stacks under the features, the panels crop to the phone’s edge, and the hero keeps the planet. Each page scrolls, and the last phone has its menu open."
     >
       <Screens screens={SCREENS} />
-      <div className="mt-4 grid gap-4 sm:mt-6 sm:grid-cols-[1fr_2fr] sm:gap-6">
-        <Shot src={menu} alt="The phone menu: Team, Contact and a Get Started button over the top of the hero" sizes="(min-width: 640px) 33vw, 100vw" caption="The phone's menu." />
-      </div>
     </Section>
 
     <Section

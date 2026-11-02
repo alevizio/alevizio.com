@@ -13,7 +13,7 @@ export type Mark = { n: number; x: number; y: number; w: number; h: number };
 export type Piece = { n: number; title: string; note: string; wide?: boolean; children: ReactNode };
 
 const PAGE_W = 1440;
-const number = (n: number) => String(n).padStart(2, "0");
+export const number = (n: number) => String(n).padStart(2, "0");
 // Literal classes for Tailwind: the marks land one after another, once the sheet is in.
 const WAVE = ["[--reveal-delay:0.5s]", "[--reveal-delay:0.62s]", "[--reveal-delay:0.74s]", "[--reveal-delay:0.86s]", "[--reveal-delay:0.98s]", "[--reveal-delay:1.1s]"];
 const wave = (i: number) => WAVE[Math.min(i, WAVE.length - 1)];

@@ -5,7 +5,6 @@ import study5 from "@/assets/studies/05.webp";
 import study6 from "@/assets/studies/06.webp";
 import { Drift } from "../_components/drift";
 import { FirstPassHero } from "../_components/first-pass-hero";
-import { KitGrid } from "../_components/kit-grid";
 import { Palette } from "../_components/palette";
 import { HALF, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
@@ -23,7 +22,7 @@ const WORLD = [
 ];
 
 /* Chapter II: the type and colour the page is made of and where they come
- * from, the kit built from them, then its pictures and the first lit pass. */
+ * from, then its pictures and the first lit pass. */
 export const Look = () => (
   <Band tone="night">
     <ChapterDivider id="look" numeral="II" title="The look">
@@ -46,15 +45,6 @@ export const Look = () => (
       text="Four greens, by the names the file gives them: one so dark it reads as black for the page, a pale one for text, a mint for anything to press and a grey one for captions. The rest of the colour is the data’s: the five ramps the product offers for a raster, the perceptually uniform maps science reads data by, four made for matplotlib in 2015 and cividis in 2018. The same patch of wind, through each one."
     >
       <Palette />
-    </Section>
-
-    <Section
-      id="kit"
-      eyebrow="The kit"
-      title="Every piece, working"
-      text="The file’s components, built and working, in a ruled grid like the page’s own cards. A field gets picked on the map and its values come in, and each of the other pieces does its one thing as the grid comes into view."
-    >
-      <KitGrid />
     </Section>
 
     <Section
