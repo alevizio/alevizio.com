@@ -7,6 +7,7 @@ import { KitGrid } from "../_components/kit-grid";
 import { PageTour } from "../_components/page-tour";
 import { Screens } from "../_components/screens";
 import { SectionTabs } from "../_components/section-tabs";
+import { ServeLive } from "../_components/serve-live";
 import { Band, ChapterDivider, Section } from "../_components/story";
 import { TypeSpecimen } from "../_components/type-specimen";
 import { SECTIONS } from "./page-anatomy";
@@ -21,7 +22,8 @@ const SCREENS = [
 
 /* Chapter III: the page whole, on a laptop, then its type and the kit it's
  * built from, then its sections taken apart, one at a time under a row of
- * tabs, then the page at every width, each on its device. */
+ * tabs, then its serve section playing, then the page at every width, each
+ * on its device. */
 export const ThePage = () => (
   <Band tone="ground">
     <ChapterDivider id="page" numeral="III" title="The page">
@@ -62,6 +64,15 @@ export const ThePage = () => (
       text="Pick one: its sheet from the file with its pieces marked, then each piece rebuilt and working under its number."
     >
       <SectionTabs sections={SECTIONS} />
+    </Section>
+
+    <Section
+      id="serve-live"
+      eyebrow="Serve, live"
+      title="Serve Data at Scale, playing"
+      text="The serve section as the page sets it, rebuilt and moving: the features light in turn while the pipeline runs, two sources joining, the Python client registering the data and a tile source coming out."
+    >
+      <ServeLive />
     </Section>
 
     <Section
