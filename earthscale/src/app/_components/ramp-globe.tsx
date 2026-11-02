@@ -8,7 +8,7 @@ import viridis from "@/assets/colour/globe-viridis.webp";
 import { useEffect, useRef } from "react";
 import { cn } from "./cn";
 
-/* A small globe in one of the ramps, turning, beside the ramp in the
+/* A small globe in one of the ramps, turning, on its picture's corner in the
  * palette: the hero's wind render set in that ramp (scripts/make-colour-
  * globes.py), wrapped on a sphere in a plain canvas, since five more WebGL
  * globes would each hold the hero's large maps. Lit like the hero's: from

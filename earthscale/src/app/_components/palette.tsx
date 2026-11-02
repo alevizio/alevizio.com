@@ -12,8 +12,8 @@ import { RAMPS } from "./ramps";
  * the file gives them (Greeg is the file's own spelling of the mint). Then
  * the data's colour: the five ramps the product offers for a raster, the
  * perceptually uniform maps science reads data by, each shown on the same
- * patch of wind over the North Atlantic, rendered through it, and beside
- * each ramp the whole world in it, turning. The swatches fill from the
+ * patch of wind over the North Atlantic, rendered through it, and on its
+ * corner the whole world in that ramp, turning. The swatches fill from the
  * bottom, the tiles drift, and the ramps keep flowing. */
 const SWATCHES = [
   { name: "Dark Green", hex: "#0f1313", role: "The page", swatch: "bg-night ring-1 ring-mist/15" },
@@ -51,9 +51,15 @@ export const Palette = () => (
     <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-5">
       {RAMPS.map(({ name, css }, i) => (
         <div key={name}>
-          <Drift src={TILES[i].src} alt={`The same wind field over the North Atlantic, rendered in ${name}`} index={i} sizes={SIZES} />
-          <div className="mt-4 flex items-center gap-3">
-            <RampGlobe ramp={i} className="-my-2 -ml-1.5 size-11 shrink-0" />
+          {/* The globe sits over the picture's lower left corner, half on it,
+           * and the ramp runs on from it. */}
+          <div className="relative">
+            <Drift src={TILES[i].src} alt={`The same wind field over the North Atlantic, rendered in ${name}`} index={i} sizes={SIZES} />
+            <div data-reveal="pop" className="pointer-events-none absolute -bottom-8 left-1 [--reveal-delay:0.5s] sm:-bottom-10">
+              <RampGlobe ramp={i} className="size-16 sm:size-20" />
+            </div>
+          </div>
+          <div className="flex h-8 items-center pl-[4.5rem] sm:h-10 sm:pl-[5.5rem]">
             <div data-reveal="grow-x" className={cn("h-2.5 flex-1 rounded-full bg-[length:200%_100%] motion-safe:animate-[flow_9s_ease-in-out_infinite_alternate]", css, RAMP_DELAYS[i])} />
           </div>
           <p className="type-caption mt-3 text-(--tone-head)">{name}</p>
