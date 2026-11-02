@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef } from "react";
 import { cn } from "./cn";
-import { MARK, MARK_IN_WORDMARK, WORDMARK_LETTERS, WORDMARK_VIEWBOX } from "./wordmark-paths";
+import { MARK, MARK_IN_WORDMARK, MARK_VIEWBOX, WORDMARK_LETTERS, WORDMARK_VIEWBOX } from "./wordmark-paths";
 
 /* The wordmark, its mark built the way it is drawn. The mark is one ring at
  * three angles: the same ellipse, turned about 38 degrees each way about a
@@ -11,7 +11,8 @@ import { MARK, MARK_IN_WORDMARK, WORDMARK_LETTERS, WORDMARK_VIEWBOX } from "./wo
  * rest the file's own outlines take over, with the gaps where one ring
  * passes under another. The name rises in, a light runs once round each
  * ring, and it all folds back to start again. With less motion asked for,
- * it is the file's wordmark, still. */
+ * it is the file's wordmark, still. With markOnly it is the mark alone,
+ * built the same way, for a small place like an icon. */
 
 type Ring = { c: readonly [number, number]; a: number; b: number; ang: number; w: number; pivot: readonly [number, number]; turn: number };
 // Each ring's centre line, fitted to the file's outlines in mark.svg's units,
@@ -97,7 +98,7 @@ const paint = ({ rings, tints, motion, exact, glows, glints, comet, letters }: P
   });
 };
 
-export const Wordmark = ({ className }: { className?: string }) => {
+export const Wordmark = ({ markOnly = false, className }: { markOnly?: boolean; className?: string }) => {
   const ref = useRef<SVGSVGElement>(null);
   const id = useId().replace(/[^\w-]/g, "");
 
@@ -130,7 +131,7 @@ export const Wordmark = ({ className }: { className?: string }) => {
   }, []);
 
   return (
-    <svg ref={ref} viewBox={WORDMARK_VIEWBOX} role="img" aria-label="Earthscale" className={cn("h-auto w-full max-w-[20rem] overflow-visible text-mist", className)}>
+    <svg ref={ref} viewBox={markOnly ? MARK_VIEWBOX : WORDMARK_VIEWBOX} role="img" aria-label="Earthscale" className={cn("overflow-visible text-mist", !markOnly && "h-auto w-full max-w-[20rem]", className)}>
       <defs>
         {MARK.map((d, k) => (
           <clipPath key={d} id={`${id}-ring${k}`}>
@@ -144,7 +145,7 @@ export const Wordmark = ({ className }: { className?: string }) => {
           <feGaussianBlur stdDeviation="1.2" />
         </filter>
       </defs>
-      <g transform={MARK_IN_WORDMARK}>
+      <g transform={markOnly ? undefined : MARK_IN_WORDMARK}>
         {/* The light round each ring: a glow under it, and the ring lit. */}
         {RINGS.map((ring, k) => (
           <path key={k} data-glow d={line(ring)} transform={pose(ring, 1)} pathLength={1} fill="none" strokeWidth={3.4} strokeDasharray="0.22 1" opacity={0} filter={`url(#${id}-glow)`} className="stroke-mint" />
@@ -174,9 +175,11 @@ export const Wordmark = ({ className }: { className?: string }) => {
           </g>
         </g>
       </g>
-      {WORDMARK_LETTERS.map((d) => (
-        <path key={d} data-letter d={d} fill="currentColor" />
-      ))}
+      {markOnly
+        ? null
+        : WORDMARK_LETTERS.map((d) => (
+            <path key={d} data-letter d={d} fill="currentColor" />
+          ))}
     </svg>
   );
 };
