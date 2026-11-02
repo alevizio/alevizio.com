@@ -8,6 +8,7 @@ import { PageTour } from "../_components/page-tour";
 import { Screens } from "../_components/screens";
 import { SectionTabs } from "../_components/section-tabs";
 import { Band, ChapterDivider, Section } from "../_components/story";
+import { TypeSpecimen } from "../_components/type-specimen";
 import { SECTIONS } from "./page-anatomy";
 
 const SCREENS = [
@@ -18,13 +19,13 @@ const SCREENS = [
   { src: menu, alt: "The phone menu: Team, Contact and a Get Started button over the top of the hero", label: "Its menu", kind: "phone", still: true },
 ] as const;
 
-/* Chapter III: the page whole, on a laptop, then the kit it's built from,
- * then its sections taken apart, one at a time under a row of tabs, then the
- * page at every width, each on its device. */
+/* Chapter III: the page whole, on a laptop, then its type and the kit it's
+ * built from, then its sections taken apart, one at a time under a row of
+ * tabs, then the page at every width, each on its device. */
 export const ThePage = () => (
   <Band tone="ground">
     <ChapterDivider id="page" numeral="III" title="The page">
-      The page whole, the kit it’s built from, its seven sections taken apart, then the page at four widths.
+      The page whole, its type and the kit it’s built from, its seven sections taken apart, then the page at four widths.
     </ChapterDivider>
 
     <Section
@@ -34,6 +35,15 @@ export const ThePage = () => (
       text="The landing page at 1440, from the file, top to bottom, through the seven sections taken apart below."
     >
       <PageTour caption="Someone signs up in the hero, then reads down past the explorer to the closing ask." />
+    </Section>
+
+    <Section
+      id="type"
+      eyebrow="Type"
+      title="Neue Machina and Plex Mono"
+      text="Two faces, set live here. PP Neue Machina, from Pangram Pangram in Montréal, at every size from the 72px headline to the 14px fine print, plain and tight. IBM Plex Mono, IBM’s own open source mono, in capitals for buttons, tags and captions, the way a terminal would set them. The file’s ten text styles, with the page’s own words in them."
+    >
+      <TypeSpecimen />
     </Section>
 
     <Section

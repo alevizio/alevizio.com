@@ -41,7 +41,6 @@ const NAV: readonly NavGroup[] = [
     numeral: "II",
     title: "The look",
     items: [
-      { id: "type", label: "Type" },
       { id: "colour", label: "Colour" },
       { id: "studies", label: "The imagery" },
       { id: "exploration", label: "A first pass" },
@@ -53,6 +52,7 @@ const NAV: readonly NavGroup[] = [
     title: "The page",
     items: [
       { id: "whole", label: "The whole page" },
+      { id: "type", label: "Type" },
       { id: "kit", label: "The kit" },
       { id: "sections", label: "Section by section" },
       { id: "screens", label: "Every width" },

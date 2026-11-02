@@ -8,7 +8,6 @@ import { FirstPassHero } from "../_components/first-pass-hero";
 import { Palette } from "../_components/palette";
 import { HALF, THIRD } from "../_components/shot";
 import { Band, ChapterDivider, Row, Section } from "../_components/story";
-import { TypeSpecimen } from "../_components/type-specimen";
 
 // Renders out of the product, each a dataset on the map, as they sat in the file.
 const CLOSE = [
@@ -21,23 +20,14 @@ const WORLD = [
   { src: study6, alt: "Sea and land temperature across the world, in plasma: orange seas, purple poles" },
 ];
 
-/* Chapter II: the type and colour the page is made of and where they come
- * from, then its pictures and the first lit pass, whose map runs the width
+/* Chapter II: the colour the page is made of and where it comes from,
+ * then its pictures and the first lit pass, whose map runs the width
  * of the screen and fades out where the chapter ends. */
 export const Look = () => (
   <Band tone="night" className="pb-0 sm:pb-0">
     <ChapterDivider id="look" numeral="II" title="The look">
       Dark, green and made of the product’s own pictures.
     </ChapterDivider>
-
-    <Section
-      id="type"
-      eyebrow="Type"
-      title="Neue Machina and Plex Mono"
-      text="Two faces, set live here. PP Neue Machina, from Pangram Pangram in Montréal, at every size from the 72px headline to the 14px fine print, plain and tight. IBM Plex Mono, IBM’s own open source mono, in capitals for buttons, tags and captions, the way a terminal would set them. The file’s ten text styles, with the page’s own words in them."
-    >
-      <TypeSpecimen />
-    </Section>
 
     <Section
       id="colour"
