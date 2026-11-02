@@ -526,15 +526,10 @@
   }
 }
 
-@keyframes es-pulse {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.7);
+/* Small lights flowing along a drawn wire: one dash and its gap a turn. */
+@keyframes es-flow {
+  to {
+    stroke-dashoffset: -11.5;
   }
 }
 
