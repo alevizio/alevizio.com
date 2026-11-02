@@ -550,3 +550,25 @@
     transform: translateX(-50%);
   }
 }
+
+/* Titles rise in word by word (story.tsx Words): the title itself stays
+   put and each word comes up out of a little below, one after another. */
+@media (prefers-reduced-motion: no-preference) {
+  .motion [data-reveal="words"]:not([data-in]) {
+    opacity: 1;
+    translate: none;
+  }
+  .motion [data-reveal="words"] > span {
+    display: inline-block;
+    transition:
+      opacity 0.7s var(--ease-arrive),
+      translate 0.9s var(--ease-arrive),
+      filter 0.7s var(--ease-arrive);
+    transition-delay: calc(var(--reveal-delay, 0s) + var(--i, 0) * 70ms);
+  }
+  .motion [data-reveal="words"]:not([data-in]) > span {
+    opacity: 0;
+    translate: 0 0.45em;
+    filter: blur(4px);
+  }
+}

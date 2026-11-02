@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 import { cn } from "./cn";
 import { tidy } from "./tidy";
 
@@ -25,6 +25,22 @@ const TONES: Record<Tone, string> = {
 
 const tidyNode = (node: ReactNode) => (typeof node === "string" ? tidy(node) : node);
 
+/** A title that rises in word by word as it's reached (data-reveal="words"
+ *  in globals.css): each word its own span, numbered for its delay. The last
+ *  two stay bound, so no line ends on one. Anything but a string comes in
+ *  whole. */
+const Words = ({ children }: { children: ReactNode }) => {
+  if (typeof children !== "string") return children;
+  return tidy(children)
+    .split(" ")
+    .map((word, i) => (
+      <Fragment key={i}>
+        {i ? " " : null}
+        <span style={{ "--i": i } as CSSProperties}>{word}</span>
+      </Fragment>
+    ));
+};
+
 /** A full-width band of one tone. flow-root keeps its first child's top
  *  margin inside it, so the colour runs all the way up. */
 export const Band = ({ tone = "ground", className, children }: { tone?: Tone; className?: string; children: ReactNode }) => (
@@ -50,8 +66,8 @@ export const Section = ({
   <section id={id} data-scene className={cn("mt-28 scroll-mt-10 sm:mt-40", className)}>
     <div className={PAGE}>
       {eyebrow ? <Tag className="[--reveal-delay:0s]">{eyebrow}</Tag> : null}
-      <h3 data-reveal className={cn("type-section max-w-[18ch] text-(--tone-head) [--reveal-delay:0.08s]", eyebrow && "mt-5")}>
-        {tidyNode(title)}
+      <h3 data-reveal="words" className={cn("type-section max-w-[18ch] text-(--tone-head) [--reveal-delay:0.08s]", eyebrow && "mt-5")}>
+        <Words>{title}</Words>
       </h3>
       {text ? (
         <p data-reveal className="type-body mt-5 max-w-[36rem] text-(--tone-text) [--reveal-delay:0.16s]">
@@ -87,10 +103,10 @@ export const ChapterDivider = ({
 }) => {
   return (
     <header id={id} className="mt-32 scroll-mt-10 sm:mt-44">
-      <div className={cn(PAGE, "flex flex-col items-center text-center")}>
+      <div data-parallax="-0.06" className={cn(PAGE, "flex flex-col items-center text-center")}>
         <Tag>Chapter {numeral}</Tag>
-        <h2 data-reveal className="type-display mt-6 text-(--tone-head) [--reveal-delay:0.12s]">
-          {tidy(title)}
+        <h2 data-reveal="words" className="type-display mt-6 text-(--tone-head) [--reveal-delay:0.12s]">
+          <Words>{title}</Words>
         </h2>
         {children ? (
           <p data-reveal className="type-body mt-6 max-w-[36rem] text-(--tone-text) [--reveal-delay:0.24s]">

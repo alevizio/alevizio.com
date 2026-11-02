@@ -28,7 +28,7 @@ const FACTS = [
 export const Hero = () => (
   <header className="bg-night text-mist">
     <div className="relative overflow-hidden bg-black">
-      <div className="absolute inset-0">
+      <div data-parallax="-0.15" className="absolute inset-0">
         <Globe intro className="absolute top-0 left-1/2 w-[112vw] -translate-x-1/2 max-sm:top-[2%] max-sm:w-[170vw]" />
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[64%] bg-linear-to-t/srgb from-night from-24% via-night/80 via-58% to-night/0" />
       </div>
