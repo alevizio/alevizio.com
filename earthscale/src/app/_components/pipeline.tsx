@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { FiDatabase } from "react-icons/fi";
 import { cn } from "./cn";
-import { drawWire, findWire, Halo, set, Wire, type WireParts } from "./pipeline-wires";
+import { at, clamp, drawWire, findWire, Halo, inOut, out, set, Wire, type WireParts } from "./pipeline-wires";
 import { Wordmark } from "./wordmark";
 
 /* The serve diagram, as the page draws it, playing itself. Two comets
@@ -64,17 +64,6 @@ const Source = ({ icon, label }: { icon: ReactNode; label: string }) => (
   </span>
 );
 
-const clamp = (x: number) => Math.min(1, Math.max(0, x));
-const inOut = (x: number) => (x < 0.5 ? 4 * x ** 3 : 1 - (-2 * x + 2) ** 3 / 2);
-const out = (x: number) => 1 - (1 - x) ** 3;
-// Where in the loop t falls: the step, and how far into it.
-const at = (t: number) => {
-  let step = 0;
-  let ms = t;
-  while (step < REST && ms >= STEPS[step]) ms -= STEPS[step++];
-  return { step, ms };
-};
-
 type Parts = { wires: WireParts[]; node: SVGGElement; halo: SVGCircleElement; flash: SVGCircleElement };
 
 // One frame: `step`, `ms` into it, `now` for the join's breathing.
@@ -120,7 +109,7 @@ export const Pipeline = ({ className }: { className?: string }) => {
     let start = 0;
     let shown = REST;
     const frame = (now: number) => {
-      const { step: s, ms } = at((now - start) % LOOP);
+      const { step: s, ms } = at(STEPS, (now - start) % LOOP);
       if (s !== shown) setStep((shown = s));
       paint(parts, s, ms, now, false);
       raf = requestAnimationFrame(frame);

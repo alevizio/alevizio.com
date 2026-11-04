@@ -54,6 +54,19 @@ export const findWire = (root: Element, name: string): WireParts => {
 
 export const set = (el: Element, name: string, value: number | string) => el.setAttribute(name, String(value));
 
+export const clamp = (x: number) => Math.min(1, Math.max(0, x));
+export const inOut = (x: number) => (x < 0.5 ? 4 * x ** 3 : 1 - (-2 * x + 2) ** 3 / 2);
+export const out = (x: number) => 1 - (1 - x) ** 3;
+
+/** Where in a loop of `steps` (ms each) t falls: the step, and how far
+ *  into it. Past the end it stays in the last. */
+export const at = (steps: readonly number[], t: number) => {
+  let step = 0;
+  let ms = t;
+  while (step < steps.length - 1 && ms >= steps[step]) ms -= steps[step++];
+  return { step, ms };
+};
+
 /** The wire drawn to `f` of its length, the comet at its end or not, the
  *  flow on or not, the whole of it at `fade`. */
 export const drawWire = (w: WireParts, f: number, comet: boolean, flow: boolean, fade: number) => {

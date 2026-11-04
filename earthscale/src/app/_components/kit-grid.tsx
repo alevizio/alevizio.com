@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import { cn } from "./cn";
 import { ExploreStage } from "./kit-explore";
-import { IconsStage, PipeStage, RampsStage, SignupStage, type Slot } from "./kit-tiles";
+import { PipeStage } from "./kit-pipe";
+import { TimeStage } from "./kit-time";
+import { IconsStage, RampsStage, type Slot } from "./kit-tiles";
 import { useMounted } from "./use-mounted";
 import "./stage-look.css";
 
@@ -12,10 +14,10 @@ import "./stage-look.css";
  *
  *   Tile     Span   Kind        The one thing                            Moves
  *   Explore  2 × 1  Hero UI     pixel information over NDVI farmland      a pointer picks a field, the panel comes in; loops
- *   Ramps    1 × 1  Collection  the five colour ramps, named              they arrive, once
- *   Pipe     1 × 1  Diagram     two sources into Earthscale, tiles out    the lines draw, once
- *   Signup   2 × 1  Component   the hero's email field                   takes an email and confirms it, once
- *   Icons    3 × 1  Collection  the file's Radix icons, off both sides   the eight the panels use light up, once
+ *   Ramps    1 × 1  Collection  the five colour ramps, named              they arrive, then a probe sweeps them; loops
+ *   Pipe     1 × 1  Diagram     two sources into Earthscale, tiles out    comets draw the lines, the tiles arrive; loops
+ *   Time     2 × 1  Component   the layers panel's time slider          steps through the years, dragged on and back; loops
+ *   Icons    3 × 1  Collection  the file's Radix icons, going by        the eight the panels use light up; loops
  *
  * Two of five tiles are UI, and only the lead has a pointer. Each picture
  * is its own Stage at 1:1, as big as its cell's slot; the words are page
@@ -24,7 +26,7 @@ const TILES: { area: string; lead: string; rest: string; Picture: ComponentType<
   { area: "explore", lead: "Pixel information.", rest: "A point picked on the map, its value and its year.", Picture: ExploreStage },
   { area: "ramps", lead: "Five colour ramps.", rest: "The product's own, on every chip and picker.", Picture: RampsStage },
   { area: "pipe", lead: "Storage in, tiles out.", rest: "The serve diagram, cut to its bones.", Picture: PipeStage },
-  { area: "signup", lead: "The one ask.", rest: "The hero's field, through the states the file draws.", Picture: SignupStage },
+  { area: "time", lead: "The time slider.", rest: "The layers panel's own, stepping a data set through its years.", Picture: TimeStage },
   { area: "icons", lead: "Radix icons.", rest: "One family across the panels, the ones they use lit.", Picture: IconsStage },
 ];
 

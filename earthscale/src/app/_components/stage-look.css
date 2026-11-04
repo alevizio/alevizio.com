@@ -82,20 +82,20 @@
   border-radius: 18px;
   background: rgb(230 246 231 / 0.12);
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "explore" "ramps" "pipe" "signup" "icons";
+  grid-template-areas: "explore" "ramps" "pipe" "time" "icons";
 }
 @container (min-width: 640px) {
   .es-kit .kit-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: 470px 360px 300px 230px;
-    grid-template-areas: "explore explore" "ramps pipe" "signup signup" "icons icons";
+    grid-template-areas: "explore explore" "ramps pipe" "time time" "icons icons";
   }
 }
 @container (min-width: 1000px) {
   .es-kit .kit-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: 470px 330px 230px;
-    grid-template-areas: "explore explore ramps" "pipe signup signup" "icons icons icons";
+    grid-template-areas: "explore explore ramps" "pipe time time" "icons icons icons";
   }
 }
 .es-kit .kit-cell {
@@ -108,7 +108,7 @@
 .es-kit .kit-cell--explore { grid-area: explore; --pic: 380px; }
 .es-kit .kit-cell--ramps { grid-area: ramps; --pic: 260px; }
 .es-kit .kit-cell--pipe { grid-area: pipe; --pic: 230px; }
-.es-kit .kit-cell--signup { grid-area: signup; --pic: 160px; }
+.es-kit .kit-cell--time { grid-area: time; --pic: 160px; }
 .es-kit .kit-cell--icons { grid-area: icons; --pic: 120px; }
 .es-kit .kit-copy {
   max-width: 34rem;
