@@ -175,3 +175,14 @@ for (x0, y0, x1, y1, src) in [(0, 440, 80, 990, 2), (1015, 296, 1395, 386, 1000)
     ys = slice(round(y0 * k), round(y1 * k))
     sheet[ys, round(x0 * k) : round(x1 * k)] = sheet[ys, round(src * k) : round(src * k) + 1]
 save(sheet, "explore-base.webp", 86)
+
+# The serve sheet with its tile source's window off it, and the window on
+# its own, so the tour can bring the window in when the comet reaches it.
+# In file px of the section: the window and its edge, the page's own
+# colour row by row in its place.
+sheet = np.asarray(Image.open(ROOT / "src/assets/page/anat/04-serve.webp").convert("RGB")).copy()
+k = sheet.shape[1] / 1440
+x0, y0, x1, y1 = (round(v * k) for v in (830, 838, 1410, 1124))
+save(sheet[y0:y1, x0:x1].copy(), "serve-tiles.webp", 88)
+sheet[y0:y1, x0:x1] = sheet[y0:y1, round(822 * k) : round(822 * k) + 1]
+save(sheet, "serve-base.webp", 86)

@@ -3,18 +3,19 @@
 import catalog from "@/assets/page/anat/06-catalog.webp";
 import ask from "@/assets/page/anat/07-ask.webp";
 import proof from "@/assets/page/anat/02-proof.webp";
-import serve from "@/assets/page/anat/04-serve.webp";
 import who from "@/assets/page/anat/03-who.webp";
 import explore from "@/assets/page/tour/explore-base.webp";
+import serve from "@/assets/page/tour/serve-base.webp";
 import Image, { type StaticImageData } from "next/image";
-import { useEffect, useId, useRef, type ComponentType, type CSSProperties } from "react";
+import { useEffect, useRef, type ComponentType, type CSSProperties } from "react";
 import { cn } from "./cn";
-import { clamp, drawWire, findWire, Halo, inOut, out, set, Wire, type WireParts } from "./pipeline-wires";
+import { clamp } from "./pipeline-wires";
 import { TourAsk } from "./tour-ask";
 import { TourCatalog } from "./tour-catalog";
 import { TourQuote, TourWhoCards, TourWhoTitle } from "./tour-copy";
 import { TourExplore } from "./tour-explore";
 import { HERO, TourHero } from "./tour-hero";
+import { drawServe, findServe, SERVED, ServeDiagram, ServeFeatures, ServeWires } from "./tour-serve";
 
 /* The landing page as the tour scrolls it, working: the hero live, its
  * planet turning, and each section after it the file's own sheet, cut
@@ -27,7 +28,8 @@ import { HERO, TourHero } from "./tour-hero";
  * come in all at once over the turning globe. As it scrolls the planet
  * lags behind the hero's words, which lead and fade, and the pictures
  * drift a little slower than the page inside their strips, so the page
- * has depth. The serve diagram draws itself the way Serve, live does.
+ * has depth. The serve section plays the way the case study's own Serve
+ * does (tour-serve.tsx).
  * Everything comes in once a pass and goes when the hero does, at the
  * top, where none of it shows. */
 export const PAGE_W = 1040;
@@ -40,7 +42,9 @@ const COPY = 0.12; // how far the hero's words lead it
 // A strip of a sheet, in its 1040-wide px: from y to `to` (the foot, less
 // the drift for a picture), x to x + w; how it comes in, and when. The
 // proof's first 40 px are the hero's planet running on, under the live
-// hero's foot, so they're left out. A strip can carry a live piece, drawn
+// hero's foot, so they're left out. A cut between strips runs through
+// empty page (serve's, at 470, clears the cross at its list's corner, so
+// the diagram's drift doesn't split it). A strip can carry a live piece, drawn
 // in the section's own 1440 px over the sheet, or bare, in place of it;
 // its pieces come in on their own, unless it comes in whole. It comes in
 // once its top is `at` down the view (0.92 unless it says).
@@ -49,7 +53,14 @@ type Cut = { y: number; to?: number; x?: number; w?: number; open?: true; depth?
 const SECTIONS: { sheet: StaticImageData; cuts: Cut[] }[] = [
   { sheet: proof, cuts: [{ y: 0, to: 76, under: true }, { y: 76, live: TourQuote, bare: true }] },
   { sheet: who, cuts: [{ y: 0, to: 160, live: TourWhoTitle, bare: true }, { y: 160, live: TourWhoCards, bare: true, at: 0.55 }] },
-  { sheet: serve, cuts: [{ y: 0, to: 200 }, { y: 200, w: 445, after: 1 }, { y: 200, x: 445, open: true, depth: true, after: 2, wires: true }] },
+  {
+    sheet: serve,
+    cuts: [
+      { y: 0, to: 200 },
+      { y: 200, w: 470, after: 1, live: ServeFeatures, whole: true },
+      { y: 200, x: 470, open: true, depth: true, after: 2, wires: true, live: ServeDiagram },
+    ],
+  },
   { sheet: explore, cuts: [{ y: 0, to: 165 }, { y: 165, open: true, depth: true, after: 1, live: TourExplore }] },
   { sheet: catalog, cuts: [{ y: 0, to: 150 }, { y: 150, live: TourCatalog, bare: true }] },
   { sheet: ask, cuts: [{ y: 0, live: TourAsk, bare: true, whole: true }] },
@@ -71,46 +82,6 @@ const STRIPS = SECTIONS.flatMap(({ sheet, cuts }, section) =>
 );
 type Strip = (typeof STRIPS)[number];
 
-// The serve diagram's wires over the sheet's own, in its px: the sources
-// round into the join, the line down into the client, and out of it.
-const LEFT = "M545.8 264.4V304.4Q545.8 309.1 550.5 309.1H608.3";
-const RIGHT = "M662.6 264.4V304.4Q662.6 309.1 657.9 309.1H608.3";
-const TRUNK = "M608.3 309.1V351.2";
-const DROP = "M685 546V611";
-const SERVED = 2700; // ms, the diagram drawn
-
-type Wires = { wires: WireParts[]; flash: SVGCircleElement };
-// The diagram, t ms after its strip came in (or not yet, below zero).
-const drawServe = ({ wires: [left, right, trunk, drop], flash }: Wires, t: number) => {
-  const sources = inOut(clamp((t - 200) / 1200));
-  const into = inOut(clamp((t - 1400) / 280));
-  const down = inOut(clamp((t - 2100) / 420));
-  const flow = t >= SERVED;
-  drawWire(left, sources, sources > 0 && sources < 1, flow, 1);
-  drawWire(right, sources, sources > 0 && sources < 1, flow, 1);
-  drawWire(trunk, into, into > 0 && into < 1, flow, 1);
-  drawWire(drop, down, down > 0 && down < 1, flow, 1);
-  const ring = clamp((t - 1680) / 650);
-  set(flash, "r", 3 + 12 * out(ring));
-  set(flash, "opacity", ring > 0 && ring < 1 ? 0.85 * (1 - ring) : 0);
-};
-
-const ServeWires = () => {
-  const halo = `${useId().replace(/[^\w-]/g, "")}-halo`;
-  return (
-    <svg data-wires viewBox={`0 0 ${PAGE_W} ${tall(serve)}`} className="absolute inset-0 size-full overflow-visible" aria-hidden>
-      <defs>
-        <Halo id={halo} />
-      </defs>
-      <Wire name="left" d={LEFT} halo={halo} />
-      <Wire name="right" d={RIGHT} halo={halo} />
-      <Wire name="trunk" d={TRUNK} halo={halo} />
-      <Wire name="drop" d={DROP} halo={halo} />
-      <circle data-flash cx={608.3} cy={309.1} r={3} fill="none" stroke="#a0ffd7" opacity={0} />
-    </svg>
-  );
-};
-
 // A strip's pane: a window on its sheet, which drifts inside it if it's a
 // picture, with its live piece over it.
 const Pane = ({ sheet, x, y, w, h, open, after = 0, wires, under, live: Live, bare, whole, on }: Strip & { on: boolean }) => (
@@ -121,7 +92,7 @@ const Pane = ({ sheet, x, y, w, h, open, after = 0, wires, under, live: Live, ba
   >
     <div className="absolute" style={{ left: -x, top: -y, width: PAGE_W, height: tall(sheet) }}>
       {bare ? null : <Image src={sheet} alt="" sizes="1100px" loading="eager" className="block h-auto w-full" />}
-      {wires ? <ServeWires /> : null}
+      {wires ? <ServeWires width={PAGE_W} height={tall(sheet)} /> : null}
       {Live ? (
         <div className="absolute top-0 left-0 w-[1440px] origin-top-left font-sans" style={{ height: tall(sheet) / WIDE, transform: `scale(${WIDE})` }}>
           <Live on={on} />
@@ -139,11 +110,9 @@ export const TourPage = ({ on }: { on: boolean }) => {
     const scroller = root?.closest<HTMLElement>(".ss-scroll");
     const planet = root?.querySelector<HTMLElement>("[data-planet]");
     const copy = root?.querySelector<HTMLElement>("[data-copy]");
-    const svg = root?.querySelector<SVGSVGElement>("[data-wires]");
-    const flash = svg?.querySelector<SVGCircleElement>("[data-flash]");
-    if (!root || !scroller || !planet || !copy || !svg || !flash) return;
+    const diagram = root && findServe(root);
+    if (!root || !scroller || !planet || !copy || !diagram) return;
     const strips = [...root.querySelectorAll<HTMLElement>("[data-strip]")];
-    const diagram: Wires = { wires: ["left", "right", "trunk", "drop"].map((name) => findWire(svg, name)), flash };
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
     let served = 0;

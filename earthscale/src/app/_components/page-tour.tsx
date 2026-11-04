@@ -28,7 +28,7 @@ const VIEW = 650 - 38;
 const STOPS: [number, number][] = [
   [SECTION_TOPS[0] - 100, 3600], // the proof, under the hero's foot, while its quote changes
   [SECTION_TOPS[1] + 50, 2200], // who it's for, while its cards build
-  [SECTION_TOPS[2], 2800], // serve, while its diagram draws
+  [SECTION_TOPS[2] + 120, 4800], // serve, its tile source in view too, while it plays
   [SECTION_TOPS[3], 2600], // the explorer, while its map runs
   [SECTION_TOPS[4] - 120, 2400], // the catalog, while its panels work
   [PAGE_H - VIEW, 2000], // the closing ask, at the foot
@@ -114,7 +114,7 @@ export const PageTour = ({ caption, className }: { caption?: string; className?:
       <div
         ref={ref}
         role="img"
-        aria-label="Earthscale's landing page in a browser on a laptop, working: the hero arrives over its turning planet, its headline rising word by word, then the page scrolls down a section at a time: the quote changes, the who cards build themselves, the serve diagram draws its lines, the explorer's map runs through its time steps as its panels come in, a data set registers and a comment thread comes in, and the closing ask arrives all at once over the turning globe, and back up"
+        aria-label="Earthscale's landing page in a browser on a laptop, working: the hero arrives over its turning planet, its headline rising word by word, then the page scrolls down a section at a time: the quote changes, the who cards build themselves, the serve section plays, its features lit in turn as its call types in and its tile source arrives, the explorer's map runs through its time steps as its panels come in, a data set registers and a comment thread comes in, and the closing ask arrives all at once over the turning globe, and back up"
       >
         <div className="max-sm:hidden">{near ? <BrowserTour /> : <div className="aspect-[1200/770]" />}</div>
         <div className="sm:hidden">{near ? <PhoneTour /> : <div className="mx-auto aspect-[358/600] max-w-[358px]" />}</div>
