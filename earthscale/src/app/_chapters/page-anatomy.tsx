@@ -64,16 +64,16 @@ export const numbered = (i: number) => String(i + 1).padStart(2, "0");
 /** A piece: the section it comes from (its place in SHEETS), its name, how
  *  many of the grid's four columns it takes, and whether a phone, one
  *  column high, shows it. */
-export type Tile = { from: number; title: string; span: 1 | 2; phone?: false; children: ReactNode };
+export type Tile = { from: number; title: string; span: 1 | 2 | 4; phone?: false; children: ReactNode };
 
 export const TILES: Tile[] = [
   { from: 0, title: "The headline", span: 2, children: <Headline /> },
   { from: 0, title: "The wordmark", span: 1, children: <Wordmark className="mx-auto" /> },
   { from: 0, title: "Get Started", span: 1, phone: false, children: <ButtonStates /> },
-  { from: 2, title: "Hairline cards", span: 2, children: <WhoCards /> },
+  { from: 2, title: "Hairline cards", span: 4, children: <WhoCards /> },
   { from: 1, title: "The quote", span: 2, phone: false, children: <Quote /> },
-  { from: 4, title: "Layers", span: 1, children: <LayersPanel /> },
-  { from: 5, title: "A comment on a tile", span: 1, phone: false, children: <Thread /> },
+  { from: 4, title: "Layers", span: 2, children: <LayersPanel /> },
+  { from: 5, title: "A comment on a tile", span: 2, phone: false, children: <Thread className="mx-auto w-full max-w-[38rem]" /> },
   { from: 5, title: "Registering a dataset", span: 2, phone: false, children: <Register /> },
   { from: 4, title: "The map, stacked", span: 2, children: <MapStack /> },
   { from: 6, title: "The ask", span: 2, children: <AskLine /> },
