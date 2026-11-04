@@ -6,7 +6,8 @@ import { cn } from "./cn";
  * text styles, set live in the real fonts with the page's own words in
  * them, each labelled with its name and size as the file has them. PP
  * Neue Machina carries eight, IBM Plex Mono the two in capitals. The rows
- * arrive one after another as the cards come into view. */
+ * arrive one after another as each face comes into view. Set straight on
+ * the band, no card round either. */
 type Style = { name: string; size: number; sample: string; className: string };
 
 const MACHINA: Style[] = [
@@ -26,7 +27,7 @@ const PLEX: Style[] = [
 ];
 
 const Face = ({ name, from, styles, mono = false, children }: { name: string; from: string; styles: Style[]; mono?: boolean; children?: ReactNode }) => (
-  <div className="hairline rounded-[10px] bg-night p-6 sm:p-8">
+  <div className="min-w-0">
     <p data-reveal className="type-body text-mist">
       {name}
     </p>
@@ -48,7 +49,7 @@ const Face = ({ name, from, styles, mono = false, children }: { name: string; fr
 );
 
 export const TypeSpecimen = () => (
-  <div className="grid items-start gap-4 sm:gap-6 lg:grid-cols-[3fr_2fr]">
+  <div className="grid items-start gap-14 lg:grid-cols-[3fr_2fr] lg:gap-16">
     <Face name="PP Neue Machina" from="Pangram Pangram, Montréal · Mathieu Desjardins, 2019 · eight styles" styles={MACHINA} />
     <Face name="IBM Plex Mono" from="IBM with Bold Monday · Mike Abbink, 2017 · open source · two styles" styles={PLEX} mono>
       <p className="type-label mt-8 text-haze">In use</p>
