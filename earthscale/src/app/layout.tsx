@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { SiteAnalytics } from "./_components/site-analytics";
 
 /* Earthscale's type, as the page sets it: PP Neue Machina (Pangram Pangram)
  * for everything from the headline down, IBM Plex Mono for buttons, tags
@@ -40,7 +41,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${machina.variable} ${plexMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <SiteAnalytics group="Earthscale case study" />
+      </body>
     </html>
   );
 }
