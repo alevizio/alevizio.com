@@ -26,8 +26,8 @@ const shown: S = { on: true };
 const VIEW = 650 - 38;
 // Where it stops on the way down, and how long it reads there.
 const STOPS: [number, number][] = [
-  [SECTION_TOPS[0] - 100, 2800], // the proof, under the hero's foot, while its quote changes
-  [SECTION_TOPS[1] + 50, 1500], // who it's for
+  [SECTION_TOPS[0] - 100, 3600], // the proof, under the hero's foot, while its quote changes
+  [SECTION_TOPS[1] + 50, 2200], // who it's for, while its cards build
   [SECTION_TOPS[2], 2800], // serve, while its diagram draws
   [SECTION_TOPS[3], 2600], // the explorer, while its map runs
   [SECTION_TOPS[4] - 120, 2400], // the catalog, while its panels work

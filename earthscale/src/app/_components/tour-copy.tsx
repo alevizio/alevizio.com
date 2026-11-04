@@ -1,36 +1,59 @@
+import linear from "@/assets/page/tour/logo-linear.svg";
+import pachama from "@/assets/page/tour/logo-pachama.svg";
+import vercel from "@/assets/page/tour/logo-vercel.svg";
+import Image from "next/image";
 import type { CSSProperties } from "react";
 import { cn } from "./cn";
 import { ICON_ORGS, ICON_TEAMS } from "./page-paths";
 import { Words } from "./story";
 
 /* Two of the page's sections live in the tour (tour-page.tsx), in their
- * own px, set the way the file sets them: the proof's quote, which
- * changes, and the who section, which builds itself. They come in the
- * way the case study's own things do (stage-look.css, data-t), once the
- * tour reaches them. */
+ * own px, set the way the file sets them: the proof's quotes, which take
+ * turns with their companies' logos, and the who section, which builds
+ * itself. They come in the way the case study's own things do
+ * (stage-look.css, data-t), once the tour reaches them. */
 
 const after = (s: number) => ({ "--d": `${s}s` }) as CSSProperties;
 
-// The quote in its two halves, one after the other (data-quote, a loop
-// in stage-look.css), under the one name.
-const HALVES = [
-  "“Earthscale gave us the building blocks to turn satellite imagery into real-time insights.”",
-  "“What used to take weeks now happens in hours — all in the cloud.”",
+// The logos where the file has them, dim but for the one speaking
+// (data-logo, a loop in stage-look.css, in step with the quotes).
+const LOGOS = [
+  { src: pachama, x: 80, y: 124, speaks: "a" },
+  { src: linear, x: 291, y: 130, speaks: "none" },
+  { src: vercel, x: 462, y: 134, speaks: "b" },
+];
+// Each quote under its name, one after the other (data-quote).
+const QUOTES = [
+  {
+    key: "a",
+    text: "“Earthscale gave us the building blocks to turn satellite imagery into real-time insights. What used to take weeks now happens in hours — all in the cloud.”",
+    name: "Diego Saez Gil",
+    role: "Founder and CEO, Pachama",
+  },
+  {
+    key: "b",
+    text: "“Earthscale is fast, intuitive, and easy to get started with. It keeps you focused on building and makes turning ideas into reality feel effortless.”",
+    name: "Guillermo Rauch",
+    role: "CEO, Vercel",
+  },
 ];
 
 export const TourQuote = () => (
   <>
-    <div className="absolute top-[211px] left-20 w-[791px] font-sans text-[28px] leading-[1.4] tracking-[-0.56px] text-mist">
-      {HALVES.map((half, i) => (
-        <span key={half} data-quote={i ? "b" : "a"} className="absolute inset-x-0 top-0 block">
-          <Words>{half}</Words>
+    {LOGOS.map(({ src, x, y, speaks }) => (
+      <Image key={src.src} src={src} alt="" unoptimized data-logo={speaks} className="absolute max-w-none" style={{ left: x, top: y, width: src.width, height: src.height }} />
+    ))}
+    {QUOTES.map(({ key, text, name, role }) => (
+      <div key={key} data-quote={key}>
+        <span data-line className="absolute top-[211px] left-20 w-[791px] font-sans text-[28px] leading-[1.4] tracking-[-0.56px] text-mist">
+          <Words>{text}</Words>
         </span>
-      ))}
-    </div>
-    <div data-t="rise" className="absolute top-[360px] left-20" style={after(0.4)}>
-      <span className="block font-sans text-[16px] leading-[1.4] text-mist">Diego Saez Gil</span>
-      <span className="mt-px block font-mono text-[14px] leading-[1.1] text-dim uppercase">Founder and CEO, Pachama</span>
-    </div>
+        <span data-by className="absolute top-[360px] left-20" style={{ "--i": 8 } as CSSProperties}>
+          <span className="block font-sans text-[16px] leading-[1.4] text-mist">{name}</span>
+          <span className="mt-px block font-mono text-[14px] leading-[1.1] text-dim uppercase">{role}</span>
+        </span>
+      </div>
+    ))}
   </>
 );
 
@@ -50,32 +73,39 @@ const CARDS = [
   },
 ];
 
-/** The who section: the tag and the title, then the cards' lines draw,
- *  the cross turns in at their corner, the icons draw and the words come. */
-export const TourWho = () => (
+/** The who section's tag and title, rising as it's reached. */
+export const TourWhoTitle = () => (
   <>
     <span data-t="rise" className={cn(TAG, "top-16 left-20")}>Who</span>
     <div data-t="words" className="absolute top-[126px] left-20 font-sans text-[50px] leading-none tracking-[-1px] whitespace-nowrap text-white" style={after(0.1)}>
       <Words>Made for Geospatial Developers</Words>
     </div>
-    <span data-t="grow-x" className="absolute top-[240px] left-20 h-px w-[1280px] bg-white/[0.23]" style={after(0.35)} />
+  </>
+);
+
+/** Its cards building themselves once they're well in view, the way the
+ *  kit's tile does (anat-who.tsx): the lines draw, the cross turns in at
+ *  their corner, then the icons draw and the words come. */
+export const TourWhoCards = () => (
+  <>
+    <span data-t="grow-x" className="absolute top-[240px] left-20 h-px w-[1280px] bg-white/[0.23]" />
     {[80, 720, 1360].map((x, i) => (
-      <span key={x} data-t="grow-y" className="absolute top-[240px] h-[350px] w-px bg-[linear-gradient(rgb(255_255_255/0.32),transparent)]" style={{ left: x, ...after(0.7 + i * 0.12) }} />
+      <span key={x} data-t="grow-y" className="absolute top-[240px] h-[350px] w-px bg-[linear-gradient(rgb(255_255_255/0.32),transparent)]" style={{ left: x, ...after(0.45 + i * 0.12) }} />
     ))}
-    <svg data-t="turn" viewBox="0 0 32 32" aria-hidden className="absolute top-[224px] left-[1344px] size-8" style={after(1)}>
+    <svg data-t="turn" viewBox="0 0 32 32" aria-hidden className="absolute top-[224px] left-[1344px] size-8" style={after(0.7)}>
       <path d="M15.5 32V0M0 15.5H32" stroke="white" />
     </svg>
     {CARDS.map(({ tag, icon, title, text }, i) => (
       <div key={tag} className="absolute top-[240px] w-[640px]" style={{ left: 80 + i * 640 }}>
         <svg viewBox="0 0 24 24" fill="none" aria-hidden className="absolute top-16 left-8 size-6">
           {icon.map((d, j) => (
-            <path key={d} data-t="draw" d={d} pathLength={1} stroke="#a0ffd7" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" style={after(1.1 + i * 0.2 + j * 0.12)} />
+            <path key={d} data-t="draw" d={d} pathLength={1} stroke="#a0ffd7" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" style={after(1.1 + i * 0.2 + j * 0.16)} />
           ))}
         </svg>
         <span data-t="rise" className={cn(TAG, "top-[120px] left-8")} style={after(1.3 + i * 0.2)}>
           {tag}
         </span>
-        <div data-t="rise" className="absolute top-[186px] left-8 grid w-[576px] gap-4 font-sans leading-[1.4]" style={after(1.45 + i * 0.2)}>
+        <div data-t="rise" className="absolute top-[186px] left-8 grid w-[576px] gap-4 font-sans leading-[1.4]" style={after(1.48 + i * 0.2)}>
           <span className="text-[24px] tracking-[-0.48px] whitespace-nowrap text-mint">{title}</span>
           <span className="text-[16px] text-[#ededed]">{text}</span>
         </div>

@@ -204,26 +204,36 @@
     opacity: 0;
   }
 
-  /* The proof's quote: one half, then the other, word by word, under the
-     one name, for as long as it's on the page. */
-  .es-tour [data-quote] > span {
+  /* The proof's quotes take turns, word by word, each under its name,
+     and the logo of whoever is speaking lights as the other dims, for as
+     long as the section is on the page. */
+  .es-tour [data-quote] :is([data-line] > span, [data-by]) {
     display: inline-block;
   }
-  .es-tour [data-strip][data-in] [data-quote] > span {
-    animation: tour-quote 6.4s var(--ease-arrive) infinite both;
-    animation-delay: calc(var(--i, 0) * 45ms);
+  .es-tour [data-strip][data-in] [data-quote] :is([data-line] > span, [data-by]) {
+    animation: tour-quote 7s var(--ease-arrive) infinite both;
+    animation-delay: calc(var(--i, 0) * 25ms);
   }
-  .es-tour [data-strip][data-in] [data-quote="b"] > span {
-    animation-delay: calc(3.2s + var(--i, 0) * 45ms);
+  .es-tour [data-strip][data-in] [data-quote="b"] :is([data-line] > span, [data-by]) {
+    animation-delay: calc(3.5s + var(--i, 0) * 25ms);
   }
-  .es-tour [data-strip]:not([data-in]) [data-quote] > span {
+  .es-tour [data-strip]:not([data-in]) [data-quote] :is([data-line] > span, [data-by]) {
     opacity: 0;
+  }
+  .es-tour [data-strip][data-in] :is([data-logo="a"], [data-logo="b"]) {
+    animation: tour-logo 7s ease-in-out infinite;
+  }
+  .es-tour [data-strip][data-in] [data-logo="b"] {
+    animation-delay: -3.5s;
   }
 }
 
-/* Where nothing moves, the quote rests on its first half. */
-.es-tour [data-quote="b"] > span {
+/* Where nothing moves, the first quote rests under the first logo. */
+.es-tour [data-quote="b"] :is([data-line] > span, [data-by]) {
   opacity: 0;
+}
+.es-tour [data-logo]:not([data-logo="a"]) {
+  opacity: 0.35;
 }
 
 @keyframes tour-quote {
@@ -232,17 +242,31 @@
     translate: 0 0.45em;
     filter: blur(4px);
   }
-  10%,
-  40% {
+  9%,
+  37% {
     opacity: 1;
     translate: 0 0;
     filter: blur(0);
   }
-  47%,
+  43%,
   100% {
     opacity: 0;
     translate: 0 -0.3em;
     filter: blur(4px);
+  }
+}
+
+@keyframes tour-logo {
+  0%,
+  40% {
+    opacity: 1;
+  }
+  50%,
+  92% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 1;
   }
 }
 

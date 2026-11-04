@@ -49,7 +49,7 @@ const Face = ({ name, from, styles, mono = false, children }: { name: string; fr
 );
 
 export const TypeSpecimen = () => (
-  <div className="grid items-start gap-14 lg:grid-cols-[3fr_2fr] lg:gap-16">
+  <div className="grid items-start gap-14 lg:grid-cols-[3fr_2fr] lg:gap-24">
     <Face name="PP Neue Machina" from="Pangram Pangram, Montréal · Mathieu Desjardins, 2019 · eight styles" styles={MACHINA} />
     <Face name="IBM Plex Mono" from="IBM with Bold Monday · Mike Abbink, 2017 · open source · two styles" styles={PLEX} mono>
       <p className="type-label mt-8 text-haze">In use</p>

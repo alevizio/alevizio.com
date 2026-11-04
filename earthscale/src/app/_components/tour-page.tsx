@@ -12,7 +12,7 @@ import { cn } from "./cn";
 import { clamp, drawWire, findWire, Halo, inOut, out, set, Wire, type WireParts } from "./pipeline-wires";
 import { TourAsk } from "./tour-ask";
 import { TourCatalog } from "./tour-catalog";
-import { TourQuote, TourWho } from "./tour-copy";
+import { TourQuote, TourWhoCards, TourWhoTitle } from "./tour-copy";
 import { TourExplore } from "./tour-explore";
 import { HERO, TourHero } from "./tour-hero";
 
@@ -42,12 +42,13 @@ const COPY = 0.12; // how far the hero's words lead it
 // proof's first 40 px are the hero's planet running on, under the live
 // hero's foot, so they're left out. A strip can carry a live piece, drawn
 // in the section's own 1440 px over the sheet, or bare, in place of it;
-// its pieces come in on their own, unless it comes in whole.
+// its pieces come in on their own, unless it comes in whole. It comes in
+// once its top is `at` down the view (0.92 unless it says).
 type Live = ComponentType<{ on: boolean }>;
-type Cut = { y: number; to?: number; x?: number; w?: number; open?: true; depth?: true; after?: number; wires?: true; under?: true; live?: Live; bare?: true; whole?: true };
+type Cut = { y: number; to?: number; x?: number; w?: number; open?: true; depth?: true; after?: number; wires?: true; under?: true; live?: Live; bare?: true; whole?: true; at?: number };
 const SECTIONS: { sheet: StaticImageData; cuts: Cut[] }[] = [
-  { sheet: proof, cuts: [{ y: 0, to: 130, under: true }, { y: 130, live: TourQuote, bare: true }] },
-  { sheet: who, cuts: [{ y: 0, live: TourWho, bare: true }] },
+  { sheet: proof, cuts: [{ y: 0, to: 76, under: true }, { y: 76, live: TourQuote, bare: true }] },
+  { sheet: who, cuts: [{ y: 0, to: 160, live: TourWhoTitle, bare: true }, { y: 160, live: TourWhoCards, bare: true, at: 0.55 }] },
   { sheet: serve, cuts: [{ y: 0, to: 200 }, { y: 200, w: 445, after: 1 }, { y: 200, x: 445, open: true, depth: true, after: 2, wires: true }] },
   { sheet: explore, cuts: [{ y: 0, to: 165 }, { y: 165, open: true, depth: true, after: 1, live: TourExplore }] },
   { sheet: catalog, cuts: [{ y: 0, to: 150 }, { y: 150, live: TourCatalog, bare: true }] },
@@ -170,7 +171,7 @@ export const TourPage = ({ on }: { on: boolean }) => {
       STRIPS.forEach((strip, i) => {
         const el = strips[i];
         if (strip.depth) (el.firstElementChild as HTMLElement).style.translate = `0 ${Math.max(-DRIFT, Math.min(DRIFT, (middle - strip.mid) * DEPTH))}px`;
-        if (el.hasAttribute("data-in") || strip.top > y + scroller.clientHeight * 0.92) return;
+        if (el.hasAttribute("data-in") || strip.top > y + scroller.clientHeight * (strip.at ?? 0.92)) return;
         el.setAttribute("data-in", "");
         if (strip.wires && !served) {
           served = performance.now() + 500;
