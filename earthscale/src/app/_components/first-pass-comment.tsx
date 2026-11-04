@@ -13,9 +13,9 @@ export type Input = "idle" | "focus" | "typing";
 
 const REPLY = "Keep it, it shows the parcels";
 // The file's bright green, the pin's and the send button's.
-const PIN = "bg-[#60ff75] text-night shadow-[0_4px_4px_rgba(0,0,0,0.25),0_6px_13px_rgba(0,0,0,0.1)]";
+export const PIN = "bg-[#60ff75] text-night shadow-[0_4px_4px_rgba(0,0,0,0.25),0_6px_13px_rgba(0,0,0,0.1)]";
 
-const Avatar = ({ initial }: { initial: string }) => (
+export const Avatar = ({ initial }: { initial: string }) => (
   <span className={cn("grid size-7 shrink-0 place-items-center rounded-full text-[12px] leading-none font-extrabold", initial === "N" ? "bg-mint text-night" : "bg-night text-white")}>{initial}</span>
 );
 

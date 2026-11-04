@@ -12,7 +12,8 @@ import { MARK, MARK_IN_WORDMARK, MARK_VIEWBOX, WORDMARK_LETTERS, WORDMARK_VIEWBO
  * passes under another. The name rises in, a light runs once round each
  * ring, and it all folds back to start again. With less motion asked for,
  * it is the file's wordmark, still. With markOnly it is the mark alone,
- * built the same way, for a small place like an icon. */
+ * built the same way, for a small place like an icon. With still it is the
+ * file's wordmark, still, for a place that comes in all at once. */
 
 type Ring = { c: readonly [number, number]; a: number; b: number; ang: number; w: number; pivot: readonly [number, number]; turn: number };
 // Each ring's centre line, fitted to the file's outlines in mark.svg's units,
@@ -109,7 +110,7 @@ const paint = ({ rings, tints, motion, exact, glows, glints, comet, letters }: P
   });
 };
 
-export const Wordmark = ({ markOnly = false, className }: { markOnly?: boolean; className?: string }) => {
+export const Wordmark = ({ markOnly = false, still = false, className }: { markOnly?: boolean; still?: boolean; className?: string }) => {
   const ref = useRef<SVGSVGElement>(null);
   const id = useId().replace(/[^\w-]/g, "");
   const burst = useRef<(() => void) | null>(null);
@@ -124,7 +125,7 @@ export const Wordmark = ({ markOnly = false, className }: { markOnly?: boolean; 
 
   useEffect(() => {
     const svg = ref.current;
-    if (!svg || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!svg || still || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const all = (name: string) => [...svg.querySelectorAll<SVGElement>(`[data-${name}]`)];
     const parts: Parts = { rings: all("ring"), tints: all("tint"), motion: all("motion")[0], exact: all("exact")[0], glows: all("glow"), glints: all("glint"), comet: all("comet")[0], letters: all("letter") };
     let raf = 0;
@@ -169,7 +170,7 @@ export const Wordmark = ({ markOnly = false, className }: { markOnly?: boolean; 
       seen.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [still]);
 
   return (
     <svg ref={ref} viewBox={markOnly ? MARK_VIEWBOX : WORDMARK_VIEWBOX} role="img" aria-label="Earthscale" onClick={click} className={cn("overflow-visible text-mist", !markOnly && "h-auto w-full max-w-[20rem]", className)}>

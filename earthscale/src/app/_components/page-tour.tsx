@@ -11,9 +11,10 @@ import "./stage-look.css";
 /* The whole landing page, the way a product shot shows it (Stageshow, after
  * its full-width hero): the page in a browser on a laptop's screen, the
  * whole laptop on the stage, working. The hero arrives; then it reads down
- * the page a section at a time, each coming in as it's reached, the planet
- * and the pictures moving slower than the page (tour-page.tsx), to the
- * closing ask; it goes back up and the hero folds away to start again. The
+ * the page a section at a time, each coming in as it's reached and
+ * working while it's read, the planet and the pictures moving slower than
+ * the page (tour-page.tsx), to the closing ask; it goes back up and the
+ * hero folds away to start again. The
  * page keeps its size throughout. On a phone it is the phone page in an
  * iPhone, read down and back up. */
 
@@ -25,12 +26,12 @@ const shown: S = { on: true };
 const VIEW = 650 - 38;
 // Where it stops on the way down, and how long it reads there.
 const STOPS: [number, number][] = [
-  [SECTION_TOPS[0] - 100, 1300], // the proof, under the hero's foot
-  [SECTION_TOPS[1] + 50, 1300], // who it's for
+  [SECTION_TOPS[0] - 100, 2800], // the proof, under the hero's foot, while its quote changes
+  [SECTION_TOPS[1] + 50, 1500], // who it's for
   [SECTION_TOPS[2], 2800], // serve, while its diagram draws
-  [SECTION_TOPS[3], 1600], // the explorer
-  [SECTION_TOPS[4] - 120, 1500], // the catalog
-  [PAGE_H - VIEW, 1500], // the closing ask, at the foot
+  [SECTION_TOPS[3], 2600], // the explorer, while its map runs
+  [SECTION_TOPS[4] - 120, 2400], // the catalog, while its panels work
+  [PAGE_H - VIEW, 2000], // the closing ask, at the foot
 ];
 
 async function wide(a: Act<S>) {
@@ -113,7 +114,7 @@ export const PageTour = ({ caption, className }: { caption?: string; className?:
       <div
         ref={ref}
         role="img"
-        aria-label="Earthscale's landing page in a browser on a laptop, working: the hero arrives, its headline rising word by word over the planet, then the page scrolls down a section at a time, each coming in as it's reached, the planet and the pictures moving slower than the page and the serve diagram drawing its lines, on to the closing ask, and back up"
+        aria-label="Earthscale's landing page in a browser on a laptop, working: the hero arrives over its turning planet, its headline rising word by word, then the page scrolls down a section at a time: the quote changes, the who cards build themselves, the serve diagram draws its lines, the explorer's map runs through its time steps as its panels come in, a data set registers and a comment thread comes in, and the closing ask arrives all at once over the turning globe, and back up"
       >
         <div className="max-sm:hidden">{near ? <BrowserTour /> : <div className="aspect-[1200/770]" />}</div>
         <div className="sm:hidden">{near ? <PhoneTour /> : <div className="mx-auto aspect-[358/600] max-w-[358px]" />}</div>
