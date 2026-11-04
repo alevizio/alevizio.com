@@ -19,7 +19,7 @@ import { cn } from "./cn";
 
 export type Treatment = readonly (readonly [number, number, number])[];
 
-const SPEED = 0.028; // radians a second, about 1.6 degrees
+const SPEED = 0.028; // radians a second, about 1.6 degrees, unless it says
 
 const VERTEX = `attribute vec2 a_pos;uniform vec4 u_box;varying vec2 v_px;
 void main(){v_px=u_box.xy+vec2(a_pos.x*0.5+0.5,0.5-a_pos.y*0.5)*u_box.zw;gl_Position=vec4(a_pos,0.0,1.0);}`;
@@ -65,6 +65,7 @@ export const TurningPlanet = ({
   box,
   disc,
   tilt,
+  speed = SPEED,
   run,
   treat,
   frame,
@@ -79,6 +80,7 @@ export const TurningPlanet = ({
   /** The disc's centre and radius, in the frame's px. */
   disc: readonly [number, number, number];
   tilt: number;
+  speed?: number;
   /** Turning while it's in view; from the start again each time it's set. */
   run: boolean;
   treat?: Treatment;
@@ -138,7 +140,7 @@ export const TurningPlanet = ({
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
     const tick = (now: number) => {
-      turn += (Math.min(now - last, 100) / 1000) * SPEED;
+      turn += (Math.min(now - last, 100) / 1000) * speed;
       last = now;
       draw();
       raf = requestAnimationFrame(tick);
@@ -181,7 +183,7 @@ export const TurningPlanet = ({
       gl.deleteBuffer(quad);
       gl.deleteProgram(program);
     };
-  }, [run, src, size, left, top, width, height, disc, tilt, treat, frame]);
+  }, [run, src, size, left, top, width, height, disc, tilt, speed, treat, frame]);
 
   return <canvas ref={ref} aria-hidden className={cn("absolute", className)} style={{ left, top, width, height }} />;
 };

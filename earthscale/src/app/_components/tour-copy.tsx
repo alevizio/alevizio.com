@@ -15,12 +15,14 @@ import { Words } from "./story";
 
 const after = (s: number) => ({ "--d": `${s}s` }) as CSSProperties;
 
-// The logos where the file has them, dim but for the one speaking
-// (data-logo, a loop in stage-look.css, in step with the quotes).
+// The logos in the file's row (64 apart, centred on its 39 px), Vercel's
+// moved up beside Pachama's so the next to light is the next along; dim
+// but for the one speaking (data-logo, a loop in stage-look.css, in step
+// with the quotes).
 const LOGOS = [
   { src: pachama, x: 80, y: 124, speaks: "a" },
-  { src: linear, x: 291, y: 130, speaks: "none" },
-  { src: vercel, x: 462, y: 134, speaks: "b" },
+  { src: vercel, x: 291, y: 134, speaks: "b" },
+  { src: linear, x: 453, y: 130, speaks: "none" },
 ];
 // Each quote under its name, one after the other (data-quote).
 const QUOTES = [

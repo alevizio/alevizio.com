@@ -201,7 +201,18 @@ const clamp = (x: number, lo: number, hi: number) => Math.min(Math.max(x, lo), h
 const easeInOut = (x: number) => x * x * (3 - 2 * x);
 const same = (a: View, b: View) => a.band === b.band && a.ramp === b.ramp;
 
-export const Globe = ({ interactive = true, intro = false, className }: { interactive?: boolean; intro?: boolean; className?: string }) => {
+export const Globe = ({
+  interactive = true,
+  intro = false,
+  tilt: tiltFrom = TILT,
+  className,
+}: {
+  interactive?: boolean;
+  intro?: boolean;
+  /** How far its pole tips toward the viewer, to start (radians). */
+  tilt?: number;
+  className?: string;
+}) => {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -261,7 +272,7 @@ export const Globe = ({ interactive = true, intro = false, className }: { intera
     let last = 0;
     // Where it's turned to, how it's tipped, and how fast it's turning.
     let lon = 0;
-    let tilt = TILT;
+    let tilt = tiltFrom;
     let velocity = reduceMotion.matches ? 0 : -SPIN;
     let dragging = false;
     // What's shown, and what's fading in over it.
@@ -516,7 +527,7 @@ export const Globe = ({ interactive = true, intro = false, className }: { intera
       canvas.removeEventListener("pointerup", onUp);
       canvas.removeEventListener("pointercancel", onUp);
     };
-  }, [interactive, intro]);
+  }, [interactive, intro, tiltFrom]);
 
   return (
     <canvas

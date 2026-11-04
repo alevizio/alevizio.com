@@ -17,7 +17,9 @@ import { Wordmark } from "./wordmark";
  * same treatment, so it turns under the light and not with it. */
 
 // The disc, its centre and radius in the footer's px, and the canvas over
-// the part of it the footer shows.
+// the part of it the footer shows. Only its top shows, so its pole is
+// tipped a little away and it turns a little faster than the hero's: the
+// top goes by instead of circling a pole in the middle of it.
 const DISC = [720, 997.8, 549.7] as const;
 const BOX = [270, 440, 900, 228] as const;
 const FRAME = [1440, 668] as const;
@@ -49,7 +51,7 @@ const TREAT: Treatment = [
 export const TourAsk = ({ on }: { on: boolean }) => (
   <div className="absolute top-0 left-0 h-[668px] w-[1440px]">
     <Image src={background} alt="" sizes="1440px" loading="eager" className="absolute inset-0 size-full" />
-    <TurningPlanet src={globe.src} size={0.9934} box={BOX} disc={DISC} tilt={0.42} run={on} treat={TREAT} frame={FRAME} />
+    <TurningPlanet src={globe.src} size={0.9934} box={BOX} disc={DISC} tilt={-0.2} speed={0.05} run={on} treat={TREAT} frame={FRAME} />
     <div className="absolute top-32 left-[214px] w-[1012px] text-center font-sans text-[50px] leading-none tracking-[-1px] text-white">
       Bring Earth Intelligence to life
       <br />

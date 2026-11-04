@@ -27,8 +27,10 @@ export const Closing = () => (
       </div>
       <div aria-hidden className="relative mt-10 h-[20rem] sm:h-[24rem]">
         <div className="absolute inset-x-0 bottom-0 h-full bg-[radial-gradient(60%_90%_at_50%_100%,rgb(43_65_62/0.9),rgb(15_19_19/0)_72%)]" />
-        {/* The halo fades out before the canvas's top, or the footer's, can cut it. */}
-        <Globe className="absolute top-[calc(100%+80vw)] left-1/2 h-[250vw] w-[250vw] -translate-x-1/2 -translate-y-1/2 [mask-image:linear-gradient(to_bottom,transparent_3%,black_12%)]" />
+        {/* The halo fades out before the canvas's top, or the footer's, can cut it.
+            Only its top shows, so its pole tips a little away: the top goes
+            by as it turns, instead of circling a pole in the middle of it. */}
+        <Globe tilt={-0.15} className="absolute top-[calc(100%+80vw)] left-1/2 h-[250vw] w-[250vw] -translate-x-1/2 -translate-y-1/2 [mask-image:linear-gradient(to_bottom,transparent_3%,black_12%)]" />
       </div>
     </footer>
   </Band>
