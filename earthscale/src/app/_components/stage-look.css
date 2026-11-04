@@ -51,6 +51,70 @@
   flex: 1;
 }
 
+/* The tour's page comes in the way the case study's own things do (the
+   data-reveal rules in globals.css, their timing and easing), at the
+   browser's scale: the hero's nav comes down, its headline rises word by
+   word, the line and the field after it, the planet up out of the dark;
+   each strip of a section rises in, or opens upward if it's a picture, a
+   beat after the one before. Going, the hero leaves all at once. */
+@media (prefers-reduced-motion: no-preference) {
+  .es-tour .tour-nav,
+  .es-tour .tour-rise,
+  .es-tour [data-strip] {
+    transition:
+      opacity 0.8s var(--ease-arrive),
+      translate 1s var(--ease-arrive),
+      clip-path 1.2s var(--ease-arrive);
+    transition-delay: var(--d, 0s);
+  }
+  .es-tour .tour-hero [data-words] > span {
+    display: inline-block;
+    transition:
+      opacity 0.7s var(--ease-arrive),
+      translate 0.9s var(--ease-arrive),
+      filter 0.7s var(--ease-arrive);
+    transition-delay: calc(0.15s + var(--d, 0s) + var(--i, 0) * 70ms);
+  }
+  .es-tour .tour-planet {
+    transition:
+      opacity 1.6s var(--ease-arrive),
+      translate 2s var(--ease-arrive);
+  }
+  .es-tour .tour-hero:not([data-on]) .tour-nav {
+    opacity: 0;
+    translate: 0 -24px;
+  }
+  .es-tour .tour-hero:not([data-on]) .tour-rise {
+    opacity: 0;
+    translate: 0 1.75rem;
+  }
+  .es-tour .tour-hero:not([data-on]) [data-words] > span {
+    opacity: 0;
+    translate: 0 0.45em;
+    filter: blur(4px);
+  }
+  .es-tour .tour-hero:not([data-on]) .tour-planet {
+    opacity: 0;
+    translate: 0 80px;
+  }
+  .es-tour .tour-hero:not([data-on]) :is(.tour-nav, .tour-rise, .tour-planet, [data-words] > span) {
+    transition-duration: 0.6s;
+    transition-delay: 0s;
+  }
+  .es-tour [data-strip]:not([data-in]) {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  .es-tour [data-strip="open"]:not([data-in]) {
+    opacity: 1;
+    translate: 0 29px;
+    clip-path: inset(18% 0 0 0);
+  }
+  .es-tour [data-strip="open"][data-in] {
+    clip-path: inset(0);
+  }
+}
+
 /* On a phone: the phone page in an iPhone, a gutter from the top and the
    left, running off the bottom. */
 .es-tour .ss-stage .tour-phone {

@@ -29,7 +29,7 @@ const tidyNode = (node: ReactNode) => (typeof node === "string" ? tidy(node) : n
  *  in globals.css): each word its own span, numbered for its delay. The last
  *  two stay bound, so no line ends on one. Anything but a string comes in
  *  whole. */
-const Words = ({ children }: { children: ReactNode }) => {
+export const Words = ({ children }: { children: ReactNode }) => {
   if (typeof children !== "string") return children;
   return tidy(children)
     .split(" ")
