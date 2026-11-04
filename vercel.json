@@ -20,7 +20,7 @@
     {
       "source": "/work/earthscale",
       "destination": "https://earthscale.alevizio.com",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/",

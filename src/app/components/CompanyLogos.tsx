@@ -65,7 +65,7 @@ export const companies: Company[] = [
   {
     name: "Earthscale",
     url: "https://www.earthscale.ai/",
-    tag: { text: "case study" },
+    height: "h-[25px]",
     // A scroll down the landing page, from its Figma, eased, for the hover
     // preview.
     caseStudy: {
@@ -73,6 +73,7 @@ export const companies: Company[] = [
       video: "/work/earthscale-preview.mp4",
       poster: "/work/earthscale-preview-poster.jpg",
       label: "view case study",
+      pill: "case study",
     },
     viewBox: "0 0 639 124",
     paths: [
