@@ -28,7 +28,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint:images": "oxlint"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -91,6 +92,8 @@
   "devDependencies": {
     "@tailwindcss/vite": "4.1.12",
     "@vitejs/plugin-react": "4.7.0",
+    "oxlint": "1.90.0",
+    "oxlint-plugin-slimdeer": "0.6.2",
     "tailwindcss": "4.1.12",
     "terser": "^5.46.1",
     "vite": "6.3.5"
