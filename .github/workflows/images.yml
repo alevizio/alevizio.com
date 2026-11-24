@@ -1,0 +1,44 @@
+# Flags PNGs and JPEGs on a pull request that could be much smaller at about the same quality.
+# Warnings only: it annotates the image or the line that names it and never fails the check or
+# changes an image. See README, "Heavy images".
+name: Images
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  heavy-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2 # the merge commit and the main it merges into, to list what changed
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Measuring every image takes minutes; results are cached by image content.
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            node_modules/.cache/slimdeer
+            */node_modules/.cache/slimdeer
+          key: slimdeer-${{ github.run_id }}
+          restore-keys: slimdeer-
+      # Only what this pull request touches: GitHub shows at most 10 warnings per step, so
+      # warnings on images already in main would hide the new ones.
+      - name: Flag heavy images this pull request adds or names
+        run: |
+          mapfile -t code < <(git diff --name-only --diff-filter=AMR HEAD^1 HEAD -- '*.js' '*.jsx' '*.ts' '*.tsx' '*.mjs' '*.cjs')
+          mapfile -t images < <(git diff --name-only --diff-filter=AMR HEAD^1 HEAD -- ':(icase)*.png' ':(icase)*.jpg' ':(icase)*.jpeg')
+          if [ ${#code[@]} -gt 0 ]; then npx oxlint --format github "${code[@]}"; fi
+          if [ ${#images[@]} -gt 0 ]; then
+            npx oxlint-plugin-slimdeer --check --json "${images[@]}" > "$RUNNER_TEMP/check.json" || [ $? -eq 1 ]
+            jq -r '.images[]
+              | "\(.file) could be \(.percent)% smaller (\(.original / 1000 | round) kB → \(.compressed / 1000 | round) kB) and look \(.looks)\(if .quality then " (quality \(.quality)/100)" else "" end). Run: npx oxlint-plugin-slimdeer \(.file)" as $message
+              | "::warning file=\(.file),title=slimdeer::\($message | gsub("%"; "%25"))"' "$RUNNER_TEMP/check.json"
+          fi
