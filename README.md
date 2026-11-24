@@ -42,7 +42,7 @@ npm run preview
 
 ## Heavy images
 
-`npm run lint:images` runs [oxlint-plugin-slimdeer](https://github.com/lndgalante/oxlint-plugin-slimdeer). It warns on the line of code that names a PNG or JPEG when that image could be at least 10% and 4 KiB smaller at about the same visual quality. It measures locally and uploads nothing. The Images workflow runs the same check on every pull request and adds the warnings as annotations; it never fails the check and never changes an image.
+`npm run lint:images` runs [oxlint-plugin-slimdeer](https://github.com/lndgalante/oxlint-plugin-slimdeer). It warns on the line of code that names a PNG or JPEG when that image could be at least 10% and 4 KiB smaller at about the same visual quality. It measures locally and uploads nothing. On every pull request, the Images workflow checks the code and images that pull request adds or changes, and adds its warnings as annotations; it never fails the check and never changes an image.
 
 After `npm run lint:images`, to see the flagged images before and after, then shrink the ones you approve:
 
